@@ -1,0 +1,58 @@
+<?php
+
+namespace Tests\Feature\Corpus;
+
+use App\Jobs\Corpus\GenerateExtracts;
+use App\Models\Actions\ActionArea;
+use App\Models\Corpus\Reference;
+use App\Models\Corpus\ReferenceContent;
+use App\Models\Corpus\ReferenceContentExtract;
+use App\Models\Requirements\ReferenceRequirement;
+use Illuminate\Support\Facades\Config;
+use Tests\TestCase;
+use Tests\Traits\UsesLibryoAI;
+
+class GenerateExtractsTest extends TestCase
+{
+    use UsesLibryoAI;
+
+    public function testGenerationOfExtract(): void
+    {
+        Config::set('services.libryo_ai.enabled', true);
+        Config::set('services.libryo_ai.host', 'http://libryo-ai.test');
+        /** @var Reference $reference */
+        $otherReference = Reference::factory()->create();
+        $reference = Reference::factory()->create();
+        /** @var ActionArea $actionArea */
+        $actionArea = ActionArea::factory()->create();
+        $reference->actionAreas()->attach($actionArea);
+
+        ReferenceContent::upsert([
+            'cached_content' => '<p data-type="section" data-level="2" data-is_section="1"><span data-inline="num" data-id="197231"> <b> 18 </b> </span><span data-inline="heading" data-id="197231"> <b> Offences relating to licences and security clearances </b> </span></p><p data-type="subsection" data-indent="2"><span data-inline="num"> (1) </span><span> A person must not pretend to hold a licence or security clearance. </span></p><p data-type="subsection" data-indent="2"><span data-inline="num"> (2) </span><span> A person must not, for the purpose of obtaining a licence or security clearance, provide any information or produce any document that the person knows is false or misleading in a material particular. </span></p><p data-type="subsection" data-indent="2"><span data-inline="num"> (3) </span><span> A person must not, with intent to deceive, forge or alter a licence or security clearance. </span></p><p data-type="subsection" data-indent="2"><span data-inline="num"> (4) </span><span> A person must not, without reasonable excuse, have another person’s licence or security clearance in his or her possession. </span></p><p data-type="subsection" data-indent="2"><span data-inline="num"> (5) </span><span> A holder of a licence or security clearance must not lend the licence or security clearance or allow it to be used by any other person. </span></p><div data-indent="2"> Maximum penalty: 50 penalty units. </div>',
+            'reference_id' => $reference->id,
+        ], 'reference_id');
+
+        $reference->refRequirement()->delete();
+
+        $expected = $this->getExpectations();
+        $this->mockLibryoAIGenerateTaskRequest();
+
+        $this->assertSame(0, $reference->contentExtracts()->count());
+
+        collect($expected)->each(fn ($item) => $this->assertDatabaseMissing(ReferenceContentExtract::class, ['content' => $item]));
+
+        $referenceIds = [$otherReference->id, $reference->id];
+
+        dispatch(new GenerateExtracts($referenceIds));
+
+        $this->assertSame(0, $reference->contentExtracts()->count());
+
+        collect($expected)->each(fn ($item) => $this->assertDatabaseMissing(ReferenceContentExtract::class, ['content' => $item]));
+
+        ReferenceRequirement::factory()->for($reference)->create();
+
+        dispatch(new GenerateExtracts($referenceIds));
+
+        $this->assertSame(6, $reference->contentExtracts()->count());
+    }
+}

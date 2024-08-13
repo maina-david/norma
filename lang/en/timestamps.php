@@ -1,0 +1,48 @@
+<?php
+
+return [
+    'after' => 'After',
+    'before' => 'Before',
+    'created_at' => 'Date Created',
+    'date' => 'Date',
+    'deleted_at' => 'Date Deleted',
+    'errors' => [
+        'invalid_date' => 'Invalid date given',
+    ],
+    'expires_at' => 'Expiry Date',
+    'from' => 'From',
+    'to' => 'To',
+    'updated_at' => 'Date Updated',
+    'months' => [
+        'January' => 'January',
+        'February' => 'February',
+        'March' => 'March',
+        'April' => 'April',
+        'May' => 'May',
+        'June' => 'June',
+        'July' => 'July',
+        'August' => 'August',
+        'September' => 'September',
+        'October' => 'October',
+        'November' => 'November',
+        'December' => 'December',
+    ],
+    'days' => [
+        'Sunday' => 'Sunday',
+        'Monday' => 'Monday',
+        'Tuesday' => 'Tuesday',
+        'Wednesday' => 'Wednesday',
+        'Thursday' => 'Thursday',
+        'Friday' => 'Friday',
+        'Saturday' => 'Saturday',
+    ],
+    'days_initials' => [
+        'Sunday' => 'SU',
+        'Monday' => 'MO',
+        'Tuesday' => 'TU',
+        'Wednesday' => 'WE',
+        'Thursday' => 'TH',
+        'Friday' => 'FR',
+        'Saturday' => 'SA',
+    ],
+];

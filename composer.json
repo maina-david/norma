@@ -1,0 +1,223 @@
+{
+    "name": "libryo/monolith",
+    "type": "project",
+    "description": "The Laravel Framework.",
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "ext-dom": "*",
+        "ext-fileinfo": "*",
+        "ext-imagick": "*",
+        "ext-sockets": "*",
+        "ext-xsl": "*",
+        "ext-zip": "*",
+        "aws/aws-sdk-php": "^3.221",
+        "barryvdh/laravel-snappy": "^1.0",
+        "elasticsearch/elasticsearch": "^7.15",
+        "ezyang/htmlpurifier": "^4.13",
+        "google/cloud-translate": "^1.12",
+        "guzzlehttp/guzzle": "^7.2",
+        "h4cc/wkhtmltoimage-amd64": "0.12.x",
+        "h4cc/wkhtmltopdf-amd64": "0.12.x",
+        "hashids/hashids": "^5.0",
+        "hotwired-laravel/turbo-laravel": "^2.0",
+        "http-interop/http-factory-guzzle": "^1.2",
+        "hubspot/api-client": "^8.4",
+        "inertiajs/inertia-laravel": "^1.0",
+        "intervention/image": "^2.7",
+        "laravel/fortify": "^1.11",
+        "laravel/framework": "^11.0",
+        "laravel/horizon": "^5.9",
+        "laravel/passport": "^12.0",
+        "laravel/pulse": "^1.0@beta",
+        "laravel/sanctum": "^4.0",
+        "laravel/scout": "^10.2",
+        "laravel/socialite": "^5.5",
+        "laravel/telescope": "^5.0",
+        "laravel/tinker": "^2.8",
+        "league/flysystem-aws-s3-v3": "^3.0",
+        "league/flysystem-ftp": "^3.0",
+        "league/geotools": "^1.0",
+        "livewire/livewire": "^v3.1.0",
+        "lolli42/finediff": "^1.0",
+        "lorisleiva/laravel-actions": "^2.5",
+        "maatwebsite/excel": "^3.1",
+        "meilisearch/meilisearch-php": "^1.4",
+        "onelogin/php-saml": "^4.1",
+        "owen-it/laravel-auditing": "^13.5",
+        "patrickschur/language-detection": "^5.1",
+        "phpoffice/phpspreadsheet": "^1.20",
+        "psr/http-message": "^1.0",
+        "rlanvin/php-rrule": "^2.5",
+        "sabberworm/php-css-parser": "^8.4",
+        "sentry/sentry-laravel": "^4.0",
+        "smalot/pdfparser": "^2.2",
+        "starkbank/ecdsa": "^0.0.5",
+        "symfony/panther": "^2.0",
+        "tucker-eric/eloquentfilter": "^3.1",
+        "xenolope/quahog": "^3.0",
+        "ext-intl": "*"
+    },
+    "require-dev": {
+        "barryvdh/laravel-ide-helper": "^3.0",
+        "beyondcode/laravel-dump-server": "^2.0",
+        "brianium/paratest": "^7.0",
+        "dbrekelmans/bdi": "^1.0",
+        "fakerphp/faker": "^1.23",
+        "friendsofphp/php-cs-fixer": "3.50.0",
+        "fruitcake/laravel-telescope-toolbar": "^1.3",
+        "larastan/larastan": "^2.6",
+        "laravel/dusk": "^8.0",
+        "laravel/sail": "^1.26",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^8.1",
+        "php-parallel-lint/php-var-dump-check": "^0.5.0",
+        "phpstan/phpstan": "^1.10",
+        "phpunit/phpunit": "^11.0.1",
+        "rregeer/phpunit-coverage-check": "^0.3.1",
+        "spatie/laravel-ignition": "^2.0",
+        "spatie/laravel-web-tinker": "^1.8",
+        "symfony/dom-crawler": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
+        },
+        "files": [
+            "app/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi",
+            "mkdir -p storage/app/tmp"
+        ],
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi",
+            "@php artisan ide-helper:generate"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi"
+        ],
+        "post-install-cmd": [
+            "mkdir -p .git/hooks",
+            "echo '#!/bin/sh\n\ncomposer validate-commit' > .git/hooks/pre-commit"
+        ],
+        "phpfix": [
+            "./vendor/bin/php-cs-fixer fix --config=./.php-cs-fixer.php"
+        ],
+        "ide-helper": [
+            "@php artisan --env=testing ide-helper:eloquent -q",
+            "@php artisan --env=testing ide-helper:generate -q",
+            "@php artisan --env=testing ide-helper:meta -q",
+            "@php artisan --env=testing ide-helper:models --write-mixin -q"
+        ],
+        "clean": [
+            "composer ide-helper",
+            "composer phpfix"
+        ],
+        "prepare-database": [
+            "@php artisan db:seed --class=DevelopmentSeeder"
+        ],
+        "stan": "./vendor/bin/phpstan analyse --memory-limit=2G",
+        "coverage": "XDEBUG_MODE=off ./vendor/bin/coverage-check clover.xml 100",
+        "dusk": "@php artisan dusk --env=testing",
+        "check-dump": [
+            "Composer\\Config::disableProcessTimeout",
+            "./vendor/bin/var-dump-check --laravel --exclude vendor --extensions php ."
+        ],
+        "pre-test": [
+            "@composer check-dump",
+            "@php artisan migrate:fresh --env=testing",
+            "@php artisan db:seed --env=testing",
+            "@composer ide-helper",
+            "./vendor/bin/php-cs-fixer fix --config=./.php-cs-fixer.php",
+            "@composer stan",
+            "@php artisan view:clear"
+        ],
+        "post-test": [
+            "@php checkCoverage.php",
+            "@composer coverage"
+        ],
+        "test": [
+            "Composer\\Config::disableProcessTimeout",
+            "@composer pre-test",
+            "@php artisan test --stop-on-failure",
+            "@composer post-test"
+        ],
+        "test-para": [
+            "Composer\\Config::disableProcessTimeout",
+            "@composer pre-test",
+            "@php artisan test --parallel --recreate-databases --processes=4",
+            "@composer post-test"
+        ],
+        "single-test": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php artisan migrate:fresh --env=testing",
+            "@php artisan db:seed --env=testing",
+            "@php artisan view:clear",
+            "@php artisan test",
+            "@composer post-test"
+        ],
+        "test-only": [
+            "Composer\\Config::disableProcessTimeout",
+            "@php artisan migrate:fresh --env=testing",
+            "@php artisan db:seed --env=testing",
+            "@php artisan view:clear",
+            "@php artisan test --parallel --recreate-databases --processes=4",
+            "@composer post-test"
+        ],
+        "test-local": [
+            "Composer\\Config::disableProcessTimeout",
+            "./vendor/bin/sail up -d",
+            "./vendor/bin/sail composer test-para"
+        ],
+        "validate-commit": [
+            "echo committing as $(git config user.name)",
+            "echo $PATH",
+            "echo $(/bin/bash sail php -v)",
+            "@composer test-local",
+            "./vendor/bin/php-cs-fixer fix --config=./.php-cs-fixer.php --dry-run --stop-on-violation",
+            "git status"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": [
+                "laravel/telescope"
+            ]
+        },
+        "hooks": {
+            "pre-commit": [
+                "composer validate-commit"
+            ]
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "composer/package-versions-deprecated": true,
+            "php-http/discovery": true
+        },
+        "process-timeout": 900
+    },
+    "minimum-stability": "beta",
+    "prefer-stable": true
+}

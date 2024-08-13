@@ -1,0 +1,28 @@
+<?php
+
+namespace App\Enums\Collaborators;
+
+enum AuditActionType: int
+{
+    // case SUMMARY_UPDATED = 1;
+    case SUMMARY_DELETED = 2;
+    case WORK_CREATED = 15;
+    case WORK_UPDATED = 16;
+    case WORK_DELETED = 17;
+    case LEGAL_DOMAIN_ATTACHED = 18;
+    case LEGAL_DOMAIN_DETACHED = 19;
+    case LOCATION_ATTACHED = 20;
+    case LOCATION_DETACHED = 21;
+    // case TAG_ATTACHED = 22;
+    // case TAG_DETACHED = 23;
+    case WORK_EXPRESSION_CREATED = 27;
+    case WORK_EXPRESSION_UPDATED = 28;
+    case WORK_EXPRESSION_DELETED = 29;
+    case WORK_EXPRESSION_ACTIVATED = 30;
+    case ASSESSMENT_ITEM_ATTACHED = 32;
+    case ASSESSMENT_ITEM_DETACHED = 33;
+    case CONTEXT_QUESTION_ATTACHED = 34;
+    case CONTEXT_QUESTION_DETACHED = 35;
+    case CATEGORY_ATTACHED = 36;
+    case CATEGORY_DETACHED = 37;
+}

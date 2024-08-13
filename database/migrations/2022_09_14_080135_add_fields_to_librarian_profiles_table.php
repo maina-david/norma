@@ -1,0 +1,32 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class() extends Migration {
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('librarian_profiles', function (Blueprint $table) {
+            $table->unsignedInteger('visa_hours')->nullable()->after('restricted_visa');
+            $table->unsignedInteger('visa_available_hours')->nullable()->after('visa_hours');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('librarian_profiles', function (Blueprint $table) {
+            $table->dropColumn(['visa_hours', 'visa_available_hours']);
+        });
+    }
+};

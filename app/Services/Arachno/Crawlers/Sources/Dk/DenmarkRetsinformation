@@ -1,0 +1,237 @@
+<?php
+
+namespace App\Services\Arachno\Crawlers\Sources\Nl;
+
+use App\Enums\Arachno\CrawlType;
+use App\Enums\Arachno\Parse\DomQuerySource;
+use App\Enums\Arachno\Parse\DomQueryType;
+use App\Models\Corpus\CatalogueDoc;
+use App\Services\Arachno\Crawlers\AbstractCrawlerConfig;
+use App\Services\Arachno\Frontier\PageCrawl;
+use App\Services\Arachno\Parse\DomQuery;
+use DOMElement;
+use Illuminate\Support\Str;
+
+/**
+ * NB! This is still the old way of doing it... needs to be updated.
+ *
+ * slug: dk-retsinformation
+ * title: Denmark Retsinformation
+ * url: https://www.retsinformation.dk/.
+ */
+class DenmarkRetsinformation extends AbstractCrawlerConfig
+{
+    /**
+     * @param PageCrawl $pageCrawl
+     *
+     * @return void
+     */
+    public function parsePage(PageCrawl $pageCrawl): void
+    {
+        $this->catalogueLinks($pageCrawl);
+    }
+
+    /**
+     * @param PageCrawl $pageCrawl
+     *
+     * @return void
+     */
+    protected function catalogueLinks(PageCrawl $pageCrawl)
+    {
+        $query = new DomQuery([
+            'type' => DomQueryType::REGEX,
+            'query' => '/retsinformation\.dk\/documents/',
+            'source' => DomQuerySource::URL,
+        ]);
+        // if ($this->arachno->match($pageCrawl, $query)) {
+        //     // code...
+        // }
+    }
+
+    /**
+     * The config that is implemented by the crawler.
+     *
+     * @return array<string, mixed>
+     */
+    public function getCrawlerSettings(): array
+    {
+        return [
+            'slug' => 'dk-retsinformation',
+            'throttle_requests' => 300,
+            'start_urls' => [
+                'type_' . CrawlType::FULL_CATALOGUE->value => [
+                    [
+                        'url' => 'https://www.retsinformation.dk/documents?h=false&o=40&ps=100&r=180',
+                    ],
+                ],
+            ],
+            'follow_links_queries' => [
+                [
+                    'should_run_query' => [
+                        'type' => DomQueryType::REGEX,
+                        'query' => '/retsinformation\.dk\/documents/',
+                        'source' => DomQuerySource::URL,
+                    ],
+                    'links_queries' => [
+                        // [
+                        //     // e.g. https://wetten.overheid.nl/zoeken/zoekresultaat/rs/2,3,4,5,6,9/titelf/1/tekstf/1/d/12-05-2022/dx/0/page/1/count/200/s/2
+                        //     'type' => DomQueryType::CSS,
+                        //     'query' => '.result--list a.result--title',
+                        // ],
+                        [
+                            'type' => DomQueryType::CSS,
+                            'query' => '.pagination__index .next a',
+                        ],
+                    ],
+                ],
+            ],
+            'catalogue_links_queries' => [
+                [
+                    'should_run_query' => [
+                        'type' => DomQueryType::REGEX,
+                        'query' => '/zoekresultaat/',
+                        'source' => DomQuerySource::URL,
+                    ],
+                    'crawler-slug' => 'nl-wetten-overheid',
+                    'parse' => function (PageCrawl $pageCrawl) {
+                        // @codeCoverageIgnoreStart
+                        $domCrawler = $pageCrawl->domCrawler;
+                        $links = [];
+                        foreach ($domCrawler->filter('.result--list a.result--title') as $anchor) {
+                            /** @var DOMElement $anchor */
+                            $href = $anchor->getAttribute('href');
+                            // e.g. /id/BWBR0021409/2007-03-09/0?g=2023-01-03&z=2023-01-03
+                            $id = Str::of($href)->match('/\/id\/([a-zA-Z0-9]+)\//');
+
+                            $links[] = new CatalogueDoc([
+                                'title' => trim($anchor->textContent),
+                                'start_url' => 'https://wetten.overheid.nl/' . $id,
+                                'view_url' => 'https://wetten.overheid.nl/' . $id,
+                                'source_unique_id' => (string) $id,
+                            ]);
+                        }
+
+                        return $links;
+                    // @codeCoverageIgnoreEnd
+                    },
+                ],
+            ],
+            'is_meta_page_query' => [
+                // e.g. https://wetten.overheid.nl/BWBR0041233/2019-07-01/0
+                'type' => DomQueryType::CSS,
+                'query' => '#regeling',
+            ],
+            'meta_unique_id_query' => [
+                'type' => DomQueryType::XPATH,
+                'query' => '//head//meta[@name="dcterms:identifier"]/@content',
+            ],
+            'meta_title_query' => [
+                'type' => DomQueryType::XPATH,
+                'query' => '//head//meta[@name="dcterms:title"]/@content',
+            ],
+            'meta_primary_location_query' => [
+                'type' => DomQueryType::TEXT,
+                'query' => 'nl',
+            ],
+            'meta_work_date_query' => [
+                'type' => DomQueryType::FUNC,
+                'query' => function (PageCrawl $pageCrawl) {
+                    // @codeCoverageIgnoreStart
+                    $url = $pageCrawl->getFinalRedirectedUrl();
+
+                    return Str::afterLast(Str::beforeLast($url, '/'), '/');
+                // @codeCoverageIgnoreEnd
+                },
+            ],
+            'meta_work_type_query' => [
+                'type' => DomQueryType::FUNC,
+                'query' => function (PageCrawl $pageCrawl) {
+                    // @codeCoverageIgnoreStart
+                    $domCrawler = $pageCrawl->domCrawler;
+                    $typeDutch = $domCrawler->filterXPath('//head//meta[@name="dcterms:type"]/@content')->getNode(0)?->textContent;
+
+                    return match ($typeDutch) {
+                        'wet' => 'act',
+                        'reglement' => 'regulation',
+                        'beleidsregel' => 'rule',
+                        'circulaire' => 'notice',
+                        default => 'act',
+                    };
+                // @codeCoverageIgnoreEnd
+                },
+            ],
+            'meta_summary_query' => [
+                'type' => DomQueryType::CSS,
+                'query' => '#Opschrift',
+            ],
+            'meta_work_number_query' => [
+                'type' => DomQueryType::XPATH,
+                'query' => '//head//meta[@name="dcterms:identifier"]/@content',
+            ],
+            'is_toc_page_query' => [
+                'type' => DomQueryType::CSS,
+                'query' => '#regeling',
+            ],
+            'toc_query' => [
+                'type' => DomQueryType::CSS,
+                'query' => '#sidebar #treeview-',
+            ],
+            'toc_item_extract_link' => function ($nodeDTO) {
+                // @codeCoverageIgnoreStart
+                $id = $nodeDTO['node']->getAttribute('id');
+
+                return '#' . Str::replace('TOC_', '', $id);
+            // @codeCoverageIgnoreEnd
+            },
+            'toc_item_extract_label' => function ($nodeDTO) {
+                // @codeCoverageIgnoreStart
+                $n = $nodeDTO['node'];
+                $inlines = [];
+                foreach ($n->childNodes as $child) {
+                    if ($child instanceof DOMElement && ($child->nodeName === 'button' || $child->nodeName === 'span')) {
+                        continue;
+                    }
+                    $inlines[] = $child->textContent;
+                }
+
+                return preg_replace('/\s+/', ' ', implode(' ', $inlines));
+            // @codeCoverageIgnoreEnd
+            },
+            'toc_item_extract_unique_id' => function ($nodeDTO) {
+                // @codeCoverageIgnoreStart
+                return $nodeDTO['node']?->getAttribute('id');
+            // @codeCoverageIgnoreEnd
+            },
+            'capture_queries' => [
+                [
+                    'is_capture_page_query' => [
+                        'type' => DomQueryType::CSS,
+                        'query' => '#regeling',
+                    ],
+                    'capture_head_queries' => [
+                        [
+                            'type' => DomQueryType::XPATH,
+                            'query' => '//head//link[contains(@href,"generic") and @rel="stylesheet"]',
+                        ],
+                        [
+                            'type' => DomQueryType::XPATH,
+                            'query' => '//head//link[contains(@href,"wetten") and @rel="stylesheet"]',
+                        ],
+                    ],
+                    'capture_body_queries' => [
+                        [
+                            'type' => DomQueryType::CSS,
+                            'query' => '#regeling',
+                        ],
+                    ],
+                    'capture_remove_queries' => [
+                        [
+                            'type' => DomQueryType::CSS,
+                            'query' => '.article__header--law ul',
+                        ],
+                    ],
+                ],
+            ],
+        ];
+    }
+}

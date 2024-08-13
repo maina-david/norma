@@ -1,0 +1,148 @@
+include:
+  - template: Jobs/SAST.gitlab-ci.yml
+
+variables:
+  MYSQL_DATABASE: homestead
+  MYSQL_ROOT_PASSWORD: secret
+  DB_DATABASE: homestead
+  DB_PASSWORD: secret
+  DB_HOST: mysql
+  DB_USERNAME: root
+  REDIS_HOST: redis
+  REDIS_PORT: 6379
+  NVM_DIR: "/var/www/nvm"
+
+stages:
+  - test
+  - build
+
+var_dump_checker:
+  stage: test
+  interruptible: true
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+  image: libryodev/phpbase:8.2-slim
+  before_script:
+    - php -v
+  script:
+    - mkdir -p ~/.ssh
+    - which ssh-agent
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$LIBRYO_REPOS_KEY")
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - openssl genrsa -out storage/oauth-private.key 4096
+    - openssl rsa -in storage/oauth-private.key -pubout > storage/oauth-public.key
+    - cp .env.testing.example .env
+    - composer install
+    - php artisan key:generate
+    - cp .env .env.testing
+    - cp -f .env.dusk.testing.example .env.dusk.testing
+    - composer check-dump
+
+php_cs_fixer:
+  stage: test
+  interruptible: true
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+  image: libryodev/phpbase:8.2-slim
+  before_script:
+    - php -v
+  script:
+    - mkdir -p ~/.ssh
+    - which ssh-agent
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$LIBRYO_REPOS_KEY")
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - openssl genrsa -out storage/oauth-private.key 4096
+    - openssl rsa -in storage/oauth-private.key -pubout > storage/oauth-public.key
+    - cp .env.testing.example .env
+    - composer install
+    - php artisan key:generate
+    - cp .env .env.testing
+    - cp -f .env.dusk.testing.example .env.dusk.testing
+    - composer phpfix
+
+php_stan:
+  stage: test
+  interruptible: true
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+  image: libryodev/phpbase:8.2-slim
+  services:
+    - name: mysql:8
+      alias: mysql
+  before_script:
+    - php -v
+  script:
+    - mkdir -p ~/.ssh
+    - which ssh-agent
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$LIBRYO_REPOS_KEY")
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - openssl genrsa -out storage/oauth-private.key 4096
+    - openssl rsa -in storage/oauth-private.key -pubout > storage/oauth-public.key
+    - cp .env.testing.example .env
+    - composer install
+    - php artisan key:generate
+    - cp .env .env.testing
+    - cp -f .env.dusk.testing.example .env.dusk.testing
+    - php artisan migrate:fresh --env=testing
+    - composer ide-helper
+    - composer stan
+
+unit_test:
+  stage: test
+  tags:
+    - saas-linux-medium-amd64
+  interruptible: true
+  rules:
+    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
+  image: libryodev/phpbase:8.2-slim
+  services:
+    - name: mysql:8
+      alias: mysql
+  before_script:
+    - php -v
+  script:
+    - mkdir -p ~/.ssh
+    - which ssh-agent
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$LIBRYO_REPOS_KEY")
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+    - openssl genrsa -out storage/oauth-private.key 4096
+    - openssl rsa -in storage/oauth-private.key -pubout > storage/oauth-public.key
+    - cp .env.testing.example .env
+    - composer install
+    - php artisan key:generate
+    - cp .env .env.testing
+    - cp -f .env.dusk.testing.example .env.dusk.testing
+    - composer test-only
+    - php artisan route:cache
+    - php artisan config:cache
+
+
+build_staging:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  before_script:
+    - apk add --update --no-cache curl jq aws-cli
+  tags:
+    - saas-linux-medium-amd64
+  interruptible: true
+  script:
+    - echo "$STAGING_ENV" > .env
+    - echo "$LIBRYO_REPOS_KEY" > .ssh-key
+    - aws ecr get-login-password --region "$AWS_REGION" | docker login --username AWS --password-stdin "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+    - docker build -t $ECR_STAGING_URI -f build/Dockerfile .
+    - docker push $ECR_STAGING_URI
+    - docker image rm $ECR_STAGING_URI
+    - rm .ssh-key .env /root/.docker/config.json
+  environment:
+    name: staging
+    url: https://my.libryo.net
+  only:
+    - master@libryo/monolith
+
+

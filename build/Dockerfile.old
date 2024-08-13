@@ -1,0 +1,50 @@
+# syntax=docker/dockerfile:1
+
+FROM php:8.2-apache
+
+ENV DEBIAN_FRONTEND noninteractive
+ENV TZ=UTC
+
+WORKDIR /var/www/html
+
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+RUN apt-get update && apt-get install --no-install-recommends -y \
+		libfreetype-dev \
+		libjpeg62-turbo-dev \
+		libpng-dev \
+        git \
+        curl \
+        unzip \
+        libzip-dev \
+        libxslt1-dev \
+        libmagickwand-dev \
+        wkhtmltopdf \
+	&& docker-php-ext-configure gd --with-freetype --with-jpeg \
+	&& docker-php-ext-install -j$(nproc) bcmath gd opcache pcntl pdo_mysql sockets zip xsl ftp  \
+    && pecl install redis imagick \
+    && docker-php-ext-enable redis \
+    && docker-php-ext-enable imagick \
+    && curl -fsSL https://deb.nodesource.com/setup_20.x -o nodesource_setup.sh \
+    && bash nodesource_setup.sh \
+    && apt-get install -y nodejs \
+    && npm -g i npm yarn \
+    && apt-get -y autoremove \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+COPY ./docker/current/php.ini "$PHP_INI_DIR/php.ini"
+COPY . /var/www/html
+
+RUN chown -R www-data:www-data /var/www/html
+
+USER www-data
+
+RUN yarn install  \
+    && yarn prod  \
+    && rm -rf node_modules \
+    && composer install
+
+EXPOSE 80
+
+CMD ["apache2-foreground"]

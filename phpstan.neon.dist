@@ -1,0 +1,19 @@
+includes:
+    - ./vendor/larastan/larastan/extension.neon
+parameters:
+    level: 8
+    paths:
+        - app/
+    scanFiles:
+        - _ide_helper_models.php
+    ignoreErrors:
+        - identifier: missingType.generics
+        - '#.*Call to an undefined method Illuminate\\.*.*#'
+#        - '#.*Call to an undefined method .*Illuminate\\Database\\Eloquent\\Builder.*.*#'
+#        - '#.*Call to an undefined method .*isForTurboFrame\(\).*.*#'
+#        - '#PHPDoc tag @mixin contains unknown class Eloquent#'
+        - '#Unable to resolve the template type TKey in call to function collect#'
+        - '#Unable to resolve the template type TValue in call to function collect#'
+        - '#Dead catch - Carbon\\Exceptions\\InvalidFormatException is never thrown in the try block#'
+    earlyTerminatingFunctionCalls:
+        - abort

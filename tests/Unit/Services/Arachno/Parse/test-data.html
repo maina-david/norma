@@ -1,0 +1,56 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <title>A document title</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="screen" />
+    <meta xmlns="http://www.w3.org/1999/xhtml" name="DC.type" scheme="DCTERMS.DCMIType" content="Verordnung" />
+    <meta name="work.number" content="123" />
+    <meta name="summary" content="A summary of the doc" />
+    <meta name="publication.number" content="987" />
+    <meta name="publication.document.number" content="567" />
+    <meta name="work.date" content="24th of July, 2021" />
+    <meta name="work.effective_date" content="August 8, 2021" />
+    <meta name="keyword" content="Hello" />
+    <meta name="keyword" content="World" />
+    <style>
+        .test-style {
+            margin: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="title">
+        <H1>Document Title</H1>
+        <h2>Document Sub-Title</h2>
+    </div>
+    <div id="toc">
+        <ul>
+            <li><a href="./rav_9/index.html">Part 1. A relative link to another document</a></li>
+            <li><a href="./kovanpg_9/index.html">Part 2. A relative link to a document</a>
+                <ul>
+                    <li><a href="./test.html">Chapter 1. Deeper nested ToC Item</a></li>
+                    <li>
+                        <a href="./test2.html">Chapter 2. Deeper nested ToC Item</a>
+                        <ul>
+                            <li><a href="./test3.html#1with.invalid.fragment">Section 5. Even Deeper nested ToC Item</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li></li>
+        </ul>
+    </div>
+    <div id="content">
+        <img src="test.jpg" />
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="
+            alt="Red dot" />
+        <div id="123invalid.id">Some text</div>
+    </div>
+</body>
+
+</html>

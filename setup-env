@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+
+set -e
+
+function upgrade() {
+    docker compose down -v
+    ./vendor/bin/sail build --no-cache --progress=plain
+    sleep 3
+    ./vendor/bin/sail up -d
+    sleep 5
+}
+
+
+function install() {
+    mv .env .env.backup
+    cp .env.testing.example .env
+
+    sed -i~ '/^DB_CONNECTION=/s/=.*/=mysql/' .env
+    sed -i~ '/^DB_HOST=/s/=.*/=mysql/' .env
+    sed -i~ '/^DB_PORT=/s/=.*/=3306/' .env
+    sed -i~ '/^DB_DATABASE=/s/=.*/=testing/' .env
+    sed -i~ '/^DB_USERNAME=/s/=.*/=homestead/' .env
+    sed -i~ '/^DB_PASSWORD=/s/=.*/=secret/' .env
+    sed -i~ '/^REDIS_HOST=/s/=.*/=redis/' .env
+    sed -i~ '/^REDIS_PORT=/s/=.*/=6379/' .env
+
+    upgrade
+
+    mv .env .env.testing
+    mv .env.backup .env
+
+    setup_mailpit
+    setup_minio
+
+    rm '.env~'
+
+    test
+}
+
+function setup_mailpit() {
+    sed -i~ '/^MAIL_MAILER=/s/=.*/=smtp/' .env
+    sed -i~ '/^MAIL_HOST=/s/=.*/=localhost/' .env
+    sed -i~ '/^MAIL_PORT=/s/=.*/=10250/' .env
+    sed -i~ '/^MAIL_USERNAME=/s/=.*/=null/' .env
+    sed -i~ '/^MAIL_PASSWORD=/s/=.*/=null/' .env
+    sed -i~ '/^MAIL_ENCRYPTION=/s/=.*/=null/' .env
+
+    rm '.env~'
+}
+
+function setup_minio() {
+    sed -i~ '/^FILESYSTEM_DISK=/s/=.*/=s3/' .env
+    sed -i~ '/^FILESYSTEM_CONTENT_DISK=/s/=.*/=s3/' .env
+    sed -i~ '/^AWS_ACCESS_KEY_ID=/s/=.*/=sail/' .env
+    sed -i~ '/^AWS_SECRET_ACCESS_KEY=/s/=.*/=password/' .env
+    sed -i~ '/^AWS_DEFAULT_REGION=/s/=.*/=us-east-1/' .env
+    sed -i~ '/^AWS_BUCKET=/s/=.*/=libryo/' .env
+    sed -i~ '/^AWS_USE_PATH_STYLE_ENDPOINT=/s/=.*/=true\nAWS_ENDPOINT=http:\/\/localhost:9000/' .env
+
+    rm '.env~'
+}
+
+function test() {
+    ./vendor/bin/sail artisan migrate --env=testing
+
+    echo "Done!"
+}
+
+if [ "$#" -eq 0 ]; then
+    echo "Installing the testing environment."
+    install
+fi
+
+if [ "$1" == '-u' ]; then
+    echo "Updating the testing environment."
+    upgrade
+    test
+fi
+
+if [ "$1" == '--minio' ]; then
+    echo "Updating .env for minio usage."
+    setup_minio
+    echo "Done! Please login to the minio console and create the libryo bucket."
+fi
+
+if [ "$1" == '--mailpit' ]; then
+    echo "Updating .env for mailpit usage."
+    setup_mailpit
+    echo "Done!"
+fi

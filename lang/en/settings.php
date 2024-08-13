@@ -1,0 +1,36 @@
+<?php
+
+return [
+    'nav' => [
+        'actions' => 'Actions',
+        'applicability' => 'Applicability',
+        'assess_setup' => 'Assess Setup',
+        'assess' => [
+            'used_assessment_items_report' => 'Used Assessment Items Report',
+            'unused_assessment_items_report' => 'Unused Assessment Items Report',
+        ],
+        'back_to_libryo' => 'Back to Libryo',
+        'child_organisations' => 'Child Organisations',
+        'collections' => 'Collections',
+        'compilation' => 'Compilation',
+        'dashboard' => 'Dashboard',
+        'drives' => 'Drives',
+        'generic_compilation' => 'Generic Compilation',
+        'generic_decompilation' => 'Generic Decompilation',
+        'info' => 'Info',
+        'legal_domains' => 'Legal Domains',
+        'legal_updates' => 'Legal Updates',
+        'libraries' => 'Libraries',
+        'libryo_streams' => 'Libryo Streams',
+        'modules' => 'Modules',
+        'org_settings' => 'Org Settings',
+        'organisations' => 'Organisations',
+        'requirements' => 'Requirements',
+        'settings' => 'Settings',
+        'sso' => 'SSO',
+        'status' => 'Status',
+        'teams' => 'Teams',
+        'users' => 'Users',
+        'welcome_back' => 'Welcome back, :name',
+    ],
+];
