@@ -1,20 +1,20 @@
 <?php
 
 use App\Enums\Auth\LifecycleStage;
-use App\Enums\System\LibryoModule;
+use App\Enums\System\NormaModule;
 use App\Enums\Tasks\TaskActivityType;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 
 return [
-    'website_address' => 'https://libryo.com',
+    'website_address' => 'https://norma.com',
     'emails' => [
-        'libryo_deactivated' => [
-            'mariette.steenkamp@libryo.com',
-            'michelle.mandy@libryo.com',
-            'emily@libryo.com',
-            'astrid.coombes@libryo.com',
+        'norma_deactivated' => [
+            'mariette.steenkamp@norma.com',
+            'michelle.mandy@norma.com',
+            'emily@norma.com',
+            'astrid.coombes@norma.com',
         ],
     ],
 
@@ -33,7 +33,7 @@ return [
                 'all_legal_domains' => true,
                 'notification_legal_domains' => [],
                 'dismissed_notifications' => [],
-                'active_libryo' => null,
+                'active_norma' => null,
                 'email_comment_mention' => true,
                 'email_comment_reply' => true,
                 'email_reminder' => true,
@@ -134,16 +134,16 @@ return [
             ],
             'guarded' => [],
         ],
-        Libryo::class => [
+        Norma::class => [
             'defaults' => [
                 'modules' => [
-                    LibryoModule::actions()->value => false,
-                    LibryoModule::comply()->value => false,
-                    LibryoModule::tasks()->value => true,
-                    LibryoModule::update_emails()->value => true,
-                    LibryoModule::search_requirements_and_drives()->value => true,
-                    LibryoModule::keyword_search()->value => false,
-                    LibryoModule::drives()->value => true,
+                    NormaModule::actions()->value => false,
+                    NormaModule::comply()->value => false,
+                    NormaModule::tasks()->value => true,
+                    NormaModule::update_emails()->value => true,
+                    NormaModule::search_requirements_and_drives()->value => true,
+                    NormaModule::keyword_search()->value => false,
+                    NormaModule::drives()->value => true,
                     'hide_applicability' => false,
                 ],
             ],
@@ -155,7 +155,7 @@ return [
                 'storage_allocation' => 5,
                 'authorized_domains' => [],
                 'modules' => [
-                    LibryoModule::actions()->value => false,
+                    NormaModule::actions()->value => false,
                     'comply' => false,
                     'tasks' => true,
                     'live_chat' => true,

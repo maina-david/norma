@@ -411,7 +411,7 @@ return [
         'subsidiary_documents' => 'Subsidiary Documents',
         'summary_of_highlights' => 'Summary of Highlights',
         'successfully_detached' => 'Successfully detatched.',
-        'switch_to_single_stream' => 'Switch to single stream mode to see a legal register for a specific Libryo Stream',
+        'switch_to_single_stream' => 'Switch to single stream mode to see a legal register for a specific Norma Stream',
         'title' => 'Title',
         'title_translation' => 'English translation of the title (if not English)',
         'type' => 'Type',

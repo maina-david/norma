@@ -8,6 +8,6 @@ return [
      */
 
     'enabled' => env('HIGHLIGHTER_ENABLED', true),
-    'end_point' => env('HIGHLIGHTER_API_ENDPOINT', 'https://highlighting.libryo.rocks'),
+    'end_point' => env('HIGHLIGHTER_API_ENDPOINT', 'https://highlighting.norma.rocks'),
     'guzzle_verify_ssl' => env('GUZZLE_VERIFY_SSL', true),
 ];

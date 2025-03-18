@@ -101,7 +101,7 @@ return [
     | Job Statuses
     |--------------------------------------------------------------------------
     |
-    | Libryo custom job status and progress tracker
+    | Norma custom job status and progress tracker
     |
     */
 

@@ -22,7 +22,7 @@ return [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-west-1'),
-        'libryo_app_security_group' => 'sg-a3b4acda',
+        'norma_app_security_group' => 'sg-a3b4acda',
         'subnets' => ['subnet-0eb4e956', 'subnet-9c0716ea', 'subnet-c27767a6'],
         'ecs' => [
             'ocr_my_pdf_task_definition_arn' => 'arn:aws:ecs:eu-west-1:392419968532:task-definition/ocrmypdf:1',
@@ -31,7 +31,7 @@ return [
 
     'fabric' => [
         'enabled' => env('FABRIC_ENABLED', true),
-        'end_point' => env('FABRIC_API_ENDPOINT', 'http://fabric.libryo.rocks:4500'),
+        'end_point' => env('FABRIC_API_ENDPOINT', 'http://fabric.norma.rocks:4500'),
         'guzzle_verify_ssl' => env('GUZZLE_VERIFY_SSL', true),
     ],
 
@@ -76,18 +76,18 @@ return [
 
     'laconic' => [
         'enabled' => env('LACONIC_ENABLED', true),
-        'end_point' => env('LACONIC_API_ENDPOINT', 'https://laconic.libryo.rocks'),
+        'end_point' => env('LACONIC_API_ENDPOINT', 'https://laconic.norma.rocks'),
         'guzzle_verify_ssl' => env('GUZZLE_VERIFY_SSL', true),
     ],
 
-    'libryo_ai' => [
-        'enabled' => env('LIBRYO_AI_ENABLED', false),
-        'host' => env('LIBRYO_AI_HOST', 'https://ai.libryo.rocks'),
+    'norma_ai' => [
+        'enabled' => env('NORMA_AI_ENABLED', false),
+        'host' => env('NORMA_AI_HOST', 'https://ai.norma.rocks'),
     ],
 
     'magi' => [
         'enabled' => env('MAGI_ENABLED', false),
-        'endpoint' => env('MAGI_ENDPOINT', 'http://magi.libryo.rocks:7000'),
+        'endpoint' => env('MAGI_ENDPOINT', 'http://magi.norma.rocks:7000'),
     ],
 
     'mailgun' => [
@@ -137,8 +137,8 @@ return [
         'cleanchain' => [
             'provider' => CleanChainProvider::class,
             'authorize_url' => env('CLEANCHAIN_AUTHORIZE_URL', 'https://www.my-aip.com/OAuth2/Login.aspx'),
-            'token_url' => env('CLEANCHAIN_TOKEN_URL', 'https://www.my-aip.com/OAuth2/rest/libryo/onAfterAuth'),
-            'user_url' => env('CLEANCHAIN_USER_URL', 'https://www.my-aip.com/OAuth2/rest/libryo/user'),
+            'token_url' => env('CLEANCHAIN_TOKEN_URL', 'https://www.my-aip.com/OAuth2/rest/norma/onAfterAuth'),
+            'user_url' => env('CLEANCHAIN_USER_URL', 'https://www.my-aip.com/OAuth2/rest/norma/user'),
             'client_id' => env('CLEANCHAIN_CLIENT_ID', 'e2b5d0503ab2d8bab6b5'),
             'client_secret' => env('CLEANCHAIN_CLIENT_SECRET', 'b2df19070fa5374bf8fc7b7f9b33a43e0f6f35ee445f59780ccd12e503fe'),
             // 'redirect' => env('CLEANCHAIN_CALLBACK', 'https://www.my-aip.com/OAuth2/OnAfterLogin.aspx?ClientId=e2b5d0503ab2d8bab6b5&ClientSecret=b2df19070fa5374bf8fc7b7f9b33a43e0f6f35ee445f59780ccd12e503fe'),
@@ -146,9 +146,9 @@ return [
         ],
         'passport360' => [
             'provider' => Passport360Provider::class,
-            'authorize_url' => env('PASSPORT360_AUTHORIZE_URL', 'https://staging.passport360.com/libryo/login'),
-            'token_url' => env('PASSPORT360_TOKEN_URL', 'https://staging.passport360.com/api/libryo/accesstoken'),
-            'user_url' => env('PASSPORT360_USER_URL', 'https://staging.passport360.com/api/libryo/userinfo'),
+            'authorize_url' => env('PASSPORT360_AUTHORIZE_URL', 'https://staging.passport360.com/norma/login'),
+            'token_url' => env('PASSPORT360_TOKEN_URL', 'https://staging.passport360.com/api/norma/accesstoken'),
+            'user_url' => env('PASSPORT360_USER_URL', 'https://staging.passport360.com/api/norma/userinfo'),
             'client_id' => env('PASSPORT360_CLIENT_ID', ''),
             'client_secret' => env('PASSPORT360_CLIENT_SECRET', ''),
             'partner_id' => env('PASSPORT360_PARTNER_ID', 28),
@@ -202,7 +202,7 @@ return [
         // 'profile-id' => env('TRANSFERWISE_PROFILE_ID'),
         // 'token_cache_key' => 'transferwise_api_token',
         // 'source_currency' => 'GBP',
-        // 'turk_payment_reference' => 'Libryo Collaborate Payment',
+        // 'turk_payment_reference' => 'Norma Collaborate Payment',
     ],
 
     'wachete' => [

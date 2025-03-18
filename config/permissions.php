@@ -27,7 +27,7 @@ use App\Models\Corpus\Reference;
 use App\Models\Corpus\ReferenceContentExtract;
 use App\Models\Corpus\Work;
 use App\Models\Corpus\WorkExpression;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Geonames\Location;
 use App\Models\Lookups\CannedResponse;
@@ -340,7 +340,7 @@ return [
         'crud' => [
             LegalUpdate::class,
             Library::class,
-            Libryo::class,
+            Norma::class,
             Organisation::class,
             User::class,
         ],
@@ -356,9 +356,9 @@ return [
         */
 
         'plain' => [
-            'libryos.compilation.requirements-collections.create',
-            'libryos.compilation.requirements-collections.delete',
-            'libryos.compilation.requirements-collections.index',
+            'normas.compilation.requirements-collections.create',
+            'normas.compilation.requirements-collections.delete',
+            'normas.compilation.requirements-collections.index',
             'storage.folder.global.manage',
             'storage.file.global.manage',
             'settings.customer.organisation.manage',

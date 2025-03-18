@@ -49,7 +49,7 @@
         "filepond-plugin-file-validate-type": "^1.2.9",
         "flatpickr": "^4.6.13",
         "izitoast": "^1.4.0",
-        "legal-doc-html": "git+ssh://git@gitlab.com:libryo/legal-doc-html.git",
+        "legal-doc-html": "git+ssh://git@gitlab.com:norma/legal-doc-html.git",
         "mitt": "^3.0.0",
         "rrule": "^2.8.1",
         "sass": "^1.52.3",

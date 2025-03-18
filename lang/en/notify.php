@@ -9,7 +9,7 @@ return [
         'automated_highlights' => 'Automated Highlights',
         'automated_summary_of_highlights' => 'Automated Summary of highlights',
         'before' => 'Before',
-        'changes_to_platform' => 'Changes to your Libryo Stream(s)',
+        'changes_to_platform' => 'Changes to your Norma Stream(s)',
         'changes_to_requirements' => 'Changes To Requirements',
         'comments' => 'Comments',
         'create_title' => 'Create Legal Update',
@@ -44,7 +44,7 @@ return [
         'next_unread' => 'Next Unread',
         'not_applicable' => 'Not Applicable',
         'not_applicable_confirmation' => 'Are you sure you want to mark the legal update as not applicable?',
-        'not_applicable_info' => 'Please note that this notification was sent to you in error and is no longer available. Please <a class="underline" href="mailto:info@libryo.com"> reach out </a> to our Customer Success team should you have any questions.',
+        'not_applicable_info' => 'Please note that this notification was sent to you in error and is no longer available. Please <a class="underline" href="mailto:info@norma.com"> reach out </a> to our Customer Success team should you have any questions.',
         'notice_number' => 'Notice Number',
         'notified_about' => 'Notified About',
         'notify_about' => 'Notify About',
@@ -123,7 +123,7 @@ return [
     ],
     'reminder' => [
         'click_full_message' => 'Click the button below to view the full message.',
-        'click_view_in_app' => 'Click the button below to view the notification on the Libryo Platform.',
+        'click_view_in_app' => 'Click the button below to view the notification on the Norma Platform.',
         'create_reminder' => 'Create Reminder',
         'me' => 'Me',
         'no_reminders_added' => 'No reminders added yet',
@@ -141,9 +141,9 @@ return [
         'view_reminder' => 'View reminder',
         'you_set_reminder' => 'You set a reminder to go off today.',
     ],
-    'libryo_stream_deactivated' => [
+    'norma_stream_deactivated' => [
         'subject' => 'Deactivation Notice for :stream',
-        'info' => 'Please note that the Libryo Stream <a target="_top" class="text-primary underline" href=":route">:stream</a> has been set to Deactivated. The Libryo Stream has the following attached:',
+        'info' => 'Please note that the Norma Stream <a target="_top" class="text-primary underline" href=":route">:stream</a> has been set to Deactivated. The Norma Stream has the following attached:',
         'footer' => 'Please reach out to Customer Success should you have any questions.',
     ],
 ];

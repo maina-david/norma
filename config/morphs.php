@@ -4,7 +4,7 @@ return [
     'commentable' => [
         'url_to_morph' => [
             'assessment-item-response' => 'assessment_item_response',
-            'libryo' => 'place',
+            'norma' => 'place',
             'reference' => 'register_item',
             'update' => 'register_notification',
         ],
@@ -18,7 +18,7 @@ return [
         'url_to_morph' => [
             'assessment-item-response' => 'assessment_item_response',
             'context-question' => 'context_question',
-            'libryo' => 'place',
+            'norma' => 'place',
             'reference' => 'register_item',
             'update' => 'register_notification',
         ],

@@ -27,10 +27,10 @@ return [
         'view_payment' => 'View Payment Details',
     ],
     'mail' => [
-        'thanks_for_completing_tasks' => 'Thanks for completing tasks on Libryo Collaborate this month, and for helping Libryo make law more accessible.',
-        'give_feedback' => 'Lastly, please take a few minutes to <a href=":url">give us your feedback</a> about the Libryo Collaborate programme. This will help us to learn and continually improve your user experience.',
+        'thanks_for_completing_tasks' => 'Thanks for completing tasks on Norma Collaborate this month, and for helping Norma make law more accessible.',
+        'give_feedback' => 'Lastly, please take a few minutes to <a href=":url">give us your feedback</a> about the Norma Collaborate programme. This will help us to learn and continually improve your user experience.',
         'many_thanks' => 'Many thanks',
-        'view_detailed_breakdown' => 'To view a detailed breakdown of your payment, log in to Libryo Collaborate, click on your name (top right) and then choose Billing from the dropdown. Please also find your paid invoice attached. Payment will be made on or about the 5th of the following month.',
+        'view_detailed_breakdown' => 'To view a detailed breakdown of your payment, log in to Norma Collaborate, click on your name (top right) and then choose Billing from the dropdown. Please also find your paid invoice attached. Payment will be made on or about the 5th of the following month.',
         'view_task_ratings' => 'You can view task ratings and comments from your profile. Remember, the best way to improve is to click into the task and view the edited work.',
     ],
 ];

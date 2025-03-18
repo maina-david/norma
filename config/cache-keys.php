@@ -7,14 +7,14 @@ return [
         | Cache time
         |--------------------------------------------------------------------------
         |
-        | How many seconds to keep compiled libryo cache's - 25 minutes
+        | How many seconds to keep compiled norma cache's - 25 minutes
         */
 
-        'cache_key_prefix' => 'libryo_compilation',
-        'cache_key_prefix_ids' => 'libryo_compilation_ids',
+        'cache_key_prefix' => 'norma_compilation',
+        'cache_key_prefix_ids' => 'norma_compilation_ids',
         'cache_lifetime' => 60 * 25,
-        'tag' => 'libryo_compilation',
-        'legal_report_cache_ids' => 'libryo_legal_report',
+        'tag' => 'norma_compilation',
+        'legal_report_cache_ids' => 'norma_legal_report',
         'legal_report_lifetime' => 60 * 25,
     ],
     'auth' => [

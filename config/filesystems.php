@@ -81,7 +81,7 @@ return [
             'key' => env('AWS_ACCESS_KEY_ID'),
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
             'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => env('AWS_TMP_BUCKET', 'libryo-tmp'),
+            'bucket' => env('AWS_TMP_BUCKET', 'norma-tmp'),
             'url' => env('AWS_URL'),
         ],
 
@@ -90,7 +90,7 @@ return [
             'key' => env('AWS_ACCESS_KEY_ID'),
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
             'region' => env('AWS_DEFAULT_REGION'),
-            'bucket' => env('AWS_DOCUMENTS_BUCKET', 'libryo-documents'),
+            'bucket' => env('AWS_DOCUMENTS_BUCKET', 'norma-documents'),
             'url' => env('AWS_URL'),
         ],
 

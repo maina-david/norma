@@ -12,7 +12,7 @@ return [
         ],
     ],
     'customer' => [
-        'duplicate_libryo' => 'A Libryo Stream already exists with that integration ID for the given organisation',
+        'duplicate_norma' => 'A Norma Stream already exists with that integration ID for the given organisation',
     ],
     'requirements' => [
         'consequence' => [

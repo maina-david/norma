@@ -62,7 +62,7 @@ return [
             'completed_total_impact' => 'Impact Score (Done)',
             'incomplete_total_impact' => 'Impact Score (Not Done)',
             'overdue_tasks' => 'Overdue Tasks',
-            'title' => 'Libryo Stream',
+            'title' => 'Norma Stream',
             'total_in_progress_tasks' => 'In Progress',
             'total_not_started_tasks' => 'Not Started',
             'total_task_impact_score' => 'Total Task Impact Score',

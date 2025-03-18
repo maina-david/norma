@@ -5,7 +5,7 @@ use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Auth\User;
 use App\Models\Collaborators\Collaborator;
 use App\Models\Compilation\ContextQuestion;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Notify\LegalUpdate;
 use App\Models\Tasks\Task;
 use App\Models\Tasks\TaskProject;
@@ -31,7 +31,7 @@ return [
             'passphrase' => '6u2v2XyG67rL4a4moFkEOZKaoqZO8zGyQDObKsgT',
             'padding' => 8,
         ],
-        Libryo::class => [
+        Norma::class => [
             'passphrase' => '6u2v2XyG67rL4a4moFkEOZKaoqZO8zGyQDObKsgT',
             'padding' => 8,
         ],

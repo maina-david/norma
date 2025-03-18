@@ -6,8 +6,8 @@ return [
         'bulk-answer' => 'assessBulkAnswer',
     ],
     'customer' => [
-        'active-libryo-mode' => 'activeLibryoMode',
-        'active-libryo' => 'activeLibryo',
+        'active-norma-mode' => 'activeNormaMode',
+        'active-norma' => 'activeNorma',
         'active-organisation' => 'activeOrganisation',
         'organisation-mode' => 'organisationMode',
     ],

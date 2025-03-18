@@ -3,7 +3,7 @@
 return [
     'active' => 'Active',
     'activity_no_activities' => 'No Activity Yet',
-    'agree_terms_of_use' => 'By logging into Libryo I agree to the <a target="_blank" href="https://libryo.com/libryo-user-terms/" class="text-libryo-gray-400">Terms of use</a>',
+    'agree_terms_of_use' => 'By logging into Norma I agree to the <a target="_blank" href="https://norma.com/norma-user-terms/" class="text-norma-gray-400">Terms of use</a>',
     'alpha' => 'alpha',
     'alpha_tooltip' => 'This is an experimental tool and may be removed. Your feedback is welcome.',
     'apply' => 'Apply',

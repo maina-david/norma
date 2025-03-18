@@ -245,7 +245,7 @@ return [
     'environments' => [
         'production' => [
             'supervisor-1' => [
-                'queue' => ['default', 'otp', 'notifications', 'libryo-app'],
+                'queue' => ['default', 'otp', 'notifications', 'norma-app'],
                 'maxProcesses' => 10,
                 'balanceMaxShift' => 1,
                 'balanceCooldown' => 3,
@@ -325,14 +325,14 @@ return [
             ],
             'supervisor-10' => [
                 'connection' => 'redis-long-running',
-                'queue' => ['libryo-ai', 'ai-classifier'],
+                'queue' => ['norma-ai', 'ai-classifier'],
                 'maxProcesses' => 5,
             ],
         ],
 
         'staging' => [
             'supervisor-1' => [
-                'queue' => ['default', 'otp', 'notifications', 'libryo-app'],
+                'queue' => ['default', 'otp', 'notifications', 'norma-app'],
                 'maxProcesses' => 10,
                 'balanceMaxShift' => 1,
                 'balanceCooldown' => 3,
@@ -412,14 +412,14 @@ return [
             ],
             'supervisor-10' => [
                 'connection' => 'redis-long-running',
-                'queue' => ['libryo-ai'],
+                'queue' => ['norma-ai'],
                 'maxProcesses' => 2,
             ],
         ],
 
         'local' => [
             'supervisor-1' => [
-                'queue' => ['default', 'otp', 'notifications', 'libryo-app'],
+                'queue' => ['default', 'otp', 'notifications', 'norma-app'],
                 'maxProcesses' => 3,
             ],
             'supervisor-2' => [
@@ -493,7 +493,7 @@ return [
             ],
             'supervisor-10' => [
                 'connection' => 'redis-long-running',
-                'queue' => ['libryo-ai'],
+                'queue' => ['norma-ai'],
                 'maxProcesses' => 2,
             ],
         ],
