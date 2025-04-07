@@ -6,7 +6,7 @@ use App\Enums\Compilation\ContextQuestionActivityType;
 use App\Enums\Compilation\ContextQuestionAnswer;
 use App\Models\Auth\User;
 use App\Models\Compilation\ContextQuestion;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -23,7 +23,7 @@ class ContextQuestionActivityFactory extends Factory
     {
         return [
             'context_question_id' => ContextQuestion::factory(),
-            'place_id' => Libryo::factory(),
+            'place_id' => Norma::factory(),
             'user_id' => User::factory(),
             'activity_type' => ContextQuestionActivityType::ANSWER_CHANGED,
             'from_status' => $this->faker->randomElement(array_keys(ContextQuestionAnswer::lang())),

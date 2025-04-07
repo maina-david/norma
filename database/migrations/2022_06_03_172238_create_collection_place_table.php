@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Compilation\RequirementsCollection;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -29,7 +29,7 @@ return new class() extends Migration {
 
             $table->foreign('place_id')
                 ->references('id')
-                ->on((new Libryo())->getTable())
+                ->on((new Norma())->getTable())
                 ->onDelete('cascade');
         });
     }

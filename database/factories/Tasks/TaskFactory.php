@@ -4,7 +4,7 @@ namespace Database\Factories\Tasks;
 
 use App\Enums\Tasks\TaskPriority;
 use App\Enums\Tasks\TaskStatus;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Tasks\Task;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -27,7 +27,7 @@ class TaskFactory extends Factory
         return [
             'title' => $this->faker->unique()->words(3, true),
             'description' => $this->faker->unique()->randomHtml(1, 1),
-            'place_id' => Libryo::factory(),
+            'place_id' => Norma::factory(),
             'taskable_type' => 'place',
             'task_status' => TaskStatus::notStarted()->value,
             'priority' => TaskPriority::low()->value,

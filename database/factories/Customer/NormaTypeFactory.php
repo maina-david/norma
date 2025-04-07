@@ -2,17 +2,17 @@
 
 namespace Database\Factories\Customer;
 
-use App\Models\Customer\LibryoType;
+use App\Models\Customer\NormaType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class LibryoTypeFactory extends Factory
+class NormaTypeFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = LibryoType::class;
+    protected $model = NormaType::class;
 
     /**
      * Define the model's default state.

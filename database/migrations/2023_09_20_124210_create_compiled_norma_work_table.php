@@ -12,15 +12,16 @@ return new class() extends Migration {
      */
     public function up()
     {
-        Schema::create('compiled_libryo_reference', function (Blueprint $table) {
+        Schema::create('compiled_norma_work', function (Blueprint $table) {
             $table->unsignedInteger('place_id');
-            $table->unsignedBigInteger('reference_id');
+            $table->unsignedInteger('work_id');
 
-            $table->primary(['place_id', 'reference_id']);
+            $table->primary(['place_id', 'work_id']);
             $table->foreign('place_id')->references('id')->on('places')->cascadeOnDelete();
-            $table->foreign('reference_id')->references('id')->on('corpus_references')->cascadeOnDelete();
+            $table->foreign('work_id')->references('id')->on('corpus_works')->cascadeOnDelete();
         });
-        DB::statement('INSERT IGNORE INTO compiled_libryo_reference (select place_id, reference_id from place_reference)');
+
+        DB::statement('INSERT IGNORE INTO compiled_norma_work (select place_id, work_id from place_work)');
     }
 
     /**
@@ -30,6 +31,6 @@ return new class() extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('compiled_libryo_reference');
+        Schema::dropIfExists('compiled_norma_work');
     }
 };

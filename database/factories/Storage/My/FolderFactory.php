@@ -26,7 +26,7 @@ class FolderFactory extends Factory
     {
         return [
             'title' => $this->faker->unique()->words(3, true),
-            'folder_type' => FolderType::libryo()->value,
+            'folder_type' => FolderType::norma()->value,
             'is_root' => false,
             'for_attachments' => false,
             'organisation_id' => Organisation::factory(),

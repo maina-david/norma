@@ -5,7 +5,7 @@ namespace Database\Factories\Assess;
 use App\Enums\Assess\ResponseStatus;
 use App\Models\Assess\AssessmentItem;
 use App\Models\Assess\AssessmentItemResponse;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AssessmentItemResponseFactory extends Factory
@@ -26,7 +26,7 @@ class AssessmentItemResponseFactory extends Factory
     {
         return [
             'assessment_item_id' => AssessmentItem::factory(),
-            'place_id' => Libryo::factory(),
+            'place_id' => Norma::factory(),
             'answer' => ResponseStatus::yes(),
             'next_due_at' => null,
         ];

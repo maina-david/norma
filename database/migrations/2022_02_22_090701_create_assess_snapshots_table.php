@@ -2,7 +2,7 @@
 
 use App\Enums\Assess\ResponseStatus;
 use App\Enums\Assess\RiskRating;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -35,7 +35,7 @@ class CreateAssessSnapshotsTable extends Migration
 
             $table->foreign('place_id')
                 ->references('id')
-                ->on((new Libryo())->getTable())
+                ->on((new Norma())->getTable())
                 ->onDelete('cascade');
         });
     }

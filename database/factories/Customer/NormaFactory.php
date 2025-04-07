@@ -4,18 +4,18 @@ namespace Database\Factories\Customer;
 
 use App\Models\Compilation\Library;
 use App\Models\Compilation\RequirementsCollection;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class LibryoFactory extends Factory
+class NormaFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Libryo::class;
+    protected $model = Norma::class;
 
     /**
      * Define the model's default state.

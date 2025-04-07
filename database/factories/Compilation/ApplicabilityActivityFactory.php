@@ -6,7 +6,7 @@ use App\Enums\Compilation\ApplicabilityActivityType;
 use App\Models\Auth\User;
 use App\Models\Compilation\ApplicabilityActivity;
 use App\Models\Compilation\ContextQuestion;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ApplicabilityActivityFactory extends Factory
@@ -24,7 +24,7 @@ class ApplicabilityActivityFactory extends Factory
             'activity_type' => $this->faker->randomElement(ApplicabilityActivityType::cases())->value,
             'previous' => null,
             'current' => 1,
-            'place_id' => Libryo::factory(),
+            'place_id' => Norma::factory(),
             'user_id' => User::factory(),
             'context_question_id' => ContextQuestion::factory(),
         ];

@@ -15,7 +15,7 @@ class AddFieldsToWhiteLabels extends Migration
     {
         Schema::table('whitelabels', function (Blueprint $table) {
             $table->json('urls')->after('email_address');
-            $table->string('auth_provider')->after('urls')->default('libryo');
+            $table->string('auth_provider')->after('urls')->default('norma');
             $table->text('auth_background')->after('auth_provider')->nullable();
             $table->string('app_logo')->after('auth_background')->nullable();
             $table->string('login_logo')->after('app_logo')->nullable();

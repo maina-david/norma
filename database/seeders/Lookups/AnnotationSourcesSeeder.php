@@ -20,7 +20,7 @@ class AnnotationSourcesSeeder extends Seeder
             ['id' => AnnotationSourceType::ASSESSMENT_ITEM, 'title' => 'Assessment Items'],
             ['id' => AnnotationSourceType::TAG, 'title' => 'Tags'],
             ['id' => AnnotationSourceType::CDM, 'title' => 'CDM'],
-            ['id' => AnnotationSourceType::LIBRYO_AI, 'title' => 'Libryo AI'],
+            ['id' => AnnotationSourceType::NORMA_AI, 'title' => 'Norma AI'],
             ['id' => AnnotationSourceType::WORDCLOUD, 'title' => 'Wordcloud'],
             ['id' => AnnotationSourceType::QC_OTHER, 'title' => 'Quality Control / Other'],
             ['id' => AnnotationSourceType::MAGI, 'title' => 'Magi'],

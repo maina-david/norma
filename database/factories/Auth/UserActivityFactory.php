@@ -5,7 +5,7 @@ namespace Database\Factories\Auth;
 use App\Enums\Auth\UserActivityType;
 use App\Models\Auth\User;
 use App\Models\Auth\UserActivity;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserActivityFactory extends Factory
@@ -26,7 +26,7 @@ class UserActivityFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'place_id' => Libryo::factory(),
+            'place_id' => Norma::factory(),
             'activity_type' => $this->faker->randomElement(UserActivityType::options()),
         ];
     }
@@ -36,11 +36,11 @@ class UserActivityFactory extends Factory
      *
      * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    public function typeLibryoActivate(): Factory
+    public function typeNormaActivate(): Factory
     {
         return $this->state(function (array $attributes) {
             return [
-                'activity_type' => UserActivityType::libryoActivate(),
+                'activity_type' => UserActivityType::normaActivate(),
             ];
         });
     }

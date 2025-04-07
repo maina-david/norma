@@ -31,7 +31,7 @@ class WhiteLabelFactory extends Factory
             'email_template' => '',
             'email_address' => '',
             'urls' => app(AppManager::class)->appWhiteLabelURL($shortname),
-            'auth_provider' => 'libryo',
+            'auth_provider' => 'norma',
             'app_logo' => '',
             'login_logo' => '',
             'theme' => '',

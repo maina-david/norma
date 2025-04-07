@@ -3,7 +3,7 @@
 namespace Database\Factories\Assess;
 
 use App\Models\Assess\AssessSnapshot;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AssessSnapshotFactory extends Factory
@@ -23,7 +23,7 @@ class AssessSnapshotFactory extends Factory
     public function definition()
     {
         return [
-            'place_id' => Libryo::factory(),
+            'place_id' => Norma::factory(),
             'month_date' => now()->endOfMonth(),
         ];
     }

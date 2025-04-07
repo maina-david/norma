@@ -33,7 +33,7 @@ class FileFactory extends Factory
             'mime_type' => $this->faker->mimeType(),
             'extension' => $this->faker->fileExtension(),
             'size' => $this->faker->numberBetween(0, 100000000),
-            'folder_type' => FolderType::libryo()->value,
+            'folder_type' => FolderType::norma()->value,
             'author_id' => User::factory(),
             'organisation_id' => Organisation::factory(),
         ];

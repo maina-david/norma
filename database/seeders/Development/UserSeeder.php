@@ -7,7 +7,7 @@ use App\Models\Auth\Role;
 use App\Models\Auth\User;
 use App\Models\Auth\UserRole;
 use App\Models\Collaborators\Profile;
-use App\Models\Customer\Pivots\LibryoUser;
+use App\Models\Customer\Pivots\NormaUser;
 use App\Models\Customer\Pivots\TeamUser;
 use App\Models\Customer\Team;
 use Illuminate\Database\Seeder;
@@ -27,7 +27,7 @@ class UserSeeder extends Seeder
         Team::truncate();
         UserRole::truncate();
         TeamUser::truncate();
-        LibryoUser::truncate();
+        NormaUser::truncate();
 
         $mySuper = Role::create([
             'title' => 'My Super Users',
@@ -45,9 +45,9 @@ class UserSeeder extends Seeder
         Profile::factory()->create(['turk_application_id' => null, 'user_id' => $user->id]);
         $user->roles()->attach([$mySuper->id, $collaborateSuper->id]);
 
-        $team = Team::create(['organisation_id' => 1, 'title' => 'Team Libryo']);
+        $team = Team::create(['organisation_id' => 1, 'title' => 'Team Norma']);
 
         $user->teams()->attach($team->id);
-        $user->libryos()->attach([1, 2, 3]);
+        $user->normas()->attach([1, 2, 3]);
     }
 }
