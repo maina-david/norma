@@ -10,9 +10,9 @@ use App\Models\Compilation\Pivots\ContextQuestionReference;
 use App\Models\Compilation\Pivots\ContextQuestionReferenceDraft;
 use App\Models\Compilation\Pivots\ContextQuestionRequirementsCollection;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
-use App\Models\Customer\Pivots\ContextQuestionLibryo;
+use App\Models\Customer\Pivots\ContextQuestionNorma;
 use App\Models\Geonames\Location;
 use App\Models\Ontology\Category;
 use App\Models\Ontology\Pivots\CategoryContextQuestion;
@@ -101,7 +101,7 @@ class ContextQuestion extends AbstractModel implements Auditable
      */
     public function answers(): HasMany
     {
-        return $this->hasMany(ContextQuestionLibryo::class, 'context_question_id');
+        return $this->hasMany(ContextQuestionNorma::class, 'context_question_id');
     }
 
     /**
@@ -158,19 +158,19 @@ class ContextQuestion extends AbstractModel implements Auditable
     /**
      * @return BelongsToMany
      */
-    public function libryos(): BelongsToMany
+    public function normas(): BelongsToMany
     {
-        return $this->belongsToMany(Libryo::class, (new ContextQuestionLibryo())->getTable(), 'context_question_id', 'place_id')
-            ->using(ContextQuestionLibryo::class)
+        return $this->belongsToMany(Norma::class, (new ContextQuestionNorma())->getTable(), 'context_question_id', 'place_id')
+            ->using(ContextQuestionNorma::class)
             ->withPivot(['answer', 'last_answered_by', 'last_answered_at']);
     }
 
     /**
      * @return BelongsToMany
      */
-    public function libryosYes()
+    public function normasYes()
     {
-        return $this->libryos()
+        return $this->normas()
             ->wherePivot('answer', ContextQuestionAnswer::yes()->value);
     }
 
@@ -203,13 +203,13 @@ class ContextQuestion extends AbstractModel implements Auditable
 
     /**
      * @param Builder $builder
-     * @param Libryo  $libryo
+     * @param Norma  $norma
      *
      * @return Builder
      */
-    public function scopeForLibryo(Builder $builder, Libryo $libryo): Builder
+    public function scopeForNorma(Builder $builder, Norma $norma): Builder
     {
-        return $builder->whereRelation('libryos', 'id', $libryo->id);
+        return $builder->whereRelation('normas', 'id', $norma->id);
     }
 
     /**
@@ -220,7 +220,7 @@ class ContextQuestion extends AbstractModel implements Auditable
      */
     public function scopeForOrganisation(Builder $builder, Organisation $organisation): Builder
     {
-        return $builder->whereRelation('libryos', function ($q) use ($organisation) {
+        return $builder->whereRelation('normas', function ($q) use ($organisation) {
             $q->active();
             $q->where('organisation_id', $organisation->id);
         });
@@ -228,18 +228,18 @@ class ContextQuestion extends AbstractModel implements Auditable
 
     /**
      * @param Builder                     $builder
-     * @param \App\Models\Customer\Libryo $libryo
+     * @param \App\Models\Customer\Norma $norma
      * @param array<int, int>             $answers
      *
      * @return Builder
      */
-    public function scopeForLibryoWithAnswers(Builder $builder, Libryo $libryo, array $answers): Builder
+    public function scopeForNormaWithAnswers(Builder $builder, Norma $norma, array $answers): Builder
     {
-        return $builder->whereRelation('libryos', function ($query) use ($answers, $libryo) {
-            $query->active()->where('id', $libryo->id);
+        return $builder->whereRelation('normas', function ($query) use ($answers, $norma) {
+            $query->active()->where('id', $norma->id);
 
             if (!empty($answers)) {
-                $query->whereIn((new ContextQuestionLibryo())->qualifyColumn('answer'), $answers);
+                $query->whereIn((new ContextQuestionNorma())->qualifyColumn('answer'), $answers);
             }
         });
     }
@@ -253,11 +253,11 @@ class ContextQuestion extends AbstractModel implements Auditable
      */
     public function scopeForOrganisationWithAnswers(Builder $builder, Organisation $organisation, array $answers): Builder
     {
-        return $builder->whereRelation('libryos', function ($q) use ($answers, $organisation) {
+        return $builder->whereRelation('normas', function ($q) use ($answers, $organisation) {
             $q->active();
             $q->where('organisation_id', $organisation->id);
             if (!empty($answers)) {
-                $q->whereIn((new ContextQuestionLibryo())->qualifyColumn('answer'), $answers);
+                $q->whereIn((new ContextQuestionNorma())->qualifyColumn('answer'), $answers);
             }
         });
     }
@@ -342,16 +342,16 @@ class ContextQuestion extends AbstractModel implements Auditable
     }
 
     /**
-     * Get the explanation of the context question item for the given libryo.
+     * Get the explanation of the context question item for the given norma.
      *
-     * @param \App\Models\Customer\Libryo $libryo
+     * @param \App\Models\Customer\Norma $norma
      *
      * @return \App\Models\Compilation\ContextQuestionDescription|null
      */
-    public function explanationForLibryo(Libryo $libryo): ?ContextQuestionDescription
+    public function explanationForNorma(Norma $norma): ?ContextQuestionDescription
     {
         /** @var \App\Models\Geonames\Location $location */
-        $location = $libryo->location;
+        $location = $norma->location;
 
         /** @var ContextQuestionDescription|null */
         return $this->descriptions()

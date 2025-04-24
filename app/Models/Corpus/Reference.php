@@ -32,11 +32,11 @@ use App\Models\Corpus\Pivots\ReferenceReference;
 use App\Models\Corpus\Pivots\ReferenceRequirementsCollection;
 use App\Models\Corpus\Pivots\ReferenceTag;
 use App\Models\Corpus\Pivots\ReferenceTagDraft;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
-use App\Models\Customer\Pivots\CompiledLibryoReference;
-use App\Models\Customer\Pivots\LibryoReference;
-use App\Models\Customer\Pivots\LibryoRequirementsCollection;
+use App\Models\Customer\Pivots\CompiledNormaReference;
+use App\Models\Customer\Pivots\NormaReference;
+use App\Models\Customer\Pivots\NormaRequirementsCollection;
 use App\Models\Geonames\Location;
 use App\Models\Lookups\Translation;
 use App\Models\Notify\Reminder;
@@ -53,7 +53,7 @@ use App\Models\Requirements\ReferenceSummaryDraft;
 use App\Models\Requirements\Summary;
 use App\Models\Tasks\Task;
 use App\Models\Traits\ApiQueryFilterable;
-use App\Models\Traits\AttachedToLibryoAndOrganisation;
+use App\Models\Traits\AttachedToNormaAndOrganisation;
 use App\Models\Traits\HasCategory;
 use App\Models\Traits\HasClosureTable;
 use App\Models\Traits\HasComments;
@@ -90,7 +90,7 @@ class Reference extends AbstractModel implements HasTranslations
     use HasCategory;
     use HasClosureTable;
     use Searchable;
-    use AttachedToLibryoAndOrganisation;
+    use AttachedToNormaAndOrganisation;
 
     /** @var string */
     protected $table = 'corpus_references';
@@ -243,19 +243,19 @@ class Reference extends AbstractModel implements HasTranslations
     /**
      * @return BelongsToMany
      */
-    public function libryos(): BelongsToMany
+    public function normas(): BelongsToMany
     {
-        return $this->belongsToMany(Libryo::class, (new LibryoReference())->getTable(), 'reference_id', 'place_id')
-            ->using(LibryoReference::class);
+        return $this->belongsToMany(Norma::class, (new NormaReference())->getTable(), 'reference_id', 'place_id')
+            ->using(NormaReference::class);
     }
 
     /**
      * @return BelongsToMany
      */
-    public function compiledLibryos(): BelongsToMany
+    public function compiledNormas(): BelongsToMany
     {
-        return $this->belongsToMany(Libryo::class, (new CompiledLibryoReference())->getTable(), 'reference_id', 'place_id')
-            ->using(CompiledLibryoReference::class);
+        return $this->belongsToMany(Norma::class, (new CompiledNormaReference())->getTable(), 'reference_id', 'place_id')
+            ->using(CompiledNormaReference::class);
     }
 
     /**
@@ -391,18 +391,18 @@ class Reference extends AbstractModel implements HasTranslations
     /**
      * @return BelongsToMany
      */
-    public function excludedInLibryos(): BelongsToMany
+    public function excludedInNormas(): BelongsToMany
     {
-        return $this->belongsToMany(Libryo::class, 'place_reference_include_exclude', 'reference_id', 'place_id')
+        return $this->belongsToMany(Norma::class, 'place_reference_include_exclude', 'reference_id', 'place_id')
             ->wherePivot('include', false);
     }
 
     /**
      * @return BelongsToMany
      */
-    public function includedInLibryos(): BelongsToMany
+    public function includedInNormas(): BelongsToMany
     {
-        return $this->belongsToMany(Libryo::class, 'place_reference_include_exclude', 'reference_id', 'place_id')
+        return $this->belongsToMany(Norma::class, 'place_reference_include_exclude', 'reference_id', 'place_id')
             ->wherePivot('include', true);
     }
 
@@ -649,43 +649,43 @@ class Reference extends AbstractModel implements HasTranslations
 
     /**
      * @param Builder $builder
-     * @param Libryo  $libryo
+     * @param Norma  $norma
      *
      * @return Builder
      */
-    public function scopeForLibryo(Builder $builder, Libryo $libryo): Builder
+    public function scopeForNorma(Builder $builder, Norma $norma): Builder
     {
-        return $builder->whereHas('libryos', function ($q) use ($libryo) {
-            $q->whereKey($libryo->id);
+        return $builder->whereHas('normas', function ($q) use ($norma) {
+            $q->whereKey($norma->id);
         });
     }
 
     /**
      * @param Builder         $query
-     * @param array<int, int> $libryoIds
+     * @param array<int, int> $normaIds
      *
      * @return Builder
      */
-    public function scopeForMultipleLibryos(Builder $query, array $libryoIds): Builder
+    public function scopeForMultipleNormas(Builder $query, array $normaIds): Builder
     {
-        return $query->whereHas('libryos', function ($q) use ($libryoIds) {
-            $q->whereKey($libryoIds);
+        return $query->whereHas('normas', function ($q) use ($normaIds) {
+            $q->whereKey($normaIds);
         });
     }
 
     /**
-     * Apply the scope to filter the references that only apply to this given libryo location.
+     * Apply the scope to filter the references that only apply to this given norma location.
      *
      * @param Builder     $builder
-     * @param Libryo|null $libryo
+     * @param Norma|null $norma
      *
      * @return Builder
      */
-    public function scopeforLibryoLocations(Builder $builder, ?Libryo $libryo): Builder
+    public function scopeforNormaLocations(Builder $builder, ?Norma $norma): Builder
     {
-        if ($libryo->compilationSetting->use_collections ?? false) {
-            /** @var Libryo $libryo */
-            $collections = LibryoRequirementsCollection::where('place_id', $libryo->id)->pluck('collection_id')->all();
+        if ($norma->compilationSetting->use_collections ?? false) {
+            /** @var Norma $norma */
+            $collections = NormaRequirementsCollection::where('place_id', $norma->id)->pluck('collection_id')->all();
 
             $builder->where(function ($query) use ($collections) {
                 $query->whereHas('locations', fn ($builder) => $builder->whereIn('id', $collections))
@@ -704,7 +704,7 @@ class Reference extends AbstractModel implements HasTranslations
      */
     public function scopeForOrganisation(Builder $builder, Organisation $organisation): Builder
     {
-        return $builder->whereHas('libryos.organisation', function ($q) use ($organisation) {
+        return $builder->whereHas('normas.organisation', function ($q) use ($organisation) {
             $q->whereKey($organisation->id);
         });
     }
@@ -718,7 +718,7 @@ class Reference extends AbstractModel implements HasTranslations
      */
     public function scopeForOrganisationUserAccess(Builder $query, Organisation $organisation, User $user): Builder
     {
-        return $query->whereHas('libryos', function ($q) use ($organisation, $user) {
+        return $query->whereHas('normas', function ($q) use ($organisation, $user) {
             $q->active()->whereHas('organisation', function ($q) use ($organisation, $user) {
                 $q->whereKey($organisation->id);
                 $q->userHasAccess($user);
@@ -755,27 +755,27 @@ class Reference extends AbstractModel implements HasTranslations
 
     /**
      * @param Builder $builder
-     * @param Libryo  $libryo
+     * @param Norma  $norma
      *
      * @return Builder
      */
-    public function scopeForLibryoAutocompiledBase(Builder $builder, Libryo $libryo): Builder
+    public function scopeForNormaAutocompiledBase(Builder $builder, Norma $norma): Builder
     {
-        $settings = $libryo->compilationSetting;
+        $settings = $norma->compilationSetting;
 
         return $builder
             ->whereHas('work', fn ($query) => $query->whereNull('organisation_id'))
-            ->where(function ($q) use ($libryo, $settings) {
-                $q->when($settings->use_collections, function ($q) use ($libryo) {
-                    $q->whereHas('locations', function ($q) use ($libryo) {
-                        $collections = $libryo->requirementsCollections;
+            ->where(function ($q) use ($norma, $settings) {
+                $q->when($settings->use_collections, function ($q) use ($norma) {
+                    $q->whereHas('locations', function ($q) use ($norma) {
+                        $collections = $norma->requirementsCollections;
                         $q->whereKey($collections->modelKeys());
                     });
                 });
 
-                $q->when($settings->use_legal_domains, function ($q) use ($libryo) {
-                    $q->whereHas('legalDomains', function ($q) use ($libryo) {
-                        $q->whereIn('top_parent_id', $libryo->legalDomains->modelKeys());
+                $q->when($settings->use_legal_domains, function ($q) use ($norma) {
+                    $q->whereHas('legalDomains', function ($q) use ($norma) {
+                        $q->whereIn('top_parent_id', $norma->legalDomains->modelKeys());
                     });
                 });
 
@@ -788,20 +788,20 @@ class Reference extends AbstractModel implements HasTranslations
 
     /**
      * @param Builder $builder
-     * @param Libryo  $libryo
+     * @param Norma  $norma
      *
      * @return Builder
      */
-    public function scopeForLibryoAutocompiled(Builder $builder, Libryo $libryo): Builder
+    public function scopeForNormaAutocompiled(Builder $builder, Norma $norma): Builder
     {
-        $settings = $libryo->compilationSetting;
+        $settings = $norma->compilationSetting;
 
-        $builder->forLibryoAutocompiledBase($libryo)
-            ->when($settings->use_context_questions, function ($q) use ($libryo, $settings) {
-                $q->where(function ($q) use ($libryo, $settings) {
-                    $q->whereHas('contextQuestions', function ($q) use ($libryo) {
-                        $q->whereHas('libryosYes', function ($q) use ($libryo) {
-                            $q->whereKey($libryo->id);
+        $builder->forNormaAutocompiledBase($norma)
+            ->when($settings->use_context_questions, function ($q) use ($norma, $settings) {
+                $q->where(function ($q) use ($norma, $settings) {
+                    $q->whereHas('contextQuestions', function ($q) use ($norma) {
+                        $q->whereHas('normasYes', function ($q) use ($norma) {
+                            $q->whereKey($norma->id);
                         });
                     })
                         ->when($settings->include_no_context_questions, function ($q) {
@@ -819,74 +819,74 @@ class Reference extends AbstractModel implements HasTranslations
      * Scope to get included references.
      *
      * @param \Illuminate\Database\Eloquent\Builder $builder
-     * @param \App\Models\Customer\Libryo           $libryo
+     * @param \App\Models\Customer\Norma           $norma
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeForLibryoIncluded(Builder $builder, Libryo $libryo): Builder
+    public function scopeForNormaIncluded(Builder $builder, Norma $norma): Builder
     {
         return $builder->compilable()
             ->typeCitation()
             ->active()
             ->forActiveWork()
-            ->whereHas('includedInLibryos', fn ($query) => $query->whereKey($libryo->id));
+            ->whereHas('includedInNormas', fn ($query) => $query->whereKey($norma->id));
     }
 
     /**
      * Scope to get include-exclude references.
      *
      * @param \Illuminate\Database\Eloquent\Builder $builder
-     * @param \App\Models\Customer\Libryo           $libryo
+     * @param \App\Models\Customer\Norma           $norma
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeForLibryoExcluded(Builder $builder, Libryo $libryo): Builder
+    public function scopeForNormaExcluded(Builder $builder, Norma $norma): Builder
     {
         return $builder->compilable()
             ->typeCitation()
             ->active()
             ->forActiveWork()
-            ->whereHas('excludedInLibryos', fn ($query) => $query->whereKey($libryo->id));
+            ->whereHas('excludedInNormas', fn ($query) => $query->whereKey($norma->id));
     }
 
     /**
-     * Get the references that are possible to be attached to the given libryo.
+     * Get the references that are possible to be attached to the given norma.
      *
      * @param \Illuminate\Database\Eloquent\Builder $builder
-     * @param \App\Models\Customer\Libryo           $libryo
+     * @param \App\Models\Customer\Norma           $norma
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopePossibleForUncompiledLibryo(Builder $builder, Libryo $libryo): Builder
+    public function scopePossibleForUncompiledNorma(Builder $builder, Norma $norma): Builder
     {
-        $libryo->load(['legalDomains', 'location']);
+        $norma->load(['legalDomains', 'location']);
 
         /** @var Location $location */
-        $location = $libryo->location;
+        $location = $norma->location;
 
         return $builder->typeCitation()
             ->when($location, function ($builder) use ($location) {
                 $locations = $location->ancestorsWithSelf()->select($location->qualifyColumn('id'));
                 $builder->whereHas('locations', fn ($query) => $query->whereIn('id', $locations));
             })
-            ->when($libryo->legalDomains->isNotEmpty(), function ($q) use ($libryo) {
-                $q->forDomains($libryo->legalDomains->modelKeys());
+            ->when($norma->legalDomains->isNotEmpty(), function ($q) use ($norma) {
+                $q->forDomains($norma->legalDomains->modelKeys());
             })
             ->compilable()
             ->forActiveWork();
     }
 
     /**
-     * Scope for all references that are in libraries that are ancestor's of the libryo's embryo. Old way of compiling...
+     * Scope for all references that are in libraries that are ancestor's of the norma's embryo. Old way of compiling...
      *
      * @param Builder $query
-     * @param Libryo  $libryo
+     * @param Norma  $norma
      *
      * @return Builder
      */
-    public function scopeInLibryoLibraries(Builder $query, Libryo $libryo): Builder
+    public function scopeInNormaLibraries(Builder $query, Norma $norma): Builder
     {
-        $libraries = $libryo->getLibraryAncestors();
+        $libraries = $norma->getLibraryAncestors();
 
         $query->typeCitation();
         $query->compilable();
@@ -895,8 +895,8 @@ class Reference extends AbstractModel implements HasTranslations
             $q->whereIn('id', $libraries->pluck('id')->toArray());
         });
 
-        $query->whereHas('legalDomains', function ($q) use ($libryo) {
-            $q->whereKey($libryo->legalDomains->pluck('id')->toArray());
+        $query->whereHas('legalDomains', function ($q) use ($norma) {
+            $q->whereKey($norma->legalDomains->pluck('id')->toArray());
         });
 
         return $query;

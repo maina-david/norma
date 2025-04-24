@@ -4,7 +4,7 @@ namespace App\Models\Auth;
 
 use App\Enums\Auth\UserActivityType;
 use App\Models\AbstractModel;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -48,9 +48,9 @@ class UserActivity extends AbstractModel
     /**
      * @return BelongsTo
      */
-    public function libryo(): BelongsTo
+    public function norma(): BelongsTo
     {
-        return $this->belongsTo(Libryo::class, 'place_id');
+        return $this->belongsTo(Norma::class, 'place_id');
     }
 
     /**
@@ -72,9 +72,9 @@ class UserActivity extends AbstractModel
      *
      * @return Builder
      */
-    public function scopeTypeLibryoActivate(Builder $builder): Builder
+    public function scopeTypeNormaActivate(Builder $builder): Builder
     {
-        return $builder->where('activity_type', UserActivityType::libryoActivate()->value);
+        return $builder->where('activity_type', UserActivityType::normaActivate()->value);
     }
 
     /**
@@ -118,8 +118,8 @@ class UserActivity extends AbstractModel
     public function scopeComplianceActivity(Builder $builder): Builder
     {
         return $builder->whereIn('activity_type', [
-            UserActivityType::libryoActivate()->value,
-            UserActivityType::libryoComment()->value,
+            UserActivityType::normaActivate()->value,
+            UserActivityType::normaComment()->value,
             UserActivityType::downloadedDocument()->value,
             UserActivityType::legalUpdateComment()->value,
             UserActivityType::referenceComment()->value,

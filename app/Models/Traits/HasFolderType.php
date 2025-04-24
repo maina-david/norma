@@ -18,13 +18,13 @@ trait HasFolderType
     }
 
     /**
-     * Checks if a folder is of type libryo.
+     * Checks if a folder is of type norma.
      *
      * @return bool
      **/
-    public function isLibryo(): bool
+    public function isNorma(): bool
     {
-        return FolderType::libryo()->is($this->folder_type);
+        return FolderType::norma()->is($this->folder_type);
     }
 
     /**
@@ -72,9 +72,9 @@ trait HasFolderType
      *
      * @return Builder
      */
-    public function scopeTypeLibryo(Builder $query): Builder
+    public function scopeTypeNorma(Builder $query): Builder
     {
-        return $query->where('folder_type', FolderType::libryo()->value);
+        return $query->where('folder_type', FolderType::norma()->value);
     }
 
     /**

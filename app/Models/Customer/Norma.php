@@ -2,8 +2,8 @@
 
 namespace App\Models\Customer;
 
-use App\Enums\System\LibryoModule;
-use App\Http\ModelFilters\Customer\LibryoFilter;
+use App\Enums\System\NormaModule;
+use App\Http\ModelFilters\Customer\NormaFilter;
 use App\Models\AbstractModel;
 use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Auth\User;
@@ -13,18 +13,18 @@ use App\Models\Compilation\RecompilationActivity;
 use App\Models\Compilation\RequirementsCollection;
 use App\Models\Corpus\Reference;
 use App\Models\Corpus\Work;
-use App\Models\Customer\Pivots\CompiledLibryoReference;
-use App\Models\Customer\Pivots\CompiledLibryoWork;
-use App\Models\Customer\Pivots\ContextQuestionLibryo;
-use App\Models\Customer\Pivots\LegalDomainLibryo;
-use App\Models\Customer\Pivots\LibryoReference;
-use App\Models\Customer\Pivots\LibryoRequirementsCollection;
-use App\Models\Customer\Pivots\LibryoTeam;
-use App\Models\Customer\Pivots\LibryoUser;
-use App\Models\Customer\Pivots\LibryoWork;
+use App\Models\Customer\Pivots\CompiledNormaReference;
+use App\Models\Customer\Pivots\CompiledNormaWork;
+use App\Models\Customer\Pivots\ContextQuestionNorma;
+use App\Models\Customer\Pivots\LegalDomainNorma;
+use App\Models\Customer\Pivots\NormaReference;
+use App\Models\Customer\Pivots\NormaRequirementsCollection;
+use App\Models\Customer\Pivots\NormaTeam;
+use App\Models\Customer\Pivots\NormaUser;
+use App\Models\Customer\Pivots\NormaWork;
 use App\Models\Geonames\Location;
 use App\Models\Notify\LegalUpdate;
-use App\Models\Notify\Pivots\LegalUpdateLibryo;
+use App\Models\Notify\Pivots\LegalUpdateNorma;
 use App\Models\Ontology\LegalDomain;
 use App\Models\Traits\ApiQueryFilterable;
 use App\Models\Traits\EncodesHashId;
@@ -46,9 +46,9 @@ use OwenIt\Auditing\Contracts\Auditable;
 /**
  * @property CompilationSetting $compilationSetting
  *
- * @mixin IdeHelperLibryo
+ * @mixin IdeHelperNorma
  */
-class Libryo extends AbstractModel implements Auditable
+class Norma extends AbstractModel implements Auditable
 {
     use SoftDeletes;
     use HasSettings;
@@ -90,8 +90,8 @@ class Libryo extends AbstractModel implements Auditable
      */
     public function teams(): BelongsToMany
     {
-        return $this->belongsToMany(Team::class, (new LibryoTeam())->getTable(), 'place_id')
-            ->using(LibryoTeam::class);
+        return $this->belongsToMany(Team::class, (new NormaTeam())->getTable(), 'place_id')
+            ->using(NormaTeam::class);
     }
 
     /**
@@ -99,8 +99,8 @@ class Libryo extends AbstractModel implements Auditable
      */
     public function users()
     {
-        return $this->belongsToMany(User::class, (new LibryoUser())->getTable(), 'place_id')
-            ->using(LibryoUser::class);
+        return $this->belongsToMany(User::class, (new NormaUser())->getTable(), 'place_id')
+            ->using(NormaUser::class);
     }
 
     /**
@@ -124,8 +124,8 @@ class Libryo extends AbstractModel implements Auditable
      */
     public function legalDomains(): BelongsToMany
     {
-        return $this->belongsToMany(LegalDomain::class, (new LegalDomainLibryo())->getTable(), 'place_id', 'legal_domain_id')
-            ->using(LegalDomainLibryo::class);
+        return $this->belongsToMany(LegalDomain::class, (new LegalDomainNorma())->getTable(), 'place_id', 'legal_domain_id')
+            ->using(LegalDomainNorma::class);
     }
 
     /**
@@ -134,8 +134,8 @@ class Libryo extends AbstractModel implements Auditable
     public function legalUpdates(): BelongsToMany
     {
         /** @var BelongsToMany */
-        return $this->belongsToMany(LegalUpdate::class, (new LegalUpdateLibryo())->getTable(), 'place_id', 'register_notification_id')
-            ->using(LegalUpdateLibryo::class)
+        return $this->belongsToMany(LegalUpdate::class, (new LegalUpdateNorma())->getTable(), 'place_id', 'register_notification_id')
+            ->using(LegalUpdateNorma::class)
             ->orderBy((new LegalUpdate())->qualifyColumn('created_at'), 'DESC');
     }
 
@@ -152,8 +152,8 @@ class Libryo extends AbstractModel implements Auditable
      */
     public function contextQuestions(): BelongsToMany
     {
-        return $this->belongsToMany(ContextQuestion::class, (new ContextQuestionLibryo())->getTable(), 'place_id', 'context_question_id')
-            ->using(ContextQuestionLibryo::class)
+        return $this->belongsToMany(ContextQuestion::class, (new ContextQuestionNorma())->getTable(), 'place_id', 'context_question_id')
+            ->using(ContextQuestionNorma::class)
             ->withPivot(['answer', 'last_answered_by']);
     }
 
@@ -162,7 +162,7 @@ class Libryo extends AbstractModel implements Auditable
      */
     public function contextQuestionAnswers(): HasMany
     {
-        return $this->hasMany(ContextQuestionLibryo::class, 'place_id');
+        return $this->hasMany(ContextQuestionNorma::class, 'place_id');
     }
 
     /**
@@ -170,8 +170,8 @@ class Libryo extends AbstractModel implements Auditable
      */
     public function references(): BelongsToMany
     {
-        return $this->belongsToMany(Reference::class, (new LibryoReference())->getTable(), 'place_id', 'reference_id')
-            ->using(LibryoReference::class);
+        return $this->belongsToMany(Reference::class, (new NormaReference())->getTable(), 'place_id', 'reference_id')
+            ->using(NormaReference::class);
     }
 
     /**
@@ -179,8 +179,8 @@ class Libryo extends AbstractModel implements Auditable
      */
     public function compiledReferences(): BelongsToMany
     {
-        return $this->belongsToMany(Reference::class, (new CompiledLibryoReference())->getTable(), 'place_id', 'reference_id')
-            ->using(CompiledLibryoReference::class);
+        return $this->belongsToMany(Reference::class, (new CompiledNormaReference())->getTable(), 'place_id', 'reference_id')
+            ->using(CompiledNormaReference::class);
     }
 
     /**
@@ -196,8 +196,8 @@ class Libryo extends AbstractModel implements Auditable
      */
     public function works(): BelongsToMany
     {
-        return $this->belongsToMany(Work::class, (new LibryoWork())->getTable(), 'place_id', 'work_id')
-            ->using(LibryoWork::class);
+        return $this->belongsToMany(Work::class, (new NormaWork())->getTable(), 'place_id', 'work_id')
+            ->using(NormaWork::class);
     }
 
     /**
@@ -205,8 +205,8 @@ class Libryo extends AbstractModel implements Auditable
      */
     public function compiledWorks(): BelongsToMany
     {
-        return $this->belongsToMany(Work::class, (new CompiledLibryoWork())->getTable(), 'place_id', 'work_id')
-            ->using(CompiledLibryoWork::class);
+        return $this->belongsToMany(Work::class, (new CompiledNormaWork())->getTable(), 'place_id', 'work_id')
+            ->using(CompiledNormaWork::class);
     }
 
     public function recompilationActivities(): HasMany
@@ -231,8 +231,8 @@ class Libryo extends AbstractModel implements Auditable
 
     public function requirementsCollections(): BelongsToMany
     {
-        return $this->belongsToMany(RequirementsCollection::class, (new LibryoRequirementsCollection())->getTable(), 'place_id', 'collection_id')
-            ->using(LibryoRequirementsCollection::class);
+        return $this->belongsToMany(RequirementsCollection::class, (new NormaRequirementsCollection())->getTable(), 'place_id', 'collection_id')
+            ->using(NormaRequirementsCollection::class);
     }
 
     /*
@@ -242,7 +242,7 @@ class Libryo extends AbstractModel implements Auditable
     */
 
     /**
-     * libryo streams that the given user has access to.
+     * norma streams that the given user has access to.
      *
      * @param Builder $builder
      * @param User    $user
@@ -263,7 +263,7 @@ class Libryo extends AbstractModel implements Auditable
     }
 
     /**
-     * libryo streams that the given user has access to.
+     * norma streams that the given user has access to.
      *
      * @param Builder $builder
      * @param User    $user
@@ -276,7 +276,7 @@ class Libryo extends AbstractModel implements Auditable
     }
 
     /**
-     * Scope a query to only include active libryos.
+     * Scope a query to only include active normas.
      *
      * @param Builder $query
      *
@@ -288,7 +288,7 @@ class Libryo extends AbstractModel implements Auditable
     }
 
     /**
-     * Scope a query to only include inactive libryos.
+     * Scope a query to only include inactive normas.
      *
      * @param Builder $query
      *
@@ -419,7 +419,7 @@ class Libryo extends AbstractModel implements Auditable
      */
     public function modelFilter(): string
     {
-        return $this->provideFilter(LibryoFilter::class);
+        return $this->provideFilter(NormaFilter::class);
     }
 
     /**
@@ -459,7 +459,7 @@ class Libryo extends AbstractModel implements Auditable
     }
 
     /**
-     * Updates the needs recompilation flag for an libryo.
+     * Updates the needs recompilation flag for an norma.
      *
      * @param bool $needsRecompilation
      *
@@ -516,7 +516,7 @@ class Libryo extends AbstractModel implements Auditable
     }
 
     /**
-     * Check whether this libryo has the module enabled.
+     * Check whether this norma has the module enabled.
      *
      * @return bool
      */
@@ -526,7 +526,7 @@ class Libryo extends AbstractModel implements Auditable
     }
 
     /**
-     * Check whether this libryo has the assess module enabled.
+     * Check whether this norma has the assess module enabled.
      *
      * @return bool
      */
@@ -536,7 +536,7 @@ class Libryo extends AbstractModel implements Auditable
     }
 
     /**
-     * Check whether this libryo has the tasks module enabled.
+     * Check whether this norma has the tasks module enabled.
      *
      * @return bool
      */
@@ -546,7 +546,7 @@ class Libryo extends AbstractModel implements Auditable
     }
 
     /**
-     * Check whether this libryo has the assess module enabled.
+     * Check whether this norma has the assess module enabled.
      *
      * @return bool
      */
@@ -558,11 +558,11 @@ class Libryo extends AbstractModel implements Auditable
     /**
      * Enables the given module for this org.
      *
-     * @param LibryoModule $module
+     * @param NormaModule $module
      *
      * @return bool
      */
-    public function enableModule(LibryoModule $module): bool
+    public function enableModule(NormaModule $module): bool
     {
         return $this->updateSetting('modules.' . $module->value, true);
     }

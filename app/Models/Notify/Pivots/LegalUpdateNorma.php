@@ -5,9 +5,9 @@ namespace App\Models\Notify\Pivots;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * @mixin IdeHelperLegalUpdateLibryo
+ * @mixin IdeHelperLegalUpdateNorma
  */
-class LegalUpdateLibryo extends Pivot
+class LegalUpdateNorma extends Pivot
 {
     /** @var string */
     protected $table = 'register_notification_place';

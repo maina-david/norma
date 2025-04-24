@@ -5,9 +5,9 @@ namespace App\Models\Customer\Pivots;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * @mixin IdeHelperLibryoSpecificWork
+ * @mixin IdeHelperNormaSpecificWork
  */
-class LibryoSpecificWork extends Pivot
+class NormaSpecificWork extends Pivot
 {
     protected $table = 'place_specific_work';
 }

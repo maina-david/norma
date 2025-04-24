@@ -11,9 +11,9 @@ use App\Http\ModelFilters\Auth\UserFilter;
 use App\Http\Services\Hubspot\Actions\UserToHubspotContact;
 use App\Http\Services\Hubspot\Concerns\AsHubspotContact;
 use App\Http\Services\Hubspot\Concerns\HubspotContact;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
-use App\Models\Customer\Pivots\LibryoUser;
+use App\Models\Customer\Pivots\NormaUser;
 use App\Models\Customer\Pivots\OrganisationUser;
 use App\Models\Customer\Pivots\TeamUser;
 use App\Models\Customer\Team;
@@ -28,7 +28,7 @@ use App\Models\Tasks\Pivots\TaskWatcher;
 use App\Models\Tasks\Task;
 use App\Models\Tasks\TaskActivity;
 use App\Models\Traits\EncodesHashId;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Services\Tasks\TaskNotificationService;
 use App\Traits\HasProfilePhoto;
 use App\Traits\HasSettings;
@@ -195,10 +195,10 @@ class User extends Authenticatable implements HubspotContact, Auditable
     /**
      * @return BelongsToMany
      */
-    public function libryos(): BelongsToMany
+    public function normas(): BelongsToMany
     {
-        return $this->belongsToMany(Libryo::class, (new LibryoUser())->getTable(), 'user_id', 'place_id')
-            ->using(LibryoUser::class)
+        return $this->belongsToMany(Norma::class, (new NormaUser())->getTable(), 'user_id', 'place_id')
+            ->using(NormaUser::class)
             ->withPivot(['is_admin']);
     }
 
@@ -501,18 +501,18 @@ class User extends Authenticatable implements HubspotContact, Auditable
 
     /**
      * @param Builder $builder
-     * @param Libryo  $libryo
+     * @param Norma  $norma
      *
      * @return Builder
      */
-    public function scopeLibryoAccess(Builder $builder, Libryo $libryo): Builder
+    public function scopeNormaAccess(Builder $builder, Norma $norma): Builder
     {
-        return $builder->where(function ($query) use ($libryo) {
-            $filter = function ($q) use ($libryo) {
-                $q->whereKey($libryo->id);
+        return $builder->where(function ($query) use ($norma) {
+            $filter = function ($q) use ($norma) {
+                $q->whereKey($norma->id);
             };
-            $query->whereHas('teams.libryos', $filter)
-                ->orWhereHas('libryos', $filter);
+            $query->whereHas('teams.normas', $filter)
+                ->orWhereHas('normas', $filter);
         });
     }
 
@@ -674,7 +674,7 @@ class User extends Authenticatable implements HubspotContact, Auditable
      */
     public function canManageApplicability(): bool
     {
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
 
         $singleStream = $manager->isSingleMode();
 
@@ -733,15 +733,15 @@ class User extends Authenticatable implements HubspotContact, Auditable
     }
 
     /**
-     * Checks whether a user has access to the given libryo.
+     * Checks whether a user has access to the given norma.
      *
-     * @param Libryo $libryo
+     * @param Norma $norma
      *
      * @return bool
      */
-    public function hasLibryoAccess(Libryo $libryo)
+    public function hasNormaAccess(Norma $norma)
     {
-        $builder = $libryo->newQueryWithoutScopes()->whereKey($libryo->id);
+        $builder = $norma->newQueryWithoutScopes()->whereKey($norma->id);
         $builder->userHasAccess($this);
 
         return $builder->exists();
@@ -789,7 +789,7 @@ class User extends Authenticatable implements HubspotContact, Auditable
      */
     public static function getSettingsAllowedToUpdate(): array
     {
-        return config(sprintf('libryo.model_settings.%s.allowed_to_update', static::class)) ?? [];
+        return config(sprintf('norma.model_settings.%s.allowed_to_update', static::class)) ?? [];
     }
 
     /**
@@ -797,7 +797,7 @@ class User extends Authenticatable implements HubspotContact, Auditable
      */
     public static function getNotificationSettings(): array
     {
-        return config(sprintf('libryo.model_settings.%s.notification_settings', static::class)) ?? [];
+        return config(sprintf('norma.model_settings.%s.notification_settings', static::class)) ?? [];
     }
 
     /**
@@ -810,7 +810,7 @@ class User extends Authenticatable implements HubspotContact, Auditable
         $out = [];
         // legacy filters are still stored in the DB...this renames them
         foreach ($arr as $filter => $value) {
-            if (is_null($value) || $value === false || (is_array($value) && empty($value)) || in_array($filter, ['libryoOnly', 'following'])) {
+            if (is_null($value) || $value === false || (is_array($value) && empty($value)) || in_array($filter, ['normaOnly', 'following'])) {
                 continue;
             }
             if ($filter === 'type' && TaskType::valueExists($value)) {
@@ -1057,7 +1057,7 @@ class User extends Authenticatable implements HubspotContact, Auditable
      */
     public function anonymizeAndDestroyAccount(): void
     {
-        $this->email = 'deleted' . $this->id . '@libryo.com';
+        $this->email = 'deleted' . $this->id . '@norma.com';
         $this->fname = 'Deleted';
         $this->sname = 'User';
         $this->password = Hash::make(Str::random());

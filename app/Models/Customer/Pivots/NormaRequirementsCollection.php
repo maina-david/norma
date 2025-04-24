@@ -3,20 +3,20 @@
 namespace App\Models\Customer\Pivots;
 
 use App\Models\Compilation\RequirementsCollection;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * @mixin IdeHelperLibryoRequirementsCollection
+ * @mixin IdeHelperNormaRequirementsCollection
  */
-class LibryoRequirementsCollection extends Pivot
+class NormaRequirementsCollection extends Pivot
 {
     protected $table = 'collection_place';
 
-    public function libryo(): BelongsTo
+    public function norma(): BelongsTo
     {
-        return $this->belongsTo(Libryo::class, 'place_id');
+        return $this->belongsTo(Norma::class, 'place_id');
     }
 
     public function requirementsCollection(): BelongsTo

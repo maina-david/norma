@@ -13,7 +13,7 @@ use App\Models\Auth\User;
 use App\Models\Bookmarks\AssessmentItemBookmark;
 use App\Models\Compilation\ContextQuestion;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Ontology\Category;
 use App\Models\Ontology\LegalDomain;
@@ -247,22 +247,22 @@ class AssessmentItem extends AbstractModel implements Auditable
     }
 
     /**
-     * Get the assessment that are possible to be attached to the given libryo which is not yet compiled.
+     * Get the assessment that are possible to be attached to the given norma which is not yet compiled.
      *
      * @param \Illuminate\Database\Eloquent\Builder   $builder
-     * @param \App\Models\Customer\Libryo             $libryo
+     * @param \App\Models\Customer\Norma             $norma
      * @param \App\Models\Compilation\ContextQuestion $question
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopePossibleForUncompiledLibryo(Builder $builder, Libryo $libryo, ContextQuestion $question): Builder
+    public function scopePossibleForUncompiledNorma(Builder $builder, Norma $norma, ContextQuestion $question): Builder
     {
         return $builder
-            ->where(function ($query) use ($libryo) {
-                $query->notUserGenerated()->orWhere('organisation_id', $libryo->organisation_id);
+            ->where(function ($query) use ($norma) {
+                $query->notUserGenerated()->orWhere('organisation_id', $norma->organisation_id);
             })
-            ->whereHas('references', function ($query) use ($question, $libryo) {
-                $query->possibleForUncompiledLibryo($libryo)
+            ->whereHas('references', function ($query) use ($question, $norma) {
+                $query->possibleForUncompiledNorma($norma)
                     ->whereRelation('contextQuestions', 'id', $question->id);
             });
     }
@@ -271,19 +271,19 @@ class AssessmentItem extends AbstractModel implements Auditable
      * Scope for all possible assessment item based on the currently compiled references.
      *
      * @param Builder $builder
-     * @param Libryo  $libryo
+     * @param Norma  $norma
      *
      * @return Builder
      */
-    public function scopePossibleForLibryo(Builder $builder, Libryo $libryo): Builder
+    public function scopePossibleForNorma(Builder $builder, Norma $norma): Builder
     {
         return $builder
-            ->where(function ($query) use ($libryo) {
-                $query->notUserGenerated()->orWhere('organisation_id', $libryo->organisation_id);
+            ->where(function ($query) use ($norma) {
+                $query->notUserGenerated()->orWhere('organisation_id', $norma->organisation_id);
             })
-            ->whereHas('references', function ($q) use ($libryo) {
+            ->whereHas('references', function ($q) use ($norma) {
                 $q->active();
-                $q->forLibryo($libryo);
+                $q->forNorma($norma);
             });
     }
 
@@ -308,23 +308,23 @@ class AssessmentItem extends AbstractModel implements Auditable
     }
 
     /**
-     * Scope for assessment items where a response has not been created yet for the given libryo
-     * (mostly to be used in combination with other scopes, e.g. possibleForLibryo).
+     * Scope for assessment items where a response has not been created yet for the given norma
+     * (mostly to be used in combination with other scopes, e.g. possibleForNorma).
      *
      * @param Builder $builder
-     * @param Libryo  $libryo
+     * @param Norma  $norma
      *
      * @return Builder
      */
-    public function scopeNoResponsesForLibryo(Builder $builder, Libryo $libryo): Builder
+    public function scopeNoResponsesForNorma(Builder $builder, Norma $norma): Builder
     {
-        return $builder->whereDoesntHave('assessmentResponses', function ($q) use ($libryo) {
-            $q->whereRelation('libryo', 'id', $libryo->id);
+        return $builder->whereDoesntHave('assessmentResponses', function ($q) use ($norma) {
+            $q->whereRelation('norma', 'id', $norma->id);
         });
     }
 
     /**
-     * Scope for assessment items where a response has not been created yet for the given organisation's libryos.
+     * Scope for assessment items where a response has not been created yet for the given organisation's normas.
      * (mostly to be used in combination with other scopes, e.g. possibleForOrganisation).
      *
      * @param Builder      $builder
@@ -332,10 +332,10 @@ class AssessmentItem extends AbstractModel implements Auditable
      *
      * @return Builder
      */
-    public function scopeNoResponsesForLibryosInOrganisation(Builder $builder, Organisation $organisation): Builder
+    public function scopeNoResponsesForNormasInOrganisation(Builder $builder, Organisation $organisation): Builder
     {
         return $builder->whereDoesntHave('assessmentResponses', function ($q) use ($organisation) {
-            $q->whereRelation('libryo', function ($q) use ($organisation) {
+            $q->whereRelation('norma', function ($q) use ($organisation) {
                 $q->where('organisation_id', $organisation->id);
             });
         });
@@ -399,16 +399,16 @@ class AssessmentItem extends AbstractModel implements Auditable
     }
 
     /**
-     * Get the explanation of the assessment item for the given libryo.
+     * Get the explanation of the assessment item for the given norma.
      *
-     * @param \App\Models\Customer\Libryo $libryo
+     * @param \App\Models\Customer\Norma $norma
      *
      * @return \App\Models\Assess\AssessmentItemDescription|null
      */
-    public function explanationForLibryo(Libryo $libryo): ?AssessmentItemDescription
+    public function explanationForNorma(Norma $norma): ?AssessmentItemDescription
     {
         /** @var \App\Models\Geonames\Location $location */
-        $location = $libryo->location;
+        $location = $norma->location;
 
         /** @var AssessmentItemDescription|null */
         return $this->descriptions()

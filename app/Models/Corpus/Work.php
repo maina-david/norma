@@ -9,9 +9,9 @@ use App\Models\AbstractModel;
 use App\Models\Arachno\Source;
 use App\Models\Auth\User;
 use App\Models\Corpus\Pivots\WorkWork;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
-use App\Models\Customer\Pivots\LibryoWork;
+use App\Models\Customer\Pivots\NormaWork;
 use App\Models\Geonames\Location;
 use App\Models\Notify\LegalUpdate;
 use App\Models\Notify\Pivots\LegalUpdateWork;
@@ -176,10 +176,10 @@ class Work extends AbstractModel implements Auditable
     /**
      * @return BelongsToMany
      */
-    public function libryos(): BelongsToMany
+    public function normas(): BelongsToMany
     {
-        return $this->belongsToMany(Libryo::class, (new LibryoWork())->getTable(), 'work_id', 'place_id')
-            ->using(LibryoWork::class);
+        return $this->belongsToMany(Norma::class, (new NormaWork())->getTable(), 'work_id', 'place_id')
+            ->using(NormaWork::class);
     }
 
     /**
@@ -232,15 +232,15 @@ class Work extends AbstractModel implements Auditable
 
     /**
      * @param Builder              $query
-     * @param Libryo               $libryo
+     * @param Norma               $norma
      * @param array<string, mixed> $referenceFilters
      *
      * @return Builder
      */
-    public function scopeForLibryo(Builder $query, Libryo $libryo, array $referenceFilters = []): Builder
+    public function scopeForNorma(Builder $query, Norma $norma, array $referenceFilters = []): Builder
     {
-        return $query->whereHas('references', function ($q) use ($libryo, $referenceFilters) {
-            $q->forLibryo($libryo);
+        return $query->whereHas('references', function ($q) use ($norma, $referenceFilters) {
+            $q->forNorma($norma);
             if (!empty($referenceFilters)) {
                 $q->filter($referenceFilters);
             }
@@ -268,13 +268,13 @@ class Work extends AbstractModel implements Auditable
 
     /**
      * @param Builder $query
-     * @param Libryo  $libryo
+     * @param Norma  $norma
      *
      * @return Builder
      */
-    public function scopeCachedForLibryo(Builder $query, Libryo $libryo): Builder
+    public function scopeCachedForNorma(Builder $query, Norma $norma): Builder
     {
-        return $query->whereRelation('libryos', fn ($q) => $q->whereKey($libryo->id));
+        return $query->whereRelation('normas', fn ($q) => $q->whereKey($norma->id));
     }
 
     /**
@@ -286,7 +286,7 @@ class Work extends AbstractModel implements Auditable
      */
     public function scopeCachedForOrganisationUserAccess(Builder $query, Organisation $organisation, User $user): Builder
     {
-        return $query->whereHas('libryos', function ($q) use ($organisation, $user) {
+        return $query->whereHas('normas', function ($q) use ($organisation, $user) {
             $q->active()->whereHas('organisation', function ($q) use ($organisation, $user) {
                 $q->whereKey($organisation->id);
                 $q->userHasAccess($user);
@@ -315,18 +315,18 @@ class Work extends AbstractModel implements Auditable
 
     /**
      * @param Builder              $query
-     * @param Libryo               $libryo
+     * @param Norma               $norma
      * @param array<string, mixed> $referenceFilters
      *
      * @return Builder
      */
-    public function scopePrimaryForLibryo(Builder $query, Libryo $libryo, array $referenceFilters = []): Builder
+    public function scopePrimaryForNorma(Builder $query, Norma $norma, array $referenceFilters = []): Builder
     {
         // running this as a union is a lot more efficient
-        $q = static::forLibryo($libryo, $referenceFilters)->doesntHave('parents')->select(['id'])
+        $q = static::forNorma($norma, $referenceFilters)->doesntHave('parents')->select(['id'])
             ->union(
-                static::whereHas('children.references', function ($q) use ($libryo, $referenceFilters) {
-                    $q->forLibryo($libryo);
+                static::whereHas('children.references', function ($q) use ($norma, $referenceFilters) {
+                    $q->forNorma($norma);
                     if (!empty($referenceFilters)) {
                         $q->filter($referenceFilters);
                     }
@@ -400,7 +400,7 @@ class Work extends AbstractModel implements Auditable
      * @param array<string, mixed> $filters
      * @param string               $search
      * @param User                 $user
-     * @param Libryo|null          $libryo
+     * @param Norma|null          $norma
      * @param Organisation|null    $organisation
      * @param bool                 $includeContent
      *
@@ -411,14 +411,14 @@ class Work extends AbstractModel implements Auditable
         array $filters,
         string $search,
         User $user,
-        ?Libryo $libryo,
+        ?Norma $norma,
         ?Organisation $organisation,
         bool $includeContent = false,
     ): Builder {
         $refFilters = Arr::except($filters, ['works']);
         if ($search !== '') {
-            $referenceQuery = $libryo
-                ? Reference::forLibryo($libryo)
+            $referenceQuery = $norma
+                ? Reference::forNorma($norma)
                 : Reference::forOrganisation($organisation); // @phpstan-ignore-line
             $referenceQuery->filter($refFilters);
 
@@ -446,29 +446,29 @@ class Work extends AbstractModel implements Auditable
             });
         }
 
-        return $libryo
-            ? $query->primaryForLibryo($libryo, $refFilters)->withRelationsForLibryo($libryo, $includeContent, $refFilters, isset($filters['works']) ? ['works' => $filters['works']] : [])
+        return $norma
+            ? $query->primaryForNorma($norma, $refFilters)->withRelationsForNorma($norma, $includeContent, $refFilters, isset($filters['works']) ? ['works' => $filters['works']] : [])
             : $query->primaryForOrganisation($organisation, $user, $refFilters)->withRelationsForOrganisation($organisation, $user, $includeContent, $refFilters, isset($filters['works']) ? ['works' => $filters['works']] : []);
     }
 
     /**
      * @param Builder              $query
-     * @param Libryo               $libryo
+     * @param Norma               $norma
      * @param bool                 $includeContent
      * @param array<string, mixed> $referenceFilters
      * @param array<string, mixed> $childrenFilters
      *
      * @return Builder
      */
-    public function scopeWithRelationsForLibryo(
+    public function scopeWithRelationsForNorma(
         Builder $query,
-        Libryo $libryo,
+        Norma $norma,
         bool $includeContent = false,
         array $referenceFilters = [],
         array $childrenFilters = [],
     ): Builder {
-        $forLibryoCallback = function ($q) use ($libryo, $referenceFilters, $childrenFilters) {
-            $q->active()->forLibryo($libryo);
+        $forNormaCallback = function ($q) use ($norma, $referenceFilters, $childrenFilters) {
+            $q->active()->forNorma($norma);
             if (!empty($referenceFilters)) {
                 $q->whereHas('references', fn ($q) => $q->filter($referenceFilters));
             }
@@ -479,8 +479,8 @@ class Work extends AbstractModel implements Auditable
                 });
             }
         };
-        $referencesCallback = function ($q) use ($libryo, $referenceFilters) {
-            $q->active()->forLibryo($libryo);
+        $referencesCallback = function ($q) use ($norma, $referenceFilters) {
+            $q->active()->forNorma($norma);
             $columns = ['id', 'referenceable_id', 'work_id', 'created_at', 'updated_at'];
             if (!empty($referenceFilters)) {
                 $q->filter($referenceFilters);
@@ -497,7 +497,7 @@ class Work extends AbstractModel implements Auditable
         }
 
         return $query->with([
-            'children' => $forLibryoCallback,
+            'children' => $forNormaCallback,
             'children.references' => $referencesCallback,
             'references' => $referencesCallback,
             'children.references.citation' => $emptyCallback,
@@ -634,11 +634,11 @@ class Work extends AbstractModel implements Auditable
         return $this->provideFilter(WorkFilter::class);
     }
 
-    public function withRelationsForLibryo(Libryo $libryo): self
+    public function withRelationsForNorma(Norma $norma): self
     {
         $this->with([
-            'references' => function ($q) use ($libryo) {
-                $q->forLibryo($libryo);
+            'references' => function ($q) use ($norma) {
+                $q->forNorma($norma);
             },
             'references.locations',
             'references.refPlainText',

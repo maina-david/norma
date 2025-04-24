@@ -8,7 +8,7 @@ use App\Models\Auth\User;
 use App\Models\Corpus\Pivots\ReferenceTag;
 use App\Models\Corpus\Pivots\ReferenceTagDraft;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Traits\HasFulltextSearchScope;
 use App\Models\Traits\HasTitleLikeScope;
@@ -73,14 +73,14 @@ class Tag extends AbstractModel implements Auditable
     */
     /**
      * @param Builder $query
-     * @param Libryo  $libryo
+     * @param Norma  $norma
      *
      * @return Builder
      */
-    public function scopeForLibryo(Builder $query, Libryo $libryo): Builder
+    public function scopeForNorma(Builder $query, Norma $norma): Builder
     {
-        return $query->whereHas('references', function ($q) use ($libryo) {
-            $q->active()->forLibryo($libryo);
+        return $query->whereHas('references', function ($q) use ($norma) {
+            $q->active()->forNorma($norma);
         });
     }
 

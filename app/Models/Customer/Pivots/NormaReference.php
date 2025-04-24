@@ -5,9 +5,9 @@ namespace App\Models\Customer\Pivots;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * @mixin IdeHelperLibryoReference
+ * @mixin IdeHelperNormaReference
  */
-class LibryoReference extends Pivot
+class NormaReference extends Pivot
 {
     /** @var string */
     protected $table = 'place_reference';

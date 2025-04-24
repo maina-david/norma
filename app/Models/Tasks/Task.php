@@ -10,7 +10,7 @@ use App\Http\ModelFilters\Tasks\TaskFilter;
 use App\Models\AbstractModel;
 use App\Models\Actions\ActionArea;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Notify\Reminder;
 use App\Models\Ontology\Category;
@@ -18,7 +18,7 @@ use App\Models\Storage\My\File;
 use App\Models\Storage\My\Pivots\FileTask;
 use App\Models\Tasks\Pivots\TaskWatcher;
 use App\Models\Traits\ApiQueryFilterable;
-use App\Models\Traits\AttachedToLibryoAndOrganisation;
+use App\Models\Traits\AttachedToNormaAndOrganisation;
 use App\Models\Traits\EncodesHashId;
 use App\Models\Traits\HasComments;
 use App\Models\Traits\HasTitleLikeScope;
@@ -42,7 +42,7 @@ use RRule\RRule;
  * @property \App\Models\Assess\AssessmentItemResponse|null $assessmentItemResponse
  * @property \App\Models\Corpus\Reference|null              $reference
  * @property \App\Models\Storage\My\File|null               $taskableFile
- * @property \App\Models\Customer\Libryo|null               $libryo
+ * @property \App\Models\Customer\Norma|null               $norma
  *
  * @mixin IdeHelperTask
  */
@@ -54,7 +54,7 @@ class Task extends AbstractModel implements AsCalendarEvent, Auditable
     use HasComments;
     use EncodesHashId;
     use \OwenIt\Auditing\Auditable;
-    use AttachedToLibryoAndOrganisation;
+    use AttachedToNormaAndOrganisation;
     use ApiQueryFilterable;
 
     /** @var array<string, string> */
@@ -116,9 +116,9 @@ class Task extends AbstractModel implements AsCalendarEvent, Auditable
     /**
      * @return BelongsTo
      */
-    public function libryo(): BelongsTo
+    public function norma(): BelongsTo
     {
-        return $this->belongsTo(Libryo::class, 'place_id');
+        return $this->belongsTo(Norma::class, 'place_id');
     }
 
     /**
@@ -245,13 +245,13 @@ class Task extends AbstractModel implements AsCalendarEvent, Auditable
 
     /**
      * @param Builder $builder
-     * @param Libryo  $libryo
+     * @param Norma  $norma
      *
      * @return Builder
      */
-    public function scopeForLibryo(Builder $builder, Libryo $libryo): Builder
+    public function scopeForNorma(Builder $builder, Norma $norma): Builder
     {
-        return $builder->whereRelation('libryo', 'id', $libryo->id);
+        return $builder->whereRelation('norma', 'id', $norma->id);
     }
 
     /**
@@ -262,7 +262,7 @@ class Task extends AbstractModel implements AsCalendarEvent, Auditable
      */
     public function scopeForOrganisation(Builder $builder, Organisation $organisation): Builder
     {
-        return $builder->whereRelation('libryo.organisation', 'id', $organisation->id);
+        return $builder->whereRelation('norma.organisation', 'id', $organisation->id);
     }
 
     /**
@@ -274,7 +274,7 @@ class Task extends AbstractModel implements AsCalendarEvent, Auditable
      */
     public function scopeForOrganisationUserAccess(Builder $builder, Organisation $organisation, User $user): Builder
     {
-        return $builder->whereRelation('libryo', function ($q) use ($organisation, $user) {
+        return $builder->whereRelation('norma', function ($q) use ($organisation, $user) {
             $q->active()->userHasAccess($user);
             $q->whereRelation('organisation', 'id', $organisation->id);
         });
@@ -379,7 +379,7 @@ class Task extends AbstractModel implements AsCalendarEvent, Auditable
         return match ($this->task_status) {
             TaskStatus::done()->value => 'bg-positive',
             TaskStatus::inProgress()->value => 'bg-warning-darker',
-            default => 'bg-libryo-gray-600'
+            default => 'bg-norma-gray-600'
         };
     }
 

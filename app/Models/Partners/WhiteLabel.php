@@ -46,7 +46,7 @@ class WhiteLabel extends AbstractModel implements WhiteLabelAliasContract
      */
     public function loginLogo(): string
     {
-        return $this->login_logo ?? Theme::libryoLogo();
+        return $this->login_logo ?? Theme::normaLogo();
     }
 
     /**
@@ -56,7 +56,7 @@ class WhiteLabel extends AbstractModel implements WhiteLabelAliasContract
      */
     public function appLogo(): string
     {
-        return $this->app_logo ?? Theme::libryoLogo();
+        return $this->app_logo ?? Theme::normaLogo();
     }
 
     /**
@@ -66,7 +66,7 @@ class WhiteLabel extends AbstractModel implements WhiteLabelAliasContract
      */
     public function favicon(): string
     {
-        return $this->favicon ?? Theme::libryoFavicon();
+        return $this->favicon ?? Theme::normaFavicon();
     }
 
     /**
@@ -107,7 +107,7 @@ class WhiteLabel extends AbstractModel implements WhiteLabelAliasContract
      */
     public function authProvider(): string
     {
-        return $this->auth_provider ?? 'libryo';
+        return $this->auth_provider ?? 'norma';
     }
 
     /**

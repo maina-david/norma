@@ -9,7 +9,7 @@ use App\Http\ModelFilters\Assess\AssessmentItemResponseFilter;
 use App\Models\AbstractModel;
 use App\Models\Assess\Pivots\AssessSnapshotAssessmentItemResponse;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Storage\My\File;
 use App\Models\Storage\My\Pivots\AssessmentItemResponseFile;
@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * @property \App\Models\Customer\Libryo|null                                                                                        $libryo
+ * @property \App\Models\Customer\Norma|null                                                                                        $norma
  * @property \App\Models\Storage\My\Pivots\AssessmentItemResponseFile|\App\Models\Assess\Pivots\AssessSnapshotAssessmentItemResponse $pivot
  * @property \App\Models\Assess\AssessmentItem                                                                                       $assessmentItem
  *
@@ -64,9 +64,9 @@ class AssessmentItemResponse extends AbstractModel
     /**
      * @return BelongsTo
      */
-    public function libryo(): BelongsTo
+    public function norma(): BelongsTo
     {
-        return $this->belongsTo(Libryo::class, 'place_id');
+        return $this->belongsTo(Norma::class, 'place_id');
     }
 
     /**
@@ -151,13 +151,13 @@ class AssessmentItemResponse extends AbstractModel
 
     /**
      * @param Builder $builder
-     * @param Libryo  $libryo
+     * @param Norma  $norma
      *
      * @return Builder
      */
-    public function scopeForLibryo(Builder $builder, Libryo $libryo): Builder
+    public function scopeForNorma(Builder $builder, Norma $norma): Builder
     {
-        return $builder->whereRelation('libryo', 'id', $libryo->id);
+        return $builder->whereRelation('norma', 'id', $norma->id);
     }
 
     /**
@@ -168,7 +168,7 @@ class AssessmentItemResponse extends AbstractModel
      */
     public function scopeForOrganisation(Builder $builder, Organisation $organisation): Builder
     {
-        return $builder->whereRelation('libryo', function ($q) use ($organisation) {
+        return $builder->whereRelation('norma', function ($q) use ($organisation) {
             $q->whereRelation('organisation', 'id', $organisation->id);
         });
     }
@@ -182,7 +182,7 @@ class AssessmentItemResponse extends AbstractModel
      */
     public function scopeForOrganisationUserAccess(Builder $builder, Organisation $organisation, User $user): Builder
     {
-        return $builder->whereRelation('libryo', function ($q) use ($organisation, $user) {
+        return $builder->whereRelation('norma', function ($q) use ($organisation, $user) {
             $q->active()->userHasAccess($user);
             $q->whereRelation('organisation', 'id', $organisation->id);
         });

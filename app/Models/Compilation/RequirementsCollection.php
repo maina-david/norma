@@ -4,8 +4,8 @@ namespace App\Models\Compilation;
 
 use App\Models\AbstractModel;
 use App\Models\Compilation\Pivots\RequirementCollectionClosure;
-use App\Models\Customer\Libryo;
-use App\Models\Customer\Pivots\LibryoRequirementsCollection;
+use App\Models\Customer\Norma;
+use App\Models\Customer\Pivots\NormaRequirementsCollection;
 use App\Models\Geonames\LocationType;
 use App\Models\Traits\HasClosureTable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -79,10 +79,10 @@ class RequirementsCollection extends AbstractModel
         return $this->belongsTo(static::class, 'location_country_id');
     }
 
-    public function libryos(): BelongsToMany
+    public function normas(): BelongsToMany
     {
-        return $this->belongsToMany(Libryo::class, (new LibryoRequirementsCollection())->getTable(), 'collection_id', 'place_id')
-            ->using(LibryoRequirementsCollection::class);
+        return $this->belongsToMany(Norma::class, (new NormaRequirementsCollection())->getTable(), 'collection_id', 'place_id')
+            ->using(NormaRequirementsCollection::class);
     }
 
     /*

@@ -7,7 +7,7 @@ use App\Models\AbstractModel;
 use App\Models\Compilation\Pivots\LibraryLibrary;
 use App\Models\Compilation\Pivots\LibraryReference;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Notify\LegalUpdate;
 use App\Models\Notify\Pivots\LegalUpdateLibrary;
 use App\Models\Traits\HasTitleLikeScope;
@@ -41,9 +41,9 @@ class Library extends AbstractModel implements Auditable
     /**
      * @return HasMany
      */
-    public function libryos(): HasMany
+    public function normas(): HasMany
     {
-        return $this->hasMany(Libryo::class);
+        return $this->hasMany(Norma::class);
     }
 
     /**
@@ -128,7 +128,7 @@ class Library extends AbstractModel implements Auditable
      */
     public function scopeForOrganisation(Builder $builder, int $organisationId): Builder
     {
-        return $builder->whereRelation('libryos', function ($q) use ($organisationId) {
+        return $builder->whereRelation('normas', function ($q) use ($organisationId) {
             $q->forOrganisation($organisationId);
         });
     }
@@ -172,28 +172,28 @@ class Library extends AbstractModel implements Auditable
 
     /**
      * @param Library|null                 $parent
-     * @param Collection<int, Libryo>|null $libryos
+     * @param Collection<int, Norma>|null $normas
      *
-     * @return Collection<int, Libryo>
+     * @return Collection<int, Norma>
      */
-    public function applicableLibryos(?Library $parent = null, ?Collection $libryos = null): Collection
+    public function applicableNormas(?Library $parent = null, ?Collection $normas = null): Collection
     {
         $parent = $parent ?? $this;
 
-        // only push the current libryo if it's the first item.
-        if (!$libryos) {
-            $parent->load(['libryos']);
-            $libryos = $parent->libryos;
+        // only push the current norma if it's the first item.
+        if (!$normas) {
+            $parent->load(['normas']);
+            $normas = $parent->normas;
         }
 
-        $parent->load(['children.libryos']);
+        $parent->load(['children.normas']);
 
         foreach ($parent->children as $child) {
-            $libryos = $libryos->merge($child->libryos);
-            $this->applicableLibryos($child, $libryos);
+            $normas = $normas->merge($child->normas);
+            $this->applicableNormas($child, $normas);
         }
 
-        return $libryos->filter(fn ($l) => $l->isActive());
+        return $normas->filter(fn ($l) => $l->isActive());
     }
 
     /**

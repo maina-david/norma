@@ -5,9 +5,9 @@ namespace App\Models\Customer\Pivots;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * @mixin IdeHelperLegalDomainLibryo
+ * @mixin IdeHelperLegalDomainNorma
  */
-class LegalDomainLibryo extends Pivot
+class LegalDomainNorma extends Pivot
 {
     protected $table = 'legal_domain_place';
 }

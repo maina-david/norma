@@ -5,9 +5,9 @@ namespace App\Models\Customer\Pivots;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * @mixin IdeHelperLibryoUser
+ * @mixin IdeHelperNormaTeam
  */
-class LibryoUser extends Pivot
+class NormaTeam extends Pivot
 {
-    protected $table = 'place_user';
+    protected $table = 'team_place';
 }

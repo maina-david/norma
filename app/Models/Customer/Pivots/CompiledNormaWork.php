@@ -5,8 +5,8 @@ namespace App\Models\Customer\Pivots;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * @mixin IdeHelperCompiledLibryoWork
+ * @mixin IdeHelperCompiledNormaWork
  */
-class CompiledLibryoWork extends Pivot
+class CompiledNormaWork extends Pivot
 {
 }

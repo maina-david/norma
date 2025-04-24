@@ -4,7 +4,7 @@ namespace App\Models\Notify;
 
 use App\Models\AbstractModel;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -36,9 +36,9 @@ class Reminder extends AbstractModel implements Auditable
     /**
      * @return BelongsTo
      */
-    public function libryo(): BelongsTo
+    public function norma(): BelongsTo
     {
-        return $this->belongsTo(Libryo::class, 'place_id');
+        return $this->belongsTo(Norma::class, 'place_id');
     }
 
     /**

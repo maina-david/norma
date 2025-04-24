@@ -4,10 +4,10 @@ namespace App\Models\Comments;
 
 use App\Models\AbstractModel;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Storage\My\File;
-use App\Models\Traits\AttachedToLibryoAndOrganisation;
+use App\Models\Traits\AttachedToNormaAndOrganisation;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  */
 class Comment extends AbstractModel
 {
-    use AttachedToLibryoAndOrganisation;
+    use AttachedToNormaAndOrganisation;
 
     /** @var array<string, string> */
     protected $casts = [
@@ -51,9 +51,9 @@ class Comment extends AbstractModel
     /**
      * @return BelongsTo
      */
-    public function libryo(): BelongsTo
+    public function norma(): BelongsTo
     {
-        return $this->belongsTo(Libryo::class, 'place_id');
+        return $this->belongsTo(Norma::class, 'place_id');
     }
 
     /**
@@ -151,13 +151,13 @@ class Comment extends AbstractModel
 
     /**
      * @param Builder $builder
-     * @param Libryo  $libryo
+     * @param Norma  $norma
      *
      * @return Builder
      */
-    public function scopeForLibryo(Builder $builder, Libryo $libryo): Builder
+    public function scopeForNorma(Builder $builder, Norma $norma): Builder
     {
-        return $builder->whereRelation('libryo', 'id', $libryo->id);
+        return $builder->whereRelation('norma', 'id', $norma->id);
     }
 
     /**
@@ -182,7 +182,7 @@ class Comment extends AbstractModel
     {
         return $builder->where(function ($q) use ($organisation, $user) {
             $q->forOrganisation($organisation);
-            $q->orWhereRelation('libryo', function ($q) use ($organisation, $user) {
+            $q->orWhereRelation('norma', function ($q) use ($organisation, $user) {
                 $q->active()->userHasAccess($user);
                 $q->whereRelation('organisation', 'id', $organisation->id);
             });

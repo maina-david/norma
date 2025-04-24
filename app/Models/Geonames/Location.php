@@ -11,7 +11,7 @@ use App\Models\Compilation\Pivots\RequirementCollectionClosure;
 use App\Models\Corpus\Pivots\LocationReference;
 use App\Models\Corpus\Pivots\LocationReferenceDraft;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Geonames\Pivots\LocationLocation;
 use App\Models\Storage\My\File;
 use App\Models\Storage\My\Pivots\FileLocation;
@@ -129,9 +129,9 @@ class Location extends AbstractModel
     /**
      * @return HasMany
      */
-    public function libryos(): HasMany
+    public function normas(): HasMany
     {
-        return $this->hasMany(Libryo::class, 'location_id');
+        return $this->hasMany(Norma::class, 'location_id');
     }
 
     /**

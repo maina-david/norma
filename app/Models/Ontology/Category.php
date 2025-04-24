@@ -12,13 +12,13 @@ use App\Models\Assess\Pivots\AssessmentItemCategory;
 use App\Models\Auth\User;
 use App\Models\Compilation\ContextQuestion;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Ontology\Pivots\CategoryClosure;
 use App\Models\Ontology\Pivots\CategoryContextQuestion;
 use App\Models\Ontology\Pivots\CategoryReference;
 use App\Models\Ontology\Pivots\CategoryReferenceDraft;
-use App\Models\Traits\AttachedToLibryoAndOrganisation;
+use App\Models\Traits\AttachedToNormaAndOrganisation;
 use App\Models\Traits\HasClosureTable;
 use App\Traits\HasModelCache;
 use EloquentFilter\Filterable;
@@ -40,7 +40,7 @@ class Category extends AbstractModel implements Auditable
     use HasClosureTable;
     use Filterable;
     use \OwenIt\Auditing\Auditable;
-    use AttachedToLibryoAndOrganisation;
+    use AttachedToNormaAndOrganisation;
 
     protected $table = 'corpus_categories';
 
@@ -186,14 +186,14 @@ class Category extends AbstractModel implements Auditable
 
     /**
      * @param Builder $builder
-     * @param Libryo  $libryo
+     * @param Norma  $norma
      *
      * @return Builder
      */
-    public function scopeForLibryo(Builder $builder, Libryo $libryo): Builder
+    public function scopeForNorma(Builder $builder, Norma $norma): Builder
     {
-        return $builder->whereHas('references', function ($q) use ($libryo) {
-            $q->active()->forLibryo($libryo);
+        return $builder->whereHas('references', function ($q) use ($norma) {
+            $q->active()->forNorma($norma);
         });
     }
 
@@ -261,14 +261,14 @@ class Category extends AbstractModel implements Auditable
     /**
      * @param Builder      $query
      * @param Organisation $organisation
-     * @param Libryo|null  $libryo
+     * @param Norma|null  $norma
      *
      * @return Builder
      */
-    public function scopeControlsForSelectors(Builder $query, Organisation $organisation, ?Libryo $libryo = null): Builder
+    public function scopeControlsForSelectors(Builder $query, Organisation $organisation, ?Norma $norma = null): Builder
     {
-        $baseQuery = function ($q) use ($libryo, $organisation) {
-            $q->forLibryoOrOrganisation($libryo, $organisation)
+        $baseQuery = function ($q) use ($norma, $organisation) {
+            $q->forNormaOrOrganisation($norma, $organisation)
                 ->typeControl();
         };
 
@@ -282,14 +282,14 @@ class Category extends AbstractModel implements Auditable
     /**
      * @param Builder      $query
      * @param Organisation $organisation
-     * @param Libryo|null  $libryo
+     * @param Norma|null  $norma
      *
      * @return Builder
      */
-    public function scopeTopicsForSelectors(Builder $query, Organisation $organisation, ?Libryo $libryo = null): Builder
+    public function scopeTopicsForSelectors(Builder $query, Organisation $organisation, ?Norma $norma = null): Builder
     {
-        $baseQuery = function ($q) use ($libryo, $organisation) {
-            $q->forLibryoOrOrganisation($libryo, $organisation)
+        $baseQuery = function ($q) use ($norma, $organisation) {
+            $q->forNormaOrOrganisation($norma, $organisation)
                 ->typeTopics();
         };
 

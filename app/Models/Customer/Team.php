@@ -5,7 +5,7 @@ namespace App\Models\Customer;
 use App\Http\ModelFilters\Customer\TeamFilter;
 use App\Models\AbstractModel;
 use App\Models\Auth\User;
-use App\Models\Customer\Pivots\LibryoTeam;
+use App\Models\Customer\Pivots\NormaTeam;
 use App\Models\Customer\Pivots\TeamUser;
 use App\Models\Traits\HasTitleLikeScope;
 use EloquentFilter\Filterable;
@@ -49,10 +49,10 @@ class Team extends AbstractModel implements Auditable
     /**
      * @return BelongsToMany
      */
-    public function libryos()
+    public function normas()
     {
-        return $this->belongsToMany(Libryo::class, (new LibryoTeam())->getTable(), 'team_id', 'place_id')
-            ->using(LibryoTeam::class);
+        return $this->belongsToMany(Norma::class, (new NormaTeam())->getTable(), 'team_id', 'place_id')
+            ->using(NormaTeam::class);
     }
 
     /*

@@ -3,7 +3,7 @@
 namespace App\Models\Compilation;
 
 use App\Models\AbstractModel;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Geonames\Location;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -64,18 +64,18 @@ class ContextQuestionDescription extends AbstractModel implements Auditable
 
     /**
      * @param Builder $builder
-     * @param Libryo  $libryo
+     * @param Norma  $norma
      *
      * @return Builder
      */
-    public function scopeForLibryo(Builder $builder, Libryo $libryo): Builder
+    public function scopeForNorma(Builder $builder, Norma $norma): Builder
     {
-        if (!$libryo->location) {
+        if (!$norma->location) {
             return $builder;
         }
 
-        return $builder->where(function ($query) use ($libryo) {
-            $query->where('location_id', $libryo->location->location_country_id)
+        return $builder->where(function ($query) use ($norma) {
+            $query->where('location_id', $norma->location->location_country_id)
                 ->orWhereNull('location_id')
                 ->orderBy('location_id', 'DESC');
         });

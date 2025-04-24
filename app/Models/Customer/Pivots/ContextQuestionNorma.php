@@ -3,15 +3,15 @@
 namespace App\Models\Customer\Pivots;
 
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * @mixin IdeHelperContextQuestionLibryo
+ * @mixin IdeHelperContextQuestionNorma
  */
-class ContextQuestionLibryo extends Pivot
+class ContextQuestionNorma extends Pivot
 {
     /** @var string */
     protected $table = 'context_question_place';
@@ -25,13 +25,13 @@ class ContextQuestionLibryo extends Pivot
 
     /**
      * @param Builder $builder
-     * @param Libryo  $libryo
+     * @param Norma  $norma
      *
      * @return Builder
      */
-    public function scopeForLibryo(Builder $builder, Libryo $libryo): Builder
+    public function scopeForNorma(Builder $builder, Norma $norma): Builder
     {
-        return $builder->where('place_id', $libryo->id);
+        return $builder->where('place_id', $norma->id);
     }
 
     /**

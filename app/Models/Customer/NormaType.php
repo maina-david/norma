@@ -5,9 +5,9 @@ namespace App\Models\Customer;
 use App\Models\AbstractModel;
 
 /**
- * @mixin IdeHelperLibryoType
+ * @mixin IdeHelperNormaType
  */
-class LibryoType extends AbstractModel
+class NormaType extends AbstractModel
 {
     protected $table = 'place_types';
 }

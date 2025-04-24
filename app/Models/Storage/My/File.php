@@ -8,7 +8,7 @@ use App\Http\ModelFilters\Storage\My\FileFilter;
 use App\Models\AbstractModel;
 use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Geonames\Location;
 use App\Models\Notify\Reminder;
@@ -91,9 +91,9 @@ class File extends AbstractModel implements Auditable
     /**
      * @return BelongsTo
      */
-    public function libryo(): BelongsTo
+    public function norma(): BelongsTo
     {
-        return $this->belongsTo(Libryo::class, 'place_id');
+        return $this->belongsTo(Norma::class, 'place_id');
     }
 
     /**
@@ -171,14 +171,14 @@ class File extends AbstractModel implements Auditable
 
     /**
      * @param Builder $query
-     * @param Libryo  $libryo
+     * @param Norma  $norma
      *
      * @return Builder
      */
-    public function scopeForLibryo(Builder $query, Libryo $libryo): Builder
+    public function scopeForNorma(Builder $query, Norma $norma): Builder
     {
-        return $query->typeLibryo()
-            ->whereRelation('libryo', 'id', $libryo->id);
+        return $query->typeNorma()
+            ->whereRelation('norma', 'id', $norma->id);
     }
 
     /**
@@ -201,12 +201,12 @@ class File extends AbstractModel implements Auditable
      */
     public function scopeAllForOrganisation(Builder $query, Organisation $organisation): Builder
     {
-        $libryoIds = $organisation->libryos()->pluck('id');
+        $normaIds = $organisation->normas()->pluck('id');
 
-        return $query->where(function ($q) use ($libryoIds, $organisation) {
+        return $query->where(function ($q) use ($normaIds, $organisation) {
             $q->whereRelation('organisation', 'id', $organisation->id)
-                ->orWhereHas('libryo', function ($q) use ($libryoIds) {
-                    $q->whereKey($libryoIds);
+                ->orWhereHas('norma', function ($q) use ($normaIds) {
+                    $q->whereKey($normaIds);
                 });
         });
     }
@@ -220,12 +220,12 @@ class File extends AbstractModel implements Auditable
      */
     public function scopeAllForOrganisationUserAccess(Builder $query, Organisation $organisation, User $user): Builder
     {
-        $libryoIds = $organisation->libryos()->userHasAccess($user)->pluck('id');
+        $normaIds = $organisation->normas()->userHasAccess($user)->pluck('id');
 
-        return $query->where(function ($q) use ($libryoIds, $organisation) {
+        return $query->where(function ($q) use ($normaIds, $organisation) {
             $q->whereRelation('organisation', 'id', $organisation->id)
-                ->orWhereHas('libryo', function ($q) use ($libryoIds) {
-                    $q->whereKey($libryoIds);
+                ->orWhereHas('norma', function ($q) use ($normaIds) {
+                    $q->whereKey($normaIds);
                 });
         });
     }
@@ -233,11 +233,11 @@ class File extends AbstractModel implements Auditable
     /**
      * @param Builder     $query
      * @param Folder|null $folder
-     * @param Libryo|null $libryo
+     * @param Norma|null $norma
      *
      * @return Builder
      */
-    public function scopeInGlobalDrive(Builder $query, ?Folder $folder, ?Libryo $libryo): Builder
+    public function scopeInGlobalDrive(Builder $query, ?Folder $folder, ?Norma $norma): Builder
     {
         $query->typeGlobal();
 
@@ -245,13 +245,13 @@ class File extends AbstractModel implements Auditable
             $query->where('folder_id', $folder->id);
         }
 
-        if (!is_null($libryo)) {
-            if ($libryo->location) {
-                $query->limitedLocationAncestors($libryo->location);
+        if (!is_null($norma)) {
+            if ($norma->location) {
+                $query->limitedLocationAncestors($norma->location);
             } else {
                 $query->doesntHave('locations');
             }
-            $query->limitedLegalDomains($libryo->legalDomains);
+            $query->limitedLegalDomains($norma->legalDomains);
         } else {
             $query->doesntHave('locations');
             $query->doesntHave('legalDomains');
@@ -272,7 +272,7 @@ class File extends AbstractModel implements Auditable
     }
 
     /**
-     * Scope to add permissions for managing global, org and libryo files.
+     * Scope to add permissions for managing global, org and norma files.
      *
      * @param Builder $builder
      * @param User    $user
@@ -312,10 +312,10 @@ class File extends AbstractModel implements Auditable
                             sprintf('%s.organisation_id', $this->getTable()),
                             sprintf('%s.id', (new Organisation())->getTable())
                         )
-                        ->orWhereHas('libryos', function ($builder) {
+                        ->orWhereHas('normas', function ($builder) {
                             $builder->whereColumn(
                                 sprintf('%s.place_id', $this->getTable()),
-                                sprintf('%s.id', (new Libryo())->getTable()),
+                                sprintf('%s.id', (new Norma())->getTable()),
                             );
                         });
                 }),
@@ -414,9 +414,9 @@ class File extends AbstractModel implements Auditable
         return FolderType::global()->is($this->folder_type);
     }
 
-    public function isTypeLibryo(): bool
+    public function isTypeNorma(): bool
     {
-        return FolderType::libryo()->is($this->folder_type);
+        return FolderType::norma()->is($this->folder_type);
     }
 
     /**

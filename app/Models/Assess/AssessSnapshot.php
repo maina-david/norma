@@ -4,7 +4,7 @@ namespace App\Models\Assess;
 
 use App\Models\AbstractModel;
 use App\Models\Assess\Pivots\AssessSnapshotAssessmentItemResponse;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -49,9 +49,9 @@ class AssessSnapshot extends AbstractModel
     /**
      * @return BelongsTo
      */
-    public function libryo(): BelongsTo
+    public function norma(): BelongsTo
     {
-        return $this->belongsTo(Libryo::class, 'place_id');
+        return $this->belongsTo(Norma::class, 'place_id');
     }
 
     /**

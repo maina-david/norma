@@ -8,7 +8,7 @@ use App\Models\Actions\Pivots\ActionAreaReference;
 use App\Models\Compilation\ContextQuestion;
 use App\Models\Compilation\Pivots\ContextQuestionReference;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Ontology\Category;
 use App\Models\Tasks\Task;
@@ -75,19 +75,19 @@ class ActionArea extends AbstractModel implements Auditable
      * Scope for all possible items based on the currently compiled references.
      *
      * @param Builder                                 $builder
-     * @param Libryo                                  $libryo
+     * @param Norma                                  $norma
      * @param \App\Models\Compilation\ContextQuestion $question
      *
      * @return Builder
      */
-    public function scopePossibleForLibryoInApplicability(Builder $builder, Libryo $libryo, ContextQuestion $question): Builder
+    public function scopePossibleForNormaInApplicability(Builder $builder, Norma $norma, ContextQuestion $question): Builder
     {
         return $builder->active()
-            ->whereHas('references', function ($query) use ($question, $libryo) {
+            ->whereHas('references', function ($query) use ($question, $norma) {
                 $references = ContextQuestionReference::where('context_question_id', $question->id)->select('reference_id');
 
                 $query->active()
-                    ->forLibryo($libryo)
+                    ->forNorma($norma)
                     ->whereIn(qualify_column(Reference::class, 'id'), $references);
             });
     }
@@ -96,13 +96,13 @@ class ActionArea extends AbstractModel implements Auditable
      * Scope for all possible items based on the currently compiled references.
      *
      * @param Builder $builder
-     * @param Libryo  $libryo
+     * @param Norma  $norma
      *
      * @return Builder
      */
-    public function scopePossibleForLibryo(Builder $builder, Libryo $libryo): Builder
+    public function scopePossibleForNorma(Builder $builder, Norma $norma): Builder
     {
-        return $builder->active()->whereHas('references', fn ($query) => $query->active()->forLibryo($libryo));
+        return $builder->active()->whereHas('references', fn ($query) => $query->active()->forNorma($norma));
     }
 
     /**

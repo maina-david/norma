@@ -2,7 +2,7 @@
 
 namespace App\Models\Customer;
 
-use App\Enums\System\LibryoModule;
+use App\Enums\System\NormaModule;
 use App\Http\ModelFilters\Customer\OrganisationFilter;
 use App\Models\AbstractModel;
 use App\Models\Auth\IdentityProvider;
@@ -87,9 +87,9 @@ class Organisation extends AbstractModel implements Auditable
     /**
      * @return HasMany
      */
-    public function libryos(): HasMany
+    public function normas(): HasMany
     {
-        return $this->hasMany(Libryo::class);
+        return $this->hasMany(Norma::class);
     }
 
     /**
@@ -141,7 +141,7 @@ class Organisation extends AbstractModel implements Auditable
     }
 
     /**
-     * Organisations that the given user has access to via libryo streams.
+     * Organisations that the given user has access to via norma streams.
      *
      * @param Builder $builder
      * @param User    $user
@@ -150,7 +150,7 @@ class Organisation extends AbstractModel implements Auditable
      */
     public function scopeUserHasAccess(Builder $builder, User $user): Builder
     {
-        return $builder->whereHas('libryos', function ($q) use ($user) {
+        return $builder->whereHas('normas', function ($q) use ($user) {
             $q->userHasAccess($user);
         });
     }
@@ -236,17 +236,17 @@ class Organisation extends AbstractModel implements Auditable
      */
     public function hasSSOModule(): bool
     {
-        return $this->hasModule(LibryoModule::sso()->value);
+        return $this->hasModule(NormaModule::sso()->value);
     }
 
     /**
      * Enables the given module for this org.
      *
-     * @param LibryoModule $module
+     * @param NormaModule $module
      *
      * @return bool
      */
-    public function enableModule(LibryoModule $module): bool
+    public function enableModule(NormaModule $module): bool
     {
         return $this->updateSetting('modules.' . $module->value, true);
     }
@@ -324,8 +324,8 @@ class Organisation extends AbstractModel implements Auditable
      */
     public function isApplicabilityAccessible(User $user): bool
     {
-        $autoCompiled = $this->libryos()->where('auto_compiled', true)->exists();
-        $hidden = $this->libryos()->where('settings->modules->hide_applicability', true)->exists();
+        $autoCompiled = $this->normas()->where('auto_compiled', true)->exists();
+        $hidden = $this->normas()->where('settings->modules->hide_applicability', true)->exists();
 
         return $autoCompiled && (!$hidden || $user->isMySuperUser());
     }

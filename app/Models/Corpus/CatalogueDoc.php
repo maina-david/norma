@@ -153,7 +153,7 @@ class CatalogueDoc extends AbstractModel
      */
     public function searchableUsing(): Engine
     {
-        return app(EngineManager::class)->engine('libryo-ai');
+        return app(EngineManager::class)->engine('norma-ai');
     }
 
     /**

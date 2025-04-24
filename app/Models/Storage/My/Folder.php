@@ -5,14 +5,14 @@ namespace App\Models\Storage\My;
 use App\Enums\Storage\FileType;
 use App\Models\AbstractModel;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Geonames\Location;
 use App\Models\Ontology\LegalDomain;
 use App\Models\Storage\My\Pivots\FileReference;
 use App\Models\Storage\My\Pivots\FolderLegalDomain;
 use App\Models\Storage\My\Pivots\FolderLocation;
-use App\Models\Traits\AttachedToLibryoAndOrganisation;
+use App\Models\Traits\AttachedToNormaAndOrganisation;
 use App\Models\Traits\HasFolderType;
 use App\Models\Traits\LimitsLegalDomains;
 use App\Models\Traits\LimitsLocations;
@@ -33,7 +33,7 @@ class Folder extends AbstractModel implements Auditable
     use HasFolderType;
     use LimitsLegalDomains;
     use LimitsLocations;
-    use AttachedToLibryoAndOrganisation;
+    use AttachedToNormaAndOrganisation;
 
     /** @var array<string, string> */
     protected $casts = [
@@ -61,9 +61,9 @@ class Folder extends AbstractModel implements Auditable
     /**
      * @return BelongsTo
      */
-    public function libryo(): BelongsTo
+    public function norma(): BelongsTo
     {
-        return $this->belongsTo(Libryo::class);
+        return $this->belongsTo(Norma::class);
     }
 
     /**
@@ -147,18 +147,18 @@ class Folder extends AbstractModel implements Auditable
 
     /**
      * @param Builder          $builder
-     * @param Libryo|null|null $libryo
+     * @param Norma|null|null $norma
      *
      * @return Builder
      */
-    public function scopeForLibryo(Builder $builder, ?Libryo $libryo = null): Builder
+    public function scopeForNorma(Builder $builder, ?Norma $norma = null): Builder
     {
-        $builder->typeLibryo()->whereNull('organisation_id');
+        $builder->typeNorma()->whereNull('organisation_id');
 
-        if ($libryo) {
-            $builder->orWhere(function ($q) use ($libryo) {
-                $q->typeLibryo()
-                    ->whereRelation('organisation', 'id', $libryo->organisation_id);
+        if ($norma) {
+            $builder->orWhere(function ($q) use ($norma) {
+                $q->typeNorma()
+                    ->whereRelation('organisation', 'id', $norma->organisation_id);
             });
         }
 
@@ -214,15 +214,15 @@ class Folder extends AbstractModel implements Auditable
 
     /**
      * @param Builder $query
-     * @param int     $libryoId
+     * @param int     $normaId
      *
      * @return Builder
      */
-    public function scopeEmptyForLibryo(Builder $query, int $libryoId): Builder
+    public function scopeEmptyForNorma(Builder $query, int $normaId): Builder
     {
-        return $query->where(function ($q) use ($libryoId) {
-            $q->whereDoesntHave('files.libryo', function ($q) use ($libryoId) {
-                $q->whereKey($libryoId);
+        return $query->where(function ($q) use ($normaId) {
+            $q->whereDoesntHave('files.norma', function ($q) use ($normaId) {
+                $q->whereKey($normaId);
             });
             $q->doesntHave('children');
         });
@@ -230,14 +230,14 @@ class Folder extends AbstractModel implements Auditable
 
     /**
      * @param Builder $query
-     * @param int     $libryoId
+     * @param int     $normaId
      *
      * @return Builder
      */
-    public function scopeNotEmptyForLibryo(Builder $query, int $libryoId): Builder
+    public function scopeNotEmptyForNorma(Builder $query, int $normaId): Builder
     {
-        return $query->where(function ($q) use ($libryoId) {
-            $q->whereRelation('files.libryo', 'id', $libryoId);
+        return $query->where(function ($q) use ($normaId) {
+            $q->whereRelation('files.norma', 'id', $normaId);
             $q->orHas('children');
         });
     }
@@ -270,19 +270,19 @@ class Folder extends AbstractModel implements Auditable
 
     /**
      * @param Builder     $query
-     * @param Libryo|null $libryo
+     * @param Norma|null $norma
      *
      * @return Builder
      */
-    public function scopeInGlobalDrive(Builder $query, ?Libryo $libryo): Builder
+    public function scopeInGlobalDrive(Builder $query, ?Norma $norma): Builder
     {
-        if (!is_null($libryo)) {
-            if ($libryo->location) {
-                $query->limitedLocationAncestors($libryo->location);
+        if (!is_null($norma)) {
+            if ($norma->location) {
+                $query->limitedLocationAncestors($norma->location);
             } else {
                 $query->doesntHave('locations');
             }
-            $query->limitedLegalDomains($libryo->legalDomains);
+            $query->limitedLegalDomains($norma->legalDomains);
         } else {
             $query->doesntHave('locations');
             $query->doesntHave('legalDomains');
@@ -307,7 +307,7 @@ class Folder extends AbstractModel implements Auditable
         if ($this->isOrganisation()) {
             return 'organisation';
         }
-        if ($this->isLibryo()) {
+        if ($this->isNorma()) {
             return 'place';
         }
         if ($this->isGlobal()) {

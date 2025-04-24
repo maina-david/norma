@@ -11,9 +11,9 @@ use App\Models\Auth\User;
 use App\Models\Corpus\Pivots\LegalDomainReference;
 use App\Models\Corpus\Pivots\LegalDomainReferenceDraft;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
-use App\Models\Customer\Pivots\LegalDomainLibryo;
+use App\Models\Customer\Pivots\LegalDomainNorma;
 use App\Models\Geonames\Location;
 use App\Models\Ontology\Pivots\LegalDomainLocation;
 use App\Models\Storage\My\File;
@@ -122,10 +122,10 @@ class LegalDomain extends AbstractModel implements Auditable
     /**
      * @return BelongsToMany
      */
-    public function libryos(): BelongsToMany
+    public function normas(): BelongsToMany
     {
-        return $this->belongsToMany(Libryo::class, (new LegalDomainLibryo())->getTable(), 'legal_domain_id', 'place_id')
-            ->using(LegalDomainLibryo::class);
+        return $this->belongsToMany(Norma::class, (new LegalDomainNorma())->getTable(), 'legal_domain_id', 'place_id')
+            ->using(LegalDomainNorma::class);
     }
 
     /**
@@ -194,13 +194,13 @@ class LegalDomain extends AbstractModel implements Auditable
 
     /**
      * @param Builder $query
-     * @param Libryo  $libryo
+     * @param Norma  $norma
      *
      * @return Builder
      */
-    public function scopeForLibryo(Builder $query, Libryo $libryo): Builder
+    public function scopeForNorma(Builder $query, Norma $norma): Builder
     {
-        return $query->whereRelation('libryos', 'id', $libryo->id);
+        return $query->whereRelation('normas', 'id', $norma->id);
     }
 
     /**
@@ -211,7 +211,7 @@ class LegalDomain extends AbstractModel implements Auditable
      */
     public function scopeForOrganisation(Builder $query, Organisation $organisation): Builder
     {
-        return $query->whereRelation('libryos.organisation', 'id', $organisation->id);
+        return $query->whereRelation('normas.organisation', 'id', $organisation->id);
     }
 
     /**
@@ -223,7 +223,7 @@ class LegalDomain extends AbstractModel implements Auditable
      */
     public function scopeForOrganisationUserAccess(Builder $query, Organisation $organisation, User $user): Builder
     {
-        return $query->whereRelation('libryos', function ($q) use ($organisation, $user) {
+        return $query->whereRelation('normas', function ($q) use ($organisation, $user) {
             $q->userHasAccess($user);
             $q->forOrganisation($organisation->id);
         });

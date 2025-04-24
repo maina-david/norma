@@ -7,7 +7,7 @@ use App\Enums\Compilation\ContextQuestionAnswer;
 use App\Models\AbstractModel;
 use App\Models\Auth\User;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -31,9 +31,9 @@ class ApplicabilityActivity extends AbstractModel
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function libryo(): BelongsTo
+    public function norma(): BelongsTo
     {
-        return $this->belongsTo(Libryo::class, 'place_id');
+        return $this->belongsTo(Norma::class, 'place_id');
     }
 
     /**

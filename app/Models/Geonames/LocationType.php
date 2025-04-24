@@ -4,7 +4,7 @@ namespace App\Models\Geonames;
 
 use App\Models\AbstractModel;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Notify\LegalUpdate;
 use Illuminate\Database\Eloquent\Builder;
@@ -48,15 +48,15 @@ class LocationType extends AbstractModel
 
     /**
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param \App\Models\Customer\Libryo           $libryo
+     * @param \App\Models\Customer\Norma           $norma
      * @param array<string, mixed>                  $referenceFilters
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeForLibryoViaUpdates(Builder $query, Libryo $libryo, array $referenceFilters = []): Builder
+    public function scopeForNormaViaUpdates(Builder $query, Norma $norma, array $referenceFilters = []): Builder
     {
-        return $query->whereHas('locations.references', function ($builder) use ($libryo, $referenceFilters) {
-            $builder->whereIn('id', $libryo->legalUpdates()->select('notify_reference_id'));
+        return $query->whereHas('locations.references', function ($builder) use ($norma, $referenceFilters) {
+            $builder->whereIn('id', $norma->legalUpdates()->select('notify_reference_id'));
             if (!empty($referenceFilters)) {
                 $builder->filter($referenceFilters);
             }
@@ -73,11 +73,11 @@ class LocationType extends AbstractModel
      */
     public function scopeForOrganisationUserAccessViaUpdates(Builder $query, Organisation $organisation, User $user, array $referenceFilters = []): Builder
     {
-        LegalUpdate::whereRelation('libryos', 'organisation_id', $organisation->id)->select('notify_reference_id');
+        LegalUpdate::whereRelation('normas', 'organisation_id', $organisation->id)->select('notify_reference_id');
 
         return $query->whereHas('locations.references', function ($builder) use ($user, $organisation, $referenceFilters) {
             $subQuery = LegalUpdate::select('notify_reference_id')
-                ->whereHas('libryos', function ($query) use ($user, $organisation) {
+                ->whereHas('normas', function ($query) use ($user, $organisation) {
                     $query->where('organisation_id', $organisation->id)->userHasAccess($user);
                 });
 
@@ -90,15 +90,15 @@ class LocationType extends AbstractModel
 
     /**
      * @param Builder              $query
-     * @param Libryo               $libryo
+     * @param Norma               $norma
      * @param array<string, mixed> $referenceFilters
      *
      * @return Builder
      */
-    public function scopeForLibryo(Builder $query, Libryo $libryo, array $referenceFilters = []): Builder
+    public function scopeForNorma(Builder $query, Norma $norma, array $referenceFilters = []): Builder
     {
-        return $query->whereHas('locations.references', function ($q) use ($libryo, $referenceFilters) {
-            $q->forLibryo($libryo);
+        return $query->whereHas('locations.references', function ($q) use ($norma, $referenceFilters) {
+            $q->forNorma($norma);
             if (!empty($referenceFilters)) {
                 $q->filter($referenceFilters);
             }
@@ -107,20 +107,20 @@ class LocationType extends AbstractModel
 
     /**
      * @param Builder              $query
-     * @param Libryo               $libryo
+     * @param Norma               $norma
      * @param array<string, mixed> $referenceFilters
      *
      * @return Builder
      */
-    public function scopeForLibryoWithLocations(Builder $query, Libryo $libryo, array $referenceFilters = []): Builder
+    public function scopeForNormaWithLocations(Builder $query, Norma $norma, array $referenceFilters = []): Builder
     {
-        return $query->forLibryo($libryo, $referenceFilters)
+        return $query->forNorma($norma, $referenceFilters)
             ->with([
-                'locations' => function ($q) use ($libryo) {
+                'locations' => function ($q) use ($norma) {
                     $q->whereHas(
                         'references',
-                        function ($q) use ($libryo) {
-                            $q->forLibryo($libryo);
+                        function ($q) use ($norma) {
+                            $q->forNorma($norma);
                         }
                     );
                 },

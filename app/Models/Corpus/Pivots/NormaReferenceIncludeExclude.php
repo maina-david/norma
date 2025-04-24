@@ -5,9 +5,9 @@ namespace App\Models\Corpus\Pivots;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * @mixin IdeHelperLibryoReferenceIncludeExclude
+ * @mixin IdeHelperNormaReferenceIncludeExclude
  */
-class LibryoReferenceIncludeExclude extends Pivot
+class NormaReferenceIncludeExclude extends Pivot
 {
     /** @var string */
     protected $table = 'place_reference_include_exclude';

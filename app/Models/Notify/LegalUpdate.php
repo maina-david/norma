@@ -15,13 +15,13 @@ use App\Models\Corpus\ContentResource;
 use App\Models\Corpus\Doc;
 use App\Models\Corpus\Reference;
 use App\Models\Corpus\Work;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Geonames\Location;
 use App\Models\Notify\Pivots\ContextQuestionLegalUpdate;
 use App\Models\Notify\Pivots\LegalDomainLegalUpdate;
 use App\Models\Notify\Pivots\LegalUpdateLibrary;
-use App\Models\Notify\Pivots\LegalUpdateLibryo;
+use App\Models\Notify\Pivots\LegalUpdateNorma;
 use App\Models\Notify\Pivots\LegalUpdateUser;
 use App\Models\Notify\Pivots\LegalUpdateWork;
 use App\Models\Ontology\LegalDomain;
@@ -150,10 +150,10 @@ class LegalUpdate extends AbstractModel implements Auditable
     /**
      * @return BelongsToMany
      */
-    public function libryos(): BelongsToMany
+    public function normas(): BelongsToMany
     {
-        return $this->belongsToMany(Libryo::class, (new LegalUpdateLibryo())->getTable(), 'register_notification_id', 'place_id')
-            ->using(LegalUpdateLibryo::class);
+        return $this->belongsToMany(Norma::class, (new LegalUpdateNorma())->getTable(), 'register_notification_id', 'place_id')
+            ->using(LegalUpdateNorma::class);
     }
 
     /**
@@ -163,7 +163,7 @@ class LegalUpdate extends AbstractModel implements Auditable
      */
     public function places(): BelongsToMany
     {
-        return $this->libryos();
+        return $this->normas();
     }
 
     /**
@@ -385,24 +385,24 @@ class LegalUpdate extends AbstractModel implements Auditable
 
     /**
      * @param Builder $query
-     * @param Libryo  $libryo
+     * @param Norma  $norma
      *
      * @return Builder
      */
-    public function scopeForLibryo(Builder $query, Libryo $libryo): Builder
+    public function scopeForNorma(Builder $query, Norma $norma): Builder
     {
-        return $query->whereRelation('libryos', 'id', $libryo->id);
+        return $query->whereRelation('normas', 'id', $norma->id);
     }
 
     /**
      * @param Builder    $query
-     * @param array<int> $libryoIds
+     * @param array<int> $normaIds
      *
      * @return Builder
      */
-    public function scopeForLibryos(Builder $query, array $libryoIds): Builder
+    public function scopeForNormas(Builder $query, array $normaIds): Builder
     {
-        return $query->whereHas('libryos', fn ($q) => $q->active()->whereKey($libryoIds));
+        return $query->whereHas('normas', fn ($q) => $q->active()->whereKey($normaIds));
     }
 
     /**
@@ -413,7 +413,7 @@ class LegalUpdate extends AbstractModel implements Auditable
      */
     public function scopeForOrganisation(Builder $query, Organisation $organisation): Builder
     {
-        return $query->whereRelation('libryos.organisation', 'id', $organisation->id);
+        return $query->whereRelation('normas.organisation', 'id', $organisation->id);
     }
 
     /**
@@ -425,7 +425,7 @@ class LegalUpdate extends AbstractModel implements Auditable
      */
     public function scopeForOrganisationUserAccess(Builder $query, Organisation $organisation, User $user): Builder
     {
-        return $query->whereRelation('libryos', function ($q) use ($organisation, $user) {
+        return $query->whereRelation('normas', function ($q) use ($organisation, $user) {
             $q->active()->userHasAccess($user);
             $q->whereRelation('organisation', 'id', $organisation->id);
         });

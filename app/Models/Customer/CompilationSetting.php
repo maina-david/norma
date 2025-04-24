@@ -62,9 +62,9 @@ class CompilationSetting extends AbstractModel
     |--------------------------------------------------------------------------
     */
 
-    public function libryo(): BelongsTo
+    public function norma(): BelongsTo
     {
-        return $this->belongsTo(Libryo::class, 'place_id');
+        return $this->belongsTo(Norma::class, 'place_id');
     }
 
     /*
