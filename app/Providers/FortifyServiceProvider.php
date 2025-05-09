@@ -80,7 +80,7 @@ class FortifyServiceProvider extends ServiceProvider
             $whitelabel = app(WhiteLabelManager::class)->current();
 
             return view('auth.login', [
-                'ssoEnabled' => $whitelabel->authProvider() !== 'libryo',
+                'ssoEnabled' => $whitelabel->authProvider() !== 'norma',
                 'whitelabel' => $whitelabel,
             ]);
         });

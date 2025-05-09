@@ -5,7 +5,7 @@ namespace App\Events\Auth\UserActivity\Projects;
 use App\Enums\Auth\UserActivityType;
 use App\Events\Auth\UserActivity\UserActivityEvent;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Tasks\TaskProject;
 
@@ -14,12 +14,12 @@ class ProjectCreated extends UserActivityEvent
     /**
      * @param \App\Models\Tasks\TaskProject          $project
      * @param \App\Models\Auth\User                  $user
-     * @param \App\Models\Customer\Libryo|null       $libryo
+     * @param \App\Models\Customer\Norma|null       $norma
      * @param \App\Models\Customer\Organisation|null $organisation
      */
-    public function __construct(protected TaskProject $project, User $user, ?Libryo $libryo = null, ?Organisation $organisation = null)
+    public function __construct(protected TaskProject $project, User $user, ?Norma $norma = null, ?Organisation $organisation = null)
     {
-        parent::__construct($user, $libryo, $organisation);
+        parent::__construct($user, $norma, $organisation);
     }
 
     /**

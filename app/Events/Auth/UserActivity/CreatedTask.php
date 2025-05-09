@@ -6,7 +6,7 @@ use App\Enums\Auth\UserActivityType;
 use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Auth\User;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Notify\LegalUpdate;
 use App\Models\Storage\My\File;
 use App\Models\Tasks\Task;
@@ -21,7 +21,7 @@ class CreatedTask extends UserActivityEvent
     ) {
         /** @var User */
         $author = $task->author;
-        parent::__construct($author, $task->libryo);
+        parent::__construct($author, $task->norma);
     }
 
     /**
@@ -49,8 +49,8 @@ class CreatedTask extends UserActivityEvent
         if ($taskable instanceof File) {
             return UserActivityType::documentTask();
         }
-        if ($taskable instanceof Libryo) {
-            return UserActivityType::libryoTask();
+        if ($taskable instanceof Norma) {
+            return UserActivityType::normaTask();
         }
         if ($taskable instanceof Reference) {
             return UserActivityType::referenceTask();
@@ -59,6 +59,6 @@ class CreatedTask extends UserActivityEvent
             return UserActivityType::updatesTask();
         }
 
-        return UserActivityType::libryoTask();
+        return UserActivityType::normaTask();
     }
 }

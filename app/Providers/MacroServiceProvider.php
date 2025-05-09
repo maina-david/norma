@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use App\Http\Services\Api\ApiResourceRequestFilter;
 use App\Models\Customer\Organisation;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Auth\SessionGuard;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Http\Request;
@@ -67,7 +67,7 @@ class MacroServiceProvider extends ServiceProvider
 
         Blade::if('ifOrgHasModule', function ($module) {
             /** @var Organisation */
-            $organisation = app(ActiveLibryosManager::class)->getActiveOrganisation();
+            $organisation = app(ActiveNormasManager::class)->getActiveOrganisation();
 
             return $organisation->hasModule($module);
         });

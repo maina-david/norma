@@ -16,7 +16,7 @@ class MailServiceProvider extends ServiceProvider
     {
         // just to make sure we don't accidentaly send mail in staging or local
         if ($this->app->environment('local') || $this->app->environment('staging') || $this->app->environment('testing')) {
-            Mail::alwaysTo('tech@libryo.com');
+            Mail::alwaysTo('tech@norma.com');
         }
     }
 }

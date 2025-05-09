@@ -100,7 +100,7 @@ class RouteServiceProvider extends ServiceProvider
             ->name('admin.')
             ->group(base_path('routes/admin.php'));
 
-        // matches my*.libryo and other whitelabel routes
+        // matches my*.norma and other whitelabel routes
         Route::middleware([
             'web',
             'auth',

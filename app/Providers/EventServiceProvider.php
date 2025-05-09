@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Actions\Auth\User\SetActiveLibryoAfterLogin;
+use App\Actions\Auth\User\SetActiveNormaAfterLogin;
 use App\Actions\System\EmailLog\LogSentEmail;
 use App\Contracts\Auth\UserActivityEventInterface;
 use App\Events\Assess\AssessmentActivity\AssessmentActivityEventInterface;
@@ -73,7 +73,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         Login::class => [
             LogSuccessfulLogin::class,
-            SetActiveLibryoAfterLogin::class,
+            SetActiveNormaAfterLogin::class,
         ],
         Logout::class => [
             LogLogout::class,

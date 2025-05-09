@@ -8,7 +8,7 @@ use App\Models\Auth\User;
 use App\Models\Comments\Collaborate\Comment as CollaborateComment;
 use App\Models\Comments\Comment;
 use App\Models\Corpus\WorkExpression;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Customer\Team;
 use App\Models\Notify\LegalUpdate;
@@ -26,7 +26,7 @@ use App\Policies\Auth\UserPolicy;
 use App\Policies\Comments\Collaborate\CommentPolicy as CollaborateCommentPolicy;
 use App\Policies\Comments\CommentPolicy;
 use App\Policies\Corpus\WorkExpressionPolicy;
-use App\Policies\Customer\LibryoPolicy;
+use App\Policies\Customer\NormaPolicy;
 use App\Policies\Customer\OrganisationPolicy;
 use App\Policies\Customer\TeamPolicy;
 use App\Policies\Notify\LegalUpdatePolicy;
@@ -67,7 +67,7 @@ class AuthServiceProvider extends ServiceProvider
         File::class => FilePolicy::class,
         Folder::class => FolderPolicy::class,
         LegalUpdate::class => LegalUpdatePolicy::class,
-        Libryo::class => LibryoPolicy::class,
+        Norma::class => NormaPolicy::class,
         Note::class => NotePolicy::class,
         Organisation::class => OrganisationPolicy::class,
         Partner::class => PartnerPolicy::class,

@@ -9,14 +9,14 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class ActivatedLibryo extends UserActivityEvent
+class ActivatedNorma extends UserActivityEvent
 {
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
 
     /** @var string */
-    public $translationKey = 'activities.activated_libryo';
+    public $translationKey = 'activities.activated_norma';
 
     /**
      * @codeCoverageIgnore
@@ -40,8 +40,8 @@ class ActivatedLibryo extends UserActivityEvent
             'user' => [
                 'id' => $this->user->id,
             ],
-            'libryo' => [
-                'id' => $this->libryo->id ?? null,
+            'norma' => [
+                'id' => $this->norma->id ?? null,
             ],
         ], $options);
     }
@@ -51,6 +51,6 @@ class ActivatedLibryo extends UserActivityEvent
      **/
     public function getActivityType(): UserActivityType
     {
-        return UserActivityType::libryoActivate();
+        return UserActivityType::normaActivate();
     }
 }

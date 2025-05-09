@@ -36,7 +36,7 @@ class AddedCommentReply extends AbstractAddedComment
         }
 
         // @codeCoverageIgnoreStart
-        return UserActivityType::libryoCommentReply();
+        return UserActivityType::normaCommentReply();
         // @codeCoverageIgnoreEnd
     }
 }

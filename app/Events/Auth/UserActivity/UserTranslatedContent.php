@@ -5,7 +5,7 @@ namespace App\Events\Auth\UserActivity;
 use App\Enums\Auth\UserActivityType;
 use App\Models\Auth\User;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Notify\LegalUpdate;
 use App\Models\Requirements\Summary;
@@ -18,16 +18,16 @@ class UserTranslatedContent extends UserActivityEvent
     /**
      * @param User                          $user
      * @param Reference|Summary|LegalUpdate $translatable
-     * @param Libryo|null                   $libryo
+     * @param Norma|null                   $norma
      * @param Organisation|null             $organisation
      */
     public function __construct(
         User $user,
         protected Reference|Summary|LegalUpdate $translatable,
-        ?Libryo $libryo,
+        ?Norma $norma,
         ?Organisation $organisation
     ) {
-        parent::__construct($user, $libryo, $organisation);
+        parent::__construct($user, $norma, $organisation);
     }
 
     /**

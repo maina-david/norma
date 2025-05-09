@@ -4,7 +4,7 @@ namespace App\Events\Auth\UserActivity;
 
 use App\Enums\Auth\UserActivityType;
 use App\Models\Auth\User;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -26,8 +26,8 @@ class GenericActivityUsingAuth extends UserActivityEvent
     ) {
         /** @var User $user */
         $user = Auth::user();
-        /** @var ActiveLibryosManager $manager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager $manager */
+        $manager = app(ActiveNormasManager::class);
 
         parent::__construct($user, $manager->getActive(), $manager->getActiveOrganisation());
     }

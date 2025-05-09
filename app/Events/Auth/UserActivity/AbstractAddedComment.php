@@ -17,7 +17,7 @@ abstract class AbstractAddedComment extends UserActivityEvent implements AddedCo
     {
         /** @var User */
         $author = $comment->author;
-        parent::__construct($author, $comment->libryo, $comment->organisation);
+        parent::__construct($author, $comment->norma, $comment->organisation);
         $this->comment = $comment;
     }
 

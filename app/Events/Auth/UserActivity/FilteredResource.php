@@ -4,7 +4,7 @@ namespace App\Events\Auth\UserActivity;
 
 use App\Enums\Auth\UserActivityType;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -20,17 +20,17 @@ class FilteredResource extends UserActivityEvent
      * @param User                 $user
      * @param UserActivityType     $type
      * @param array<string, mixed> $filters
-     * @param Libryo|null          $libryo
+     * @param Norma|null          $norma
      * @param Organisation|null    $organisation
      */
     public function __construct(
         User $user,
         protected UserActivityType $type,
         protected array $filters,
-        ?Libryo $libryo = null,
+        ?Norma $norma = null,
         ?Organisation $organisation = null,
     ) {
-        parent::__construct($user, $libryo, $organisation);
+        parent::__construct($user, $norma, $organisation);
     }
 
     /**

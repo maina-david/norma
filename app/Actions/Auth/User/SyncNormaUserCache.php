@@ -3,24 +3,24 @@
 namespace App\Actions\Auth\User;
 
 use App\Models\Auth\User;
-use App\Stores\Customer\LibryoUserStore;
+use App\Stores\Customer\NormaUserStore;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Lorisleiva\Actions\Concerns\AsAction;
 use Lorisleiva\Actions\Decorators\JobDecorator;
 
-class SyncLibryoUserCache implements ShouldBeUnique
+class SyncNormaUserCache implements ShouldBeUnique
 {
     use AsAction;
 
     public int $jobUniqueFor = 30; // 30 seconds
 
-    public function __construct(protected LibryoUserStore $libryoUserStore)
+    public function __construct(protected NormaUserStore $normaUserStore)
     {
     }
 
     public function handle(User $user): void
     {
-        $this->libryoUserStore->syncFromTeams($user);
+        $this->normaUserStore->syncFromTeams($user);
     }
 
     public function configureJob(JobDecorator $job): void

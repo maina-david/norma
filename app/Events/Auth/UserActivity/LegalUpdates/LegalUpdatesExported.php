@@ -5,7 +5,7 @@ namespace App\Events\Auth\UserActivity\LegalUpdates;
 use App\Enums\Auth\UserActivityType;
 use App\Events\Auth\UserActivity\UserActivityEvent;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 
 class LegalUpdatesExported extends UserActivityEvent
@@ -13,12 +13,12 @@ class LegalUpdatesExported extends UserActivityEvent
     /**
      * @param string                                 $exportType
      * @param \App\Models\Auth\User                  $user
-     * @param \App\Models\Customer\Libryo|null       $libryo
+     * @param \App\Models\Customer\Norma|null       $norma
      * @param \App\Models\Customer\Organisation|null $organisation
      */
-    public function __construct(protected string $exportType, User $user, ?Libryo $libryo = null, ?Organisation $organisation = null)
+    public function __construct(protected string $exportType, User $user, ?Norma $norma = null, ?Organisation $organisation = null)
     {
-        parent::__construct($user, $libryo, $organisation);
+        parent::__construct($user, $norma, $organisation);
     }
 
     /**

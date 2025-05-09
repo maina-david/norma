@@ -6,14 +6,14 @@ use App\Enums\Auth\UserActivityType;
 use App\Events\Auth\UserActivity\UserActivityEvent;
 use App\Models\Assess\AssessmentItem;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 
 class CreatedAssessmentItem extends UserActivityEvent
 {
-    public function __construct(protected AssessmentItem $item, User $user, ?Libryo $libryo = null, ?Organisation $organisation = null)
+    public function __construct(protected AssessmentItem $item, User $user, ?Norma $norma = null, ?Organisation $organisation = null)
     {
-        parent::__construct($user, $libryo, $organisation);
+        parent::__construct($user, $norma, $organisation);
     }
 
     /**

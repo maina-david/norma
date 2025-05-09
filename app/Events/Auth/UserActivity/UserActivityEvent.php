@@ -5,7 +5,7 @@ namespace App\Events\Auth\UserActivity;
 use App\Contracts\Auth\UserActivityEventInterface;
 use App\Enums\Auth\UserActivityType;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -19,8 +19,8 @@ abstract class UserActivityEvent implements UserActivityEventInterface
     use InteractsWithSockets;
     use SerializesModels;
 
-    /** @var Libryo */
-    public ?Libryo $libryo;
+    /** @var Norma */
+    public ?Norma $norma;
 
     /** @var Organisation */
     public ?Organisation $organisation;
@@ -30,15 +30,15 @@ abstract class UserActivityEvent implements UserActivityEventInterface
 
     /**
      * @param User              $user
-     * @param Libryo|null       $libryo
+     * @param Norma|null       $norma
      * @param Organisation|null $organisation
      */
     public function __construct(
         public User $user,
-        ?Libryo $libryo = null,
+        ?Norma $norma = null,
         ?Organisation $organisation = null
     ) {
-        $this->libryo = $libryo;
+        $this->norma = $norma;
         $this->organisation = $organisation;
     }
 
@@ -64,13 +64,13 @@ abstract class UserActivityEvent implements UserActivityEventInterface
     }
 
     /**
-     * Getter for libryo.
+     * Getter for norma.
      *
-     * @return Libryo|null
+     * @return Norma|null
      **/
-    public function getLibryo(): ?Libryo
+    public function getNorma(): ?Norma
     {
-        return $this->libryo;
+        return $this->norma;
     }
 
     /**

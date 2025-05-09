@@ -14,7 +14,7 @@ use App\Models\Corpus\Pivots\LegalDomainReference;
 use App\Models\Corpus\Pivots\LocationReference;
 use App\Models\Corpus\Reference;
 use App\Models\Corpus\WorkExpression;
-use App\Models\Customer\Pivots\ContextQuestionLibryo;
+use App\Models\Customer\Pivots\ContextQuestionNorma;
 use App\Models\Notify\LegalUpdate;
 use App\Models\Notify\NotificationHandover;
 use App\Models\Ontology\Category;
@@ -33,7 +33,7 @@ use App\Observers\Collaborators\ProfileDocumentObserver;
 use App\Observers\Collaborators\ProfileObserver;
 use App\Observers\Collaborators\TeamObserver;
 use App\Observers\Comments\CommentObserver;
-use App\Observers\Compilation\ContextQuestionLibryoObserver;
+use App\Observers\Compilation\ContextQuestionNormaObserver;
 use App\Observers\Corpus\DocObserver;
 use App\Observers\Corpus\LegalDomainReferenceObserver;
 use App\Observers\Corpus\LocationReferenceObserver;
@@ -59,7 +59,7 @@ class ObserverServiceProvider extends ServiceProvider
         'App\Models\Auth\Role' => 'App\Observers\Auth\RoleObserver',
         'App\Models\Auth\User' => 'App\Observers\Auth\UserObserver',
         'App\Models\Corpus\Work' => 'App\Observers\Corpus\WorkObserver',
-        'App\Models\Customer\Libryo' => 'App\Observers\Customer\LibryoObserver',
+        'App\Models\Customer\Norma' => 'App\Observers\Customer\NormaObserver',
         'App\Models\Customer\Organisation' => 'App\Observers\Customer\OrganisationObserver',
         'App\Models\Partners\WhiteLabel' => 'App\Observers\Partners\WhiteLabelObserver',
         'App\Models\Requirements\Consequence' => 'App\Observers\Requirements\ConsequenceObserver',
@@ -70,7 +70,7 @@ class ObserverServiceProvider extends ServiceProvider
         Attachment::class => AttachmentObserver::class,
         Category::class => CategoryObserver::class,
         Comment::class => CommentObserver::class,
-        ContextQuestionLibryo::class => ContextQuestionLibryoObserver::class,
+        ContextQuestionNorma::class => ContextQuestionNormaObserver::class,
         Doc::class => DocObserver::class,
         LegalDomainReference::class => LegalDomainReferenceObserver::class,
         LegalUpdate::class => LegalUpdateObserver::class,

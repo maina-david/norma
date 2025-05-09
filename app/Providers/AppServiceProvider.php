@@ -2,15 +2,15 @@
 
 namespace App\Providers;
 
-use App\Http\Services\LibryoAI\Client;
+use App\Http\Services\NormaAI\Client;
 use App\Managers\ThemeManager;
 use App\Managers\WhiteLabelManager;
 use App\Models\Auth\User;
 use App\Models\Corpus\Work;
 use App\Models\Corpus\WorkExpression;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Services\Customer\ActiveOrganisationManager;
-use App\Services\Search\LibryoAI\LibryoAISearchEngine;
+use App\Services\Search\NormaAI\NormaAISearchEngine;
 use App\Services\Translation\GoogleTranslator;
 use App\Services\Translation\TranslatorServiceInterface;
 use App\Themes\Collaborate;
@@ -44,8 +44,8 @@ class AppServiceProvider extends ServiceProvider
             return new ActiveOrganisationManager();
         });
 
-        $this->app->scoped(ActiveLibryosManager::class, function ($app) {
-            return new ActiveLibryosManager($app->make(ActiveOrganisationManager::class));
+        $this->app->scoped(ActiveNormasManager::class, function ($app) {
+            return new ActiveNormasManager($app->make(ActiveOrganisationManager::class));
         });
 
         if ($this->app->environment('local')) {
@@ -77,8 +77,8 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         // @codeCoverageIgnoreStart
-        resolve(EngineManager::class)->extend('libryo-ai', function () {
-            return new LibryoAISearchEngine(app(Client::class));
+        resolve(EngineManager::class)->extend('norma-ai', function () {
+            return new NormaAISearchEngine(app(Client::class));
         });
 
         Pulse::user(fn (User $user) => [
@@ -89,8 +89,8 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::define('viewPulse', function (User $user) {
             return in_array($user->email, [
-                'sam.cloete@libryo.com',
-                'david.mjomba@libryo.com',
+                'sam.cloete@norma.com',
+                'david.mjomba@norma.com',
             ]);
         });
         // @codeCoverageIgnoreEnd

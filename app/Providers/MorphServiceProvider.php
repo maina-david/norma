@@ -10,7 +10,7 @@ use App\Models\Compilation\ApplicabilityActivity;
 use App\Models\Compilation\ContextQuestion;
 use App\Models\Corpus\Reference;
 use App\Models\Corpus\Work;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Notify\LegalUpdate;
 use App\Models\Ontology\Tag;
 use App\Models\Ontology\UserTag;
@@ -38,15 +38,15 @@ class MorphServiceProvider extends ServiceProvider
     public function boot()
     {
         Relation::morphMap([
-            // 'App\Models\Auth\User' => User::class, // is needed for notifications which contains old Libryo notifications and new ones
+            // 'App\Models\Auth\User' => User::class, // is needed for notifications which contains old Norma notifications and new ones
             'applicability_activities' => ApplicabilityActivity::class,
             'assessment_item' => AssessmentItem::class,
             'assessment_item_response' => AssessmentItemResponse::class,
             'comment' => Comment::class,
             'context_question' => ContextQuestion::class,
             'file' => File::class,
-            'Libryo\Models\User' => User::class, // legacy notifications
-            'place' => Libryo::class,
+            'Norma\Models\User' => User::class, // legacy notifications
+            'place' => Norma::class,
             'register_item' => Reference::class,
             'register_notification' => LegalUpdate::class,
             'task' => Task::class,

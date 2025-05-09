@@ -13,15 +13,15 @@ use Lorisleiva\Actions\Concerns\AsAction;
  *
  * @codeCoverageIgnore
  */
-class MigrateLibryoUserRoles
+class MigrateNormaUserRoles
 {
     use AsAction;
 
-    public string $commandSignature = 'libryo:migrate-libryo-user-roles';
+    public string $commandSignature = 'norma:migrate-norma-user-roles';
 
     public function handle(): void
     {
-        $legacyRoles = Role::where('app', 'libryo')->where('title', '!=', 'Turks Capturer')->get();
+        $legacyRoles = Role::where('app', 'norma')->where('title', '!=', 'Turks Capturer')->get();
         $cursor = User::whereIn('role_id', $legacyRoles->modelKeys())
             ->doesntHave('roles')
             ->cursor();
