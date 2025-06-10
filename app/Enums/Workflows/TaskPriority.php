@@ -44,8 +44,8 @@ class TaskPriority extends Enum
             self::immediate()->value => 'bg-red-800',
             self::urgent()->value => 'bg-red-600',
             self::high()->value => 'bg-red-400',
-            self::medium()->value => 'bg-red-200 text-libryo-gray-600',
-            default => 'bg-red-100 text-libryo-gray-600',
+            self::medium()->value => 'bg-red-200 text-norma-gray-600',
+            default => 'bg-red-100 text-norma-gray-600',
         };
     }
 }

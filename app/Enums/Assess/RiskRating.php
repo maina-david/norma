@@ -38,7 +38,7 @@ class RiskRating extends Enum
     public static function colors(): array
     {
         return [
-            static::notRated()->value => 'libryo-gray-300',
+            static::notRated()->value => 'norma-gray-300',
             static::low()->value => 'positive',
             static::medium()->value => 'warning',
             static::high()->value => 'negative',

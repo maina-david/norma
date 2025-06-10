@@ -9,7 +9,7 @@ use App\Enums\Enum;
  *
  * @method static FolderType global()
  * @method static FolderType organisation()
- * @method static FolderType libryo()
+ * @method static FolderType norma()
  * @method static FolderType system()
  */
 class FolderType extends Enum
@@ -24,7 +24,7 @@ class FolderType extends Enum
         return [
             'global' => 1,
             'organisation' => 2,
-            'libryo' => 4,
+            'norma' => 4,
             'system' => 5,
         ];
     }

@@ -21,7 +21,7 @@ use App\Enums\Enum;
  * @method static self dashboard()
  * @method static self sso()
  */
-class LibryoModule extends Enum
+class NormaModule extends Enum
 {
     /** @var string */
     protected static string $langPrefix = 'customer.organisation.modules.';

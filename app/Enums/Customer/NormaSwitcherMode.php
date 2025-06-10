@@ -7,10 +7,10 @@ use App\Enums\Enum;
 /**
  * @property int $value;
  *
- * @method static LibryoSwitcherMode all()
- * @method static LibryoSwitcherMode single()
+ * @method static NormaSwitcherMode all()
+ * @method static NormaSwitcherMode single()
  */
-class LibryoSwitcherMode extends Enum
+class NormaSwitcherMode extends Enum
 {
     /**
      * Get the allowed enums.

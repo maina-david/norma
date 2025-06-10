@@ -8,7 +8,7 @@ enum AnnotationSourceType: int
     case ASSESSMENT_ITEM = 2;
     case TAG = 3;
     case CDM = 4;
-    case LIBRYO_AI = 5;
+    case NORMA_AI = 5;
     case WORDCLOUD = 6;
     case QC_OTHER = 7;
     case MAGI = 8;

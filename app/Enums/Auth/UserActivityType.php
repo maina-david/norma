@@ -8,15 +8,15 @@ use App\Enums\Enum;
  * @property int $value;
  *
  * @method static UserActivityType viewedTag()
- * @method static UserActivityType libryoComment()
- * @method static UserActivityType libryoActivate()
+ * @method static UserActivityType normaComment()
+ * @method static UserActivityType normaActivate()
  * @method static UserActivityType referenceComment()
  * @method static UserActivityType referenceCommentReply()
- * @method static UserActivityType libryoCommentReply()
+ * @method static UserActivityType normaCommentReply()
  * @method static UserActivityType updateNotificationPreferences()
  * @method static UserActivityType legalUpdateRead()
  * @method static UserActivityType legalUpdateUnderstood()
- * @method static UserActivityType libryoCheckIn()
+ * @method static UserActivityType normaCheckIn()
  * @method static UserActivityType viewedReference()
  * @method static UserActivityType viewedTabSummary()
  * @method static UserActivityType viewedTabSection()
@@ -45,7 +45,7 @@ use App\Enums\Enum;
  * @method static UserActivityType taskReminder()
  * @method static UserActivityType assessmentItemResponseTask()
  * @method static UserActivityType documentTask()
- * @method static UserActivityType libryoTask()
+ * @method static UserActivityType normaTask()
  * @method static UserActivityType referenceTask()
  * @method static UserActivityType fulltextSearchTerm()
  * @method static UserActivityType updatesTask()
@@ -103,15 +103,15 @@ class UserActivityType extends Enum
     {
         return [
             'viewedTag' => 1,
-            'libryoComment' => 2,
-            'libryoActivate' => 3,
+            'normaComment' => 2,
+            'normaActivate' => 3,
             'referenceComment' => 4,
             'referenceCommentReply' => 5,
-            'libryoCommentReply' => 6,
+            'normaCommentReply' => 6,
             'updateNotificationPreferences' => 7,
             'legalUpdateRead' => 8,
             'legalUpdateUnderstood' => 9,
-            'libryoCheckIn' => 10,
+            'normaCheckIn' => 10,
             'viewedReference' => 11,
             'viewedTabSummary' => 12,
             'viewedTabSection' => 13,
@@ -140,7 +140,7 @@ class UserActivityType extends Enum
             'taskReminder' => 36,
             'assessmentItemResponseTask' => 37,
             'documentTask' => 38,
-            'libryoTask' => 39,
+            'normaTask' => 39,
             'referenceTask' => 40,
             'fulltextSearchTerm' => 41,
             'updatesTask' => 42,
