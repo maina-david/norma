@@ -14,7 +14,7 @@ class LeftNote extends AssessmentActivityEvent
         AssessmentItemResponse $response,
         public Comment $comment
     ) {
-        parent::__construct($user, $response, $comment->libryo, $comment->organisation);
+        parent::__construct($user, $response, $comment->norma, $comment->organisation);
     }
 
     public function getActivityType(): AssessActivityType

@@ -5,7 +5,7 @@ namespace App\Actions\Assess\AssessmentItemResponse;
 use App\Enums\Assess\ResponseStatus;
 use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Assess\Pivots\AssessmentItemReference;
-use App\Models\Customer\Pivots\LibryoReference;
+use App\Models\Customer\Pivots\NormaReference;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -20,7 +20,7 @@ class DeleteResponsesWithoutReferences
     public function handle(): void
     {
         // creating a custom query here is much more efficient than trying to use eloquent relations
-        $placeRefTable = (new LibryoReference())->getTable();
+        $placeRefTable = (new NormaReference())->getTable();
         $aiRefTable = (new AssessmentItemReference())->getTable();
         $aiResponseTable = (new AssessmentItemResponse())->getTable();
         $notAssessed = ResponseStatus::notAssessed()->value;

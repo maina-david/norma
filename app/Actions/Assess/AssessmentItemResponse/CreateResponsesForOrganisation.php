@@ -11,13 +11,13 @@ class CreateResponsesForOrganisation
 
     public function handle(Organisation $organisation): void
     {
-        foreach ($organisation->libryos()->active()->cursor() as $libryo) {
-            if (!$libryo->hasAssessModule()) {
+        foreach ($organisation->normas()->active()->cursor() as $norma) {
+            if (!$norma->hasAssessModule()) {
                 // @codeCoverageIgnoreStart
                 continue;
                 // @codeCoverageIgnoreEnd
             }
-            CreateResponsesForLibryo::run($libryo);
+            CreateResponsesForNorma::run($norma);
         }
     }
 }

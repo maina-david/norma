@@ -3,12 +3,12 @@
 namespace App\Actions\Assess\AssessmentItemResponse;
 
 use App\Models\Assess\AssessmentItem;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Stores\Assess\AssessmentItemResponseStore;
 use Illuminate\Database\Eloquent\Collection;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class CreateResponsesForLibryo
+class CreateResponsesForNorma
 {
     use AsAction;
 
@@ -16,18 +16,18 @@ class CreateResponsesForLibryo
     {
     }
 
-    public function handle(Libryo $libryo): void
+    public function handle(Norma $norma): void
     {
-        if (!$libryo->hasAssessModule()) {
+        if (!$norma->hasAssessModule()) {
             // @codeCoverageIgnoreStart
             return;
             // @codeCoverageIgnoreEnd
         }
         /** @var Collection<AssessmentItem> */
-        $assessItems = AssessmentItem::possibleForLibryo($libryo)
-            ->noResponsesForLibryo($libryo)
+        $assessItems = AssessmentItem::possibleForNorma($norma)
+            ->noResponsesForNorma($norma)
             ->get(['id']);
-        $this->assessmentItemResponseStore->createResponsesForItems($assessItems, $libryo);
+        $this->assessmentItemResponseStore->createResponsesForItems($assessItems, $norma);
     }
 
     /**
@@ -35,8 +35,8 @@ class CreateResponsesForLibryo
      *
      * @return void
      */
-    public function asJob(Libryo $libryo): void
+    public function asJob(Norma $norma): void
     {
-        $this->handle($libryo);
+        $this->handle($norma);
     }
 }

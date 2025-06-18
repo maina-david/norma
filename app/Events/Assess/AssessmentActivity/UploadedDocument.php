@@ -5,7 +5,7 @@ namespace App\Events\Assess\AssessmentActivity;
 use App\Enums\Assess\AssessActivityType;
 use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Storage\My\File;
 
@@ -14,7 +14,7 @@ class UploadedDocument extends AssessmentActivityEvent
     /**
      * @param User                   $user
      * @param AssessmentItemResponse $response
-     * @param Libryo|null            $libryo
+     * @param Norma|null            $norma
      * @param Organisation|null      $organisation
      * @param File                   $document
      */
@@ -22,10 +22,10 @@ class UploadedDocument extends AssessmentActivityEvent
         public File $document,
         User $user,
         AssessmentItemResponse $response,
-        ?Libryo $libryo = null,
+        ?Norma $norma = null,
         ?Organisation $organisation = null
     ) {
-        parent::__construct($user, $response, $libryo, $organisation);
+        parent::__construct($user, $response, $norma, $organisation);
     }
 
     /**

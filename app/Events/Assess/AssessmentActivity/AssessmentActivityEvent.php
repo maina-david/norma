@@ -5,7 +5,7 @@ namespace App\Events\Assess\AssessmentActivity;
 use App\Enums\Assess\AssessActivityType;
 use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -18,13 +18,13 @@ abstract class AssessmentActivityEvent implements AssessmentActivityEventInterfa
     /**
      * @param User                   $user
      * @param AssessmentItemResponse $response
-     * @param Libryo|null            $libryo
+     * @param Norma|null            $norma
      * @param Organisation|null      $organisation
      */
     public function __construct(
         public User $user,
         public AssessmentItemResponse $response,
-        public ?Libryo $libryo = null,
+        public ?Norma $norma = null,
         public ?Organisation $organisation = null
     ) {
     }
@@ -40,13 +40,13 @@ abstract class AssessmentActivityEvent implements AssessmentActivityEventInterfa
     }
 
     /**
-     * Getter for libryo.
+     * Getter for norma.
      *
-     * @return Libryo
+     * @return Norma
      **/
-    public function getLibryo(): ?Libryo
+    public function getNorma(): ?Norma
     {
-        return $this->libryo;
+        return $this->norma;
     }
 
     /**

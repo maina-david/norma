@@ -5,23 +5,23 @@ namespace App\Events\Assess\AssessmentActivity;
 use App\Enums\Assess\AssessActivityType;
 use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 
 class RequirementUnlinked extends AssessmentActivityEvent
 {
     /**
      * @param User                   $user
-     * @param Libryo                 $libryo
+     * @param Norma                 $norma
      * @param AssessmentItemResponse $response
      * @param int                    $referenceId
      */
     public function __construct(
         User $user,
-        Libryo $libryo,
+        Norma $norma,
         AssessmentItemResponse $response,
         protected int $referenceId,
     ) {
-        parent::__construct($user, $response, $libryo);
+        parent::__construct($user, $response, $norma);
     }
 
     /**

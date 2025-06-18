@@ -5,13 +5,13 @@ namespace App\Events\Assess\AssessmentActivity;
 use App\Enums\Assess\AssessActivityType;
 use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 
 class AnswerChanged extends AssessmentActivityEvent
 {
     /**
      * @param User                   $user
-     * @param Libryo                 $libryo
+     * @param Norma                 $norma
      * @param AssessmentItemResponse $response
      * @param int|null               $fromAnswer
      * @param int|null               $toAnswer
@@ -19,13 +19,13 @@ class AnswerChanged extends AssessmentActivityEvent
      */
     public function __construct(
         User $user,
-        Libryo $libryo,
+        Norma $norma,
         AssessmentItemResponse $response,
         public ?int $fromAnswer,
         public ?int $toAnswer,
         public string $notes
     ) {
-        parent::__construct($user, $response, $libryo);
+        parent::__construct($user, $response, $norma);
     }
 
     /**

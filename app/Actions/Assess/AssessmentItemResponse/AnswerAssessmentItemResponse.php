@@ -50,12 +50,12 @@ class AnswerAssessmentItemResponse
         $notes = $input['notes'];
         $notes = $purifier->cleanComment($notes);
 
-        /** @var \App\Models\Customer\Libryo $libryo */
-        $libryo = $response->libryo;
+        /** @var \App\Models\Customer\Norma $norma */
+        $norma = $response->norma;
 
         AnswerChanged::dispatch(
             $user,
-            $libryo,
+            $norma,
             $response,
             $fromAnswer,
             $answer,
