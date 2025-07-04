@@ -9,19 +9,19 @@ use App\Events\Auth\UserActivity\GenericActivity;
 use App\Models\Auth\User;
 use App\Models\Compilation\ApplicabilityActivity;
 use App\Models\Compilation\ApplicabilityNote;
-use App\Models\Corpus\Pivots\LibryoReferenceIncludeExclude;
+use App\Models\Corpus\Pivots\NormaReferenceIncludeExclude;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
-use App\Models\Customer\Pivots\LibryoReference;
-use App\Models\Customer\Pivots\LibryoWork;
+use App\Models\Customer\Norma;
+use App\Models\Customer\Pivots\NormaReference;
+use App\Models\Customer\Pivots\NormaWork;
 use Illuminate\Support\Facades\Auth;
 
-class IncludeExcludeFromLibryo
+class IncludeExcludeFromNorma
 {
     /**
      * Handle the inclusion or exclusion of a reference.
      *
-     * @param array<int, int>                              $libryoIds
+     * @param array<int, int>                              $normaIds
      * @param array<int, int>                              $referenceIds
      * @param bool                                         $include
      * @param \App\Enums\Compilation\ApplicabilityNoteType $type
@@ -29,38 +29,38 @@ class IncludeExcludeFromLibryo
      *
      * @return void
      */
-    public function handle(array $libryoIds, array $referenceIds, bool $include, ApplicabilityNoteType $type, string $comment): void
+    public function handle(array $normaIds, array $referenceIds, bool $include, ApplicabilityNoteType $type, string $comment): void
     {
-        $this->updatePivot($libryoIds, $referenceIds, $include);
-        $this->updateLiveReferences($libryoIds, $referenceIds, $include);
-        $this->updateLiveWorks($libryoIds, $referenceIds, $include);
-        $this->createApplicabilityActivity($libryoIds, $referenceIds, $include, $type, $comment);
+        $this->updatePivot($normaIds, $referenceIds, $include);
+        $this->updateLiveReferences($normaIds, $referenceIds, $include);
+        $this->updateLiveWorks($normaIds, $referenceIds, $include);
+        $this->createApplicabilityActivity($normaIds, $referenceIds, $include, $type, $comment);
 
-        $libryos = Libryo::whereKey($libryoIds)->get(['id']);
+        $normas = Norma::whereKey($normaIds)->get(['id']);
 
         /** @var User $user */
         $user = Auth::user();
 
-        foreach ($libryos as $libryo) {
-            event(new GenericActivity($user, UserActivityType::modifiedApplicabilityRequirement(), null, $libryo, null));
+        foreach ($normas as $norma) {
+            event(new GenericActivity($user, UserActivityType::modifiedApplicabilityRequirement(), null, $norma, null));
         }
     }
 
     /**
-     * @param array<int, int>      $libryoIds
+     * @param array<int, int>      $normaIds
      * @param array<int, int>      $referenceIds
      * @param array<string, mixed> $extra
      *
      * @return array<int, mixed>
      */
-    protected function generatePlaceReferenceArray(array $libryoIds, array $referenceIds, array $extra = []): array
+    protected function generatePlaceReferenceArray(array $normaIds, array $referenceIds, array $extra = []): array
     {
         $values = [];
 
-        foreach ($libryoIds as $libryo) {
+        foreach ($normaIds as $norma) {
             foreach ($referenceIds as $reference) {
                 $values[] = [
-                    'place_id' => $libryo,
+                    'place_id' => $norma,
                     'reference_id' => $reference,
                     ...$extra,
                 ];
@@ -73,41 +73,41 @@ class IncludeExcludeFromLibryo
     /**
      * Update the pivot table.
      *
-     * @param array<int, int> $libryoIds
+     * @param array<int, int> $normaIds
      * @param array<int, int> $referenceIds
      * @param bool            $include
      *
      * @return void
      */
-    protected function updatePivot(array $libryoIds, array $referenceIds, bool $include): void
+    protected function updatePivot(array $normaIds, array $referenceIds, bool $include): void
     {
-        $values = $this->generatePlaceReferenceArray($libryoIds, $referenceIds, ['include' => $include]);
+        $values = $this->generatePlaceReferenceArray($normaIds, $referenceIds, ['include' => $include]);
 
-        LibryoReferenceIncludeExclude::upsert($values, ['place_id', 'reference_id'], ['include' => $include]);
+        NormaReferenceIncludeExclude::upsert($values, ['place_id', 'reference_id'], ['include' => $include]);
     }
 
     /**
-     * Update the libryo-reference table.
+     * Update the norma-reference table.
      *
-     * @param array<int, int> $libryoIds
+     * @param array<int, int> $normaIds
      * @param array<int, int> $referenceIds
      * @param bool            $include
      *
      * @return void
      */
-    protected function updateLiveReferences(array $libryoIds, array $referenceIds, bool $include): void
+    protected function updateLiveReferences(array $normaIds, array $referenceIds, bool $include): void
     {
-        $values = $this->generatePlaceReferenceArray($libryoIds, $referenceIds);
+        $values = $this->generatePlaceReferenceArray($normaIds, $referenceIds);
 
         if ($include) {
-            LibryoReference::insertOrIgnore($values);
+            NormaReference::insertOrIgnore($values);
 
             return;
         }
 
         /** @var array<string, mixed> $first */
         $first = array_pop($values);
-        $query = LibryoReference::where($first);
+        $query = NormaReference::where($first);
 
         foreach ($values as $group) {
             $query->orWhere(function ($builder) use ($group) {
@@ -122,39 +122,39 @@ class IncludeExcludeFromLibryo
     /**
      * Update the works.
      *
-     * @param array<int, int> $libryoIds
+     * @param array<int, int> $normaIds
      * @param array<int, int> $referenceIds
      * @param bool            $include
      *
      * @return void
      */
-    protected function updateLiveWorks(array $libryoIds, array $referenceIds, bool $include): void
+    protected function updateLiveWorks(array $normaIds, array $referenceIds, bool $include): void
     {
         $workIds = Reference::whereKey($referenceIds)->select(['work_id'])->distinct()->pluck('work_id');
         $workPlaces = [];
 
-        foreach ($libryoIds as $libryo) {
+        foreach ($normaIds as $norma) {
             foreach ($workIds as $work) {
                 $workPlaces[] = [
-                    'place_id' => $libryo,
+                    'place_id' => $norma,
                     'work_id' => $work,
                 ];
             }
         }
 
         if ($include) {
-            LibryoWork::insertOrIgnore($workPlaces);
+            NormaWork::insertOrIgnore($workPlaces);
 
             return;
         }
 
         foreach ($workPlaces as $group) {
-            $exists = LibryoReference::where('place_id', $group['place_id'])
+            $exists = NormaReference::where('place_id', $group['place_id'])
                 ->whereIn('reference_id', Reference::select(['id'])->where('work_id', $group['work_id']))
                 ->exists();
 
             if (!$exists) {
-                LibryoWork::where('place_id', $group['place_id'])
+                NormaWork::where('place_id', $group['place_id'])
                     ->where('work_id', $group['work_id'])
                     ->delete();
             }
@@ -164,7 +164,7 @@ class IncludeExcludeFromLibryo
     /**
      * Record the given change.
      *
-     * @param array<int, int>                              $libryoIds
+     * @param array<int, int>                              $normaIds
      * @param array<int, int>                              $referenceIds
      * @param bool                                         $include
      * @param \App\Enums\Compilation\ApplicabilityNoteType $type
@@ -172,7 +172,7 @@ class IncludeExcludeFromLibryo
      *
      * @return void
      */
-    protected function createApplicabilityActivity(array $libryoIds, array $referenceIds, bool $include, ApplicabilityNoteType $type, string $comment): void
+    protected function createApplicabilityActivity(array $normaIds, array $referenceIds, bool $include, ApplicabilityNoteType $type, string $comment): void
     {
         /** @var User $user */
         $user = Auth::user();
@@ -198,11 +198,11 @@ class IncludeExcludeFromLibryo
 
         $toInsert = [];
 
-        foreach ($libryoIds as $libryo) {
+        foreach ($normaIds as $norma) {
             foreach ($referenceIds as $reference) {
                 $toInsert[] = [
                     ...$payload,
-                    'place_id' => $libryo,
+                    'place_id' => $norma,
                     'reference_id' => $reference,
                 ];
             }

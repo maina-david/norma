@@ -5,7 +5,7 @@ namespace App\Events\Compilation;
 use App\Contracts\Compilation\RecompilationEventInterface;
 use App\Enums\Compilation\RecompilationActivityType;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -18,9 +18,9 @@ abstract class RecompilationActivityEvent implements RecompilationEventInterface
 
     /**
      * @param User   $user
-     * @param Libryo $libryo
+     * @param Norma $norma
      */
-    public function __construct(protected Libryo $libryo, protected User $user)
+    public function __construct(protected Norma $norma, protected User $user)
     {
     }
 
@@ -35,13 +35,13 @@ abstract class RecompilationActivityEvent implements RecompilationEventInterface
     }
 
     /**
-     * Get the Libryo that is affected.
+     * Get the Norma that is affected.
      *
-     * @return Libryo
+     * @return Norma
      */
-    public function getLibryo(): Libryo
+    public function getNorma(): Norma
     {
-        return $this->libryo;
+        return $this->norma;
     }
 
     /**

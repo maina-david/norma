@@ -4,7 +4,7 @@ namespace App\Contracts\Compilation;
 
 use App\Enums\Compilation\RecompilationActivityType;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 
 interface RecompilationEventInterface
 {
@@ -16,11 +16,11 @@ interface RecompilationEventInterface
     public function getUser(): User;
 
     /**
-     * Get the Libryo that is affected.
+     * Get the Norma that is affected.
      *
-     * @return Libryo
+     * @return Norma
      */
-    public function getLibryo(): Libryo;
+    public function getNorma(): Norma;
 
     /**
      * Get the type of activity that is represented by the event.

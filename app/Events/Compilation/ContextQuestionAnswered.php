@@ -6,7 +6,7 @@ use App\Enums\Compilation\ContextQuestionAnswer;
 use App\Enums\Compilation\RecompilationActivityType;
 use App\Models\Auth\User;
 use App\Models\Compilation\ContextQuestion;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
@@ -20,18 +20,18 @@ class ContextQuestionAnswered extends RecompilationActivityEvent
     /**
      * Create a new event instance.
      *
-     * @param Libryo                $libryo
+     * @param Norma                $norma
      * @param User                  $user
      * @param ContextQuestion       $question
      * @param ContextQuestionAnswer $answer
      */
     public function __construct(
         public User $user,
-        public Libryo $libryo,
+        public Norma $norma,
         public ContextQuestion $question,
         public ContextQuestionAnswer $answer
     ) {
-        parent::__construct($libryo, $user);
+        parent::__construct($norma, $user);
     }
 
     /**

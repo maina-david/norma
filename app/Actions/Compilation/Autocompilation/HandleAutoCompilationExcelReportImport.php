@@ -6,10 +6,10 @@ use App\Enums\Compilation\ContextQuestionAnswer;
 use App\Mail\Compilation\Autocompilation\FailedImportMail;
 use App\Models\Auth\User;
 use App\Models\Compilation\ContextQuestion;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Services\Compilation\AutoCompilationExcelParser;
-use App\Stores\Compilation\ContextQuestionLibryoStore;
+use App\Stores\Compilation\ContextQuestionNormaStore;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Mail;
 use InvalidArgumentException;
@@ -24,11 +24,11 @@ class HandleAutoCompilationExcelReportImport
 
     /**
      * @param AutoCompilationExcelParser $autoCompilationExcelParser
-     * @param ContextQuestionLibryoStore $contextQuestionLibryoStore
+     * @param ContextQuestionNormaStore $contextQuestionNormaStore
      */
     public function __construct(
         protected AutoCompilationExcelParser $autoCompilationExcelParser,
-        protected ContextQuestionLibryoStore $contextQuestionLibryoStore,
+        protected ContextQuestionNormaStore $contextQuestionNormaStore,
     ) {
     }
 
@@ -62,8 +62,8 @@ class HandleAutoCompilationExcelReportImport
         $totalAnswers = count($answers);
         $currentAnswer = 0;
 
-        /** @var Collection<Libryo> */
-        $libryos = Libryo::whereKey(array_keys($answers))
+        /** @var Collection<Norma> */
+        $normas = Norma::whereKey(array_keys($answers))
             ->forOrganisation($organisation->id)
             ->active()
             ->get()
@@ -71,14 +71,14 @@ class HandleAutoCompilationExcelReportImport
 
         $progressCallback ??= function ($item) {};
 
-        foreach ($answers as $libryoId => $questionIds) {
+        foreach ($answers as $normaId => $questionIds) {
             $currentAnswer++;
 
             $progressCallback(round(($currentAnswer / $totalAnswers) * 100, 0));
 
-            /** @var Libryo|null */
-            $libryo = $libryos[$libryoId] ?? null;
-            if (is_null($libryo)) {
+            /** @var Norma|null */
+            $norma = $normas[$normaId] ?? null;
+            if (is_null($norma)) {
                 continue;
             }
             /** @var Collection<ContextQuestion> */
@@ -98,7 +98,7 @@ class HandleAutoCompilationExcelReportImport
 
                 /** @var ContextQuestion */
                 $question = $questions[$qId];
-                $this->contextQuestionLibryoStore->answerQuestionForLibryo($libryo, $question, $cqAnswer, $user);
+                $this->contextQuestionNormaStore->answerQuestionForNorma($norma, $question, $cqAnswer, $user);
             }
         }
     }

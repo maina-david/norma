@@ -4,7 +4,7 @@ namespace App\Actions\Compilation\Autocompilation;
 
 use App\Mail\Compilation\ContextBrief;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Services\Compilation\AutoCompilationExcelExport;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
@@ -29,40 +29,40 @@ class HandleAutoCompilationExcelReportExport implements ShouldBeUnique
     ) {
     }
 
-    public function asJob(int $organisationId, int $userId, ?int $libryoId = null): void
+    public function asJob(int $organisationId, int $userId, ?int $normaId = null): void
     {
         /** @var Organisation $organisation */
         $organisation = Organisation::findOrFail($organisationId);
 
-        /** @var Libryo|null $libryo */
-        $libryo = $libryoId ? Libryo::findOrFail($libryoId) : null;
+        /** @var Norma|null $norma */
+        $norma = $normaId ? Norma::findOrFail($normaId) : null;
 
         /** @var User $user */
         $user = User::findOrFail($userId);
-        $this->handle($organisation, $user, $libryo);
+        $this->handle($organisation, $user, $norma);
     }
 
-    public function getJobUniqueId(int $organisationId, int $userId, ?int $libryoId = null): string
+    public function getJobUniqueId(int $organisationId, int $userId, ?int $normaId = null): string
     {
-        $libryoId = $libryoId ?? '';
+        $normaId = $normaId ?? '';
 
-        return get_class($this) . "_{$organisationId}_{$libryoId}_{$userId}";
+        return get_class($this) . "_{$organisationId}_{$normaId}_{$userId}";
     }
 
     /**
      * @param Organisation                     $organisation
      * @param User                             $user
-     * @param \App\Models\Customer\Libryo|null $libryo
+     * @param \App\Models\Customer\Norma|null $norma
      *
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      *
      * @return void
      */
-    public function handle(Organisation $organisation, User $user, ?Libryo $libryo = null): void
+    public function handle(Organisation $organisation, User $user, ?Norma $norma = null): void
     {
-        $spreadsheet = $this->autoCompilationExcelExport->build($organisation, $libryo);
+        $spreadsheet = $this->autoCompilationExcelExport->build($organisation, $norma);
         $attachmentFilename = "{$organisation->title} - ";
-        $attachmentFilename .= $libryo ? "{$libryo->title} - " : '';
+        $attachmentFilename .= $norma ? "{$norma->title} - " : '';
         $attachmentFilename .= now()->format('Ymd');
 
         preg_replace('/[^\d\w-]+/', '', $attachmentFilename);

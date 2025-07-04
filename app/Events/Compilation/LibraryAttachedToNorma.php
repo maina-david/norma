@@ -3,12 +3,12 @@
 namespace App\Events\Compilation;
 
 use App\Models\Compilation\Library;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class LibraryAttachedToLibryo
+class LibraryAttachedToNorma
 {
     use Dispatchable;
     use InteractsWithSockets;
@@ -19,7 +19,7 @@ class LibraryAttachedToLibryo
      *
      * @return void
      */
-    public function __construct(public Library $library, public Libryo $libryo)
+    public function __construct(public Library $library, public Norma $norma)
     {
     }
 }
