@@ -2,14 +2,14 @@
 
 namespace App\Events\Notify;
 
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Notify\LegalUpdate;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class LibryoAttachedToLegalUpdate
+class NormaAttachedToLegalUpdate
 {
     use Dispatchable;
     use InteractsWithSockets;
@@ -20,7 +20,7 @@ class LibryoAttachedToLegalUpdate
      *
      * @return void
      */
-    public function __construct(public Libryo $libryo, public LegalUpdate $update)
+    public function __construct(public Norma $norma, public LegalUpdate $update)
     {
     }
 
