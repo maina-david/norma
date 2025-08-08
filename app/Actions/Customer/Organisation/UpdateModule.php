@@ -2,7 +2,7 @@
 
 namespace App\Actions\Customer\Organisation;
 
-use App\Actions\Customer\Libryo\UpdateModule as LibryoUpdateModule;
+use App\Actions\Customer\Norma\UpdateModule as NormaUpdateModule;
 use App\Models\Customer\Organisation;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -28,8 +28,8 @@ class UpdateModule
             'comply',
             'drives',
         ])) {
-            foreach ($organisation->libryos()->cursor() as $libryo) {
-                LibryoUpdateModule::dispatch($libryo, $module, $value);
+            foreach ($organisation->normas()->cursor() as $norma) {
+                NormaUpdateModule::dispatch($norma, $module, $value);
             }
         }
     }

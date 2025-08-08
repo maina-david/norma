@@ -8,7 +8,7 @@ use App\Events\Auth\UserActivity\AddedAssessmentItemResponseComment;
 use App\Events\Auth\UserActivity\AddedCommentReply;
 use App\Events\Auth\UserActivity\AddedDocumentComment;
 use App\Events\Auth\UserActivity\AddedLegalUpdateComment;
-use App\Events\Auth\UserActivity\AddedLibryoComment;
+use App\Events\Auth\UserActivity\AddedNormaComment;
 use App\Events\Auth\UserActivity\AddedReferenceComment;
 use App\Events\Auth\UserActivity\AddedTaskComment;
 use App\Models\Assess\AssessmentItemResponse;
@@ -66,7 +66,7 @@ class HandleCommentCreated
                 $this->handleTaskComment($comment, $user);
                 break;
             case 'place':
-                AddedLibryoComment::dispatch($comment);
+                AddedNormaComment::dispatch($comment);
                 break;
             case 'register_item':
                 AddedReferenceComment::dispatch($comment);

@@ -16,7 +16,7 @@ class MigrateTaskSettings
 {
     use AsAction;
 
-    public string $commandSignature = 'libryo:migrate-task-settings';
+    public string $commandSignature = 'norma:migrate-task-settings';
 
     public function handle(): void
     {

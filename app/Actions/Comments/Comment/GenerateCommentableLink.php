@@ -5,7 +5,7 @@ namespace App\Actions\Comments\Comment;
 use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Comments\Comment;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Notify\LegalUpdate;
 use App\Models\Storage\My\File;
 use App\Models\Tasks\Task;
@@ -22,7 +22,7 @@ class GenerateCommentableLink
             $redirectTo = route('my.assess.assessment-item.show', ['assessmentItem' => $comment->commentable->assessment_item_id], false);
         } elseif ($comment->commentable instanceof File) {
             $redirectTo = route('my.drives.files.show', ['file' => $comment->commentable_id], false);
-        } elseif ($comment->commentable instanceof Libryo) {
+        } elseif ($comment->commentable instanceof Norma) {
             $redirectTo = route('my.dashboard', [], false);
         } elseif ($comment->commentable instanceof Task) {
             $redirectTo = route('my.tasks.tasks.show', ['task' => $comment->commentable->hash_id], false);
@@ -30,9 +30,9 @@ class GenerateCommentableLink
             return '';
         }
 
-        $libryoId = $comment->place_id;
-        $activateRouteName = $libryoId ? 'my.libryos.activate.redirect' : 'my.libryos.activate.all.redirect';
-        $activateRouteParams = $libryoId ? ['libryo' => $libryoId] : ['organisation' => $comment->organisation_id];
+        $normaId = $comment->place_id;
+        $activateRouteName = $normaId ? 'my.normas.activate.redirect' : 'my.normas.activate.all.redirect';
+        $activateRouteParams = $normaId ? ['norma' => $normaId] : ['organisation' => $comment->organisation_id];
 
         return route($activateRouteName, array_merge($activateRouteParams, ['redirect' => $redirectTo]));
     }

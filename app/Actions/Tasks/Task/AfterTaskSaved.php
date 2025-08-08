@@ -4,10 +4,10 @@ namespace App\Actions\Tasks\Task;
 
 use App\Enums\Tasks\TaskActivityType;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Tasks\Task;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Stores\Notify\ReminderStore;
 use App\Stores\Tasks\TaskActivityStore;
 use App\Stores\Tasks\TaskWatcherStore;
@@ -35,8 +35,8 @@ class AfterTaskSaved
      */
     public function handle(Request $request, Task $task, User $user): void
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         /** @var Organisation */
         $organisation = $manager->getActiveOrganisation();
 
@@ -91,10 +91,10 @@ class AfterTaskSaved
             return;
         }
 
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
-        /** @var Libryo|null */
-        $libryo = $manager->getActive();
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
+        /** @var Norma|null */
+        $norma = $manager->getActive();
 
         $input = $request->validated();
         $input = Arr::only($input, ['remind_on_date', 'remind_on_time']);
@@ -120,7 +120,7 @@ class AfterTaskSaved
                 'remindable_id' => $task->id,
                 'notification_config' => $config,
             ]
-        ), $user, $organisation, $libryo);
+        ), $user, $organisation, $norma);
 
         $details = ['reminder_id' => $reminder->id];
         $this->taskActivityStore->create(TaskActivityType::setReminder(), $task->id, $user->id, $task->place_id, $details);

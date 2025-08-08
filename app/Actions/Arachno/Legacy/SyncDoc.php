@@ -70,7 +70,7 @@ class SyncDoc implements ShouldBeUnique
 
         $doc = new Doc([
             'work_id' => $work->id,
-            'source_unique_id' => $work->source_unique_id ?? 'libryo_work_' . $work->id,
+            'source_unique_id' => $work->source_unique_id ?? 'norma_work_' . $work->id,
             'title' => $work->title,
             'source_id' => $work->source_id,
             'primary_location_id' => $work->primary_location_id,
@@ -174,6 +174,6 @@ class SyncDoc implements ShouldBeUnique
      */
     public function getVolumeLink(Doc $doc, int $volume): string
     {
-        return 'https://my.libryo.com/corpus/legacy/' . $doc->uid_hash . '/volume/' . $volume;
+        return 'https://my.norma.com/corpus/legacy/' . $doc->uid_hash . '/volume/' . $volume;
     }
 }

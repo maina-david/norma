@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Actions\Customer\Libryo;
+namespace App\Actions\Customer\Norma;
 
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class UpdateModule
@@ -10,15 +10,15 @@ class UpdateModule
     use AsAction;
 
     /**
-     * @param Libryo $libryo
+     * @param Norma $norma
      * @param string $module
      * @param bool   $value
      *
      * @return void
      */
-    public function handle(Libryo $libryo, string $module, bool $value): void
+    public function handle(Norma $norma, string $module, bool $value): void
     {
-        $updated = $libryo->updateSetting('modules.' . $module, $value);
+        $updated = $norma->updateSetting('modules.' . $module, $value);
 
         if ($updated && $module === 'comply') {
             // TODO: create assessment item responses

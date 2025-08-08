@@ -53,7 +53,7 @@ class AfterFileUpload
         /** @var array<mixed> */
         $tagsFromInput = $request->input('user_tags');
         /** @var Organisation */
-        $organisation = $file->organisation ?? $file->libryo?->organisation;
+        $organisation = $file->organisation ?? $file->norma?->organisation;
         $tags = $this->userTagStore->createFromForm($tagsFromInput, $organisation, $user);
 
         $this->userTagStore->attachRelations($file, 'userTags', $tags);
@@ -105,7 +105,7 @@ class AfterFileUpload
         $this->assessmentItemResponseFileStore->attachRelations($file, 'assessmentItemResponses', $responses);
 
         foreach ($responses as $response) {
-            UploadedDocument::dispatch($file, $user, $response, $file->libryo, $file->organisation);
+            UploadedDocument::dispatch($file, $user, $response, $file->norma, $file->organisation);
         }
     }
 

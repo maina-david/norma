@@ -2,28 +2,28 @@
 
 namespace App\Actions\Customer\Team;
 
-use App\Actions\Auth\User\SyncLibryoUserCache;
+use App\Actions\Auth\User\SyncNormaUserCache;
 use App\Models\Customer\Team;
-use App\Stores\Customer\LibryoUserStore;
+use App\Stores\Customer\NormaUserStore;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class SyncLibryoUserCacheForTeam implements ShouldBeUnique
+class SyncNormaUserCacheForTeam implements ShouldBeUnique
 {
     use AsAction;
 
-    public string $jobQueue = 'libryo-app';
+    public string $jobQueue = 'norma-app';
 
     public int $jobUniqueFor = 120; // 120 seconds
 
-    public function __construct(protected LibryoUserStore $libryoUserStore)
+    public function __construct(protected NormaUserStore $normaUserStore)
     {
     }
 
     public function handle(Team $team): void
     {
         foreach ($team->users as $user) {
-            SyncLibryoUserCache::dispatch($user->id);
+            SyncNormaUserCache::dispatch($user->id);
         }
     }
 
