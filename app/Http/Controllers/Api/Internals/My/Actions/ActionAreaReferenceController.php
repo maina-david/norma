@@ -8,7 +8,7 @@ use App\Models\Corpus\Reference;
 use App\Models\Corpus\ReferenceText;
 use App\Models\Corpus\Work;
 use App\Models\Geonames\Location;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
@@ -43,10 +43,10 @@ class ActionAreaReferenceController extends MyApiController
      */
     public function index(Request $request, int|string $actionArea, ?int $reference = null): AnonymousResourceCollection
     {
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
 
-        $items = Reference::forLibryoOrOrganisation($libryo, $manager->getActiveOrganisation())
+        $items = Reference::forNormaOrOrganisation($norma, $manager->getActiveOrganisation())
             ->active()
             ->forActiveWork()
             ->when($reference, fn ($query) => $query->where('reference_id', $reference))

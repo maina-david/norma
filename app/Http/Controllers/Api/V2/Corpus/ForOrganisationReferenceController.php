@@ -53,7 +53,7 @@ class ForOrganisationReferenceController extends AbstractApiController
                 'citation' => fn ($q) => null,
                 'refPlainText' => fn ($q) => $q->select(['reference_id', 'plain_text']),
                 'htmlContent' => fn ($q) => $q->select(['reference_id', 'cached_content']),
-                'libryos' => fn ($q) => $q->forOrganisation($organisation->id),
+                'normas' => fn ($q) => $q->forOrganisation($organisation->id),
             ]);
     }
 

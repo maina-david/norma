@@ -9,7 +9,7 @@ use App\Events\Auth\UserActivity\Files\SearchedFiles;
 use App\Events\Auth\UserActivity\GenericActivity;
 use App\Events\Auth\UserActivity\GenericActivityUsingAuth;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Traits\GetsLibryoAndOrganisation;
+use App\Http\Controllers\Traits\GetsNormaAndOrganisation;
 use App\Http\Controllers\Traits\PerformsActions;
 use App\Http\Requests\Storage\My\FileRequest;
 use App\Http\Requests\System\FileUploadRequest;
@@ -20,7 +20,7 @@ use App\Models\Comments\Comment;
 use App\Models\Storage\My\File;
 use App\Models\Storage\My\Folder;
 use App\Models\Tasks\Task;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Services\Customer\ActiveOrganisationManager;
 use App\Services\Storage\MimeTypeManager;
 use App\Stores\Ontology\UserTagStore;
@@ -37,7 +37,7 @@ use Illuminate\Support\Facades\Session;
 
 class FileController extends Controller
 {
-    use GetsLibryoAndOrganisation;
+    use GetsNormaAndOrganisation;
     use PerformsActions;
     use HandlesOrganisationFiles;
 
@@ -77,12 +77,12 @@ class FileController extends Controller
             $allowedActions[] = ['icon' => 'trash-alt', 'action' => 'delete', 'label' => __('actions.delete')];
         }
 
-        [$libryo, $organisation] = $this->getActiveLibryoAndOrganisation();
-        event(new PreviewedFile($file, $user, $libryo, $organisation));
+        [$norma, $organisation] = $this->getActiveNormaAndOrganisation();
+        event(new PreviewedFile($file, $user, $norma, $organisation));
 
         /** @var View */
         return view('pages.storage.my.file.show', [
-            'file' => $file->load(['userTags', 'libryo']),
+            'file' => $file->load(['userTags', 'norma']),
             'canPreview' => $file->isPreviewable(),
             'allowedActions' => $allowedActions,
             'acceptedUploads' => $this->mimeTypeManager->getAcceptedUploads(),
@@ -108,8 +108,8 @@ class FileController extends Controller
     {
         /** @var User */
         $user = Auth::user();
-        [$libryo, $organisation] = $this->getActiveLibryoAndOrganisation();
-        GenericActivity::dispatch($user, UserActivityType::downloadedDocument(), ['id' => $file->id], $libryo, $organisation);
+        [$norma, $organisation] = $this->getActiveNormaAndOrganisation();
+        GenericActivity::dispatch($user, UserActivityType::downloadedDocument(), ['id' => $file->id], $norma, $organisation);
 
         return $file->download(true);
     }
@@ -212,8 +212,8 @@ class FileController extends Controller
         event(new GenericActivityUsingAuth(UserActivityType::editedFileInformation(), ['id' => $file->id]));
 
         if (isset($data['user_tags']) && count($data['user_tags']) > 0) {
-            /** @var ActiveLibryosManager $manager */
-            $manager = app(ActiveLibryosManager::class);
+            /** @var ActiveNormasManager $manager */
+            $manager = app(ActiveNormasManager::class);
             /** @var User $user */
             $user = Auth::user();
             $organisation = $manager->getActiveOrganisation();
@@ -253,7 +253,7 @@ class FileController extends Controller
             'target' => 'files-in-folder',
             'files' => FolderType::organisation()->is($folder->folder_type)
                 ? $folder->files()->with('folder')->forOrganisation($processed['organisation'])->paginate(config('modules.drives.files_per_page'))
-                : $folder->files()->with('folder')->forLibryo($processed['libryoOrOrg'])->paginate(config('modules.drives.files_per_page')),
+                : $folder->files()->with('folder')->forNorma($processed['normaOrOrg'])->paginate(config('modules.drives.files_per_page')),
             'currentFolder' => $folder,
         ]);
 
@@ -317,26 +317,26 @@ class FileController extends Controller
 
     public function index(Request $request): View
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
         $organisation = $manager->getActiveOrganisation();
 
-        $baseQuery = File::where(function ($q) use ($organisation, $libryo, $request) {
-            $q->where(function ($builder) use ($organisation, $libryo, $request) {
-                if (!is_null($libryo)) {
+        $baseQuery = File::where(function ($q) use ($organisation, $norma, $request) {
+            $q->where(function ($builder) use ($organisation, $norma, $request) {
+                if (!is_null($norma)) {
                     $builder->forOrganisation($organisation);
-                    $builder->orWhere(function ($q) use ($libryo) {
-                        $q->forLibryo($libryo);
+                    $builder->orWhere(function ($q) use ($norma) {
+                        $q->forNorma($norma);
                     });
                 } else {
                     /** @var \App\Models\Auth\User $user */
                     $user = $request->user();
                     $builder->allForOrganisationUserAccess($organisation, $user);
                 }
-            })->when($libryo, function ($query) use ($libryo) {
-                $query->orWhere(function ($builder) use ($libryo) {
-                    $builder->typeGlobal()->inGlobalDrive(null, $libryo);
+            })->when($norma, function ($query) use ($norma) {
+                $query->orWhere(function ($builder) use ($norma) {
+                    $builder->typeGlobal()->inGlobalDrive(null, $norma);
                 });
             });
         });
@@ -344,14 +344,14 @@ class FileController extends Controller
         /** @var User $user */
         $user = Auth::user();
         if ($request->has('search')) {
-            event(new SearchedFiles($user, $libryo, $organisation));
+            event(new SearchedFiles($user, $norma, $organisation));
         }
 
         /** @var View */
         return view('pages.storage.my.file.search', [
-            'baseQuery' => $baseQuery->with(['libryo']),
-            'subTitle' => $libryo ? $libryo->title : $organisation->title,
-            'tableFields' => is_null($libryo) ? ['title_multi_stream'] : ['title'],
+            'baseQuery' => $baseQuery->with(['norma']),
+            'subTitle' => $norma ? $norma->title : $organisation->title,
+            'tableFields' => is_null($norma) ? ['title_multi_stream'] : ['title'],
         ]);
     }
 }

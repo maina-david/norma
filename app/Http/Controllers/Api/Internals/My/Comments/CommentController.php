@@ -9,10 +9,10 @@ use App\Http\Resources\Internals\My\Comments\CommentResource;
 use App\Models\Auth\User;
 use App\Models\Comments\Comment;
 use App\Models\Compilation\ContextQuestion;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Tasks\Task;
 use App\Services\Comments\CommentReplacements;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Gate;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -38,13 +38,13 @@ class CommentController
      */
     protected function baseQuery(Model $model): MorphMany
     {
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
         $organisation = $manager->getActiveOrganisation();
 
-        if ($libryo = $manager->getActive()) {
+        if ($norma = $manager->getActive()) {
             return $model->comments()
-                ->where(function ($builder) use ($libryo, $organisation) {
-                    $builder->forLibryo($libryo)->orWhere(function ($query) use ($organisation) {
+                ->where(function ($builder) use ($norma, $organisation) {
+                    $builder->forNorma($norma)->orWhere(function ($query) use ($organisation) {
                         $query->forOrganisation($organisation);
                     });
                 });
@@ -103,19 +103,19 @@ class CommentController
         /** @var User $user */
         $user = Auth::user();
 
-        $targetLibryo = $request->get('target_libryo_id') ? Libryo::whereKey($request->get('target_libryo_id'))->with('organisation')->userHasAccess($user)->firstOrFail() : null;
+        $targetNorma = $request->get('target_norma_id') ? Norma::whereKey($request->get('target_norma_id'))->with('organisation')->userHasAccess($user)->firstOrFail() : null;
 
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
         if ($manager->isSingleMode()) {
-            /** @var Libryo $libryo */
-            $libryo = $manager->getActive();
+            /** @var Norma $norma */
+            $norma = $manager->getActive();
         }
 
         /** @var Comment $created */
         $created = Comment::create([
             'commentable_type' => $model->getMorphClass(),
             'commentable_id' => $model->id,
-            'place_id' => $targetLibryo->id ?? $libryo->id ?? null,
+            'place_id' => $targetNorma->id ?? $norma->id ?? null,
             'organisation_id' => $manager->getActiveOrganisation()->id ?? null,
             'comment' => $request->get('comment'),
             'author_id' => $user->id,

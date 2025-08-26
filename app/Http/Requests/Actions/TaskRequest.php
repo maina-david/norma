@@ -5,7 +5,7 @@ namespace App\Http\Requests\Actions;
 use App\Enums\Tasks\TaskRepeatInterval;
 use App\Http\Requests\Traits\HasCheckboxes;
 use App\Models\Auth\User;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -51,11 +51,11 @@ class TaskRequest extends FormRequest
         ];
 
         if ($this->method() === 'POST') {
-            $libryoRequired = app(ActiveLibryosManager::class)->isSingleMode() ? [] : ['required'];
+            $normaRequired = app(ActiveNormasManager::class)->isSingleMode() ? [] : ['required'];
 
             $rules['taskable_type'] = ['string', 'required', 'max:255'];
             $rules['taskable_id'] = ['numeric', 'required'];
-            $rules['libryo_id'] = ['numeric', ...$libryoRequired];
+            $rules['norma_id'] = ['numeric', ...$normaRequired];
             $rules['reminder'] = ['boolean'];
             $rules['remind_whom'] = ['string', 'nullable', 'max:35'];
             $rules['remind_on_date'] = ['date_format:Y-m-d', 'nullable'];

@@ -9,7 +9,7 @@ use App\Http\Requests\Tasks\TaskProjectRequest;
 use App\Models\Auth\User;
 use App\Models\Customer\Organisation;
 use App\Models\Tasks\TaskProject;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -29,7 +29,7 @@ class TaskProjectController extends Controller
         /** @var User */
         $user = Auth::user();
 
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
         /** @var Organisation */
         $organisation = $manager->getActiveOrganisation();
         $query = TaskProject::forOrganisation($organisation);
@@ -90,7 +90,7 @@ class TaskProjectController extends Controller
     {
         $data = $request->validated();
 
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
         /** @var User */
         $user = Auth::user();
 

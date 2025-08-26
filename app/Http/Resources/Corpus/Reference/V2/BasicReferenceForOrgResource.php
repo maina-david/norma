@@ -19,7 +19,7 @@ class BasicReferenceForOrgResource extends BasicReferenceResource
         return array_merge(
             parent::toArray($request),
             [
-                'libryos' => IdResource::collection($this->whenLoaded('libryos')),
+                'normas' => IdResource::collection($this->whenLoaded('normas')),
                 'updated_at' => $this->updated_at?->format('Y-m-d H:i:s'),
                 'created_at' => $this->created_at?->format('Y-m-d H:i:s'),
             ]

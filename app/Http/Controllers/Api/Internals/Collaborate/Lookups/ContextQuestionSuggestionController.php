@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Api\Internals\Collaborate\Lookups;
 
 use App\Enums\Lookups\ContentMetaSuggestions;
 use App\Http\Resources\Internals\Collaborate\Compilation\ContextQuestionResource;
-use App\Traits\UsesLibryoAISuggestions;
+use App\Traits\UsesNormaAISuggestions;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class ContextQuestionSuggestionController
 {
-    use UsesLibryoAISuggestions;
+    use UsesNormaAISuggestions;
 
     /**
      * Get the suggestions.

@@ -15,10 +15,10 @@ use App\Jobs\Exports\GenerateAssessMetricsExportExcel;
 use App\Jobs\Exports\GenerateAssessResponsesExportExcel;
 use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Services\Assess\AssessStatsService;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -45,10 +45,10 @@ class AssessmentItemResponseController extends Controller
     // public function showRelations(AssessmentItemResponse $aiResponse): Response
     // {
     //     $assessmentItem = $aiResponse->assessmentItem;
-    //     $libryo = $aiResponse->libryo;
+    //     $norma = $aiResponse->norma;
     //     $assessmentItem->loadCount([
-    //         'references' => function ($q) use ($libryo) {
-    //             $q->forLibryo($libryo);
+    //         'references' => function ($q) use ($norma) {
+    //             $q->forNorma($norma);
     //         },
     //     ]);
 
@@ -77,18 +77,18 @@ class AssessmentItemResponseController extends Controller
         /** @var \App\Models\Assess\AssessmentItem $assessmentItem */
         $assessmentItem = $aiResponse->assessmentItem;
 
-        /** @var Libryo $libryo */
-        $libryo = $aiResponse->libryo;
+        /** @var Norma $norma */
+        $norma = $aiResponse->norma;
 
-        if ($response = $this->redirectIfNoAssess($libryo)) {
+        if ($response = $this->redirectIfNoAssess($norma)) {
             return $response;
         }
 
-        $libryo->load(['location']);
+        $norma->load(['location']);
 
         $assessmentItem->loadCount([
-            'references' => function ($q) use ($libryo) {
-                $q->forLibryo($libryo);
+            'references' => function ($q) use ($norma) {
+                $q->forNorma($norma);
             },
         ]);
 
@@ -102,8 +102,8 @@ class AssessmentItemResponseController extends Controller
             'answered_by',
         ];
 
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         $organisation = $manager->getActiveOrganisation();
 
         $answered = $assessmentItem->organisation_id === $organisation->id
@@ -115,7 +115,7 @@ class AssessmentItemResponseController extends Controller
             'assessmentItem' => $assessmentItem,
             'organisation' => $organisation,
             'answered' => $answered,
-            'libryo' => $libryo,
+            'norma' => $norma,
         ]);
     }
 
@@ -126,21 +126,21 @@ class AssessmentItemResponseController extends Controller
      */
     public function metrics(Request $request): Response
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $organisation = null;
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
+        $norma = $organisation = null;
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
+            /** @var Norma */
+            $norma = $manager->getActive();
             /** @var Builder */
-            $query = Libryo::whereKey($libryo);
+            $query = Norma::whereKey($norma);
         } else {
             /** @var Organisation */
             $organisation = $manager->getActiveOrganisation();
             /** @var \App\Models\Auth\User $user */
             $user = $request->user();
             /** @var Builder */
-            $query = Libryo::active()->forOrganisation($organisation->id)->userHasAccess($user);
+            $query = Norma::active()->forOrganisation($organisation->id)->userHasAccess($user);
         }
 
         $query->forAssessMetrics()->orderBy('risk_rating', 'DESC');
@@ -234,8 +234,8 @@ class AssessmentItemResponseController extends Controller
 
         $response = $this->performAction($actionName, $aiResponses);
 
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
 
         /** @var \App\Models\Auth\User $user */
         $user = Auth::user();
@@ -331,10 +331,10 @@ class AssessmentItemResponseController extends Controller
         $user = Auth::user();
         /** @var Collection<AssessmentItemResponse> */
         $responses = AssessmentItemResponse::whereKey($responseIds)
-            ->whereHas('libryo', function ($q) use ($user) {
+            ->whereHas('norma', function ($q) use ($user) {
                 $q->userHasAccess($user);
             })
-            ->with(['libryo', 'assessmentItem'])
+            ->with(['norma', 'assessmentItem'])
             ->get();
 
         $draft = false;
@@ -361,24 +361,24 @@ class AssessmentItemResponseController extends Controller
     {
         $filename = Str::random(15) . '.xlsx';
 
-        /** @var ActiveLibryosManager $manager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager $manager */
+        $manager = app(ActiveNormasManager::class);
 
         $filters = $request->all();
 
         /** @var Organisation $organisation */
         $organisation = $manager->getActiveOrganisation();
-        $libryo = $manager->getActive();
+        $norma = $manager->getActive();
         /** @var \App\Models\Auth\User $user */
         $user = $request->user();
-        $job = new GenerateAssessMetricsExportExcel($filename, $organisation, $libryo, $user, $filters);
+        $job = new GenerateAssessMetricsExportExcel($filename, $organisation, $norma, $user, $filters);
         $this->dispatch($job);
 
         event(new GenericActivity(
             $user,
             UserActivityType::exportedConsolidatedPerformanceReport(),
             null,
-            $libryo,
+            $norma,
             $organisation
         ));
 
@@ -403,21 +403,21 @@ class AssessmentItemResponseController extends Controller
     {
         $filename = Str::random(15) . '.xlsx';
 
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
 
         $filters = $request->all();
 
-        $libryo = $manager->getActive();
+        $norma = $manager->getActive();
 
         /** @var Organisation */
         $organisation = $manager->getActiveOrganisation();
         /** @var \App\Models\Auth\User $user */
         $user = $request->user();
-        $job = new GenerateAssessResponsesExportExcel($filename, $user, $organisation, $libryo, $filters);
+        $job = new GenerateAssessResponsesExportExcel($filename, $user, $organisation, $norma, $filters);
         $this->dispatch($job);
 
-        event(new ExportedAssessmentItems($user, $libryo, $organisation));
+        event(new ExportedAssessmentItems($user, $norma, $organisation));
 
         /** @var View $view */
         $view = view('streams.single-partial', [

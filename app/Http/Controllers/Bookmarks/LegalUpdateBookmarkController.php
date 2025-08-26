@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Bookmarks;
 use App\Events\Auth\UserActivity\LegalUpdates\LegalUpdateBookmarked;
 use App\Models\Auth\User;
 use App\Models\Notify\LegalUpdate;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Database\Eloquent\Model;
 
 class LegalUpdateBookmarkController extends BookmarkController
@@ -52,8 +52,8 @@ class LegalUpdateBookmarkController extends BookmarkController
      */
     protected function postStore(Model $model, User $user): void
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
 
         event(new LegalUpdateBookmarked($model, $user, $manager->getActive(), $manager->getActiveOrganisation()));
     }

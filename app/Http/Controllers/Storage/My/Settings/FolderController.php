@@ -18,7 +18,7 @@ class FolderController extends Controller
             'organisation' => $manager->getActive(),
             'globalFolderId' => $type === 'global' ? $folderId : null,
             'organisationFolderId' => $type === 'organisation' ? $folderId : null,
-            'libryoFolderId' => $type === 'libryo' ? $folderId : null,
+            'normaFolderId' => $type === 'norma' ? $folderId : null,
         ]);
     }
 }

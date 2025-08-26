@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\AbstractApiController;
 use App\Http\Requests\ApiMultiGetRequest;
 use App\Http\Resources\Assess\AssessmentItem\V2\AssessmentItemResource;
 use App\Models\Assess\AssessmentItem;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
@@ -53,20 +53,20 @@ class AssessmentItemController extends AbstractApiController
      */
     public function getQuery(Request $request): Builder
     {
-        /** @var Libryo */
-        $libryo = $request->route('libryo');
+        /** @var Norma */
+        $norma = $request->route('norma');
 
         /** @var Builder $query */
-        $query = AssessmentItem::whereHas('assessmentResponses', function ($q) use ($libryo) {
-            $q->forLibryo($libryo);
+        $query = AssessmentItem::whereHas('assessmentResponses', function ($q) use ($norma) {
+            $q->forNorma($norma);
         });
 
         /** @var string */
         $includes = $request->query('include', '');
         if (Str::contains($includes, ['basicCitations', 'references'])) {
             $query->with([
-                'references' => function ($q) use ($libryo) {
-                    $q->forLibryo($libryo);
+                'references' => function ($q) use ($norma) {
+                    $q->forNorma($norma);
                 },
                 'references.citation' => fn () => null,
                 'references.refPlainText' => fn () => null,
@@ -79,11 +79,11 @@ class AssessmentItemController extends AbstractApiController
 
     /**
      * @param ApiMultiGetRequest $request
-     * @param Libryo             $libryo
+     * @param Norma             $norma
      *
      * @return ResourceCollection<AssessmentItem>
      */
-    public function indexForLibryo(Request $request, Libryo $libryo): ResourceCollection
+    public function indexForNorma(Request $request, Norma $norma): ResourceCollection
     {
         /** @var ResourceCollection<AssessmentItem> */
         return parent::index($request);
@@ -92,14 +92,14 @@ class AssessmentItemController extends AbstractApiController
     /**
      * @param Request        $request
      * @param AssessmentItem $assessmentItem
-     * @param Libryo         $libryo
+     * @param Norma         $norma
      *
      * @return AssessmentItemResource
      */
-    public function showForLibryo(
+    public function showForNorma(
         Request $request,
         AssessmentItem $assessmentItem,
-        Libryo $libryo
+        Norma $norma
     ): AssessmentItemResource {
         /** @var AssessmentItemResource */
         return parent::show($request, (string) $assessmentItem->id);

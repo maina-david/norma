@@ -8,7 +8,7 @@ use App\Http\Resources\Notify\Reminder\Internal\ReminderResource;
 use App\Models\Auth\User;
 use App\Models\Notify\Reminder;
 use App\Models\Tasks\Task;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Stores\Notify\ReminderStore;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -54,8 +54,8 @@ class ReminderController
 
         /** @var User $user */
         $user = Auth::user();
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->isSingleMode() ? $manager->getActive($user) : null;
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->isSingleMode() ? $manager->getActive($user) : null;
         $organisation = $manager->getActiveOrganisation();
 
         $model = $this->getModel($data['remindable_type'], $data['remindable_id'], 'remindable');
@@ -65,7 +65,7 @@ class ReminderController
             $data['description'] = $model->description;
         }
 
-        $reminder = $store->createFromInput($data, $user, $organisation, $libryo);
+        $reminder = $store->createFromInput($data, $user, $organisation, $norma);
 
         return new ReminderResource($reminder);
     }

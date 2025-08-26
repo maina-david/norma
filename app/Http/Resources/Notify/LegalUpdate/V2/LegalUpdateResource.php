@@ -4,7 +4,7 @@ namespace App\Http\Resources\Notify\LegalUpdate\V2;
 
 use App\Http\Resources\AbstractResource;
 use App\Http\Resources\Corpus\Work\V2\WorkResource;
-use App\Http\Resources\Customer\Libryo\V2\LibryoForUpdateResource;
+use App\Http\Resources\Customer\Norma\V2\NormaForUpdateResource;
 use App\Models\Notify\LegalUpdate;
 use Illuminate\Http\Request;
 
@@ -41,7 +41,7 @@ class LegalUpdateResource extends AbstractResource
             'release_at' => $this->release_at ? $this->release_at->format('Y-m-d') : null,
             'notification_date' => $this->notification_date->format('Y-m-d'),
             'notified' => false, // legacy - doesn't exist anymore
-            'libryos' => LibryoForUpdateResource::collection($this->whenLoaded('libryos')),
+            'normas' => NormaForUpdateResource::collection($this->whenLoaded('normas')),
             'work' => new WorkResource($this->whenLoaded('work')),
         ], $this->timestamps());
     }

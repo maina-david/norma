@@ -88,7 +88,7 @@ class ForFileLocationController extends Controller
     }
 
     /**
-     * Attach the locations to the libryo.
+     * Attach the locations to the norma.
      *
      * @param Request $request
      * @param File    $file

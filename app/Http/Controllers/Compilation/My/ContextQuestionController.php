@@ -10,19 +10,19 @@ use App\Events\Auth\UserActivity\GenericActivity;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\DecodesHashids;
 use App\Http\Controllers\Traits\PerformsActions;
-use App\Http\Controllers\Traits\UsesLibryoWithContextQuestion;
+use App\Http\Controllers\Traits\UsesNormaWithContextQuestion;
 use App\Http\ResourceActions\Compilation\ApplicabilityBulkAnswer;
 use App\Jobs\Compilation\AutoCompilationExcelImport;
 use App\Models\Actions\ActionArea;
 use App\Models\Assess\AssessmentItem;
 use App\Models\Auth\User;
 use App\Models\Compilation\ContextQuestion;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Services\Storage\MimeTypeManager;
 use App\Services\TempFileManager;
-use App\Stores\Compilation\ContextQuestionLibryoStore;
+use App\Stores\Compilation\ContextQuestionNormaStore;
 use Exception;
 use HotwiredLaravel\TurboLaravel\Http\MultiplePendingTurboStreamResponse;
 use Illuminate\Contracts\View\View;
@@ -40,9 +40,9 @@ class ContextQuestionController extends Controller
 {
     use PerformsActions;
     use DecodesHashids;
-    use UsesLibryoWithContextQuestion;
+    use UsesNormaWithContextQuestion;
 
-    public function __construct(protected ContextQuestionLibryoStore $contextQuestionLibryoStore)
+    public function __construct(protected ContextQuestionNormaStore $contextQuestionNormaStore)
     {
     }
 
@@ -52,15 +52,15 @@ class ContextQuestionController extends Controller
         $user = $request->user();
         abort_unless($user->canManageApplicability(), 404);
 
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         $organisation = $manager->getActiveOrganisation();
 
         $answers = is_array($request->query('answer')) ? $request->query('answer') : [];
 
-        $forLibryos = fn ($query) => $query->active()->where('organisation_id', $organisation->id);
+        $forNormas = fn ($query) => $query->active()->where('organisation_id', $organisation->id);
 
-        $locationQuery = Libryo::where('organisation_id', $organisation->id)->select('location_id');
+        $locationQuery = Norma::where('organisation_id', $organisation->id)->select('location_id');
 
         $descriptionQuery = function ($locationArray) {
             return function ($query) use ($locationArray) {
@@ -75,20 +75,20 @@ class ContextQuestionController extends Controller
 
         $query = ContextQuestion::forOrganisationWithAnswers($organisation, $answers)
             ->with([
-                'libryos' => $forLibryos,
+                'normas' => $forNormas,
                 'mainDescription' => $descriptionQuery($locationQuery),
                 'categories',
             ])
-            ->withCount(['libryos' => $forLibryos])
-            ->orderBy('libryos_count', 'DESC')
+            ->withCount(['normas' => $forNormas])
+            ->orderBy('normas_count', 'DESC')
             ->orderBy('category_id');
 
-        $libryo = null;
-        if ($manager->isSingleMode() && $libryo = $manager->getActive()) {
-            $query = ContextQuestion::forLibryoWithAnswers($libryo, $answers)
+        $norma = null;
+        if ($manager->isSingleMode() && $norma = $manager->getActive()) {
+            $query = ContextQuestion::forNormaWithAnswers($norma, $answers)
                 ->with([
-                    'libryos' => fn ($builder) => $builder->active()->where('id', $libryo->id),
-                    'mainDescription' => $descriptionQuery([$libryo->location_id]),
+                    'normas' => fn ($builder) => $builder->active()->where('id', $norma->id),
+                    'mainDescription' => $descriptionQuery([$norma->location_id]),
                     'categories',
                 ])
                 ->with(['categories'])
@@ -100,13 +100,13 @@ class ContextQuestionController extends Controller
         $filtered = $request->only(['categories', 'answer']);
 
         if (!empty($filtered)) {
-            event(new FilteredResource($user, UserActivityType::filteredApplicability(), $filtered, $libryo, $organisation));
+            event(new FilteredResource($user, UserActivityType::filteredApplicability(), $filtered, $norma, $organisation));
         }
 
         /** @var View */
         return view('pages.compilation.my.context-question.settings.index', [
             'baseQuery' => $query,
-            'libryo' => $libryo,
+            'norma' => $norma,
         ]);
     }
 
@@ -122,78 +122,78 @@ class ContextQuestionController extends Controller
         /** @var ContextQuestion $question */
         $question = $this->decodeHash($question, ContextQuestion::class);
 
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         $organisation = $manager->getActiveOrganisation();
 
         /** @var User $user */
         $user = Auth::user();
 
-        $libryo = $manager->getActive();
+        $norma = $manager->getActive();
 
-        if ($manager->isSingleMode() && $libryo) {
-            return redirect()->route('my.context-questions.libryo.show', ['question' => $question->hash_id, 'libryo' => $libryo->hash_id]);
+        if ($manager->isSingleMode() && $norma) {
+            return redirect()->route('my.context-questions.norma.show', ['question' => $question->hash_id, 'norma' => $norma->hash_id]);
         }
 
-        event(new GenericActivity($user, UserActivityType::viewedApplicabilityQuestion(), null, $libryo, $organisation));
+        event(new GenericActivity($user, UserActivityType::viewedApplicabilityQuestion(), null, $norma, $organisation));
 
         /** @var View */
         return view('pages.compilation.my.context-question.settings.show', [
-            'baseQuery' => $question->libryos()->active()->where('organisation_id', $organisation->id),
+            'baseQuery' => $question->normas()->active()->where('organisation_id', $organisation->id),
             'question' => $question,
         ]);
     }
 
     /**
-     * Get the context question details for the libryo.
+     * Get the context question details for the norma.
      *
      * @param string $question
-     * @param string $libryo
+     * @param string $norma
      *
      * @return View
      */
-    public function showForLibryo(string $question, string $libryo): View
+    public function showForNorma(string $question, string $norma): View
     {
         /** @var ContextQuestion $question */
         $question = $this->decodeHash($question, ContextQuestion::class);
 
-        /** @var int $libryo */
-        $libryo = $this->decodeHashId($libryo, Libryo::class);
+        /** @var int $norma */
+        $norma = $this->decodeHashId($norma, Norma::class);
 
-        $libryo = $this->resolveLibryoFromContextQuestion($question, $libryo);
+        $norma = $this->resolveNormaFromContextQuestion($question, $norma);
 
-        $explanation = $question->explanationForLibryo($libryo);
+        $explanation = $question->explanationForNorma($norma);
 
-        $question->load(['libryos' => fn ($query) => $query->whereKey($libryo->id)]);
+        $question->load(['normas' => fn ($query) => $query->whereKey($norma->id)]);
 
-        $libryoFilter = function ($builder) use ($libryo) {
-            $builder->where('place_id', $libryo->id);
+        $normaFilter = function ($builder) use ($norma) {
+            $builder->where('place_id', $norma->id);
         };
 
         $question->loadCount([
-            'references' => function ($builder) use ($libryo) {
-                $builder->forLibryoAutocompiledBase($libryo);
+            'references' => function ($builder) use ($norma) {
+                $builder->forNormaAutocompiledBase($norma);
             },
-            'activities' => $libryoFilter,
-            'tasks' => $libryoFilter,
-            'comments' => $libryoFilter,
+            'activities' => $normaFilter,
+            'tasks' => $normaFilter,
+            'comments' => $normaFilter,
         ]);
 
-        $assessmentItemsCount = $libryo->hasAssessModule() ? AssessmentItem::possibleForUncompiledLibryo($libryo, $question)->count() : 0;
-        $actionsCount = $libryo->hasActionsModule() ? ActionArea::possibleForLibryoInApplicability($libryo, $question)->count() : 0;
+        $assessmentItemsCount = $norma->hasAssessModule() ? AssessmentItem::possibleForUncompiledNorma($norma, $question)->count() : 0;
+        $actionsCount = $norma->hasActionsModule() ? ActionArea::possibleForNormaInApplicability($norma, $question)->count() : 0;
 
-        /** @var \App\Models\Customer\Pivots\ContextQuestionLibryo $pivot */
-        $pivot = $question->libryos->first()?->pivot; // @phpstan-ignore-line
+        /** @var \App\Models\Customer\Pivots\ContextQuestionNorma $pivot */
+        $pivot = $question->normas->first()?->pivot; // @phpstan-ignore-line
         $pivot->load(['lastAnsweredBy']);
 
         /** @var User $user */
         $user = Auth::user();
 
-        event(new GenericActivity($user, UserActivityType::viewedApplicabilityQuestion(), null, $libryo));
+        event(new GenericActivity($user, UserActivityType::viewedApplicabilityQuestion(), null, $norma));
 
         /** @var View */
-        return view('pages.compilation.my.context-question.show-for-libryo', [
-            'libryo' => $libryo,
+        return view('pages.compilation.my.context-question.show-for-norma', [
+            'norma' => $norma,
             'question' => $question,
             'explanation' => $explanation,
             'answer' => $pivot,
@@ -203,7 +203,7 @@ class ContextQuestionController extends Controller
     }
 
     /**
-     * Perform a given action on a given list of libryo streams.
+     * Perform a given action on a given list of norma streams.
      *
      * @param Request         $request
      * @param ContextQuestion $question
@@ -213,15 +213,15 @@ class ContextQuestionController extends Controller
     public function actionsForQuestion(Request $request, ContextQuestion $question): RedirectResponse
     {
         $actionName = $this->validateActionName($request);
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         /** @var Organisation */
         $organisation = $manager->getActiveOrganisation();
 
-        /** @var \Illuminate\Database\Eloquent\Collection<Libryo> */
-        $libryos = $this->filterActionInputForOrg($request, Libryo::class, $organisation);
+        /** @var \Illuminate\Database\Eloquent\Collection<Norma> */
+        $normas = $this->filterActionInputForOrg($request, Norma::class, $organisation);
 
-        $this->performActionForQuestion($request, $actionName, $question, $libryos);
+        $this->performActionForQuestion($request, $actionName, $question, $normas);
 
         return back();
     }
@@ -230,20 +230,20 @@ class ContextQuestionController extends Controller
      * @param Request            $request
      * @param string             $action
      * @param ContextQuestion    $question
-     * @param Collection<Libryo> $libryos
+     * @param Collection<Norma> $normas
      *
      * @return void
      */
-    private function performActionForQuestion(Request $request, string $action, ContextQuestion $question, Collection $libryos): void
+    private function performActionForQuestion(Request $request, string $action, ContextQuestion $question, Collection $normas): void
     {
         /** @var User $user */
         $user = $request->user();
         switch ($action) {
             case 'applicability_answer_yes':
-                $this->contextQuestionLibryoStore->answerQuestionForLibryos($question, $libryos, ContextQuestionAnswer::yes(), $user);
+                $this->contextQuestionNormaStore->answerQuestionForNormas($question, $normas, ContextQuestionAnswer::yes(), $user);
                 break;
             case 'applicability_answer_no':
-                $this->contextQuestionLibryoStore->answerQuestionForLibryos($question, $libryos, ContextQuestionAnswer::no(), $user);
+                $this->contextQuestionNormaStore->answerQuestionForNormas($question, $normas, ContextQuestionAnswer::no(), $user);
                 break;
                 // @codeCoverageIgnoreStart
             default:
@@ -253,7 +253,7 @@ class ContextQuestionController extends Controller
     }
 
     /**
-     * Perform a given action on a given list of libryo streams.
+     * Perform a given action on a given list of norma streams.
      *
      * @param Request $request
      *
@@ -276,22 +276,22 @@ class ContextQuestionController extends Controller
     protected function handleIndexActions(Request $request): RedirectResponse
     {
         $actionName = $this->validateActionName($request);
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         /** @var Organisation */
         $organisation = $manager->getActiveOrganisation();
-        $libryosQuery = fn ($query) => $query->where('organisation_id', $organisation->id);
+        $normasQuery = fn ($query) => $query->where('organisation_id', $organisation->id);
 
-        if ($manager->isSingleMode() && $libryo = $manager->getActive()) {
+        if ($manager->isSingleMode() && $norma = $manager->getActive()) {
             // @codeCoverageIgnoreStart
-            $libryosQuery = fn ($query) => $query->where('id', $libryo->id);
+            $normasQuery = fn ($query) => $query->where('id', $norma->id);
             // @codeCoverageIgnoreEnd
         }
 
         /** @var \Illuminate\Database\Eloquent\Collection<ContextQuestion> */
-        $questions = $this->filterActionInput($request, ContextQuestion::class, fn ($query) => $query->whereHas('libryos', $libryosQuery));
+        $questions = $this->filterActionInput($request, ContextQuestion::class, fn ($query) => $query->whereHas('normas', $normasQuery));
 
-        $questions->load(['libryos' => $libryosQuery]);
+        $questions->load(['normas' => $normasQuery]);
 
         $this->performIndexAction($request, $actionName, $questions);
 
@@ -315,12 +315,12 @@ class ContextQuestionController extends Controller
         switch ($action) {
             case 'applicability_answer_yes':
                 foreach ($questions as $question) {
-                    $this->contextQuestionLibryoStore->answerQuestionForLibryos($question, $question->libryos, ContextQuestionAnswer::yes(), $user);
+                    $this->contextQuestionNormaStore->answerQuestionForNormas($question, $question->normas, ContextQuestionAnswer::yes(), $user);
                 }
                 break;
             case 'applicability_answer_no':
                 foreach ($questions as $question) {
-                    $this->contextQuestionLibryoStore->answerQuestionForLibryos($question, $question->libryos, ContextQuestionAnswer::no(), $user);
+                    $this->contextQuestionNormaStore->answerQuestionForNormas($question, $question->normas, ContextQuestionAnswer::no(), $user);
                 }
                 break;
                 // @codeCoverageIgnoreStart
@@ -330,7 +330,7 @@ class ContextQuestionController extends Controller
         }
 
         if (in_array($action, ['applicability_answer_yes', 'applicability_answer_no'])) {
-            $manager = app(ActiveLibryosManager::class);
+            $manager = app(ActiveNormasManager::class);
 
             event(new GenericActivity(
                 $user,
@@ -359,7 +359,7 @@ class ContextQuestionController extends Controller
      */
     public function uploadExcelImport(Request $request): Response|RedirectResponse
     {
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
         /** @var Organisation|null */
         $organisation = $manager->getActiveOrganisation();
         if (!$organisation) {
@@ -425,7 +425,7 @@ class ContextQuestionController extends Controller
      */
     public function export(Request $request): RedirectResponse
     {
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
         /** @var Organisation|null */
         $organisation = $manager->getActiveOrganisation();
         if (!$organisation) {
@@ -436,13 +436,13 @@ class ContextQuestionController extends Controller
         /** @var User $user */
         $user = $request->user();
 
-        /** @var Libryo|null $libryo */
-        $libryo = $manager->getActive();
+        /** @var Norma|null $norma */
+        $norma = $manager->getActive();
 
-        HandleAutoCompilationExcelReportExport::dispatch($organisation->id, $user->id, $libryo->id ?? null);
+        HandleAutoCompilationExcelReportExport::dispatch($organisation->id, $user->id, $norma->id ?? null);
         Session::flash('flash.message', __('compilation.context_brief.email_will_be_sent'));
 
-        event(new GenericActivity($user, UserActivityType::downloadedApplicabilityTemplate(), null, $libryo, $organisation));
+        event(new GenericActivity($user, UserActivityType::downloadedApplicabilityTemplate(), null, $norma, $organisation));
 
         return redirect()->route('my.context-questions.index');
     }

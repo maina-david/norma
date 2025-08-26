@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Storage\My;
 
 use App\Http\Controllers\Controller;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Storage\My\Folder;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Services\Storage\FolderLists;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
@@ -32,16 +32,16 @@ class FolderStreamController extends Controller
      */
     public function tree(Request $request, string $uniqueId, ?int $folder = null): Response
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         $showingChildren = (bool) $request->input('show', 1);
 
         if (is_null($folder)) {
             $query = Folder::forParent()->orderBy('title');
             if ($manager->isSingleMode()) {
-                /** @var Libryo */
-                $libryo = $manager->getActive();
-                $query->forLibryo($libryo);
+                /** @var Norma */
+                $norma = $manager->getActive();
+                $query->forNorma($norma);
             } else {
                 /** @var Organisation */
                 $organisation = $manager->getActiveOrganisation();

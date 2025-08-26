@@ -18,9 +18,9 @@ class InboundMailSendgridWebhookController extends Controller
 
         debug_log($request->all());
 
-        preg_match('/[A-Z0-9_a-z-.]+@updates\.libryo\.com/', $to, $matches);
+        preg_match('/[A-Z0-9_a-z-.]+@updates\.norma\.com/', $to, $matches);
         if (isset($matches[0])) {
-            $sender = str_replace('@updates.libryo.com', '', strtolower($matches[0]));
+            $sender = str_replace('@updates.norma.com', '', strtolower($matches[0]));
             /** @var UpdateEmailSender|null $sender */
             $sender = UpdateEmailSender::where('slug', $sender)->first();
 

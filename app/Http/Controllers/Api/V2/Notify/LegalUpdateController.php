@@ -47,10 +47,10 @@ class LegalUpdateController extends AbstractApiController
         $user = Auth::user();
 
         /** @var Builder */
-        return LegalUpdate::whereHas('libryos', fn ($q) => $q->userHasAccess($user))
+        return LegalUpdate::whereHas('normas', fn ($q) => $q->userHasAccess($user))
             ->with([
                 'work' => fn ($q) => null,
-                'libryos' => function ($q) use ($user) {
+                'normas' => function ($q) use ($user) {
                     $q->active()->userHasAccess($user);
                 },
             ]);

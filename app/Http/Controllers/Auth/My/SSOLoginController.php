@@ -18,7 +18,7 @@ class SSOLoginController extends Controller
     }
 
     /**
-     * Login user to Libryo given code from provider.
+     * Login user to Norma given code from provider.
      */
     public function fromProviderCode(): RedirectResponse
     {
@@ -30,9 +30,9 @@ class SSOLoginController extends Controller
             // @codeCoverageIgnoreEnd
         }
 
-        $libryoUser = $this->getLibryoUser($providerName);
+        $normaUser = $this->getNormaUser($providerName);
 
-        Auth::login($libryoUser);
+        Auth::login($normaUser);
 
         /** @var RedirectResponse */
         return redirect('/');
@@ -43,7 +43,7 @@ class SSOLoginController extends Controller
      *
      * @return User
      */
-    private function getLibryoUser(string $providerName): User
+    private function getNormaUser(string $providerName): User
     {
         /** @var AbstractProvider */
         $provider = Socialite::driver($providerName);
@@ -58,15 +58,15 @@ class SSOLoginController extends Controller
             // @codeCoverageIgnoreEnd
         }
         /** @var User|null */
-        $libryoUser = User::where('email', $email)->first();
+        $normaUser = User::where('email', $email)->first();
 
-        if (!$libryoUser) {
+        if (!$normaUser) {
             // @codeCoverageIgnoreStart
             abort(403, $authError);
             // @codeCoverageIgnoreEnd
         }
 
-        return $libryoUser;
+        return $normaUser;
     }
 
     /**
@@ -104,9 +104,9 @@ class SSOLoginController extends Controller
      */
     public function tokenFromProviderCode(string $provider): JsonResponse
     {
-        $libryoUser = $this->getLibryoUser($provider);
+        $normaUser = $this->getNormaUser($provider);
 
-        $token = $libryoUser
+        $token = $normaUser
             ->createToken('provider_code')
             ->accessToken;
 

@@ -217,7 +217,7 @@ class UserController extends Controller
         $this->authorize('manageInSettings', $user);
         $user->user_roles = $user->roles()->my()->pluck('id')->toArray();
 
-        $rolesQuery = preg_match('/@libryo.com|@erm.com/', $user->email ?? '') === 1 ? Role::my() : Role::my()->where('title', '!=', 'My Super Users');
+        $rolesQuery = preg_match('/@norma.com|@erm.com/', $user->email ?? '') === 1 ? Role::my() : Role::my()->where('title', '!=', 'My Super Users');
 
         /** @var View $view */
         $view = view('pages.auth.my.user.settings.show', [

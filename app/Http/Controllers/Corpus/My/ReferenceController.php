@@ -9,9 +9,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Auth\User;
 use App\Models\Collaborators\Collaborator;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Services\Search\Elastic\DocumentSearch;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Contracts\View\View;
@@ -36,15 +36,15 @@ class ReferenceController extends Controller
     public function indexDetailedRequirements(Request $request): View
     {
         $filters = $request->except(['search']);
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $organisation = null;
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
+        $norma = $organisation = null;
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
-            $libryo->load('location');
+            /** @var Norma */
+            $norma = $manager->getActive();
+            $norma->load('location');
             /** @var Builder */
-            $query = Reference::forLibryo($libryo);
+            $query = Reference::forNorma($norma);
         } else {
             /** @var Organisation */
             $organisation = $manager->getActiveOrganisation();
@@ -53,7 +53,7 @@ class ReferenceController extends Controller
             $user = $request->user();
             /** @var Builder */
             $query = Reference::forOrganisationUserAccess($organisation, $user);
-            $query->withCount(['libryos' => function ($q) use ($organisation, $user) {
+            $query->withCount(['normas' => function ($q) use ($organisation, $user) {
                 $q->forOrganisation($organisation->id)->userHasAccess($user);
             }]);
         }
@@ -78,7 +78,7 @@ class ReferenceController extends Controller
             $page = (int) $request->input('page', 1);
             /** @var Paginator */
             $items = $this->documentSearch->getReferencesForRequirementsSearch($search, $query, $page, $perPage);
-            KnowYourLawActivity::dispatch($user, UserActivityType::fulltextSearchTerm(), ['term' => $search], $libryo, $organisation);
+            KnowYourLawActivity::dispatch($user, UserActivityType::fulltextSearchTerm(), ['term' => $search], $norma, $organisation);
         } else {
             /** @var Paginator */
             $items = $query->paginate($perPage);
@@ -87,7 +87,7 @@ class ReferenceController extends Controller
         /** @var View */
         return view('pages.corpus.reference.my.detailed-requirements', [
             'items' => $items->setPath(route('my.corpus.references.index'))->appends($request->query() ?? []),
-            'pertaining' => $libryo->title ?? $organisation->title ?? null,
+            'pertaining' => $norma->title ?? $organisation->title ?? null,
         ]);
     }
 
@@ -98,43 +98,43 @@ class ReferenceController extends Controller
      */
     public function show(Reference $reference): View
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
 
-        /** @var Libryo $libryo */
-        $libryo = $manager->getActive();
+        /** @var Norma $norma */
+        $norma = $manager->getActive();
 
-        $forLibryo = fn ($query) => $query->forLibryoLocations($libryo);
+        $forNorma = fn ($query) => $query->forNormaLocations($norma);
 
         $reference = $reference->loadCount([
-            'raisesConsequenceGroups' => $forLibryo,
+            'raisesConsequenceGroups' => $forNorma,
         ])
             ->load([
                 'citation', 'refPlainText', 'summary', 'work', 'work.source',
                 'categoriesForTagging' => fn ($query) => $query->forTagging()->select(['id', 'display_label']),
-                'childReferences' => $forLibryo,
+                'childReferences' => $forNorma,
                 'childReferences.htmlContent',
                 'htmlContent',
             ]);
 
         $amendments = Reference::whereIn('id', $reference->getLinkedTypeIDs(ReferenceLinkType::AMENDMENT))
-            ->forLibryoLocations($libryo)
+            ->forNormaLocations($norma)
             ->count();
 
         $readWiths = Reference::whereIn('id', $reference->getLinkedTypeIDs(ReferenceLinkType::READ_WITH))
-            ->forLibryoLocations($libryo)
+            ->forNormaLocations($norma)
             ->count();
 
         $reference->load([
-            'assessmentItems' => function ($builder) use ($libryo) {
-                $builder->whereRelation('assessmentResponses', 'place_id', $libryo->id ?? 0);
+            'assessmentItems' => function ($builder) use ($norma) {
+                $builder->whereRelation('assessmentResponses', 'place_id', $norma->id ?? 0);
             },
-            'assessmentItems.assessmentResponses' => fn ($builder) => $builder->where('place_id', $libryo->id ?? 0),
+            'assessmentItems.assessmentResponses' => fn ($builder) => $builder->where('place_id', $norma->id ?? 0),
             'assessmentItems.legalDomain.topParent',
         ]);
 
-        /** @var Libryo|null $libryo */
-        if ($libryo?->hasActionsModule()) {
+        /** @var Norma|null $norma */
+        if ($norma?->hasActionsModule()) {
             $reference->load([
                 'actionAreas:id,title',
             ]);
@@ -145,7 +145,7 @@ class ReferenceController extends Controller
 
         /** @var View */
         return view('pages.corpus.reference.my.show', [
-            'libryo' => $libryo,
+            'norma' => $norma,
             'reference' => $reference,
             'organisation' => $manager->getActiveOrganisation(),
             'readWithsCount' => $readWiths,

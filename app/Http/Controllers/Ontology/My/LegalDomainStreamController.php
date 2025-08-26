@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Ontology\My;
 
 use App\Http\Controllers\Controller;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Ontology\LegalDomain;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -26,12 +26,12 @@ class LegalDomainStreamController extends Controller
         /** @var string */
         $search = $request->input('search', '');
 
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
-            $query = LegalDomain::forLibryo($libryo);
+            /** @var Norma */
+            $norma = $manager->getActive();
+            $query = LegalDomain::forNorma($norma);
         } else {
             /** @var Organisation */
             $organisation = $manager->getActiveOrganisation();

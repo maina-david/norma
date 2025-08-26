@@ -31,10 +31,10 @@ class SearchPageController extends Controller
             ]);
         }
 
-        $endpoint = config('services.libryo_ai.host');
+        $endpoint = config('services.norma_ai.host');
 
         /** @var bool $enabled */
-        $enabled = config('services.libryo_ai.enabled');
+        $enabled = config('services.norma_ai.enabled');
 
         $filters = [];
         $sourceId = null;
@@ -45,7 +45,7 @@ class SearchPageController extends Controller
             $response = Http::baseUrl($endpoint)
                 ->asJson()
                 ->acceptJson()
-                ->post('/libryo-ai/pages/search', [
+                ->post('/norma-ai/pages/search', [
                     'query' => $q,
                     'limit' => 400,
                     'filters' => $filters,

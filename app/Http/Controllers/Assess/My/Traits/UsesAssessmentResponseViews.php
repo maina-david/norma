@@ -9,9 +9,9 @@ use App\Http\Controllers\Traits\DecodesHashids;
 use App\Models\Assess\AssessmentItem;
 use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -41,21 +41,21 @@ trait UsesAssessmentResponseViews
 
         $bookmarksFilter = fn ($q) => $q->forUser($user);
 
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $organisation = null;
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
+        $norma = $organisation = null;
         $singleMode = false;
         $pendingCount = 0;
 
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
+            /** @var Norma */
+            $norma = $manager->getActive();
 
-            if ($response = $this->redirectIfNoAssess($libryo)) {
+            if ($response = $this->redirectIfNoAssess($norma)) {
                 return $response;
             }
             /** @var Builder */
-            $query = AssessmentItemResponse::forLibryo($libryo)
+            $query = AssessmentItemResponse::forNorma($norma)
                 ->when($draft, fn ($builder) => $builder->draft())
                 ->when(!$draft, fn ($builder) => $builder->notDraft());
 
@@ -63,7 +63,7 @@ trait UsesAssessmentResponseViews
                 $builder->where('answer', '!=', ResponseStatus::notApplicable()->value);
             });
 
-            $pendingCount = AssessmentItemResponse::forLibryo($libryo)->draft()->count();
+            $pendingCount = AssessmentItemResponse::forNorma($norma)->draft()->count();
 
             // ordering makes query quite slow for all streams mode
             // $aiTable = (new AssessmentItem())->getTable();
@@ -76,7 +76,7 @@ trait UsesAssessmentResponseViews
             /** @var \App\Models\Auth\User $user */
             $user = $request->user();
 
-            $baseQuery = $this->composeResponsesQuery($query, $libryo, $organisation, $user);
+            $baseQuery = $this->composeResponsesQuery($query, $norma, $organisation, $user);
             $baseQuery->with([
                 'assessmentItem.author:id,fname,sname',
                 'assessmentItem.bookmarks' => $bookmarksFilter,
@@ -114,7 +114,7 @@ trait UsesAssessmentResponseViews
             'draft' => $draft,
             'pendingCount' => $pendingCount,
             'baseQuery' => $baseQuery,
-            'subTitle' => !is_null($libryo) ? $libryo->title : $organisation?->title,
+            'subTitle' => !is_null($norma) ? $norma->title : $organisation?->title,
             'tableFields' => $fields,
             'actions' => $this->getAvailableActions(),
             'singleMode' => $singleMode,

@@ -41,9 +41,9 @@ class AssessmentItemController extends ApiV3Controller
      */
     protected function applyOrganisationFilter(Builder $builder, int $organisationId): Builder
     {
-        return $builder->whereRelation('assessmentResponses.libryo', 'organisation_id', $organisationId)
+        return $builder->whereRelation('assessmentResponses.norma', 'organisation_id', $organisationId)
             ->with([
-                'assessmentResponses' => fn ($query) => $query->whereRelation('libryo', 'organisation_id', $organisationId),
+                'assessmentResponses' => fn ($query) => $query->whereRelation('norma', 'organisation_id', $organisationId),
             ]);
     }
 
@@ -52,7 +52,7 @@ class AssessmentItemController extends ApiV3Controller
      */
     protected function applyStreamsFilter(Builder $builder, array $streamIds): Builder
     {
-        return $builder->whereHas('assessmentResponses.libryo', fn ($query) => $query->whereKey($streamIds))
+        return $builder->whereHas('assessmentResponses.norma', fn ($query) => $query->whereKey($streamIds))
             ->with([
                 'assessmentResponses' => fn ($query) => $query->whereIn('place_id', $streamIds),
             ]);

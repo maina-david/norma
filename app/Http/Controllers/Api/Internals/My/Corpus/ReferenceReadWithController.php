@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\Internals\My\Corpus;
 
 use App\Enums\Corpus\ReferenceLinkType;
 use App\Models\Corpus\Reference;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Http\JsonResponse;
 
 class ReferenceReadWithController
@@ -12,21 +12,21 @@ class ReferenceReadWithController
     /**
      * Get the counts.
      *
-     * @param \App\Services\Customer\ActiveLibryosManager $manager
+     * @param \App\Services\Customer\ActiveNormasManager $manager
      * @param \App\Models\Corpus\Reference                $reference
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index(ActiveLibryosManager $manager, Reference $reference): JsonResponse
+    public function index(ActiveNormasManager $manager, Reference $reference): JsonResponse
     {
-        $libryo = $manager->getActive();
+        $norma = $manager->getActive();
 
-        $reference = $reference->loadCount(['raisesConsequenceGroups' => fn ($query) => $query->forLibryoLocations($libryo)]);
+        $reference = $reference->loadCount(['raisesConsequenceGroups' => fn ($query) => $query->forNormaLocations($norma)]);
         $amendments = Reference::whereIn('id', $reference->getLinkedTypeIDs(ReferenceLinkType::AMENDMENT))
-            ->forLibryoLocations($libryo)
+            ->forNormaLocations($norma)
             ->count();
         $readWiths = Reference::whereIn('id', $reference->getLinkedTypeIDs(ReferenceLinkType::READ_WITH))
-            ->forLibryoLocations($libryo)
+            ->forNormaLocations($norma)
             ->count();
 
         return response()->json([

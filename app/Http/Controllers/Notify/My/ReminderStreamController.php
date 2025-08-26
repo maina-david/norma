@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Notify\My;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\GetsModelForMorph;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Notify\Reminder;
 use App\Models\Tasks\Task;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Stores\Notify\ReminderStore;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -67,12 +67,12 @@ class ReminderStreamController extends Controller
         $whomOptions = [
             'self' => __('notify.reminder.me'),
         ];
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive($user);
-            $whomOptions['libryo'] = $libryo->title;
+            /** @var Norma */
+            $norma = $manager->getActive($user);
+            $whomOptions['norma'] = $norma->title;
         }
 
         /** @var Organisation */
@@ -112,12 +112,12 @@ class ReminderStreamController extends Controller
 
         /** @var User */
         $user = Auth::user();
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = null;
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
+        $norma = null;
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive($user);
+            /** @var Norma */
+            $norma = $manager->getActive($user);
         }
         /** @var Organisation */
         $organisation = $manager->getActiveOrganisation();
@@ -128,7 +128,7 @@ class ReminderStreamController extends Controller
             $data['description'] = $model->description;
         }
 
-        $reminder = $this->reminderStore->createFromInput($data, $user, $organisation, $libryo);
+        $reminder = $this->reminderStore->createFromInput($data, $user, $organisation, $norma);
 
         $type = $this->getSlugFromLegacyName($reminder->remindable_type, 'remindable');
 

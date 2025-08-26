@@ -12,11 +12,11 @@ use App\Http\Controllers\Assess\My\Traits\RedirectsAssessNotAvailable;
 use App\Http\Controllers\Controller;
 use App\Models\Assess\AssessmentItem;
 use App\Models\Assess\AssessmentItemResponse;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Services\Assess\AssessStatsService;
 use App\Services\Assess\QuarterlyReportsManager;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
@@ -47,19 +47,19 @@ class AssessmentItemController extends Controller
     {
         /** @var \App\Models\Auth\User $user */
         $user = $request->user();
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $organisation = null;
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
+        $norma = $organisation = null;
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
-            if ($response = $this->redirectIfNoAssess($libryo)) {
+            /** @var Norma */
+            $norma = $manager->getActive();
+            if ($response = $this->redirectIfNoAssess($norma)) {
                 return $response;
             }
             /** @var Builder */
-            $query = AssessmentItemResponse::forLibryo($libryo);
+            $query = AssessmentItemResponse::forNorma($norma);
             /** @var Builder */
-            $libryosQuery = Libryo::whereKey($libryo->id);
+            $normasQuery = Norma::whereKey($norma->id);
         } else {
             /** @var Organisation $organisation */
             $organisation = $manager->getActiveOrganisation();
@@ -67,7 +67,7 @@ class AssessmentItemController extends Controller
             /** @var Builder */
             $query = AssessmentItemResponse::forOrganisationUserAccess($organisation, $user);
             /** @var Builder */
-            $libryosQuery = Libryo::forOrganisation($organisation->id)->userHasAccess($user);
+            $normasQuery = Norma::forOrganisation($organisation->id)->userHasAccess($user);
         }
 
         $filters = $request->only(['domains', 'answered', 'answer', 'rating', 'controls', 'bookmarked', 'user-generated']);
@@ -77,7 +77,7 @@ class AssessmentItemController extends Controller
                 $user,
                 UserActivityType::filteredPerformanceReport(),
                 $filters,
-                $libryo,
+                $norma,
                 $organisation
             ));
         }
@@ -88,7 +88,7 @@ class AssessmentItemController extends Controller
 
         $responsesChartData = [
             'quarter_1' => $this->assessStatsService->getResponsesChartData($riskData),
-            ...$this->quarterlyReportsManager->getResponseData($libryosQuery, $query)['chart_data'],
+            ...$this->quarterlyReportsManager->getResponseData($normasQuery, $query)['chart_data'],
         ];
 
         /** @var RiskRating */
@@ -119,8 +119,8 @@ class AssessmentItemController extends Controller
             'responsesChartData' => $responsesChartData,
             'noResponses' => $risk->is(RiskRating::notRated()),
             'isSingleMode' => $manager->isSingleMode(),
-            'subTitle' => !is_null($libryo) ? $libryo->title : ($organisation->title ?? ''),
-            'libryo' => $libryo,
+            'subTitle' => !is_null($norma) ? $norma->title : ($organisation->title ?? ''),
+            'norma' => $norma,
             'isFiltered' => $isFiltered,
         ]);
     }
@@ -143,32 +143,32 @@ class AssessmentItemController extends Controller
             'answered_by',
         ];
 
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $organisation = null;
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
+        $norma = $organisation = null;
 
         /** @var \App\Models\Auth\User $user */
         $user = $request->user();
 
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
-            if ($response = $this->redirectIfNoAssess($libryo)) {
+            /** @var Norma */
+            $norma = $manager->getActive();
+            if ($response = $this->redirectIfNoAssess($norma)) {
                 return $response;
             }
             /** @var Builder */
-            $query = AssessmentItemResponse::forLibryo($libryo);
+            $query = AssessmentItemResponse::forNorma($norma);
             array_unshift($fields, 'title_single');
         } else {
             /** @var Organisation */
             $organisation = $manager->getActiveOrganisation();
             /** @var Builder */
             $query = AssessmentItemResponse::forOrganisationUserAccess($organisation, $user);
-            array_unshift($fields, 'title_with_libryo');
+            array_unshift($fields, 'title_with_norma');
         }
         $query->forAssessmentItem($assessmentItem);
 
-        $baseQuery = $this->composeResponsesQuery($query, $libryo, $organisation, $user);
+        $baseQuery = $this->composeResponsesQuery($query, $norma, $organisation, $user);
 
         /** @var View */
         return view('pages.assess.my.assessment-item.show', [
@@ -176,7 +176,7 @@ class AssessmentItemController extends Controller
             'baseQuery' => $baseQuery,
             'responsesCount' => $baseQuery->count(),
             'tableFields' => $fields,
-            'subTitle' => !is_null($libryo) ? $libryo->title : $organisation?->title,
+            'subTitle' => !is_null($norma) ? $norma->title : $organisation?->title,
             'isSingleMode' => $manager->isSingleMode(),
             'actions' => $this->getAvailableActions(),
         ]);

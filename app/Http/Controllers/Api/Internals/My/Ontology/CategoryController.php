@@ -6,7 +6,7 @@ use App\Cache\Ontology\Collaborate\CategorySelectorCache;
 use App\Models\Actions\ActionArea;
 use App\Models\Ontology\Category;
 use App\Models\Tasks\Task;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 
@@ -15,13 +15,13 @@ class CategoryController
     /**
      * Get the control categories.
      *
-     * @param \App\Services\Customer\ActiveLibryosManager $manager
+     * @param \App\Services\Customer\ActiveNormasManager $manager
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function controls(ActiveLibryosManager $manager): JsonResponse
+    public function controls(ActiveNormasManager $manager): JsonResponse
     {
-        $fromActions = Task::forLibryoOrOrganisation($manager->getActive(), $manager->getActiveOrganisation())
+        $fromActions = Task::forNormaOrOrganisation($manager->getActive(), $manager->getActiveOrganisation())
             ->whereNotNull('action_area_id')
             ->select('action_area_id');
 
@@ -34,13 +34,13 @@ class CategoryController
     /**
      * Get the subject categories.
      *
-     * @param \App\Services\Customer\ActiveLibryosManager $manager
+     * @param \App\Services\Customer\ActiveNormasManager $manager
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function subjects(ActiveLibryosManager $manager): JsonResponse
+    public function subjects(ActiveNormasManager $manager): JsonResponse
     {
-        $fromActions = Task::forLibryoOrOrganisation($manager->getActive(), $manager->getActiveOrganisation())
+        $fromActions = Task::forNormaOrOrganisation($manager->getActive(), $manager->getActiveOrganisation())
             ->whereNotNull('action_area_id')
             ->select('action_area_id');
 

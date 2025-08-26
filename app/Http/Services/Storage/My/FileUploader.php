@@ -3,7 +3,7 @@
 namespace App\Http\Services\Storage\My;
 
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Storage\My\File;
 use App\Models\Storage\My\Folder;
@@ -30,14 +30,14 @@ class FileUploader
     /**
      * @param Request                  $request
      * @param Folder                   $folder
-     * @param Organisation|Libryo|null $libryoOrOrg
+     * @param Organisation|Norma|null $normaOrOrg
      *
      * @return Collection<File>
      */
     public function handleUpload(
         Request $request,
         Folder $folder,
-        Organisation|Libryo|null $libryoOrOrg
+        Organisation|Norma|null $normaOrOrg
     ): Collection {
         /** @var Collection<File> */
         $newFiles = (new File())->newCollection();
@@ -61,9 +61,9 @@ class FileUploader
 
         $organisation = null;
 
-        if ($libryoOrOrg) {
+        if ($normaOrOrg) {
             /** @var Organisation */
-            $organisation = $libryoOrOrg instanceof Organisation ? $libryoOrOrg : $libryoOrOrg->organisation;
+            $organisation = $normaOrOrg instanceof Organisation ? $normaOrOrg : $normaOrOrg->organisation;
         }
 
         /** @var User */
@@ -81,7 +81,7 @@ class FileUploader
                 $this->canOrganisationStoreFile($organisation, $file);
             }
 
-            $newFile = $this->fileStore->create($file, $user, $folder, $libryoOrOrg->id ?? null, $title, $expiresAt);
+            $newFile = $this->fileStore->create($file, $user, $folder, $normaOrOrg->id ?? null, $title, $expiresAt);
             $newFiles->add($newFile);
         }
 

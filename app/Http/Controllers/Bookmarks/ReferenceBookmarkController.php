@@ -6,7 +6,7 @@ use App\Enums\Auth\UserActivityType;
 use App\Events\Auth\UserActivity\GenericActivity;
 use App\Models\Auth\User;
 use App\Models\Corpus\Reference;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Database\Eloquent\Model;
 
 class ReferenceBookmarkController extends BookmarkController
@@ -49,7 +49,7 @@ class ReferenceBookmarkController extends BookmarkController
     protected function postStore(Model $model, User $user): void
     {
         /** @var Reference $model */
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
 
         event(new GenericActivity(
             $user,

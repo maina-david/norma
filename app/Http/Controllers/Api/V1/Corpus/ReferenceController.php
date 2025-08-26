@@ -9,7 +9,7 @@ use App\Http\Resources\Corpus\Reference\V1\ReferenceResource;
 use App\Models\Auth\User;
 use App\Models\Corpus\Reference;
 use App\Models\Corpus\Work;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -54,20 +54,20 @@ class ReferenceController extends AbstractApiController
     /**
      * @param ApiMultiGetRequest $request
      * @param Work               $work
-     * @param Libryo             $libryo
+     * @param Norma             $norma
      *
      * @return ReferenceCollection<Reference>
      */
-    public function forLibryoForWork(Request $request, Work $work, Libryo $libryo): ReferenceCollection
+    public function forNormaForWork(Request $request, Work $work, Norma $norma): ReferenceCollection
     {
         /** @var User */
         $user = Auth::user();
 
-        abort_unless($user->hasLibryoAccess($libryo), 404);
+        abort_unless($user->hasNormaAccess($norma), 404);
 
         /** @var Builder */
         $query = Reference::where('work_id', $work->id)
-            ->forLibryo($libryo)
+            ->forNorma($norma)
             ->with(['summary', 'tags', 'citation', 'htmlContent:reference_id,cached_content', 'refPlainText']);
 
         $results = $this->processListingQuery($request, $query);

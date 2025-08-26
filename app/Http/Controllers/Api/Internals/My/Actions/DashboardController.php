@@ -6,7 +6,7 @@ use App\Http\Controllers\Api\Internals\My\MyApiController;
 use App\Http\Resources\Internals\My\Actions\DashboardMetricsResource;
 use App\Jobs\Exports\ActionsDashboardStreamDataExportExcel;
 use App\Services\Actions\DashboardStreamDataBuilder;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Str;
@@ -16,13 +16,13 @@ class DashboardController extends MyApiController
     /**
      * Get the metrics for the dashboard.
      *
-     * @param \App\Services\Customer\ActiveLibryosManager      $manager
+     * @param \App\Services\Customer\ActiveNormasManager      $manager
      * @param \App\Services\Actions\DashboardStreamDataBuilder $dataBuilder
      * @param \Illuminate\Http\Request                         $request
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function index(ActiveLibryosManager $manager, DashboardStreamDataBuilder $dataBuilder, Request $request): AnonymousResourceCollection
+    public function index(ActiveNormasManager $manager, DashboardStreamDataBuilder $dataBuilder, Request $request): AnonymousResourceCollection
     {
         $this->parseSort($request);
 
@@ -43,7 +43,7 @@ class DashboardController extends MyApiController
         /** @var array<string, mixed> $filters */
         $filters = $request->query();
         $filename = Str::random(15) . '.xlsx';
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
         $organisation = $manager->getActiveOrganisation();
         $columns = [
             'title',

@@ -43,7 +43,7 @@ class LaconicApiClient
     }
 
     /**
-     * Make a request to the Libryo API.
+     * Make a request to the Norma API.
      *
      * @param string                   $method
      * @param string                   $uri
@@ -101,7 +101,7 @@ class LaconicApiClient
     }
 
     /**
-     * Make async request to the Libryo API.
+     * Make async request to the Norma API.
      *
      * @param string                   $method
      * @param string                   $uri

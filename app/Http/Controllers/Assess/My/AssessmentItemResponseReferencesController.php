@@ -9,8 +9,8 @@ use App\Http\Requests\Assess\AssessmentItemReferenceRequest;
 use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Auth\User;
 use App\Models\Corpus\Work;
-use App\Models\Customer\Libryo;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Models\Customer\Norma;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
@@ -28,20 +28,20 @@ class AssessmentItemResponseReferencesController extends Controller
      */
     public function create(AssessmentItemResponse $response): Response
     {
-        $response->load(['libryo', 'assessmentItem']);
+        $response->load(['norma', 'assessmentItem']);
 
-        /** @var Libryo $libryo */
-        $libryo = $response->libryo;
+        /** @var Norma $norma */
+        $norma = $response->norma;
 
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         $editable = $response->assessmentItem->organisation_id === $manager->getActiveOrganisation()->id;
 
         abort_unless($editable, 404);
 
         /** @var Collection<Work> $works */
-        $works = Work::primaryForLibryo($libryo)
-            ->with(['children' => fn ($query) => $query->select(['id', 'title', 'title_translation'])->active()->forLibryo($response->libryo)])
+        $works = Work::primaryForNorma($norma)
+            ->with(['children' => fn ($query) => $query->select(['id', 'title', 'title_translation'])->active()->forNorma($response->norma)])
             ->get(['id', 'title', 'title_translation']);
 
         $children = collect();
@@ -83,16 +83,16 @@ class AssessmentItemResponseReferencesController extends Controller
      */
     public function references(AssessmentItemResponse $response, Work $work): Response
     {
-        $response->load(['libryo']);
+        $response->load(['norma']);
 
-        /** @var \App\Models\Customer\Libryo $libryo */
-        $libryo = $response->libryo;
+        /** @var \App\Models\Customer\Norma $norma */
+        $norma = $response->norma;
 
         $references = $work->references()
             ->typeCitation()
             ->active()
             ->forActiveWork()
-            ->forLibryo($libryo)
+            ->forNorma($norma)
             ->with(['refPlainText', 'refTitleText'])
             ->get(['id'])
             ->map(function ($ref) {
@@ -123,10 +123,10 @@ class AssessmentItemResponseReferencesController extends Controller
      */
     protected function isEditable(AssessmentItemResponse $response): bool
     {
-        $response->load(['assessmentItem', 'libryo']);
+        $response->load(['assessmentItem', 'norma']);
 
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
 
         return $response->assessmentItem->organisation_id === $manager->getActiveOrganisation()->id;
     }
@@ -154,9 +154,9 @@ class AssessmentItemResponseReferencesController extends Controller
                 'source' => 'UG-SAI',
             ]);
 
-            /** @var \App\Models\Customer\Libryo $libryo */
-            $libryo = $response->libryo;
-            RequirementLinked::dispatch($user, $libryo, $response, $ref);
+            /** @var \App\Models\Customer\Norma $norma */
+            $norma = $response->norma;
+            RequirementLinked::dispatch($user, $norma, $response, $ref);
         }
 
         return redirect()->route('my.references.for.assessment-item-response.index', ['aiResponse' => $response->id]);
@@ -180,9 +180,9 @@ class AssessmentItemResponseReferencesController extends Controller
 
             $response->assessmentItem->references()->detach($reference);
 
-            /** @var \App\Models\Customer\Libryo $libryo */
-            $libryo = $response->libryo;
-            RequirementUnlinked::dispatch($user, $libryo, $response, $reference);
+            /** @var \App\Models\Customer\Norma $norma */
+            $norma = $response->norma;
+            RequirementUnlinked::dispatch($user, $norma, $response, $reference);
         }
 
         return redirect()->route('my.references.for.assessment-item-response.index', ['aiResponse' => $response->id]);

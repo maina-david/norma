@@ -8,7 +8,7 @@ use App\Events\Auth\UserActivity\GenericActivityUsingAuth;
 use App\Http\Controllers\Controller;
 use App\Models\Corpus\Pivots\ReferenceReference;
 use App\Models\Corpus\Reference;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Response;
 
@@ -88,13 +88,13 @@ class ReferenceLinksStreamController extends Controller
      */
     protected function renderResults(array $related, ReferenceLinkType $type, string $target): Response
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
 
-        $libryo = $manager->getActive();
+        $norma = $manager->getActive();
 
         $rows = Reference::active()
-            ->forLibryoLocations($libryo)
+            ->forNormaLocations($norma)
             ->whereIn('id', $related)
             ->whereHas('work', fn ($query) => $query->active())
             ->with(['refPlainText', 'work.primaryLocation', 'legalDomains'])

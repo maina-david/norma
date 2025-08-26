@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Compilation\My;
 use App\Enums\Auth\UserActivityType;
 use App\Events\Auth\UserActivity\GenericActivityUsingAuth;
 use App\Http\Controllers\Controller;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -20,7 +20,7 @@ class ApplicabilityRequirementsController extends Controller
      */
     public function index(Request $request): View
     {
-        $organisation = app(ActiveLibryosManager::class)->getActiveOrganisation();
+        $organisation = app(ActiveNormasManager::class)->getActiveOrganisation();
         $this->authorize('access.org.settings', $organisation);
 
         $this->logActivity($request);

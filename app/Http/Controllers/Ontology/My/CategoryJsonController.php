@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Ontology\My;
 
 use App\Cache\Ontology\Collaborate\CategorySelectorCache;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Ontology\Category;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,12 +33,12 @@ class CategoryJsonController
             return response()->json([]);
         }
 
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
 
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
-            $query = Category::forLibryo($libryo);
+            /** @var Norma */
+            $norma = $manager->getActive();
+            $query = Category::forNorma($norma);
         } else {
             // @codeCoverageIgnoreStart
             /** @var Organisation */

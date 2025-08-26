@@ -8,7 +8,7 @@ use App\Http\Resources\Corpus\Work\V1\LegalReportWorkCollection;
 use App\Http\Resources\Corpus\Work\V1\LegalReportWorkResource;
 use App\Models\Auth\User;
 use App\Models\Corpus\Work;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,20 +35,20 @@ class LegalReportController extends AbstractApiController
 
     /**
      * @param ApiMultiGetRequest $request
-     * @param Libryo             $libryo
+     * @param Norma             $norma
      *
      * @return LegalReportWorkCollection<Work>
      */
-    public function legalReport(Request $request, Libryo $libryo): LegalReportWorkCollection
+    public function legalReport(Request $request, Norma $norma): LegalReportWorkCollection
     {
         /** @var User */
         $user = Auth::user();
 
-        abort_unless($user->hasLibryoAccess($libryo), 404);
+        abort_unless($user->hasNormaAccess($norma), 404);
 
         /** @var Builder */
-        $query = Work::primaryForLibryo($libryo)
-            ->withRelationsForLibryo($libryo);
+        $query = Work::primaryForNorma($norma)
+            ->withRelationsForNorma($norma);
 
         $results = $this->processListingQuery($request, $query);
 

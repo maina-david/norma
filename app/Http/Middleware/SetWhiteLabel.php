@@ -22,7 +22,7 @@ class SetWhiteLabel
         $manager->activate();
 
         if (!$manager->isValid()) {
-            return redirect()->away('https://libryo.com/contact-us/');
+            return redirect()->away('https://norma.com/contact-us/');
         }
 
         return $next($request);

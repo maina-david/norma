@@ -190,7 +190,7 @@ class OrganisationController extends CrudController
      */
     public function modules(Organisation $organisation): Response
     {
-        $defaultModules = config('libryo.model_settings.App\Models\Customer\Organisation.defaults.modules');
+        $defaultModules = config('norma.model_settings.App\Models\Customer\Organisation.defaults.modules');
 
         /** @var View $view */
         $view = view('streams.single-partial', [

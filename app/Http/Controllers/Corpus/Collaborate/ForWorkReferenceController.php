@@ -57,7 +57,7 @@ class ForWorkReferenceController extends CollaborateController
 
         return $work->references()
             ->with(['refPlainText'])
-            ->withCount(['libryos'])
+            ->withCount(['normas'])
             ->getQuery();
     }
 
@@ -103,7 +103,7 @@ class ForWorkReferenceController extends CollaborateController
     {
         return [
             'title' => fn ($row) => self::renderPartial($row, 'for-work.title-column'),
-            'streams' => fn ($row) => self::renderPartial($row, 'for-work.libryos-count-column'),
+            'streams' => fn ($row) => self::renderPartial($row, 'for-work.normas-count-column'),
         ];
     }
 

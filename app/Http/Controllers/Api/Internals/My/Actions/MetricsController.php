@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\Internals\My\Actions;
 
 use App\Enums\Tasks\TaskStatus;
 use App\Models\Tasks\Task;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,24 +15,24 @@ class MetricsController
     /**
      * Get the base query.
      *
-     * @param \App\Services\Customer\ActiveLibryosManager $manager
+     * @param \App\Services\Customer\ActiveNormasManager $manager
      * @param \Illuminate\Http\Request                    $request
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function baseQuery(ActiveLibryosManager $manager, Request $request): Builder
+    protected function baseQuery(ActiveNormasManager $manager, Request $request): Builder
     {
         return Task::filter($request->all())
-            ->forLibryoOrOrganisation($manager->getActive(), $manager->getActiveOrganisation());
+            ->forNormaOrOrganisation($manager->getActive(), $manager->getActiveOrganisation());
     }
 
     /**
-     * @param \App\Services\Customer\ActiveLibryosManager $manager
+     * @param \App\Services\Customer\ActiveNormasManager $manager
      * @param \Illuminate\Http\Request                    $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function statuses(ActiveLibryosManager $manager, Request $request): JsonResponse
+    public function statuses(ActiveNormasManager $manager, Request $request): JsonResponse
     {
         $chartData = [
             TaskStatus::notStarted()->value => 0,
@@ -56,12 +56,12 @@ class MetricsController
     /**
      * Get the impact metric.
      *
-     * @param \App\Services\Customer\ActiveLibryosManager $manager
+     * @param \App\Services\Customer\ActiveNormasManager $manager
      * @param \Illuminate\Http\Request                    $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function impact(ActiveLibryosManager $manager, Request $request): JsonResponse
+    public function impact(ActiveNormasManager $manager, Request $request): JsonResponse
     {
         $overdueImpact = $this->baseQuery($manager, $request)
             ->overdue()
@@ -93,12 +93,12 @@ class MetricsController
     /**
      * Get the created vs completed tasks count.
      *
-     * @param \App\Services\Customer\ActiveLibryosManager $manager
+     * @param \App\Services\Customer\ActiveNormasManager $manager
      * @param \Illuminate\Http\Request                    $request
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function creationCompletion(ActiveLibryosManager $manager, Request $request): JsonResponse
+    public function creationCompletion(ActiveNormasManager $manager, Request $request): JsonResponse
     {
         $completedData = $this->baseQuery($manager, $request)
             ->where('completed_at', '>=', now()->subMonths(12))
@@ -156,13 +156,13 @@ class MetricsController
     /**
      * Get the provided metric.
      *
-     * @param \App\Services\Customer\ActiveLibryosManager $manager
+     * @param \App\Services\Customer\ActiveNormasManager $manager
      * @param \Illuminate\Http\Request                    $request
      * @param string                                      $metric
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function singleMetric(ActiveLibryosManager $manager, Request $request, string $metric): JsonResponse
+    public function singleMetric(ActiveNormasManager $manager, Request $request, string $metric): JsonResponse
     {
         $data = match ($metric) {
             'total' => $this->baseQuery($manager, $request)->count(),

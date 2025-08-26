@@ -148,30 +148,30 @@ class UserToHubspotContact
         $fields = collect([
             'original_email' => $this->user->getOriginal('email'),
             'email' => $this->user->email,
-            'from_libryo_api' => 'Yes',
+            'from_norma_api' => 'Yes',
             'firstname' => $this->user->fname,
             'lastname' => $this->user->sname,
             'phone' => "{$this->user->mobile_country_code} {$this->user->phone_mobile}",
-            'libryo_status' => $this->user->active ? 'active' : 'inactive',
+            'norma_status' => $this->user->active ? 'active' : 'inactive',
             'legal_updates_unread' => $this->user->unread_legal_updates_count,
             'total_number_of_legal_updates' => $this->user->legal_updates_count,
             'legal_updates_read' => $this->user->only_read_updates_count, // @phpstan-ignore-line
             'legal_updates_read_and_understood' => $this->user->understood_updates_count, // @phpstan-ignore-line
-            'libryo_know_your_law_activities' => $this->user->know_your_law_activity_count, // @phpstan-ignore-line
+            'norma_know_your_law_activities' => $this->user->know_your_law_activity_count, // @phpstan-ignore-line
             'successful_searches' => $this->user->successful_searches_count, // @phpstan-ignore-line
             'number_of_activities_all_time_' => $this->user->all_activities_count, // @phpstan-ignore-line
             'number_of_activities_yearly_' => $this->user->year_activities_count, // @phpstan-ignore-line
             'number_of_activities' => $this->user->months_activities_count, // @phpstan-ignore-line
             'user_type' => $this->getUserType(),
             'lifecyclestage' => $this->getLifeCycleStage(),
-            'libryo_user_status' => $this->getUserStatus(),
+            'norma_user_status' => $this->getUserStatus(),
             'journey_to_core' => $this->getCoreStatus(),
             'covid_19_campaign_rubicon' => $this->isRubiconFreeUser(),
             'free_user' => UserType::free()->is($this->user->user_type) ? 'Yes' : 'No',
-            'date_added_to_libryo' => $this->toHubspotTimestamp($this->user->created_at),
+            'date_added_to_norma' => $this->toHubspotTimestamp($this->user->created_at),
             'first_activity_date' => $this->toHubspotTimestamp($this->user->first_activity), // @phpstan-ignore-line
-            'libryo_organisation' => $this->user->organisations->implode('title', "\n"),
-            'libryo_team' => $this->user->teams->implode('title', "\n"),
+            'norma_organisation' => $this->user->organisations->implode('title', "\n"),
+            'norma_team' => $this->user->teams->implode('title', "\n"),
         ])
             ->filter(fn ($value) => !is_null($value) && strlen($value) > 0)
             ->merge($this->getComputedFields())
@@ -192,27 +192,27 @@ class UserToHubspotContact
             ->map(fn ($record) => 'Version ' . $record)
             ->implode(', ');
 
-        $libryoScore = 100;
+        $normaScore = 100;
 
         if ($this->user->legal_updates_count > 0) {
             $readScore = $this->user->only_read_updates_count + (2 * $this->user->understood_updates_count); // @phpstan-ignore-line
             $totalScore = 2 * $this->user->legal_updates_count;
-            $libryoScore = round(($readScore / $totalScore) * 100);
+            $normaScore = round(($readScore / $totalScore) * 100);
         }
 
         $activityRanking = $this->getActivityRanking();
 
         $fields = [
-            'libryo_score' => $libryoScore,
-            'libryo_search' => $activityRanking[0],
-            'libryo_compliance' => $activityRanking[1],
-            'libryo_know_your_law' => $activityRanking[2],
-            'libryo_updates' => $activityRanking[3],
+            'norma_score' => $normaScore,
+            'norma_search' => $activityRanking[0],
+            'norma_compliance' => $activityRanking[1],
+            'norma_know_your_law' => $activityRanking[2],
+            'norma_updates' => $activityRanking[3],
         ];
 
         // @codeCoverageIgnoreStart
         if (strlen($versions) > 2) {
-            $fields['libryo_version'] = $versions;
+            $fields['norma_version'] = $versions;
         }
         // @codeCoverageIgnoreEnd
 

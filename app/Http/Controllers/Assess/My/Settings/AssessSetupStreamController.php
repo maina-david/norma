@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\PerformsActions;
 use App\Models\Assess\AssessmentItem;
 use App\Models\Assess\AssessmentItemResponse;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Services\Customer\ActiveOrganisationManager;
 use App\Stores\Assess\AssessmentItemResponseStore;
@@ -28,34 +28,34 @@ class AssessSetupStreamController extends Controller
 
     /**
      * @param ActiveOrganisationManager $activeOrganisationManager
-     * @param Libryo                    $libryo
+     * @param Norma                    $norma
      *
      * @return View
      */
-    public function setupForLibryo(ActiveOrganisationManager $activeOrganisationManager, Libryo $libryo): View
+    public function setupForNorma(ActiveOrganisationManager $activeOrganisationManager, Norma $norma): View
     {
         /** @var View */
         return view('pages.assess.my.assessment-item.settings.setup', [
-            'libryo' => $libryo,
+            'norma' => $norma,
             'organisation' => $activeOrganisationManager->getActive(),
         ]);
     }
 
     /**
-     * @param Libryo $libryo
+     * @param Norma $norma
      *
      * @return Response
      */
-    public function unusedItemsForLibryo(Libryo $libryo): Response
+    public function unusedItemsForNorma(Norma $norma): Response
     {
-        $baseQuery = AssessmentItem::possibleForLibryo($libryo)
-            ->noResponsesForLibryo($libryo);
+        $baseQuery = AssessmentItem::possibleForNorma($norma)
+            ->noResponsesForNorma($norma);
 
         /** @var View $view */
         $view = view('streams.single-partial', [
             'partialView' => 'partials.assess.my.assessment-item.settings.unused-items',
-            'target' => 'settings-assess-setup-for-libryo-unused-items-' . $libryo->id,
-            'libryo' => $libryo,
+            'target' => 'settings-assess-setup-for-norma-unused-items-' . $norma->id,
+            'norma' => $norma,
             'baseQuery' => $baseQuery,
             'count' => $baseQuery->count(),
         ]);
@@ -64,22 +64,22 @@ class AssessSetupStreamController extends Controller
     }
 
     /**
-     * @param Libryo $libryo
+     * @param Norma $norma
      *
      * @return Response
      */
-    public function usedItemsForLibryo(Libryo $libryo): Response
+    public function usedItemsForNorma(Norma $norma): Response
     {
-        $baseQuery = AssessmentItemResponse::forLibryo($libryo)
+        $baseQuery = AssessmentItemResponse::forNorma($norma)
             // we also want to check soft deleted AssessmentItems
-            ->whereNotIn('assessment_item_id', AssessmentItem::possibleForLibryo($libryo)->select('id'))
+            ->whereNotIn('assessment_item_id', AssessmentItem::possibleForNorma($norma)->select('id'))
             ->with(['assessmentItem']);
 
         /** @var View $view */
         $view = view('streams.single-partial', [
             'partialView' => 'partials.assess.my.assessment-item.settings.used-items',
-            'target' => 'settings-assess-setup-for-libryo-used-items-' . $libryo->id,
-            'libryo' => $libryo,
+            'target' => 'settings-assess-setup-for-norma-used-items-' . $norma->id,
+            'norma' => $norma,
             'baseQuery' => $baseQuery,
             'count' => $baseQuery->count(),
         ]);
@@ -89,11 +89,11 @@ class AssessSetupStreamController extends Controller
 
     /**
      * @param Request $request
-     * @param Libryo  $libryo
+     * @param Norma  $norma
      *
      * @return RedirectResponse
      */
-    public function actionsForLibryo(Request $request, Libryo $libryo): RedirectResponse
+    public function actionsForNorma(Request $request, Norma $norma): RedirectResponse
     {
         $actionName = $this->validateActionName($request);
 
@@ -105,7 +105,7 @@ class AssessSetupStreamController extends Controller
             $collection = $this->filterActionInput($request, AssessmentItemResponse::class);
         }
 
-        $redirectRoute = $this->performActionForLibryo($actionName, $libryo, $collection);
+        $redirectRoute = $this->performActionForNorma($actionName, $norma, $collection);
 
         /** @var RedirectResponse */
         return redirect($redirectRoute);
@@ -113,23 +113,23 @@ class AssessSetupStreamController extends Controller
 
     /**
      * @param string                                            $action
-     * @param Libryo                                            $libryo
+     * @param Norma                                            $norma
      * @param Collection<AssessmentItem|AssessmentItemResponse> $collection
      *
      * @return string
      */
-    private function performActionForLibryo(string $action, Libryo $libryo, Collection $collection): string
+    private function performActionForNorma(string $action, Norma $norma, Collection $collection): string
     {
         switch ($action) {
             case 'add_unused_items':
                 /** @var Collection<AssessmentItem> $collection */
-                $this->assessmentItemResponseStore->createResponsesForItems($collection, $libryo);
-                $redirectRoute = route('my.settings.assess.setup.unused.items.for.libryo', ['libryo' => $libryo]);
+                $this->assessmentItemResponseStore->createResponsesForItems($collection, $norma);
+                $redirectRoute = route('my.settings.assess.setup.unused.items.for.norma', ['norma' => $norma]);
                 break;
             case 'remove_used_items':
                 /** @var Collection<AssessmentItemResponse> $collection */
-                $this->assessmentItemResponseStore->removeResponses($collection, $libryo);
-                $redirectRoute = route('my.settings.assess.setup.used.items.for.libryo', ['libryo' => $libryo]);
+                $this->assessmentItemResponseStore->removeResponses($collection, $norma);
+                $redirectRoute = route('my.settings.assess.setup.used.items.for.norma', ['norma' => $norma]);
                 break;
                 // @codeCoverageIgnoreStart
             default:
@@ -148,7 +148,7 @@ class AssessSetupStreamController extends Controller
     public function setupForOrganisation(Organisation $organisation): Response
     {
         $baseQuery = AssessmentItem::possibleForOrganisation($organisation)
-            ->noResponsesForLibryosInOrganisation($organisation);
+            ->noResponsesForNormasInOrganisation($organisation);
 
         /** @var View $view */
         $view = view('streams.single-partial', [

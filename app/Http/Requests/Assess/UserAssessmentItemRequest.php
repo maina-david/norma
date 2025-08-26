@@ -8,7 +8,7 @@ use App\Http\Controllers\Traits\DecodesHashids;
 use App\Models\Assess\AssessmentItem;
 use App\Models\Ontology\Category;
 use App\Models\Ontology\LegalDomain;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -34,8 +34,8 @@ class UserAssessmentItemRequest extends FormRequest
      */
     public function rules()
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
 
         /** @var string|null $exists */
         $exists = $this->route('assess');

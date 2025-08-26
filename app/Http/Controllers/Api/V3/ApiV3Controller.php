@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V3;
 
 use App\Http\Controllers\Controller;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Carbon\Carbon;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\JsonResponse;
@@ -89,7 +89,7 @@ abstract class ApiV3Controller extends Controller
         /** @var string|null $streams */
         $streams = $request->get('streams');
 
-        return $streams ? Libryo::whereKey(explode(',', $streams))->where('organisation_id', $org)->pluck('id')->all() : [];
+        return $streams ? Norma::whereKey(explode(',', $streams))->where('organisation_id', $org)->pluck('id')->all() : [];
     }
 
     /**

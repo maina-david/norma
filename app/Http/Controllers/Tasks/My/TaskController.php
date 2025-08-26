@@ -18,10 +18,10 @@ use App\Jobs\Exports\GenerateTasksExportExcel;
 use App\Models\Auth\User;
 use App\Models\Compilation\ContextQuestion;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Tasks\Task;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -41,9 +41,9 @@ class TaskController extends Controller
     protected function renderIndexView(Request $request, bool $calendar = false): View|RedirectResponse
     {
         $organisation = null;
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
-        $this->redirectIfNoTasks($libryo);
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
+        $this->redirectIfNoTasks($norma);
         /** @var User $user */
         $user = Auth::user();
         // if we've landed here from another page, fetch filter settings from user
@@ -67,8 +67,8 @@ class TaskController extends Controller
             }
         }
 
-        if ($libryo) {
-            $query = Task::forLibryo($libryo);
+        if ($norma) {
+            $query = Task::forNorma($norma);
         } else {
             /** @var Organisation */
             $organisation = $manager->getActiveOrganisation();
@@ -81,17 +81,17 @@ class TaskController extends Controller
 
         if ($calendar) {
             $type = $request->hasAny(['show-month', 'show-year']) ? UserActivityType::changedCalendarDates() : UserActivityType::viewedCalendar();
-            event(new GenericActivity($user, $type, null, $libryo, $organisation));
+            event(new GenericActivity($user, $type, null, $norma, $organisation));
         }
 
         if ($request->get('search')) {
-            event(new GenericActivity($user, UserActivityType::searchedTasks(), null, $libryo, $organisation));
+            event(new GenericActivity($user, UserActivityType::searchedTasks(), null, $norma, $organisation));
         }
 
         $filtered = $request->only(['statuses', 'type', 'priority', 'assignee', 'archived', 'overdue', 'project']);
 
         if (!empty($filtered)) {
-            event(new FilteredResource($user, UserActivityType::filteredTasks(), $filtered, $libryo, $organisation));
+            event(new FilteredResource($user, UserActivityType::filteredTasks(), $filtered, $norma, $organisation));
         }
 
         $month = $request->get('show-month', now()->month);
@@ -107,9 +107,9 @@ class TaskController extends Controller
             'query' => $query->with(['assignee', 'project']),
             'canCreate' => $manager->isSingleMode(),
             'taskableType' => TaskType::generic()->value,
-            'taskableId' => $libryo?->id,
+            'taskableId' => $norma?->id,
             'filters' => $request->all(),
-            'subTitle' => is_null($libryo) ? ($organisation->title ?? null) : $libryo->title,
+            'subTitle' => is_null($norma) ? ($organisation->title ?? null) : $norma->title,
             'calendarView' => $calendar,
             'showMonth' => $month,
             'showYear' => $year,
@@ -144,9 +144,9 @@ class TaskController extends Controller
      */
     public function destroy(Request $request, Task $task): RedirectResponse
     {
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
-        $this->redirectIfNoTasks($libryo);
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
+        $this->redirectIfNoTasks($norma);
 
         $task->delete();
 
@@ -172,9 +172,9 @@ class TaskController extends Controller
      */
     public function show(string $task): View
     {
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
-        $this->redirectIfNoTasks($libryo);
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
+        $this->redirectIfNoTasks($norma);
 
         /** @var Task $task */
         $task = $this->decodeHash($task, Task::class);
@@ -183,7 +183,7 @@ class TaskController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
-        $task->load(['assignee', 'author', 'project', 'watchers', 'previous', 'next', 'libryo:id,title']);
+        $task->load(['assignee', 'author', 'project', 'watchers', 'previous', 'next', 'norma:id,title']);
 
         // @codeCoverageIgnoreStart
         if ($task->isCloned()) {
@@ -200,11 +200,11 @@ class TaskController extends Controller
 
     public function create(Request $request): View|RedirectResponse
     {
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
-        $this->redirectIfNoTasks($libryo);
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
+        $this->redirectIfNoTasks($norma);
 
-        if (!$libryo) {
+        if (!$norma) {
             return redirect()->route('my.tasks.tasks.index');
         }
 
@@ -215,16 +215,16 @@ class TaskController extends Controller
         return view('pages.tasks.my.task.create', [
             'user' => $user,
             'taskableType' => TaskType::generic()->value,
-            'taskableId' => $libryo->id,
+            'taskableId' => $norma->id,
             'remindWhomValue' => 1,
         ]);
     }
 
     public function edit(string $task): View|RedirectResponse
     {
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
-        $this->redirectIfNoTasks($libryo);
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
+        $this->redirectIfNoTasks($norma);
 
         $task = $this->decodeHash($task, Task::class);
         $this->authorize('update', $task);
@@ -259,36 +259,36 @@ class TaskController extends Controller
 
     public function store(TaskRequest $request): RedirectResponse
     {
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
 
         $data = $request->validated();
-        if (!$libryo && !isset($data['libryo_id'])) {
+        if (!$norma && !isset($data['norma_id'])) {
             return redirect()->route('my.tasks.tasks.index');
         }
         /** @var User $user */
         $user = Auth::user();
 
-        $libryo = null;
+        $norma = null;
 
-        if ($request->get('target_libryo_id')) {
-            /** @var Libryo $libryo */
-            $libryo = Libryo::whereKey($request->get('target_libryo_id'))->userHasAccess($user)->firstOrFail();
+        if ($request->get('target_norma_id')) {
+            /** @var Norma $norma */
+            $norma = Norma::whereKey($request->get('target_norma_id'))->userHasAccess($user)->firstOrFail();
         }
 
-        /** @var Libryo|null */
-        $libryo = $libryo ?? $manager->getActive($user);
+        /** @var Norma|null */
+        $norma = $norma ?? $manager->getActive($user);
 
         // task was created from a taskable... then it can be done from all streams mode e.g. for AssessmentItemResponse
-        if (is_null($libryo)) {
-            /** @var Libryo */
-            $libryo = Libryo::whereKey((int) ($data['libryo_id'] ?? 0))
+        if (is_null($norma)) {
+            /** @var Norma */
+            $norma = Norma::whereKey((int) ($data['norma_id'] ?? 0))
                 ->userHasAccess($user)
                 ->firstOrFail();
         }
 
         $data['author_id'] = $user->id;
-        $data['place_id'] = $libryo->id;
+        $data['place_id'] = $norma->id;
         $data['priority'] = TaskPriority::medium()->value;
         unset($data['reminder'], $data['followers']);
 
@@ -296,13 +296,13 @@ class TaskController extends Controller
         $task = Task::create($data);
         // @codeCoverageIgnoreStart
         if ($task->taskable_type === (new ContextQuestion())->getMorphClass()) {
-            event(new GenericActivity($user, UserActivityType::createdApplicabilityTask(), null, $libryo));
+            event(new GenericActivity($user, UserActivityType::createdApplicabilityTask(), null, $norma));
         }
         // @codeCoverageIgnoreEnd
         AfterTaskSaved::run($request, $task, $user);
 
         /** @var Organisation $organisation */
-        $organisation = Organisation::whereKey($libryo->organisation_id)->first();
+        $organisation = Organisation::whereKey($norma->organisation_id)->first();
 
         $this->processTaskCopying($request, $task, $organisation, $user);
 
@@ -330,9 +330,9 @@ class TaskController extends Controller
      */
     public function update(TaskRequest $request, Task $task): RedirectResponse
     {
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
-        $this->redirectIfNoTasks($libryo);
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
+        $this->redirectIfNoTasks($norma);
 
         $data = $request->validated();
 
@@ -358,9 +358,9 @@ class TaskController extends Controller
      */
     public function exportAsExcel(Request $request): Response
     {
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
-        $this->redirectIfNoTasks($libryo);
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
+        $this->redirectIfNoTasks($norma);
 
         $filename = Str::random(15) . '.xlsx';
         $filters = $request->all();
@@ -369,14 +369,14 @@ class TaskController extends Controller
         /** @var \App\Models\Auth\User $user */
         $user = $request->user();
 
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
         $organisation = $manager->getActiveOrganisation();
 
         if ($manager->isSingleMode()) {
-            /** @var Libryo $libryo */
-            $libryo = $manager->getActive();
-            $filename = "{$libryo->title}{$filename}";
-            $job = new GenerateTasksExportExcel($filename, $user, $libryo, $organisation, $filters, $route);
+            /** @var Norma $norma */
+            $norma = $manager->getActive();
+            $filename = "{$norma->title}{$filename}";
+            $job = new GenerateTasksExportExcel($filename, $user, $norma, $organisation, $filters, $route);
         } else {
             $job = new GenerateTasksExportExcel($filename, $user, null, $organisation, $filters, $route);
         }
@@ -406,10 +406,10 @@ class TaskController extends Controller
      */
     public function storeForBulk(Request $request): RedirectResponse
     {
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
 
-        if (!$libryo && !$request->has('libryo_id')) {
+        if (!$norma && !$request->has('norma_id')) {
             return redirect()->route('my.tasks.tasks.index');
         }
 
@@ -422,17 +422,17 @@ class TaskController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
-        $libryo = $libryo ?? Libryo::whereKey($request->get('libryo_id', 0))->userHasAccess($user)->firstOrFail();
+        $norma = $norma ?? Norma::whereKey($request->get('norma_id', 0))->userHasAccess($user)->firstOrFail();
 
         unset($data['tasks']);
 
         $data = array_merge($data, [
             'author_id' => $user->id,
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
         ]);
 
         /** @var Organisation $organisation */
-        $organisation = Organisation::whereKey($libryo->organisation_id)->first();
+        $organisation = Organisation::whereKey($norma->organisation_id)->first();
 
         $request->collect('tasks')
             ->each(function ($title) use ($organisation, $user, $request, $data) {

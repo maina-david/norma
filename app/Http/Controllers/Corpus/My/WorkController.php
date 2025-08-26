@@ -9,16 +9,16 @@ use App\Events\Auth\UserActivity\KnowYourLawActivity;
 use App\Events\Auth\UserActivity\UserViewedTag;
 use App\Exports\Requirements\LegalReportExcelExport;
 use App\Http\Controllers\Corpus\ContentResourceController;
-use App\Http\Controllers\Traits\GetsLibryoAndOrganisation;
+use App\Http\Controllers\Traits\GetsNormaAndOrganisation;
 use App\Jobs\Exports\GenerateLegalReportExcel;
 use App\Jobs\Exports\GenerateLegalReportPDF;
 use App\Models\Auth\User;
 use App\Models\Corpus\Reference;
 use App\Models\Corpus\Work;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Ontology\Tag;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Services\Search\Elastic\DocumentSearch;
 use App\Services\Search\Meilisearch\Highlighter;
 use App\Services\Storage\WorkStorageProcessor;
@@ -35,7 +35,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class WorkController extends AbstractWorkController
 {
-    use GetsLibryoAndOrganisation;
+    use GetsNormaAndOrganisation;
 
     public function __construct(protected LegalReportExcelExport $excelExport, protected DocumentSearch $documentSearch)
     {
@@ -49,16 +49,16 @@ class WorkController extends AbstractWorkController
     // public function requirements(Request $request): View
     // {
     //     $filters = $request->only(['tags', 'domains', 'jurisdictionTypes']);
-    //     /** @var ActiveLibryosManager */
-    //     $manager = app(ActiveLibryosManager::class);
+    //     /** @var ActiveNormasManager */
+    //     $manager = app(ActiveNormasManager::class);
     //     /** @var User */
     //     $user = Auth::user();
-    //     $organisation = $libryo = null;
+    //     $organisation = $norma = null;
     //     if ($manager->isSingleMode()) {
-    //         /** @var Libryo */
-    //         $libryo = $manager->getActive();
-    //         $libryo->load('location');
-    //         $query = Work::forLibryo($libryo, $filters);
+    //         /** @var Norma */
+    //         $norma = $manager->getActive();
+    //         $norma->load('location');
+    //         $query = Work::forNorma($norma, $filters);
     //     } else {
     //         /** @var Organisation */
     //         $organisation = $manager->getActiveOrganisation();
@@ -86,15 +86,15 @@ class WorkController extends AbstractWorkController
     //     /** @var User $user */
     //     $user = Auth::user();
     //     foreach ($filteredTags as $tag) {
-    //         UserViewedTag::dispatch($user, $tag, $libryo, $organisation);
+    //         UserViewedTag::dispatch($user, $tag, $norma, $organisation);
     //     }
 
-    //     KnowYourLawActivity::dispatch($user, UserActivityType::viewedRequirements(), null, $libryo, $organisation);
+    //     KnowYourLawActivity::dispatch($user, UserActivityType::viewedRequirements(), null, $norma, $organisation);
 
     //     /** @var View */
     //     return view('pages.corpus.work.my.requirements', [
     //         'baseQuery' => $query->orderBy('title'),
-    //         'libryo' => $libryo ?? null,
+    //         'norma' => $norma ?? null,
     //         'organisation' => $organisation ?? null,
     //     ]);
     // }
@@ -102,12 +102,12 @@ class WorkController extends AbstractWorkController
     /**
      * NB: To replace requirements and legal register views.
      *
-     * @param ActiveLibryosManager $manager
+     * @param ActiveNormasManager $manager
      * @param Request              $request
      *
      * @return View
      */
-    public function index(ActiveLibryosManager $manager, Request $request): View
+    public function index(ActiveNormasManager $manager, Request $request): View
     {
         /** @var User */
         $user = $request->user();
@@ -119,17 +119,17 @@ class WorkController extends AbstractWorkController
             // @codeCoverageIgnoreEnd
         }
 
-        $organisation = $libryo = null;
+        $organisation = $norma = null;
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
+            /** @var Norma */
+            $norma = $manager->getActive();
         } else {
             /** @var Organisation */
             $organisation = $manager->getActiveOrganisation();
 
             /** @var View */
             return view('pages.corpus.work.my.index', [
-                'libryo' => null,
+                'norma' => null,
                 'organisation' => $organisation,
             ]);
         }
@@ -140,7 +140,7 @@ class WorkController extends AbstractWorkController
             'references.bookmarks' => fn ($query) => $query->forUser($user)->select(['reference_id']),
             'children.references.bookmarks' => fn ($query) => $query->forUser($user)->select(['reference_id']),
         ])
-            ->forRequirements($filters, $search, $user, $libryo, $organisation, false);
+            ->forRequirements($filters, $search, $user, $norma, $organisation, false);
 
         /** @var array<int|string> */
         $filteredTagIds = $request->input('tags', []);
@@ -150,10 +150,10 @@ class WorkController extends AbstractWorkController
             : (new Tag())->newCollection();
 
         foreach ($filteredTags as $tag) {
-            UserViewedTag::dispatch($user, $tag, $libryo, $organisation);
+            UserViewedTag::dispatch($user, $tag, $norma, $organisation);
         }
 
-        KnowYourLawActivity::dispatch($user, UserActivityType::viewedRequirements(), null, $libryo, $organisation);
+        KnowYourLawActivity::dispatch($user, UserActivityType::viewedRequirements(), null, $norma, $organisation);
 
         $filtersApplied = !empty($filters) || !empty($search);
 
@@ -161,13 +161,13 @@ class WorkController extends AbstractWorkController
         $works = $query->paginate(10)->withQueryString();
         if (!empty($search)) {
             $works = app(Highlighter::class)->highlightForWorks($works, $search);
-            KnowYourLawActivity::dispatch($user, UserActivityType::fulltextSearchTerm(), ['term' => $search], $libryo, $organisation);
+            KnowYourLawActivity::dispatch($user, UserActivityType::fulltextSearchTerm(), ['term' => $search], $norma, $organisation);
         }
 
         /** @var View */
         return view('pages.corpus.work.my.index', [
             'works' => $works,
-            'libryo' => $libryo,
+            'norma' => $norma,
             'filtersApplied' => $filtersApplied,
             'organisation' => $organisation,
             'filters' => !empty($search) ? ['search' => $search, ...$filters] : $filters,
@@ -176,16 +176,16 @@ class WorkController extends AbstractWorkController
 
     public function legalRegister(Request $request): View
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
-        $organisation = $libryo = $query = null;
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
+        $organisation = $norma = $query = null;
         $filters = $request->only(['domains', 'jurisdictionTypes']);
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
-            $libryo->load('location');
-            $query = Work::primaryForLibryo($libryo, $filters)
-                ->withRelationsForLibryo($libryo, false, $filters);
+            /** @var Norma */
+            $norma = $manager->getActive();
+            $norma->load('location');
+            $query = Work::primaryForNorma($norma, $filters)
+                ->withRelationsForNorma($norma, false, $filters);
             $organisation = $manager->getActiveOrganisation();
         } else {
             /** @var Organisation */
@@ -196,16 +196,16 @@ class WorkController extends AbstractWorkController
         }
 
         // $query->with([
-        //     'references' => function ($q) use ($libryo) {
-        //         $q->forLibryo($libryo);
+        //     'references' => function ($q) use ($norma) {
+        //         $q->forNorma($norma);
         //     },
         //     'references.locations' => fn ($q) => $q->select(['id', 'flag', 'title']),
         //     'references.citation' => fn () => null,
-        //     'children' => function ($q) use ($libryo) {
-        //         $q->forLibryo($libryo);
+        //     'children' => function ($q) use ($norma) {
+        //         $q->forNorma($norma);
         //     },
-        //     'children.references' => function ($q) use ($libryo) {
-        //         $q->forLibryo($libryo);
+        //     'children.references' => function ($q) use ($norma) {
+        //         $q->forNorma($norma);
         //     },
         //     'children.references.locations' => fn ($q) => $q->select(['id', 'flag', 'title']),
         //     'children.references.citation' => fn () => null,
@@ -213,12 +213,12 @@ class WorkController extends AbstractWorkController
 
         /** @var User $user */
         $user = Auth::user();
-        KnowYourLawActivity::dispatch($user, UserActivityType::viewedRequirements(), null, $libryo, $organisation);
+        KnowYourLawActivity::dispatch($user, UserActivityType::viewedRequirements(), null, $norma, $organisation);
 
         /** @var View */
         return view('pages.corpus.work.my.legal-register', [
             'baseQuery' => $query ? $query->orderBy('title') : null,
-            'libryo' => $libryo ?? null,
+            'norma' => $norma ?? null,
             'organisation' => $organisation,
             'filters' => $filters,
         ]);
@@ -246,8 +246,8 @@ class WorkController extends AbstractWorkController
 
         /** @var User $user */
         $user = Auth::user();
-        [$libryo, $organisation] = $this->getActiveLibryoAndOrganisation();
-        KnowYourLawActivity::dispatch($user, UserActivityType::viewedFullText(), ['register_id' => $work->id], $libryo, $organisation);
+        [$norma, $organisation] = $this->getActiveNormaAndOrganisation();
+        KnowYourLawActivity::dispatch($user, UserActivityType::viewedFullText(), ['register_id' => $work->id], $norma, $organisation);
 
         /** @var View */
         return view('pages.corpus.work.my.show', [
@@ -290,7 +290,7 @@ class WorkController extends AbstractWorkController
         }
         // @codeCoverageIgnoreEnd
 
-        /** @var ActiveLibryosManager */
+        /** @var ActiveNormasManager */
         $callback = $this->getReferenceSubQuery($request);
 
         $reference->work->load([
@@ -375,18 +375,18 @@ class WorkController extends AbstractWorkController
         $filename = Str::random(15) . '.xlsx';
         $filters = $request->only(['domains', 'jurisdictionTypes', 'tags', 'works', 'search', 'bookmarked', 'descendantTopics', 'controls']);
 
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         /** @var \App\Models\Auth\User $user */
         $user = $request->user();
-        $libryo = $organisation = null;
+        $norma = $organisation = null;
         $organisation = $manager->getActiveOrganisation();
 
         if ($manager->isSingleMode()) {
-            /** @var Libryo $libryo */
-            $libryo = $manager->getActive();
-            $filename = "l---{$libryo->id}---{$filename}";
-            $job = new GenerateLegalReportExcel($filename, $user, $libryo, $organisation, $filters);
+            /** @var Norma $norma */
+            $norma = $manager->getActive();
+            $filename = "l---{$norma->id}---{$filename}";
+            $job = new GenerateLegalReportExcel($filename, $user, $norma, $organisation, $filters);
         } else {
             $filename = "o---{$organisation->id}---{$filename}";
             $job = new GenerateLegalReportExcel($filename, $user, null, $organisation, $filters);
@@ -424,15 +424,15 @@ class WorkController extends AbstractWorkController
         $filename = Str::random(15) . '.pdf';
         $filters = $request->only(['domains', 'jurisdictionTypes', 'tags', 'works', 'search', 'bookmarked', 'descendantTopics', 'controls']);
 
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         /** @var \App\Models\Auth\User $user */
         $user = $request->user();
         if ($manager->isSingleMode()) {
-            /** @var Libryo $libryo */
-            $libryo = $manager->getActive();
-            $filename = "l---{$libryo->id}---{$filename}";
-            $job = new GenerateLegalReportPDF($filename, $user, $libryo, null, $filters);
+            /** @var Norma $norma */
+            $norma = $manager->getActive();
+            $filename = "l---{$norma->id}---{$filename}";
+            $job = new GenerateLegalReportPDF($filename, $user, $norma, null, $filters);
             $this->dispatch($job);
         } else {
             /** @var Organisation $organisation */
@@ -487,7 +487,7 @@ class WorkController extends AbstractWorkController
 
         /** @var User $user */
         $user = $request->user();
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
 
         event(new GenericActivity(
             $user,
@@ -508,14 +508,14 @@ class WorkController extends AbstractWorkController
      */
     protected function getReferenceSubQuery(Request $request): Closure
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
-        $organisation = $libryo = null;
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
+        $organisation = $norma = null;
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
-            $callback = function ($q) use ($libryo) {
-                $q->forLibryo($libryo);
+            /** @var Norma */
+            $norma = $manager->getActive();
+            $callback = function ($q) use ($norma) {
+                $q->forNorma($norma);
             };
         } else {
             /** @var Organisation */

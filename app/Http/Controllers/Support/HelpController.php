@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Support;
 use App\Enums\Auth\UserActivityType;
 use App\Events\Auth\UserActivity\GenericActivity;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Traits\GetsLibryoAndOrganisation;
+use App\Http\Controllers\Traits\GetsNormaAndOrganisation;
 use App\Models\Auth\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class HelpController extends Controller
 {
-    use GetsLibryoAndOrganisation;
+    use GetsNormaAndOrganisation;
 
     public function searchPortal(Request $request): RedirectResponse
     {
@@ -22,10 +22,10 @@ class HelpController extends Controller
 
         /** @var User */
         $user = Auth::user();
-        [$libryo, $organisation] = $this->getActiveLibryoAndOrganisation();
-        GenericActivity::dispatch($user, UserActivityType::knowledgebaseSearch(), ['term' => $term], $libryo, $organisation);
+        [$norma, $organisation] = $this->getActiveNormaAndOrganisation();
+        GenericActivity::dispatch($user, UserActivityType::knowledgebaseSearch(), ['term' => $term], $norma, $organisation);
 
         /** @var RedirectResponse */
-        return redirect('https://success.libryo.com/en/knowledge/kb-search-results?term=' . $term);
+        return redirect('https://success.norma.com/en/knowledge/kb-search-results?term=' . $term);
     }
 }

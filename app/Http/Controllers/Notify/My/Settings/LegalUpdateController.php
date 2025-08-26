@@ -6,7 +6,7 @@ use App\Http\Controllers\Compilation\My\Settings\SessionLibraryController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\PerformsActions;
 use App\Models\Compilation\Library;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Notify\LegalUpdate;
 use App\Stores\Notify\LegalUpdateStore;
 use Illuminate\Contracts\View\View;
@@ -31,7 +31,7 @@ class LegalUpdateController extends Controller
     public function index(Request $request): View
     {
         $baseQuery = (new LegalUpdate())->newQuery()
-            ->withCount(['libraries', 'libryos'])
+            ->withCount(['libraries', 'normas'])
             ->orderBy('id', 'desc');
 
         /** @var View */
@@ -116,23 +116,23 @@ class LegalUpdateController extends Controller
     }
 
     /**
-     * Add libraries to the legal update using libryos.
+     * Add libraries to the legal update using normas.
      *
      * @param Request     $request
      * @param LegalUpdate $update
      *
      * @return RedirectResponse
      */
-    public function addByLibryos(Request $request, LegalUpdate $update): RedirectResponse
+    public function addByNormas(Request $request, LegalUpdate $update): RedirectResponse
     {
-        $request->validate(['libryos' => ['required', 'array']]);
+        $request->validate(['normas' => ['required', 'array']]);
 
-        $ids = $request->get('libryos', []);
+        $ids = $request->get('normas', []);
 
         if (!empty($ids)) {
-            /** @var Collection<Libryo> $libryos */
-            $libryos = Libryo::whereKey($ids)->get(['id']);
-            app(LegalUpdateStore::class)->attachLibryos($update, $libryos);
+            /** @var Collection<Norma> $normas */
+            $normas = Norma::whereKey($ids)->get(['id']);
+            app(LegalUpdateStore::class)->attachNormas($update, $normas);
         }
 
         return to_route('my.settings.legal-updates.show', ['update' => $update]);

@@ -14,11 +14,11 @@ use App\Http\Requests\Assess\UserAssessmentItemRequest;
 use App\Models\Assess\AssessmentItem;
 use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Ontology\Category;
 use App\Models\Ontology\LegalDomain;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Stores\Assess\AssessmentItemResponseStore;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -56,17 +56,17 @@ class UserAssessmentItemController extends Controller
 
     /**
      * @param \App\Models\Customer\Organisation $organisation
-     * @param \App\Models\Customer\Libryo|null  $libryo
+     * @param \App\Models\Customer\Norma|null  $norma
      *
      * @return array<string, string>
      */
-    public function getApplicableDomains(Organisation $organisation, ?Libryo $libryo): array
+    public function getApplicableDomains(Organisation $organisation, ?Norma $norma): array
     {
         /** @var Collection<LegalDomain> $domains */
         $domains = LegalDomain::with(['children.children.children'])
-            ->whereHas('libryos', function ($builder) use ($organisation, $libryo) {
-                $builder->when($libryo, fn ($query) => $query->whereKey($libryo->id ?? null))
-                    ->when(!$libryo, fn ($query) => $query->where('organisation_id', $organisation->id));
+            ->whereHas('normas', function ($builder) use ($organisation, $norma) {
+                $builder->when($norma, fn ($query) => $query->whereKey($norma->id ?? null))
+                    ->when(!$norma, fn ($query) => $query->where('organisation_id', $organisation->id));
             })
             ->get(['title', 'id']);
 
@@ -160,15 +160,15 @@ class UserAssessmentItemController extends Controller
      */
     public function create(): View
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         $organisation = $manager->getActiveOrganisation();
-        $libryo = $manager->getActive();
+        $norma = $manager->getActive();
 
         /** @var View */
         return view('pages.assess.my.assessment-item.form', [
             'controlTopics' => $this->getControlTopics(),
-            'legalDomains' => $this->getApplicableDomains($organisation, $libryo),
+            'legalDomains' => $this->getApplicableDomains($organisation, $norma),
         ]);
     }
 
@@ -181,14 +181,14 @@ class UserAssessmentItemController extends Controller
      */
     public function store(UserAssessmentItemRequest $request): RedirectResponse
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         $organisation = $manager->getActiveOrganisation();
-        $libryo = $manager->getActive();
-        $libryo?->load('organisation');
+        $norma = $manager->getActive();
+        $norma?->load('organisation');
 
         $data = $request->validated();
-        $data['organisation_id'] = $libryo->organisation_id ?? $organisation->id;
+        $data['organisation_id'] = $norma->organisation_id ?? $organisation->id;
         $data['author_id'] = Auth::id();
 
         /** @var AssessmentItem $item */
@@ -196,16 +196,16 @@ class UserAssessmentItemController extends Controller
 
         $store = app(AssessmentItemResponseStore::class);
 
-        $responses = $store->createDraftResponsesForOrganisation($item, $libryo->organisation ?? $organisation);
+        $responses = $store->createDraftResponsesForOrganisation($item, $norma->organisation ?? $organisation);
 
         $this->notifyGeneralSuccess();
 
         /** @var User $user */
         $user = Auth::user();
 
-        event(new CreatedAssessmentItem($item, $user, $libryo, $organisation));
+        event(new CreatedAssessmentItem($item, $user, $norma, $organisation));
 
-        if ($libryo && $response = $responses->get($libryo->id)) {
+        if ($norma && $response = $responses->get($norma->id)) {
             return redirect()->route('my.assess.assessment-item-responses.answer', ['response' => $response]);
         }
 
@@ -221,10 +221,10 @@ class UserAssessmentItemController extends Controller
      */
     public function edit(string $assess): View
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         $organisation = $manager->getActiveOrganisation();
-        $libryo = $manager->getActive();
+        $norma = $manager->getActive();
 
         $assess = $this->decodeHash($assess, AssessmentItem::class);
 
@@ -234,7 +234,7 @@ class UserAssessmentItemController extends Controller
         /** @var View */
         return view('pages.assess.my.assessment-item.form', [
             'controlTopics' => $this->getControlTopics(),
-            'legalDomains' => $this->getApplicableDomains($organisation, $libryo),
+            'legalDomains' => $this->getApplicableDomains($organisation, $norma),
             'resource' => $assess,
         ]);
     }
@@ -249,10 +249,10 @@ class UserAssessmentItemController extends Controller
      */
     public function update(UserAssessmentItemRequest $request, string $assess): RedirectResponse
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         $organisation = $manager->getActiveOrganisation();
-        $libryo = $manager->getActive();
+        $norma = $manager->getActive();
 
         $assess = $this->decodeHash($assess, AssessmentItem::class);
 
@@ -266,7 +266,7 @@ class UserAssessmentItemController extends Controller
 
         $this->notifySuccessfulUpdate();
 
-        return $this->redirectToPage($assess, $libryo);
+        return $this->redirectToPage($assess, $norma);
     }
 
     /**
@@ -278,10 +278,10 @@ class UserAssessmentItemController extends Controller
      */
     public function destroy(string $assess): RedirectResponse
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         $organisation = $manager->getActiveOrganisation();
-        $libryo = $manager->getActive();
+        $norma = $manager->getActive();
 
         $assess = $this->decodeHash($assess, AssessmentItem::class);
 
@@ -292,23 +292,23 @@ class UserAssessmentItemController extends Controller
             $assess->delete();
         }
 
-        return $this->redirectToPage($assess, $libryo);
+        return $this->redirectToPage($assess, $norma);
     }
 
     /**
      * Redirect to the correct page.
      *
      * @param \App\Models\Assess\AssessmentItem $assess
-     * @param \App\Models\Customer\Libryo|null  $libryo
+     * @param \App\Models\Customer\Norma|null  $norma
      *
      * @return \Illuminate\Http\RedirectResponse
      */
-    protected function redirectToPage(AssessmentItem $assess, ?Libryo $libryo): RedirectResponse
+    protected function redirectToPage(AssessmentItem $assess, ?Norma $norma): RedirectResponse
     {
         /** @var AssessmentItemResponse|null $response */
-        $response = AssessmentItemResponse::where('place_id', $libryo->id ?? null)->where('assessment_item_id', $assess->id)->first();
+        $response = AssessmentItemResponse::where('place_id', $norma->id ?? null)->where('assessment_item_id', $assess->id)->first();
 
-        if ($libryo && $response) {
+        if ($norma && $response) {
             return redirect()->route('my.assess.assessment-item-responses.answer', ['response' => $response]);
         }
 

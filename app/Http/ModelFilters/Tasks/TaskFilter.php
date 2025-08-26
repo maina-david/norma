@@ -246,6 +246,6 @@ class TaskFilter extends ModelFilter
     public function streams(array $streams): TaskFilter
     {
         // @phpstan-ignore-next-line
-        return $this->whereHas('libryo', fn ($q) => $q->whereKey($streams));
+        return $this->whereHas('norma', fn ($q) => $q->whereKey($streams));
     }
 }

@@ -88,7 +88,7 @@ class ForFileLegalDomainController extends Controller
     }
 
     /**
-     * Attach the legal domains to the libryo.
+     * Attach the legal domains to the norma.
      *
      * @param Request $request
      * @param File    $file

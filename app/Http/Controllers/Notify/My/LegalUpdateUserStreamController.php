@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Notify\My;
 use App\Http\Controllers\Controller;
 use App\Models\Customer\Organisation;
 use App\Models\Notify\LegalUpdate;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Response;
 
@@ -18,8 +18,8 @@ class LegalUpdateUserStreamController extends Controller
      */
     public function userStatuses(LegalUpdate $update): Response
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         /** @var Organisation */
         $organisation = $manager->getActiveOrganisation();
 

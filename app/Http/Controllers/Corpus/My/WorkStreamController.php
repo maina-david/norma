@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Corpus\My;
 use App\Http\Controllers\Traits\UsesContentResource;
 use App\Models\Corpus\Reference;
 use App\Models\Corpus\Work;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Ontology\Tag;
 use App\Services\Corpus\VolumeHighlighter;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use HotwiredLaravel\TurboLaravel\Http\MultiplePendingTurboStreamResponse;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
@@ -27,15 +27,15 @@ class WorkStreamController extends AbstractWorkController
      */
     public function showWithRelations(Request $request, Work $work): Response
     {
-        [$query, $locationTypeQuery, $libryo, $organisation] = $this->getLibryoOrganisationQuery($request);
+        [$query, $locationTypeQuery, $norma, $organisation] = $this->getNormaOrganisationQuery($request);
 
         $user = $request->user();
-        $applyCompilationQuery = function ($q) use ($organisation, $libryo, $user) {
-            if (is_null($libryo)) {
+        $applyCompilationQuery = function ($q) use ($organisation, $norma, $user) {
+            if (is_null($norma)) {
                 return $q->forOrganisationUserAccess($organisation, $user);
             }
 
-            return $q->forLibryo($libryo);
+            return $q->forNorma($norma);
         };
 
         $query = (new Work())->newQuery();
@@ -50,7 +50,7 @@ class WorkStreamController extends AbstractWorkController
             'partialView' => 'partials.corpus.work.with-relations',
             'target' => 'work-with-relations-' . $work->id,
             'work' => $work,
-            'libryo' => $libryo,
+            'norma' => $norma,
             'showSelf' => $query->whereKey($work->id)->exists(),
         ]);
 
@@ -127,21 +127,21 @@ class WorkStreamController extends AbstractWorkController
     }
 
     /**
-     * @param ActiveLibryosManager $manager
+     * @param ActiveNormasManager $manager
      * @param Request              $request
      * @param string               $key     To distinguish between different frames if there are multiple frames on the same page
      *
      * @return Response
      */
-    public function searchSuggestAll(ActiveLibryosManager $manager, Request $request, string $key): Response
+    public function searchSuggestAll(ActiveNormasManager $manager, Request $request, string $key): Response
     {
         /** @var string */
         $search = $request->input('search', '');
 
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
-            $tag = Tag::forLibryo($libryo)->inRandomOrder()->first();
+            /** @var Norma */
+            $norma = $manager->getActive();
+            $tag = Tag::forNorma($norma)->inRandomOrder()->first();
         } else {
             /** @var Organisation */
             $organisation = $manager->getActiveOrganisation();
@@ -175,13 +175,13 @@ class WorkStreamController extends AbstractWorkController
         /** @var string */
         $search = $request->input('search', '');
 
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
+            /** @var Norma */
+            $norma = $manager->getActive();
             /** @var Builder */
-            $worksQuery = Work::cachedForLibryo($libryo);
+            $worksQuery = Work::cachedForNorma($norma);
         } else {
             /** @var Organisation */
             $organisation = $manager->getActiveOrganisation();

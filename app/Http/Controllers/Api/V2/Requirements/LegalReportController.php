@@ -7,7 +7,7 @@ use App\Http\Requests\ApiMultiGetRequest;
 use App\Http\Resources\Corpus\Work\V2\LegalReportWorkResource;
 use App\Models\Auth\User;
 use App\Models\Corpus\Work;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
@@ -42,26 +42,26 @@ class LegalReportController extends AbstractApiController
      */
     public function getQuery(Request $request): Builder
     {
-        /** @var Libryo */
-        $libryo = $request->route('libryo');
+        /** @var Norma */
+        $norma = $request->route('norma');
 
         /** @var Builder */
-        return Work::primaryForLibryo($libryo)
-            ->withRelationsForLibryo($libryo);
+        return Work::primaryForNorma($norma)
+            ->withRelationsForNorma($norma);
     }
 
     /**
      * @param ApiMultiGetRequest $request
-     * @param Libryo             $libryo
+     * @param Norma             $norma
      *
      * @return ResourceCollection<Work>
      */
-    public function legalReport(Request $request, Libryo $libryo): ResourceCollection
+    public function legalReport(Request $request, Norma $norma): ResourceCollection
     {
         /** @var User */
         $user = Auth::user();
 
-        abort_unless($user->hasLibryoAccess($libryo), 404);
+        abort_unless($user->hasNormaAccess($norma), 404);
 
         /** @var ResourceCollection<Work> */
         return parent::index($request);

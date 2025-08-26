@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Support;
 
 use App\Http\Controllers\Controller;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
@@ -21,7 +21,7 @@ class DownloadController extends Controller
     protected function generateFilename(string $filename): string
     {
         $parts = explode('---', $filename);
-        $title = $parts[0] === 'l' ? (Libryo::find($parts[1])?->title ?? '') : (Organisation::find($parts[1])?->title ?? '');
+        $title = $parts[0] === 'l' ? (Norma::find($parts[1])?->title ?? '') : (Organisation::find($parts[1])?->title ?? '');
         /** @var string $title */
         $title = str_replace('/', '_', $title);
         /** @var string $title */
@@ -164,7 +164,7 @@ class DownloadController extends Controller
         /** @var string $tasksTxt */
         $tasksTxt = __('tasks.task.tasks_export');
 
-        return $this->genericLibryoExcelDownload($filename, $tasksTxt);
+        return $this->genericNormaExcelDownload($filename, $tasksTxt);
     }
 
     /**
@@ -177,7 +177,7 @@ class DownloadController extends Controller
         /** @var string $tasksTxt */
         $tasksTxt = __('actions.action_area.actions_export');
 
-        return $this->genericLibryoExcelDownload($filename, $tasksTxt);
+        return $this->genericNormaExcelDownload($filename, $tasksTxt);
     }
 
     /**
@@ -191,7 +191,7 @@ class DownloadController extends Controller
         /** @var string $label */
         $label = __("corpus.enablon.types.{$type}_export");
 
-        return $this->genericLibryoExcelDownload($filename, $label, explode('.', $filename)[1] ?? 'csv');
+        return $this->genericNormaExcelDownload($filename, $label, explode('.', $filename)[1] ?? 'csv');
     }
 
     /**
@@ -201,7 +201,7 @@ class DownloadController extends Controller
      *
      * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    protected function genericLibryoExcelDownload(string $filename, string $prefix, string $extension = 'xlsx'): BinaryFileResponse
+    protected function genericNormaExcelDownload(string $filename, string $prefix, string $extension = 'xlsx'): BinaryFileResponse
     {
         $stream = substr($filename, 0, strlen($filename) - 20);
         $stream = strlen($stream) > 1 ? " - {$stream}" : '';
@@ -222,6 +222,6 @@ class DownloadController extends Controller
         /** @var string $prefix */
         $prefix = __('actions.dashboard.actions_dashboard_export');
 
-        return $this->genericLibryoExcelDownload($filename, $prefix);
+        return $this->genericNormaExcelDownload($filename, $prefix);
     }
 }

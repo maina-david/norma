@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\Internals\My\Actions;
 use App\Actions\Tasks\Task\AfterTaskSaved;
 use App\Actions\Tasks\Task\CreateRequirementTaskCopies;
 use App\Enums\Auth\UserActivityType;
-use App\Enums\System\LibryoModule;
+use App\Enums\System\NormaModule;
 use App\Enums\Tasks\Frequency;
 use App\Enums\Tasks\TaskPriority;
 use App\Events\Auth\UserActivity\GenericActivity;
@@ -23,11 +23,11 @@ use App\Models\Actions\ActionArea;
 use App\Models\Auth\User;
 use App\Models\Compilation\ContextQuestion;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Ontology\Category;
 use App\Models\Tasks\Task;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use DateTime;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -76,11 +76,11 @@ class TaskController extends MyApiController
     protected function baseQuery(Request $request): Builder
     {
         $this->parseSort($request);
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
         $organisation = $manager->getActiveOrganisation();
 
-        return Task::forLibryoOrOrganisation($libryo, $organisation);
+        return Task::forNormaOrOrganisation($norma, $organisation);
     }
 
     /**
@@ -92,8 +92,8 @@ class TaskController extends MyApiController
      */
     public function index(Request $request): AnonymousResourceCollection
     {
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
 
         $items = $this->baseQuery($request)
             ->with([
@@ -104,7 +104,7 @@ class TaskController extends MyApiController
                     Reference::class => ['refPlainText'],
                 ]),
             ])
-            ->when(!$libryo, fn ($query) => $query->with(['libryo:id,title']))
+            ->when(!$norma, fn ($query) => $query->with(['norma:id,title']))
             ->filter($request->all())
             ->apiQueryFilter($request)
             ->reorder($this->sortBy, $this->sortDirection)
@@ -125,8 +125,8 @@ class TaskController extends MyApiController
         $task = $this->decodeHash($task, Task::class);
         $this->authorize('view', $task);
 
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
 
         $task->loadMissing([
             'project:id,title',
@@ -136,7 +136,7 @@ class TaskController extends MyApiController
             'taskable' => fn (MorphTo $morphTo) => $morphTo->morphWith([
                 Reference::class => ['refPlainText'],
             ]),
-            ...($libryo ? [] : ['libryo:id,title']),
+            ...($norma ? [] : ['norma:id,title']),
         ]);
 
         return new TaskResource($task);
@@ -152,34 +152,34 @@ class TaskController extends MyApiController
     public function store(TaskRequest $request): TaskResource
     {
         $data = $request->validated();
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
 
         /** @var User $user */
         $user = Auth::user();
 
         // task was created from a taskable... then it can be done from all streams mode e.g. for AssessmentItemResponse
-        if (is_null($libryo = $manager->getActive($user))) {
-            /** @var Libryo $libryo */
-            $libryo = Libryo::whereKey((int) ($data['libryo_id'] ?? 0))
+        if (is_null($norma = $manager->getActive($user))) {
+            /** @var Norma $norma */
+            $norma = Norma::whereKey((int) ($data['norma_id'] ?? 0))
                 ->userHasAccess($user)
                 ->firstOrFail();
         }
 
         $data['author_id'] = $user->id;
-        $data['place_id'] = $libryo->id;
+        $data['place_id'] = $norma->id;
         $data['priority'] = $data['priority'] ?? TaskPriority::medium()->value;
 
         /** @var Task $task */
         $task = Task::create($data);
         // @codeCoverageIgnoreStart
         if ($task->taskable_type === (new ContextQuestion())->getMorphClass()) {
-            event(new GenericActivity($user, UserActivityType::createdApplicabilityTask(), null, $libryo));
+            event(new GenericActivity($user, UserActivityType::createdApplicabilityTask(), null, $norma));
         }
         // @codeCoverageIgnoreEnd
         AfterTaskSaved::run($request, $task, $user);
 
         /** @var Organisation $organisation */
-        $organisation = Organisation::whereKey($libryo->organisation_id)->first();
+        $organisation = Organisation::whereKey($norma->organisation_id)->first();
 
         if ($request->get('copy') === true && $task->taskable_type === (new Reference())->getMorphClass()) {
             CreateRequirementTaskCopies::run($request, $task, $organisation, $user);
@@ -206,7 +206,7 @@ class TaskController extends MyApiController
 
         if (!$task->source_task_id) {
             $task->load([
-                'libryo.organisation',
+                'norma.organisation',
                 'watchers:id',
             ]);
 
@@ -214,7 +214,7 @@ class TaskController extends MyApiController
                 'followers' => $task->watchers->pluck('id')->all(),
             ]);
 
-            CreateRequirementTaskCopies::run($request, $task, $task->libryo?->organisation, $user);
+            CreateRequirementTaskCopies::run($request, $task, $task->norma?->organisation, $user);
             $task->update(['source_task_id' => $task->id]);
         }
 
@@ -320,17 +320,17 @@ class TaskController extends MyApiController
 
         /** @var \App\Models\Auth\User $user */
         $user = $request->user();
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
         /** @var Organisation $organisation */
         $organisation = $manager->getActiveOrganisation();
 
         if ($manager->isSingleMode()) {
-            /** @var Libryo $libryo */
-            $libryo = $manager->getActive();
-            $filename = "{$libryo->title}{$filename}";
-            $job = new GenerateTasksExportExcel($filename, $user, $libryo, $organisation, $filters, $route, LibryoModule::actions()->value);
+            /** @var Norma $norma */
+            $norma = $manager->getActive();
+            $filename = "{$norma->title}{$filename}";
+            $job = new GenerateTasksExportExcel($filename, $user, $norma, $organisation, $filters, $route, NormaModule::actions()->value);
         } else {
-            $job = new GenerateTasksExportExcel($filename, $user, null, $organisation, $filters, $route, LibryoModule::actions()->value);
+            $job = new GenerateTasksExportExcel($filename, $user, null, $organisation, $filters, $route, NormaModule::actions()->value);
         }
         dispatch($job);
 

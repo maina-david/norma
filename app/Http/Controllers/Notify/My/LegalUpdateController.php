@@ -14,11 +14,11 @@ use App\Http\Controllers\Controller;
 use App\Jobs\Exports\GenerateLegalUpdateExportExcel;
 use App\Jobs\Exports\GenerateLegalUpdateExportPDF;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Notify\LegalUpdate;
 use App\Models\Notify\Pivots\LegalUpdateUser;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -40,30 +40,30 @@ class LegalUpdateController extends Controller
         /** @var User */
         $user = Auth::user();
 
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $organisation = null;
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
+        $norma = $organisation = null;
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
-            $query = LegalUpdate::forLibryo($libryo);
+            /** @var Norma */
+            $norma = $manager->getActive();
+            $query = LegalUpdate::forNorma($norma);
         } else {
             /** @var Organisation */
             $organisation = $manager->getActiveOrganisation();
             $query = LegalUpdate::forOrganisationUserAccess($organisation, $user)
                 ->withCount([
-                    'libryos' => fn ($q) => $q->forOrganisation($organisation->id)->userHasAccess($user),
+                    'normas' => fn ($q) => $q->forOrganisation($organisation->id)->userHasAccess($user),
                 ]);
         }
 
         if ($request->has('search')) {
-            event(new LegalUpdatesSearched($user, $libryo, $organisation));
+            event(new LegalUpdatesSearched($user, $norma, $organisation));
         }
 
         $filters = $request->only(['domains', 'status', 'from', 'to', 'bookmarked']);
 
         if (!empty($filters)) {
-            event(new LegalUpdatesFiltered($filters, $user, $libryo, $organisation));
+            event(new LegalUpdatesFiltered($filters, $user, $norma, $organisation));
         }
 
         /** @var array<mixed> */
@@ -80,7 +80,7 @@ class LegalUpdateController extends Controller
                 },
             ]);
 
-        return [$libryo, $organisation, $filters, $query];
+        return [$norma, $organisation, $filters, $query];
     }
 
     /**
@@ -90,7 +90,7 @@ class LegalUpdateController extends Controller
      */
     public function index(Request $request): View
     {
-        [$libryo, $organisation, $filters, $query] = $this->prepare($request);
+        [$norma, $organisation, $filters, $query] = $this->prepare($request);
 
         /** @var User $user */
         $user = $request->user();
@@ -100,11 +100,11 @@ class LegalUpdateController extends Controller
         /** @var View */
         return view('pages.notify.legal-update.my.index', [
             'updates' => $query->paginate(15)->appends($request->query() ?? []),
-            'libryo' => $libryo ?? null,
+            'norma' => $norma ?? null,
             'organisation' => $organisation ?? null,
             'query' => $query,
             'filters' => $filters,
-            'subTitle' => !is_null($libryo) ? $libryo->title : $organisation->title,
+            'subTitle' => !is_null($norma) ? $norma->title : $organisation->title,
         ]);
     }
 
@@ -121,7 +121,7 @@ class LegalUpdateController extends Controller
         /** @var User */
         $user = Auth::user();
         UpdateReadUnderstoodStatus::run($update, $user, LegalUpdateStatus::read());
-        [$libryo, $organisation, $filters, $query] = $this->prepare($request);
+        [$norma, $organisation, $filters, $query] = $this->prepare($request);
 
         $next = $query->whereHas('users', function ($builder) use ($user) {
             $builder->whereKey($user->id)->where((new LegalUpdateUser())->qualifyColumn('read_status'), false);
@@ -131,7 +131,7 @@ class LegalUpdateController extends Controller
         return view('pages.notify.legal-update.my.show', [
             'update' => $update,
             'next' => $next,
-            'organisation' => app(ActiveLibryosManager::class)->getActiveOrganisation(),
+            'organisation' => app(ActiveNormasManager::class)->getActiveOrganisation(),
             'canMarkAsUnderstood' => $update->users()->whereKey($user->id)->wherePivot('understood_status', false)->exists(),
         ]);
     }
@@ -162,14 +162,14 @@ class LegalUpdateController extends Controller
         /** @var \App\Models\Auth\User $user */
         $user = $request->user();
 
-        $libryo = $organisation = null;
-        $manager = app(ActiveLibryosManager::class);
+        $norma = $organisation = null;
+        $manager = app(ActiveNormasManager::class);
         $organisation = $manager->getActiveOrganisation();
 
         if ($manager->isSingleMode()) {
-            /** @var Libryo $libryo */
-            $libryo = $manager->getActive();
-            $job = new GenerateLegalUpdateExportExcel($filename, $user, $libryo, $organisation, $filters);
+            /** @var Norma $norma */
+            $norma = $manager->getActive();
+            $job = new GenerateLegalUpdateExportExcel($filename, $user, $norma, $organisation, $filters);
         } else {
             $job = new GenerateLegalUpdateExportExcel($filename, $user, null, $organisation, $filters);
         }
@@ -185,7 +185,7 @@ class LegalUpdateController extends Controller
             'redirect' => route('my.downloads.download.legal-updates.excel', ['filename' => $filename], false),
         ]);
 
-        event(new LegalUpdatesExported('excel', $user, $libryo, $organisation));
+        event(new LegalUpdatesExported('excel', $user, $norma, $organisation));
 
         return turboStreamResponse($view);
     }
@@ -200,20 +200,20 @@ class LegalUpdateController extends Controller
         $filename = Str::random(15) . '.pdf';
         $filters = $request->all();
 
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         /** @var Organisation */
         $organisation = $manager->getActiveOrganisation();
         /** @var \App\Models\Auth\User $user */
         $user = $request->user();
 
-        $libryo = null;
+        $norma = null;
 
         if ($manager->isSingleMode()) {
-            /** @var Libryo $libryo */
-            $libryo = $manager->getActive();
-            $filename = "l---{$libryo->id}---{$filename}";
-            $job = new GenerateLegalUpdateExportPDF($filename, $user, $libryo, $organisation, $filters);
+            /** @var Norma $norma */
+            $norma = $manager->getActive();
+            $filename = "l---{$norma->id}---{$filename}";
+            $job = new GenerateLegalUpdateExportPDF($filename, $user, $norma, $organisation, $filters);
         } else {
             $filename = "o---{$organisation->id}---{$filename}";
             $job = new GenerateLegalUpdateExportPDF($filename, $user, null, $organisation, $filters);
@@ -230,7 +230,7 @@ class LegalUpdateController extends Controller
             'redirect' => route('my.downloads.download.legal-updates.pdf', ['filename' => $filename], false),
         ]);
 
-        event(new LegalUpdatesExported('pdf', $user, $libryo, $organisation));
+        event(new LegalUpdatesExported('pdf', $user, $norma, $organisation));
 
         return turboStreamResponse($view);
     }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V2\Customer;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Customer\OrganisationPartnerRequest;
 use App\Http\Requests\Customer\OrganisationRequest;
-use App\Http\Resources\Customer\Libryo\V2\OrganisationForPartnerResource;
+use App\Http\Resources\Customer\Norma\V2\OrganisationForPartnerResource;
 use App\Models\Auth\User;
 use App\Models\Customer\Organisation;
 use App\Models\Partners\Partner;

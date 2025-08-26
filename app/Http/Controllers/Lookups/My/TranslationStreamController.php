@@ -6,12 +6,12 @@ use App\Events\Auth\UserActivity\UserTranslatedContent;
 use App\Http\Controllers\Controller;
 use App\Models\Auth\User;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Notify\LegalUpdate;
 use App\Models\Requirements\Summary;
 use App\Repositories\Auth\UserActivityRepository;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Services\Translation\ModelTranslator;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -32,8 +32,8 @@ class TranslationStreamController extends Controller
      */
     private function authorizeTranslation(): void
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         /** @var Organisation */
         $organisation = $manager->getActiveOrganisation();
         if (!$organisation->translation_enabled) {
@@ -138,16 +138,16 @@ class TranslationStreamController extends Controller
         /** @var User $user */
         $user = Auth::user();
 
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
 
         /** @var Organisation */
         $organisation = $manager->getActiveOrganisation();
 
-        /** @var Libryo|null */
-        $libryo = $manager->isSingleMode() ? $manager->getActive() : null;
+        /** @var Norma|null */
+        $norma = $manager->isSingleMode() ? $manager->getActive() : null;
 
-        $event = new UserTranslatedContent($user, $translatable, $libryo, $organisation);
+        $event = new UserTranslatedContent($user, $translatable, $norma, $organisation);
 
         $repo->addUserActivityEvent($event);
     }

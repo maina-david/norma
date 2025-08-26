@@ -48,7 +48,7 @@ class TaskRequest extends FormRequest
         if ($this->method() === 'POST') {
             $rules['taskable_type'] = ['string', 'required', 'max:255'];
             $rules['taskable_id'] = ['numeric', 'required'];
-            $rules['libryo_id'] = ['numeric'];
+            $rules['norma_id'] = ['numeric'];
             $rules['reminder'] = ['boolean'];
             $rules['remind_whom'] = ['string', 'nullable', 'max:35'];
             $rules['remind_on_date'] = ['date_format:Y-m-d', 'nullable'];

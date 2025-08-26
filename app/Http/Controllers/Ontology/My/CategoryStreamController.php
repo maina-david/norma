@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Ontology\My;
 use App\Cache\Ontology\Collaborate\CategorySelectorCache;
 use App\Enums\Ontology\CategoryType;
 use App\Http\Controllers\Controller;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Ontology\Category;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -30,12 +30,12 @@ class CategoryStreamController extends Controller
         /** @var string */
         $search = $request->input('search', '');
 
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
-            $query = Category::forLibryo($libryo);
+            /** @var Norma */
+            $norma = $manager->getActive();
+            $query = Category::forNorma($norma);
         } else {
             /** @var Organisation */
             $organisation = $manager->getActiveOrganisation();

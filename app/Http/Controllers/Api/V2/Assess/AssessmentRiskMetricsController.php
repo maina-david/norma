@@ -6,7 +6,7 @@ use App\Enums\Assess\ResponseStatus;
 use App\Enums\Assess\RiskRating;
 use App\Http\Controllers\Controller;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -21,17 +21,17 @@ class AssessmentRiskMetricsController extends Controller
      *
      * @return JsonResponse
      */
-    public function metricsForLibryos(Request $request): JsonResponse
+    public function metricsForNormas(Request $request): JsonResponse
     {
         /** @var array<int> */
-        $libryoIds = $request->input('libryos', []);
+        $normaIds = $request->input('normas', []);
 
         /** @var User */
         $user = Auth::user();
-        /** @var Collection<Libryo> */
-        $libryos = Libryo::userHasAccess($user)
+        /** @var Collection<Norma> */
+        $normas = Norma::userHasAccess($user)
             ->forDetailedAssessMetrics()
-            ->whereKey($libryoIds)
+            ->whereKey($normaIds)
             ->get();
 
         $yes = ResponseStatus::yes()->value;
@@ -43,37 +43,37 @@ class AssessmentRiskMetricsController extends Controller
         $low = RiskRating::low()->value;
         $notRated = RiskRating::notRated()->value;
         $data = [];
-        foreach ($libryos as $libryo) {
+        foreach ($normas as $norma) {
             $data[] = [
-                'id' => $libryo->id,
+                'id' => $norma->id,
                 'counts' => [
                     'yes' => [
-                        'not_rated' => $libryo['count_by_status_risk_' . $yes . '_' . $notRated],
-                        'lo' => $libryo['count_by_status_risk_' . $yes . '_' . $low],
-                        'med' => $libryo['count_by_status_risk_' . $yes . '_' . $medium],
-                        'hi' => $libryo['count_by_status_risk_' . $yes . '_' . $high],
+                        'not_rated' => $norma['count_by_status_risk_' . $yes . '_' . $notRated],
+                        'lo' => $norma['count_by_status_risk_' . $yes . '_' . $low],
+                        'med' => $norma['count_by_status_risk_' . $yes . '_' . $medium],
+                        'hi' => $norma['count_by_status_risk_' . $yes . '_' . $high],
                     ],
                     'no' => [
-                        'not_rated' => $libryo['count_by_status_risk_' . $no . '_' . $notRated],
-                        'lo' => $libryo['count_by_status_risk_' . $no . '_' . $low],
-                        'med' => $libryo['count_by_status_risk_' . $no . '_' . $medium],
-                        'hi' => $libryo['count_by_status_risk_' . $no . '_' . $high],
+                        'not_rated' => $norma['count_by_status_risk_' . $no . '_' . $notRated],
+                        'lo' => $norma['count_by_status_risk_' . $no . '_' . $low],
+                        'med' => $norma['count_by_status_risk_' . $no . '_' . $medium],
+                        'hi' => $norma['count_by_status_risk_' . $no . '_' . $high],
                     ],
                     'not_assessed' => [
-                        'not_rated' => $libryo['count_by_status_risk_' . $notAssessed . '_' . $notRated],
-                        'lo' => $libryo['count_by_status_risk_' . $notAssessed . '_' . $low],
-                        'med' => $libryo['count_by_status_risk_' . $notAssessed . '_' . $medium],
-                        'hi' => $libryo['count_by_status_risk_' . $notAssessed . '_' . $high],
+                        'not_rated' => $norma['count_by_status_risk_' . $notAssessed . '_' . $notRated],
+                        'lo' => $norma['count_by_status_risk_' . $notAssessed . '_' . $low],
+                        'med' => $norma['count_by_status_risk_' . $notAssessed . '_' . $medium],
+                        'hi' => $norma['count_by_status_risk_' . $notAssessed . '_' . $high],
                     ],
                     'not_applicable' => [
-                        'not_rated' => $libryo['count_by_status_risk_' . $notApplicable . '_' . $notRated],
-                        'lo' => $libryo['count_by_status_risk_' . $notApplicable . '_' . $low],
-                        'med' => $libryo['count_by_status_risk_' . $notApplicable . '_' . $medium],
-                        'hi' => $libryo['count_by_status_risk_' . $notApplicable . '_' . $high],
+                        'not_rated' => $norma['count_by_status_risk_' . $notApplicable . '_' . $notRated],
+                        'lo' => $norma['count_by_status_risk_' . $notApplicable . '_' . $low],
+                        'med' => $norma['count_by_status_risk_' . $notApplicable . '_' . $medium],
+                        'hi' => $norma['count_by_status_risk_' . $notApplicable . '_' . $high],
                     ],
                 ],
                 // have to do it hard coded like this as this is how it was spec'ed
-                'risk' => match ($libryo['risk_rating']) {
+                'risk' => match ($norma['risk_rating']) {
                     // @codeCoverageIgnoreStart
                     RiskRating::high()->value => 'hi',
                     RiskRating::medium()->value => 'med',

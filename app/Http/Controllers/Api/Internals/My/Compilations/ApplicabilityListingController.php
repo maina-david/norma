@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Api\Internals\My\Compilations;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Internals\Collaborate\Compilation\ContextQuestionResource;
-use App\Http\Resources\Internals\My\Customer\LibryoResource;
+use App\Http\Resources\Internals\My\Customer\NormaResource;
 use App\Http\Resources\Ontology\LegalDomain\V1\LegalDomainResource;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Traits\Corpus\UsesReferenceApplicability;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +24,7 @@ class ApplicabilityListingController extends Controller
      */
     public function index(int $reference): JsonResponse
     {
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
 
         $referenceData = $this->getAppliedApplicability($reference, $manager);
 
@@ -34,7 +34,7 @@ class ApplicabilityListingController extends Controller
 
         return response()->json([
             'data' => [
-                'libryo' => new LibryoResource($referenceData['libryo']),
+                'norma' => new NormaResource($referenceData['norma']),
                 'locations' => $referenceData['locations'],
                 'questions' => ContextQuestionResource::collection($referenceData['questions']),
                 'categories' => LegalDomainResource::collection($referenceData['categories']),

@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
@@ -44,7 +44,7 @@ class HandleInertiaRequests extends Middleware
             'auth.user' => function () {
                 /** @var \App\Models\Auth\User|null $user */
                 $user = Auth::user();
-                $manager = app(ActiveLibryosManager::class);
+                $manager = app(ActiveNormasManager::class);
 
                 return !$user ? null : [
                     'id' => $user->id,
@@ -53,18 +53,18 @@ class HandleInertiaRequests extends Middleware
                 ];
             },
             'stream' => function () {
-                $manager = app(ActiveLibryosManager::class);
+                $manager = app(ActiveNormasManager::class);
                 $org = $manager->getActiveOrganisation();
-                $libryo = $manager->getActive();
+                $norma = $manager->getActive();
 
                 return [
                     'single' => $manager->isSingleMode(),
-                    'id' => $libryo?->id,
-                    'title' => $libryo?->title,
+                    'id' => $norma?->id,
+                    'title' => $norma?->title,
                     'org_title' => $org->title ?? null,
                     'org' => $org->id ?? null,
                     'org_modules' => $org->settings['modules'] ?? [],
-                    'modules' => $libryo->settings['modules'] ?? [],
+                    'modules' => $norma->settings['modules'] ?? [],
                 ];
             },
         ]);

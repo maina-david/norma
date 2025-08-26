@@ -77,8 +77,8 @@ class FileStreamController
         /** @var User $user */
         $user = Auth::user();
 
-        if ($model->isRelation('libryo')) {
-            $model->load(['libryo']);
+        if ($model->isRelation('norma')) {
+            $model->load(['norma']);
         }
 
         return [
@@ -88,7 +88,7 @@ class FileStreamController
             'related' => $model,
             'relation' => $relation,
             'upload' => $relation !== 'comment' || $user->can('attachFiles', $model),
-            'libryo' => $model->libryo ?? null,
+            'norma' => $model->norma ?? null,
         ];
     }
 }

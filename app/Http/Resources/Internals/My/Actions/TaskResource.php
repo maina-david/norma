@@ -34,7 +34,7 @@ class TaskResource extends JsonResource
                     default => null,
                 };
             }),
-            'libryo_title' => $this->whenLoaded('libryo', fn () => $this->libryo->title ?? ''),
+            'norma_title' => $this->whenLoaded('norma', fn () => $this->norma->title ?? ''),
             'project' => new TaskProjectResource($this->whenLoaded('project')),
             'impact' => $this->impact,
             'description' => $this->description,

@@ -6,7 +6,7 @@ use App\Models\Actions\ActionArea;
 use App\Models\Assess\AssessmentItem;
 use App\Models\Auth\User;
 use App\Models\Compilation\ContextQuestion;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Services\Comments\CommentReplacements;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Response;
@@ -16,19 +16,19 @@ use IteratorAggregate;
 class ApplicabilityStreamController
 {
     /**
-     * Get the requirements that match the given context question and libryo.
+     * Get the requirements that match the given context question and norma.
      *
      * @param \App\Models\Compilation\ContextQuestion $question
-     * @param \App\Models\Customer\Libryo             $libryo
+     * @param \App\Models\Customer\Norma             $norma
      *
      * @return Response
      */
-    public function requirements(ContextQuestion $question, Libryo $libryo): Response
+    public function requirements(ContextQuestion $question, Norma $norma): Response
     {
-        $libryo->load(['requirementsCollections', 'legalDomains']);
+        $norma->load(['requirementsCollections', 'legalDomains']);
 
         $query = $question->references()
-            ->forLibryoAutocompiledBase($libryo)
+            ->forNormaAutocompiledBase($norma)
             ->orderBy('work_id')
             ->orderedPosition()
             ->with(['citation', 'refPlainText', 'legalDomains', 'locations', 'work']);
@@ -39,7 +39,7 @@ class ApplicabilityStreamController
             'target' => 'requirements-for-context-question-' . $question->id,
             'baseQuery' => $query,
             'empty' => $query->count() === 0,
-            'route' => route('my.references.for.context-questions.index', ['libryo' => $libryo->id, 'question' => $question->id]),
+            'route' => route('my.references.for.context-questions.index', ['norma' => $norma->id, 'question' => $question->id]),
             'editable' => false,
         ]);
 
@@ -47,16 +47,16 @@ class ApplicabilityStreamController
     }
 
     /**
-     * Get the possible assessment items for the given libryo and context question.
+     * Get the possible assessment items for the given norma and context question.
      *
      * @param \App\Models\Compilation\ContextQuestion $question
-     * @param \App\Models\Customer\Libryo             $libryo
+     * @param \App\Models\Customer\Norma             $norma
      *
      * @return Response
      */
-    public function assessmentItems(ContextQuestion $question, Libryo $libryo): Response
+    public function assessmentItems(ContextQuestion $question, Norma $norma): Response
     {
-        $query = AssessmentItem::possibleForUncompiledLibryo($libryo, $question)->with(['legalDomain.topParent']);
+        $query = AssessmentItem::possibleForUncompiledNorma($norma, $question)->with(['legalDomain.topParent']);
 
         /** @var View $view */
         $view = view('streams.single-partial', [
@@ -64,51 +64,51 @@ class ApplicabilityStreamController
             'target' => 'assessment-for-context-question-' . $question->id,
             'baseQuery' => $query,
             'empty' => $query->count() === 0,
-            'route' => route('my.assessment-items.for.context-questions.index', ['libryo' => $libryo->id, 'question' => $question->id]),
+            'route' => route('my.assessment-items.for.context-questions.index', ['norma' => $norma->id, 'question' => $question->id]),
         ]);
 
         return turboStreamResponse($view);
     }
 
     /**
-     * Get the possible assessment items for the given libryo and context question.
+     * Get the possible assessment items for the given norma and context question.
      *
      * @param \App\Models\Compilation\ContextQuestion $question
-     * @param \App\Models\Customer\Libryo             $libryo
+     * @param \App\Models\Customer\Norma             $norma
      *
      * @return Response
      */
-    public function actionAreas(ContextQuestion $question, Libryo $libryo): Response
+    public function actionAreas(ContextQuestion $question, Norma $norma): Response
     {
-        $actions = ActionArea::possibleForLibryoInApplicability($libryo, $question)->get();
+        $actions = ActionArea::possibleForNormaInApplicability($norma, $question)->get();
 
         /** @var View $view */
         $view = view('streams.single-partial', [
             'partialView' => 'partials.actions.my.action-area.for-related',
             'target' => 'action-areas-for-context-question-' . $question->id,
             'actions' => $actions,
-            'route' => route('my.action-areas.for.context-questions.index', ['libryo' => $libryo->id, 'question' => $question->id]),
+            'route' => route('my.action-areas.for.context-questions.index', ['norma' => $norma->id, 'question' => $question->id]),
         ]);
 
         return turboStreamResponse($view);
     }
 
     /**
-     * Get the activities for the given libryo and context question.
+     * Get the activities for the given norma and context question.
      *
      * @param \App\Models\Compilation\ContextQuestion $question
-     * @param \App\Models\Customer\Libryo             $libryo
+     * @param \App\Models\Customer\Norma             $norma
      *
      * @return Response
      */
-    public function activities(ContextQuestion $question, Libryo $libryo): Response
+    public function activities(ContextQuestion $question, Norma $norma): Response
     {
         /** @var View $view */
         $view = view('streams.single-partial', [
             'partialView' => 'partials.compilation.my.context-question.for-response-index',
             'target' => 'activities-for-context-question-' . $question->id,
             'activities' => $question->activities()
-                ->where('place_id', $libryo->id)
+                ->where('place_id', $norma->id)
                 ->with(['user'])
                 ->orderByDesc('id')
                 ->simplePaginate(25),
@@ -118,16 +118,16 @@ class ApplicabilityStreamController
     }
 
     /**
-     * Get the task listing for the context question and libryo.
+     * Get the task listing for the context question and norma.
      *
      * @param \App\Models\Compilation\ContextQuestion $question
-     * @param \App\Models\Customer\Libryo             $libryo
+     * @param \App\Models\Customer\Norma             $norma
      *
      * @return \Illuminate\Http\Response
      */
-    public function tasks(ContextQuestion $question, Libryo $libryo): Response
+    public function tasks(ContextQuestion $question, Norma $norma): Response
     {
-        $query = $question->tasks()->forLibryo($libryo)->with(['author', 'assignee']);
+        $query = $question->tasks()->forNorma($norma)->with(['author', 'assignee']);
 
         /** @var View $view */
         $view = view('streams.single-partial', [
@@ -138,23 +138,23 @@ class ApplicabilityStreamController
             'related' => $question,
             'taskableType' => $question->getMorphClass(),
             'taskableId' => $question->id,
-            'libryo' => $libryo,
+            'norma' => $norma,
         ]);
 
         return turboStreamResponse($view);
     }
 
-    public function comments(ContextQuestion $question, Libryo $libryo): Response
+    public function comments(ContextQuestion $question, Norma $norma): Response
     {
-        $libryo->load(['organisation']);
+        $norma->load(['organisation']);
         /** @var \App\Models\Customer\Organisation $organisation */
-        $organisation = $libryo->organisation;
-        $query = $question->tasks()->forLibryo($libryo)->with(['author', 'assignee']);
+        $organisation = $norma->organisation;
+        $query = $question->tasks()->forNorma($norma)->with(['author', 'assignee']);
 
         /** @var IteratorAggregate<\App\Models\Comments\Comment> $comments */
         $comments = $question->comments()
-            ->where(function ($builder) use ($organisation, $libryo) {
-                $builder->forLibryo($libryo)->orWhere(fn ($query) => $query->forOrganisation($organisation));
+            ->where(function ($builder) use ($organisation, $norma) {
+                $builder->forNorma($norma)->orWhere(fn ($query) => $query->forOrganisation($organisation));
             })
             ->with(['author'])
             ->withCount(['comments', 'files'])
@@ -173,8 +173,8 @@ class ApplicabilityStreamController
             'commentableType' => $question->getMorphClass(),
             'commentableId' => $question->id,
             'user' => $user,
-            'libryo' => $libryo,
-            'redirect' => route('my.comments.for.context-questions.index', ['question' => $question->id, 'libryo' => $libryo->id]),
+            'norma' => $norma,
+            'redirect' => route('my.comments.for.context-questions.index', ['question' => $question->id, 'norma' => $norma->id]),
         ]);
 
         return turboStreamResponse($view);

@@ -3,23 +3,23 @@
 namespace App\Http\Controllers\Actions\My;
 
 use App\Models\Actions\ActionArea;
-use App\Services\Customer\ActiveLibryosManager;
-use App\Traits\Actions\UsesActionAreasInLibryo;
+use App\Services\Customer\ActiveNormasManager;
+use App\Traits\Actions\UsesActionAreasInNorma;
 use App\Traits\UsesBackButton;
-use App\Traits\UsesReferencesForLibryo;
+use App\Traits\UsesReferencesForNorma;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class ActionAreaPlannerController
 {
-    use UsesActionAreasInLibryo;
+    use UsesActionAreasInNorma;
     use UsesBackButton;
-    use UsesReferencesForLibryo;
+    use UsesReferencesForNorma;
 
     /**
-     * @param \App\Services\Customer\ActiveLibryosManager $manager
+     * @param \App\Services\Customer\ActiveNormasManager $manager
      */
-    public function __construct(protected ActiveLibryosManager $manager)
+    public function __construct(protected ActiveNormasManager $manager)
     {
         $this->redirectIfNoActionAreas($this->manager->getActive());
     }
@@ -53,7 +53,7 @@ class ActionAreaPlannerController
      */
     protected function routeToPage(string $type): Response
     {
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
 
         $this->redirectIfNoActionAreas($manager->getActive());
 
@@ -67,21 +67,21 @@ class ActionAreaPlannerController
     /**
      * Get the completion counts.
      *
-     * @param \App\Services\Customer\ActiveLibryosManager $manager
+     * @param \App\Services\Customer\ActiveNormasManager $manager
      *
      * @return array<string, int>
      */
-    protected function getActionAreasWithTasksCount(ActiveLibryosManager $manager): array
+    protected function getActionAreasWithTasksCount(ActiveNormasManager $manager): array
     {
-        $libryo = $manager->getActive();
+        $norma = $manager->getActive();
         $organisation = $manager->getActiveOrganisation();
 
-        $references = $this->getReferenceSubQuery($libryo, $organisation);
+        $references = $this->getReferenceSubQuery($norma, $organisation);
 
         $total = ActionArea::whereHas('references', fn ($query) => $query->whereIn('id', $references))->count();
 
         $completed = ActionArea::whereHas('references', fn ($query) => $query->whereIn('id', $references))
-            ->whereHas('tasks', fn ($query) => $query->forLibryoOrOrganisation($libryo, $organisation))
+            ->whereHas('tasks', fn ($query) => $query->forNormaOrOrganisation($norma, $organisation))
             ->count();
 
         return [

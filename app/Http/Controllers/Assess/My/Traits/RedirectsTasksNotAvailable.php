@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Assess\My\Traits;
 
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Support\Facades\Session;
 
 trait RedirectsTasksNotAvailable
@@ -12,13 +12,13 @@ trait RedirectsTasksNotAvailable
      *
      * @codeCoverageIgnore
      *
-     * @param \App\Models\Customer\Libryo|null $libryo
+     * @param \App\Models\Customer\Norma|null $norma
      *
      * @return void
      */
-    public function redirectIfNoTasks(?Libryo $libryo): void
+    public function redirectIfNoTasks(?Norma $norma): void
     {
-        if ($libryo && !$libryo->hasTasksModule()) {
+        if ($norma && !$norma->hasTasksModule()) {
             Session::flash('flash.type', 'error');
             Session::flash('flash.message', __('tasks.tasks_not_enabled'));
 

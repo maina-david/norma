@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Dashboard\My\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Customer\Team;
 use App\Models\Notify\LegalUpdate;
@@ -38,18 +38,18 @@ class DashboardController extends Controller
             $organisation = $manager->getActive();
             $usersQuery = $organisation->users()->active();
             $teamsQuery = $organisation->teams()->getQuery();
-            $libryosQuery = $organisation->libryos()->getQuery()->active();
+            $normasQuery = $organisation->normas()->getQuery()->active();
             $legalUpdatesQuery = LegalUpdate::forOrganisation($organisation);
         } else {
             $usersQuery = User::active()->getQuery();
             $teamsQuery = (new Team())->newQuery();
-            $libryosQuery = (new Libryo())->newQuery()->active();
+            $normasQuery = (new Norma())->newQuery()->active();
             $legalUpdatesQuery = (new LegalUpdate())->newQuery();
         }
 
         $activeUsersCount = $usersQuery->count();
         $teamsCount = $teamsQuery->count();
-        $libryosCount = $libryosQuery->count();
+        $normasCount = $normasQuery->count();
         $updates = [];
         for ($i = 5; $i >= 0; $i--) {
             [$start, $end] = $this->dateHelper->getMonthStartEnd($i);
@@ -68,7 +68,7 @@ class DashboardController extends Controller
             'user' => $user,
             'activeUsersCount' => $activeUsersCount,
             'teamsCount' => $teamsCount,
-            'libryosCount' => $libryosCount,
+            'normasCount' => $normasCount,
             'updates' => $updates,
         ]);
     }

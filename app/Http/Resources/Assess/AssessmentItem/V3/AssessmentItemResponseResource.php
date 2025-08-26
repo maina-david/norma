@@ -24,8 +24,8 @@ class AssessmentItemResponseResource extends JsonResource
             'next_due_at' => $this->next_due_at?->toDateString(),
             'frequency' => $this->frequency,
             'frequency_interval' => $this->frequency_interval,
-            'link' => route('my.libryos.activate.redirect', [
-                'libryo' => $this->place_id,
+            'link' => route('my.normas.activate.redirect', [
+                'norma' => $this->place_id,
                 'redirect' => route('my.assess.assessment-item-responses.show', ['aiResponse' => $this->hash_id], false),
             ], false),
         ];

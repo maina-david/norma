@@ -29,7 +29,7 @@ class FolderStreamController extends Controller
      *
      * @return Response
      */
-    public function hideOrShowLibryoCreatedFolders(Folder $folder, string $hideOrShow): Response
+    public function hideOrShowNormaCreatedFolders(Folder $folder, string $hideOrShow): Response
     {
         /** @var ActiveOrganisationManager */
         $manager = app(ActiveOrganisationManager::class);
@@ -43,7 +43,7 @@ class FolderStreamController extends Controller
 
         /** @var FolderType */
         $folderType = FolderType::fromValue($folder->folder_type);
-        $view = $this->getLibryoCreatedFoldersView($folderType);
+        $view = $this->getNormaCreatedFoldersView($folderType);
 
         return turboStreamResponse($view);
     }
@@ -53,12 +53,12 @@ class FolderStreamController extends Controller
      *
      * @return View
      */
-    private function getLibryoCreatedFoldersView(FolderType $folderType): View
+    private function getNormaCreatedFoldersView(FolderType $folderType): View
     {
         /** @var View */
         return view('streams.single-component-partial', [
-            'component' => 'storage.my.folder.settings.libryo-folder-setup',
-            'target' => 'settings-drives-libryo-specific-folders-' . $folderType->value,
+            'component' => 'storage.my.folder.settings.norma-folder-setup',
+            'target' => 'settings-drives-norma-specific-folders-' . $folderType->value,
             'attributes' => new ComponentAttributeBag([
                 'folderType' => $folderType->value,
             ]),

@@ -7,9 +7,9 @@ use App\Exports\Requirements\Enablon\Mappers\CargillRequirementContentMapper;
 use App\Exports\Requirements\Enablon\Mappers\CargillRequirementsMapper;
 use App\Exports\Requirements\Enablon\Mappers\CargillWorksMapper;
 use App\Exports\Tasks\Enablon\Mappers\CargillTasksMapper;
-use App\Jobs\Exports\GenerateGenericLibryoOrgCSVExport;
+use App\Jobs\Exports\GenerateGenericNormaOrgCSVExport;
 use App\Models\Customer\Organisation;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -57,19 +57,19 @@ class ReportController
 
         /** @var \App\Models\Auth\User $user */
         $user = $request->user();
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
         /** @var Organisation $organisation */
         $organisation = $manager->getActiveOrganisation();
-        $libryo = $manager->getActive();
+        $norma = $manager->getActive();
 
-        if ($libryo && $manager->isSingleMode()) {
-            $filename = "{$libryo->title}{$filename}";
+        if ($norma && $manager->isSingleMode()) {
+            $filename = "{$norma->title}{$filename}";
         }
 
-        $job = new GenerateGenericLibryoOrgCSVExport(
+        $job = new GenerateGenericNormaOrgCSVExport(
             $filename,
             $user,
-            $libryo,
+            $norma,
             $organisation,
             $type->export(),
             [],

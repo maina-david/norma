@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Actions\My;
 
-use App\Traits\Actions\UsesActionAreasInLibryo;
+use App\Traits\Actions\UsesActionAreasInNorma;
 use App\Traits\UsesBackButton;
-use App\Traits\UsesReferencesForLibryo;
+use App\Traits\UsesReferencesForNorma;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class ChecklistController
 {
-    use UsesActionAreasInLibryo;
+    use UsesActionAreasInNorma;
     use UsesBackButton;
-    use UsesReferencesForLibryo;
+    use UsesReferencesForNorma;
 
     /**
      * @param Request $request

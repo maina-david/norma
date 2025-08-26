@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Ontology\Collaborate;
 
 use App\Cache\Ontology\Collaborate\CategorySelectorCache;
 use App\Enums\Assess\AssessmentItemType;
-use App\Http\Services\LibryoAI\Client;
+use App\Http\Services\NormaAI\Client;
 use App\Models\Geonames\Location;
 use App\Models\Ontology\Category;
 use Illuminate\Database\Eloquent\Builder;
@@ -18,7 +18,7 @@ class CategoryJsonController
      * Get the categories as json.
      *
      * @param Request                            $request
-     * @param \App\Http\Services\LibryoAI\Client $client
+     * @param \App\Http\Services\NormaAI\Client $client
      *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface

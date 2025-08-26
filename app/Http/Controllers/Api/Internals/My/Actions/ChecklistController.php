@@ -8,25 +8,25 @@ use App\Models\Actions\ActionArea;
 use App\Models\Actions\ActionAreaCompliance;
 use App\Models\Ontology\Category;
 use App\Models\Ontology\Pivots\CategoryClosure;
-use App\Services\Customer\ActiveLibryosManager;
-use App\Traits\UsesReferencesForLibryo;
+use App\Services\Customer\ActiveNormasManager;
+use App\Traits\UsesReferencesForNorma;
 use Illuminate\Http\JsonResponse;
 
 class ChecklistController extends MyApiController
 {
-    use UsesReferencesForLibryo;
+    use UsesReferencesForNorma;
 
     /**
-     * @param ActiveLibryosManager $manager
+     * @param ActiveNormasManager $manager
      *
      * @return JsonResponse
      */
-    public function checklistAreas(ActiveLibryosManager $manager): JsonResponse
+    public function checklistAreas(ActiveNormasManager $manager): JsonResponse
     {
-        $libryo = $manager->getActive();
+        $norma = $manager->getActive();
         $organisation = $manager->getActiveOrganisation();
 
-        $references = $this->getReferenceSubQuery($libryo, $organisation);
+        $references = $this->getReferenceSubQuery($norma, $organisation);
 
         $actionAreas = ActionArea::join(get_table(CategoryClosure::class, 'subject_closure'), 'subject_category_id', 'subject_closure.descendant')
             ->join(get_table(CategoryClosure::class, 'control_closure'), 'control_category_id', 'control_closure.descendant')

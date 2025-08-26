@@ -6,15 +6,15 @@ use App\Enums\Auth\UserActivityType;
 use App\Enums\Corpus\ReferenceLinkType;
 use App\Events\Auth\UserActivity\KnowYourLawActivity;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Traits\GetsLibryoAndOrganisation;
+use App\Http\Controllers\Traits\GetsNormaAndOrganisation;
 use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Auth\User;
 use App\Models\Corpus\Reference;
 use App\Models\Corpus\Work;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Ontology\Tag;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Auth;
 
 class ReferenceStreamController extends Controller
 {
-    use GetsLibryoAndOrganisation;
+    use GetsNormaAndOrganisation;
 
     /**
      * @param Request $request
@@ -32,12 +32,12 @@ class ReferenceStreamController extends Controller
      */
     public function showYourRequirements(Request $request, Work $work): Response
     {
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
-            $libryo->load('location');
-            $query = $work->references()->forLibryo($libryo);
+            /** @var Norma */
+            $norma = $manager->getActive();
+            $norma->load('location');
+            $query = $work->references()->forNorma($norma);
         } else {
             /** @var Organisation */
             $organisation = $manager->getActiveOrganisation();
@@ -69,35 +69,35 @@ class ReferenceStreamController extends Controller
      */
     public function show(Reference $reference): Response
     {
-        [$libryo, $organisation] = $this->getActiveLibryoAndOrganisation();
+        [$norma, $organisation] = $this->getActiveNormaAndOrganisation();
 
-        $reference->loadCount(['raisesConsequenceGroups' => fn ($query) => $query->forLibryoLocations($libryo)])
+        $reference->loadCount(['raisesConsequenceGroups' => fn ($query) => $query->forNormaLocations($norma)])
             ->load([
                 'citation', 'refPlainText', 'summary', 'tags', 'work',
                 'childReferences.htmlContent', 'htmlContent',
             ]);
 
         $reference->load([
-            'assessmentItems' => function ($builder) use ($libryo) {
-                $builder->whereRelation('assessmentResponses', 'place_id', $libryo->id ?? 0);
+            'assessmentItems' => function ($builder) use ($norma) {
+                $builder->whereRelation('assessmentResponses', 'place_id', $norma->id ?? 0);
             },
-            'assessmentItems.assessmentResponses' => fn ($builder) => $builder->where('place_id', $libryo->id ?? 0),
+            'assessmentItems.assessmentResponses' => fn ($builder) => $builder->where('place_id', $norma->id ?? 0),
             'assessmentItems.legalDomain.topParent',
         ]);
 
-        /** @var Libryo|null $libryo */
-        if ($libryo?->hasActionsModule()) {
+        /** @var Norma|null $norma */
+        if ($norma?->hasActionsModule()) {
             $reference->load([
                 'actionAreas:id,title',
             ]);
         }
 
         $amendments = Reference::whereIn('id', $reference->getLinkedTypeIDs(ReferenceLinkType::AMENDMENT))
-            ->forLibryoLocations($libryo)
+            ->forNormaLocations($norma)
             ->count();
 
         $readWiths = Reference::whereIn('id', $reference->getLinkedTypeIDs(ReferenceLinkType::READ_WITH))
-            ->forLibryoLocations($libryo)
+            ->forNormaLocations($norma)
             ->count();
 
         /** @var View $view */
@@ -108,12 +108,12 @@ class ReferenceStreamController extends Controller
             'organisation' => $organisation,
             'amendmentsCount' => $amendments,
             'readWithsCount' => $readWiths,
-            'libryo' => $libryo,
+            'norma' => $norma,
         ]);
 
         /** @var User $user */
         $user = Auth::user();
-        KnowYourLawActivity::dispatch($user, UserActivityType::viewedReference(), ['id' => $reference->id], $libryo, $organisation);
+        KnowYourLawActivity::dispatch($user, UserActivityType::viewedReference(), ['id' => $reference->id], $norma, $organisation);
 
         return turboStreamResponse($view);
     }
@@ -125,20 +125,20 @@ class ReferenceStreamController extends Controller
      */
     public function indexForAssessmentItemResponse(AssessmentItemResponse $aiResponse): Response
     {
-        $aiResponse->load(['assessmentItem', 'libryo']);
-        /** @var \App\Models\Customer\Libryo $libryo */
-        $libryo = $aiResponse->libryo;
+        $aiResponse->load(['assessmentItem', 'norma']);
+        /** @var \App\Models\Customer\Norma $norma */
+        $norma = $aiResponse->norma;
         $query = $aiResponse->assessmentItem
             ->references()
             ->active()
             ->forActiveWork()
-            ->forLibryo($libryo)
+            ->forNorma($norma)
             ->orderBy('work_id')
             ->orderedPosition()
             ->with(['citation', 'refPlainText', 'legalDomains', 'locations', 'work']);
 
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
 
         /** @var View $view */
         $view = view('streams.single-partial', [
@@ -165,14 +165,14 @@ class ReferenceStreamController extends Controller
         /** @var string */
         $search = $request->input('search', '');
 
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         /** @var User */
         $user = Auth::user();
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
-            $tag = Tag::forLibryo($libryo)->inRandomOrder()->first();
+            /** @var Norma */
+            $norma = $manager->getActive();
+            $tag = Tag::forNorma($norma)->inRandomOrder()->first();
         } else {
             /** @var Organisation */
             $organisation = $manager->getActiveOrganisation();

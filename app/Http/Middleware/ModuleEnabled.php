@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use App\Enums\System\LibryoModule;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Enums\System\NormaModule;
+use App\Services\Customer\ActiveNormasManager;
 use Closure;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
@@ -22,11 +22,11 @@ class ModuleEnabled
      */
     public function handle(Request $request, Closure $next, string $module)
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         $organisation = $manager->getActiveOrganisation();
 
-        if (!in_array($module, LibryoModule::options())) {
+        if (!in_array($module, NormaModule::options())) {
             // @codeCoverageIgnoreStart
             throw new RuntimeException('Module "' . $module . '" does not exist');
             // @codeCoverageIgnoreEnd

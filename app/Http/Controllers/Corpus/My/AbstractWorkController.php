@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Corpus\My;
 
 use App\Http\Controllers\Controller;
 use App\Models\Corpus\Work;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Http\Request;
 
 abstract class AbstractWorkController extends Controller
@@ -14,25 +14,25 @@ abstract class AbstractWorkController extends Controller
     /**
      * @return array<mixed>
      */
-    protected function getLibryoOrganisationQuery(Request $request): array
+    protected function getNormaOrganisationQuery(Request $request): array
     {
         $filters = $request->only(['tags', 'domain', 'jurisdictionType']);
 
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         $locationTypeQuery = null;
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
-            $libryo->load('location');
-            $query = Work::primaryForLibryo($libryo, $filters);
-        // $locationTypeQuery = LocationType::forLibryo($libryo, array_diff_key($filters, ['jurisdictionType' => false]))
+            /** @var Norma */
+            $norma = $manager->getActive();
+            $norma->load('location');
+            $query = Work::primaryForNorma($norma, $filters);
+        // $locationTypeQuery = LocationType::forNorma($norma, array_diff_key($filters, ['jurisdictionType' => false]))
         //     ->with([
-        //         'locations' => function ($q) use ($libryo) {
+        //         'locations' => function ($q) use ($norma) {
         //             $q->whereHas(
         //                 'references',
-        //                 function ($q) use ($libryo) {
-        //                     $q->forLibryo($libryo);
+        //                 function ($q) use ($norma) {
+        //                     $q->forNorma($norma);
         //                 }
         //             );
         //         },
@@ -51,6 +51,6 @@ abstract class AbstractWorkController extends Controller
             //     ]);
         }
 
-        return [$query, $locationTypeQuery, $libryo ?? null, $organisation ?? null];
+        return [$query, $locationTypeQuery, $norma ?? null, $organisation ?? null];
     }
 }

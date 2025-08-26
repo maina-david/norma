@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Traits\DecodesHashids;
 use App\Models\Auth\User;
 use App\Models\Tasks\Task;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Traits\UsesBackButton;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -44,26 +44,26 @@ class ActionsTaskController extends Controller
     {
         /** @var User $user */
         $user = $request->user();
-        $organisation = $libryo = null;
-        $manager = app(ActiveLibryosManager::class);
-        if ($libryo = $manager->getActive($user)) {
-            $query = Task::forLibryo($libryo);
+        $organisation = $norma = null;
+        $manager = app(ActiveNormasManager::class);
+        if ($norma = $manager->getActive($user)) {
+            $query = Task::forNorma($norma);
         } else {
             $organisation = $manager->getActiveOrganisation();
             $query = Task::forOrganisationUserAccess($organisation, $user);
         }
 
         $type = $request->hasAny(['show-month', 'show-year']) ? UserActivityType::changedCalendarDates() : UserActivityType::viewedCalendar();
-        event(new GenericActivity($user, $type, null, $libryo, $organisation));
+        event(new GenericActivity($user, $type, null, $norma, $organisation));
 
         if ($request->get('search')) {
-            event(new GenericActivity($user, UserActivityType::searchedTasks(), null, $libryo, $organisation));
+            event(new GenericActivity($user, UserActivityType::searchedTasks(), null, $norma, $organisation));
         }
 
         $filtered = $request->only(['statuses', 'type', 'priority', 'assignee', 'archived', 'overdue', 'project']);
 
         if (!empty($filtered)) {
-            event(new FilteredResource($user, UserActivityType::filteredTasks(), $filtered, $libryo, $organisation));
+            event(new FilteredResource($user, UserActivityType::filteredTasks(), $filtered, $norma, $organisation));
         }
 
         $month = $request->get('show-month', now()->month);
@@ -112,9 +112,9 @@ class ActionsTaskController extends Controller
         $task = $this->decodeHash($task, Task::class);
         $this->authorize('delete', $task);
 
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
-        $this->redirectIfNoTasks($libryo);
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
+        $this->redirectIfNoTasks($norma);
 
         $task->delete();
 

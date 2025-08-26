@@ -10,10 +10,10 @@ use App\Http\Requests\Comments\CommentRequest;
 use App\Models\Auth\User;
 use App\Models\Comments\Comment;
 use App\Models\Compilation\ContextQuestion;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Services\Comments\CommentReplacements;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
@@ -33,17 +33,17 @@ class CommentController extends Controller
     /**
      * @return array<mixed>
      */
-    private function getLibryoOrgQuery(Model $model): array
+    private function getNormaOrgQuery(Model $model): array
     {
-        $libryo = null;
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        $norma = null;
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         $organisation = $manager->getActiveOrganisation();
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
-            $query = $model->comments()->where(function ($builder) use ($libryo, $organisation) {
-                $builder->forLibryo($libryo)
+            /** @var Norma */
+            $norma = $manager->getActive();
+            $query = $model->comments()->where(function ($builder) use ($norma, $organisation) {
+                $builder->forNorma($norma)
                     ->orWhere(function ($query) use ($organisation) {
                         $query->forOrganisation($organisation);
                     });
@@ -55,7 +55,7 @@ class CommentController extends Controller
             $query = $model->comments()->allForOrganisationUserAccess($organisation, $user);
         }
 
-        return [$libryo, $organisation, $query];
+        return [$norma, $organisation, $query];
     }
 
     /**
@@ -67,7 +67,7 @@ class CommentController extends Controller
     public function forCommentable(string $type, int $id): Response
     {
         $model = $this->getModel($type, $id, 'commentable');
-        [$libryo, $organisation, $query] = $this->getLibryoOrgQuery($model);
+        [$norma, $organisation, $query] = $this->getNormaOrgQuery($model);
 
         $comments = $query->with(['author'])->withCount(['comments', 'files'])->simplePaginate(100);
         $comments = $this->commentReplacements->replaceContent($comments);
@@ -96,13 +96,13 @@ class CommentController extends Controller
         /** @var User */
         $user = Auth::user();
 
-        $targetLibryo = $request->get('target_libryo_id') ? Libryo::whereKey($request->get('target_libryo_id'))->with('organisation')->userHasAccess($user)->firstOrFail() : null;
+        $targetNorma = $request->get('target_norma_id') ? Norma::whereKey($request->get('target_norma_id'))->with('organisation')->userHasAccess($user)->firstOrFail() : null;
 
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
+            /** @var Norma */
+            $norma = $manager->getActive();
         } else {
             /** @var Organisation */
             $organisation = $manager->getActiveOrganisation();
@@ -112,7 +112,7 @@ class CommentController extends Controller
         $created = Comment::create([
             'commentable_type' => $legacyType,
             'commentable_id' => $id,
-            'place_id' => $targetLibryo->id ?? $libryo->id ?? null,
+            'place_id' => $targetNorma->id ?? $norma->id ?? null,
             'organisation_id' => $organisation->id ?? null,
             'comment' => $data['comment'],
             'author_id' => $user->id,

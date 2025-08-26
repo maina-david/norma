@@ -27,7 +27,7 @@ class FolderRequest extends FormRequest
     {
         return [
             'title' => ['string', 'required', 'max:255'],
-            'folder_type' => ['required', Rule::in([FolderType::organisation()->value, FolderType::libryo()->value])],
+            'folder_type' => ['required', Rule::in([FolderType::organisation()->value, FolderType::norma()->value])],
         ];
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\Internals\My\Auth;
 
 use App\Http\Resources\Internals\My\Auth\UserResource;
 use App\Models\Auth\User;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\Auth;
@@ -20,14 +20,14 @@ class OrganisationUsersController
      */
     public function index(Request $request): AnonymousResourceCollection
     {
-        /** @var ActiveLibryosManager $manager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager $manager */
+        $manager = app(ActiveNormasManager::class);
         $organisation = $manager->getActiveOrganisation();
 
         $query = $organisation->users();
 
-        if ($request->has('libryo') && $manager->isSingleMode() && $libryo = $manager->getActive()) {
-            $query = User::libryoAccess($libryo)->inOrganisation($organisation->id);
+        if ($request->has('norma') && $manager->isSingleMode() && $norma = $manager->getActive()) {
+            $query = User::normaAccess($norma)->inOrganisation($organisation->id);
         }
 
         $users = $query->orderBy('fname')

@@ -40,9 +40,9 @@ class LegalUpdateController extends ApiV3Controller
      */
     protected function applyOrganisationFilter(Builder $builder, int $organisationId): Builder
     {
-        return $builder->whereRelation('libryos', 'organisation_id', $organisationId)
+        return $builder->whereRelation('normas', 'organisation_id', $organisationId)
             ->with([
-                'libryos' => fn ($query) => $query->select(['id'])->where('organisation_id', $organisationId),
+                'normas' => fn ($query) => $query->select(['id'])->where('organisation_id', $organisationId),
             ]);
     }
 
@@ -51,9 +51,9 @@ class LegalUpdateController extends ApiV3Controller
      */
     protected function applyStreamsFilter(Builder $builder, array $streamIds): Builder
     {
-        return $builder->whereHas('libryos', fn ($query) => $query->whereKey($streamIds))
+        return $builder->whereHas('normas', fn ($query) => $query->whereKey($streamIds))
             ->with([
-                'libryos' => fn ($query) => $query->select(['id'])->whereKey($streamIds),
+                'normas' => fn ($query) => $query->select(['id'])->whereKey($streamIds),
             ]);
     }
 }

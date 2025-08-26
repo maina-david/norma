@@ -51,7 +51,7 @@ class TaskController extends ApiV3Controller
      */
     protected function applyOrganisationFilter(Builder $builder, int $organisationId): Builder
     {
-        return $builder->whereRelation('libryo', 'organisation_id', $organisationId);
+        return $builder->whereRelation('norma', 'organisation_id', $organisationId);
     }
 
     /**

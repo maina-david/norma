@@ -69,7 +69,7 @@ class UrlFrontierLinkController extends CollaborateController
             'date' => fn ($row) => $row->created_at,
             'date_crawled' => fn ($row) => $row->crawled_at,
             'url' => fn ($row) => $row->url,
-            'crawler' => fn ($row) => $row->crawl?->crawler ? $row->crawl->crawler->title . ' <div class="text-xs text-libryo-gray-500">(' . $row->crawl->crawler->slug . ')</div>' : '',
+            'crawler' => fn ($row) => $row->crawl?->crawler ? $row->crawl->crawler->title . ' <div class="text-xs text-norma-gray-500">(' . $row->crawl->crawler->slug . ')</div>' : '',
             'source' => fn ($row) => $row->crawl?->crawler?->source?->title,
         ];
     }

@@ -33,7 +33,7 @@ class FilteredLegalUpdateController extends AbstractApiController
     }
 
     /**
-     * Get all notifications for the current user for the given libryos.
+     * Get all notifications for the current user for the given normas.
      *
      * @param ApiMultiGetRequest $request
      *
@@ -42,12 +42,12 @@ class FilteredLegalUpdateController extends AbstractApiController
     public function indexFiltered(Request $request): ResourceCollection
     {
         $unreadOnly = (bool) $request->input('unread', false);
-        $libryoIds = $request->input('places', []);
-        $libryoIds = is_string($libryoIds) ? explode(',', $libryoIds) : $libryoIds;
+        $normaIds = $request->input('places', []);
+        $normaIds = is_string($normaIds) ? explode(',', $normaIds) : $normaIds;
         /** @var User $user */
         $user = Auth::user();
 
-        $query = LegalUpdate::forLibryos($libryoIds)
+        $query = LegalUpdate::forNormas($normaIds)
             ->when($unreadOnly, fn ($q) => $q->userStatus($user, LegalUpdateStatus::unread()))
             ->with([
                 'users' => fn ($q) => $q->whereKey($user->id),

@@ -9,8 +9,8 @@ use App\Http\Requests\Tasks\TaskProjectRequest;
 use App\Models\Auth\User;
 use App\Models\Customer\Organisation;
 use App\Models\Tasks\TaskProject;
-use App\Services\Customer\ActiveLibryosManager;
-use App\Traits\Actions\UsesActionAreasInLibryo;
+use App\Services\Customer\ActiveNormasManager;
+use App\Traits\Actions\UsesActionAreasInNorma;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Auth;
 class ActionsProjectController extends Controller
 {
     use DecodesHashids;
-    use UsesActionAreasInLibryo;
+    use UsesActionAreasInNorma;
 
     /**
      * @param Request $request
@@ -28,9 +28,9 @@ class ActionsProjectController extends Controller
      */
     public function index(Request $request): View|RedirectResponse
     {
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
-        $this->redirectIfNoActionAreas($libryo);
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
+        $this->redirectIfNoActionAreas($norma);
 
         /** @var User */
         $user = Auth::user();
@@ -55,9 +55,9 @@ class ActionsProjectController extends Controller
      */
     public function destroy(TaskProject $project): RedirectResponse
     {
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
-        $this->redirectIfNoActionAreas($libryo);
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
+        $this->redirectIfNoActionAreas($norma);
 
         $this->authorize('delete', $project);
 
@@ -71,9 +71,9 @@ class ActionsProjectController extends Controller
      */
     public function create(): View
     {
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
-        $this->redirectIfNoActionAreas($libryo);
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
+        $this->redirectIfNoActionAreas($norma);
 
         /** @var View */
         return view('pages.actions.my.action-area.projects.create');
@@ -86,9 +86,9 @@ class ActionsProjectController extends Controller
      */
     public function edit(string $project): View
     {
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
-        $this->redirectIfNoActionAreas($libryo);
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
+        $this->redirectIfNoActionAreas($norma);
 
         $project = $this->decodeHash($project, TaskProject::class);
         $this->authorize('update', $project);
@@ -106,13 +106,13 @@ class ActionsProjectController extends Controller
      */
     public function store(TaskProjectRequest $request): RedirectResponse
     {
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
-        $this->redirectIfNoActionAreas($libryo);
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
+        $this->redirectIfNoActionAreas($norma);
 
         $data = $request->validated();
 
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
         /** @var User */
         $user = Auth::user();
 
@@ -137,9 +137,9 @@ class ActionsProjectController extends Controller
      */
     public function update(TaskProjectRequest $request, TaskProject $project): RedirectResponse
     {
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
-        $this->redirectIfNoActionAreas($libryo);
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
+        $this->redirectIfNoActionAreas($norma);
 
         $data = $request->validated();
 
@@ -155,9 +155,9 @@ class ActionsProjectController extends Controller
      */
     public function archive(TaskProject $project): RedirectResponse
     {
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
-        $this->redirectIfNoActionAreas($libryo);
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
+        $this->redirectIfNoActionAreas($norma);
 
         $this->authorize('archive', $project);
 
@@ -173,9 +173,9 @@ class ActionsProjectController extends Controller
      */
     public function unarchive(TaskProject $project): RedirectResponse
     {
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
-        $this->redirectIfNoActionAreas($libryo);
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
+        $this->redirectIfNoActionAreas($norma);
 
         $this->authorize('archive', $project);
 

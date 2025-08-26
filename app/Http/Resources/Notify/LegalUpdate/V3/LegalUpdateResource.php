@@ -26,7 +26,7 @@ class LegalUpdateResource extends JsonResource
             'publication_date' => $this->publication_date?->toDateString(),
             'effective_date' => $this->effective_date?->toDateString(),
             'highlights' => trim(app(HtmlToText::class)->convert($this->highlights ?? '')),
-            'streams' => $this->libryos->pluck('id')->all(),
+            'streams' => $this->normas->pluck('id')->all(),
             'link' => route('my.notify.legal-updates.show', ['update' => $this->id], false),
         ];
     }

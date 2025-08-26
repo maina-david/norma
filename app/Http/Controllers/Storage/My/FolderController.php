@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Storage\My;
 
-use App\Enums\Customer\LibryoSwitcherMode;
+use App\Enums\Customer\NormaSwitcherMode;
 use App\Enums\Storage\My\FolderType;
 use App\Events\Auth\UserActivity\Folders\FolderViewed;
 use App\Http\Controllers\Controller;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Storage\My\File;
 use App\Models\Storage\My\Folder;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Services\Customer\ActiveOrganisationManager;
 use App\Services\Storage\FolderLists;
 use App\Services\Storage\MimeTypeManager;
@@ -47,14 +47,14 @@ class FolderController extends Controller
      */
     public function root(): View
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         $mode = $manager->getMode();
 
         /** @var User $user */
         $user = Auth::user();
 
-        $libryo = $manager->getActive($user);
+        $norma = $manager->getActive($user);
         $organisation = $manager->getActiveOrganisation();
 
         $storageAllocation = $this->organisationStorageService->getAllocation($organisation);
@@ -74,13 +74,13 @@ class FolderController extends Controller
 
         /** @var View */
         return view('pages.storage.my.drives', [
-            'singleMode' => LibryoSwitcherMode::single()->is($mode),
-            'libryo' => $libryo,
+            'singleMode' => NormaSwitcherMode::single()->is($mode),
+            'norma' => $norma,
             'organisation' => $organisation,
             'storageAllocation' => $storageAllocation,
             'percentage' => $percentage,
             'storageColor' => $storageColor,
-            'subTitle' => $libryo ? $libryo->title : $organisation->title,
+            'subTitle' => $norma ? $norma->title : $organisation->title,
         ]);
     }
 
@@ -93,24 +93,24 @@ class FolderController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
-        /** @var Libryo|null */
-        $libryo = $manager->getActive();
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
+        /** @var Norma|null */
+        $norma = $manager->getActive();
 
         switch ($folder->folder_type) {
-            case FolderType::libryo()->value:
-                $response = $this->forLibryo($folder->children(), $folder);
+            case FolderType::norma()->value:
+                $response = $this->forNorma($folder->children(), $folder);
                 break;
             case FolderType::organisation()->value:
                 $response = $this->forOrganisation($folder->children(), $folder);
                 break;
             default:
-                $response = $this->forGlobal($folder->children()->inGlobalDrive($libryo ?? null), $folder);
+                $response = $this->forGlobal($folder->children()->inGlobalDrive($norma ?? null), $folder);
                 break;
         }
 
-        event(new FolderViewed($folder, $user, $libryo, $manager->getActiveOrganisation()));
+        event(new FolderViewed($folder, $user, $norma, $manager->getActiveOrganisation()));
 
         return $response;
     }
@@ -123,8 +123,8 @@ class FolderController extends Controller
     public function showRoot(string $type): View|RedirectResponse
     {
         $query = Folder::forParent()->orderBy('title');
-        if ($type === 'libryo') {
-            return $this->forLibryo($query);
+        if ($type === 'norma') {
+            return $this->forNorma($query);
         }
         if ($type === 'organisation') {
             return $this->forOrganisation($query);
@@ -141,35 +141,35 @@ class FolderController extends Controller
      *
      * @return View|RedirectResponse
      */
-    protected function forLibryo(Builder|QueryBuilder|Relation $query, ?Folder $folder = null): View|RedirectResponse
+    protected function forNorma(Builder|QueryBuilder|Relation $query, ?Folder $folder = null): View|RedirectResponse
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         $mode = $manager->getMode();
-        if (LibryoSwitcherMode::all()->is($mode)) {
+        if (NormaSwitcherMode::all()->is($mode)) {
             // @codeCoverageIgnoreStart
             return redirect()->route('my.drives.folders.show.root', ['type' => 'organisation']);
             // @codeCoverageIgnoreEnd
         }
         /** @var User $user */
         $user = Auth::user();
-        /** @var Libryo */
-        $libryo = $manager->getActive($user);
-        $emptyQuery = $query->forLibryo($libryo)
+        /** @var Norma */
+        $norma = $manager->getActive($user);
+        $emptyQuery = $query->forNorma($norma)
             ->clone()
-            ->emptyForLibryo($libryo->id);
+            ->emptyForNorma($norma->id);
 
         /** @var string */
-        $title = is_null($folder) ? __('storage.drives.libryo_drive', ['title' => $libryo->title]) : $folder->title;
+        $title = is_null($folder) ? __('storage.drives.norma_drive', ['title' => $norma->title]) : $folder->title;
 
         return $this->showFolderView(
             $title,
-            $query->notEmptyForLibryo($libryo->id)->get(),
+            $query->notEmptyForNorma($norma->id)->get(),
             $emptyQuery->get(),
-            $folder?->files()->forLibryo($libryo)->with('folder')->withPermissions($user)->paginate(config('modules.drives.files_per_page')) ?? (new File())->whereKey(0)->paginate(config('modules.drives.files_per_page')),
+            $folder?->files()->forNorma($norma)->with('folder')->withPermissions($user)->paginate(config('modules.drives.files_per_page')) ?? (new File())->whereKey(0)->paginate(config('modules.drives.files_per_page')),
             $folder,
             'primary',
-            'libryo',
+            'norma',
         );
     }
 
@@ -181,8 +181,8 @@ class FolderController extends Controller
      */
     protected function forOrganisation(Builder|QueryBuilder|Relation $query, ?Folder $folder = null): View|RedirectResponse
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         $mode = $manager->getMode();
 
         /** @var Organisation */
@@ -216,20 +216,20 @@ class FolderController extends Controller
      */
     protected function forGlobal(Builder|QueryBuilder|Relation $query, ?Folder $folder = null): View|RedirectResponse
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         $emptyQuery = $query->clone();
 
         /** @var User $user */
         $user = Auth::user();
-        $libryo = $manager->getActive($user);
+        $norma = $manager->getActive($user);
 
         if (is_null($folder)) {
             /** @var LengthAwarePaginator<File> */
             $files = (new File())->whereKey(0)->with('folder')->paginate(config('modules.drives.files_per_page'));
         } else {
             /** @var LengthAwarePaginator<File> */
-            $files = File::inGlobalDrive($folder, $libryo)->with('folder')->paginate(config('modules.drives.files_per_page'));
+            $files = File::inGlobalDrive($folder, $norma)->with('folder')->paginate(config('modules.drives.files_per_page'));
         }
 
         /** @var string */
@@ -241,7 +241,7 @@ class FolderController extends Controller
             $emptyQuery->empty()->get(),
             $files,
             $folder,
-            'libryo-gray-500',
+            'norma-gray-500',
             'global',
         );
     }
@@ -266,16 +266,16 @@ class FolderController extends Controller
         string $iconColor = 'gray',
         ?string $type = null,
     ): View {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         /** @var User $user */
         $user = Auth::user();
 
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive($user);
+            /** @var Norma */
+            $norma = $manager->getActive($user);
             /** @var Organisation */
-            $organisation = $libryo->organisation;
+            $organisation = $norma->organisation;
         } else {
             /** @var Organisation */
             $organisation = $this->activeOrganisationManager->getActive();

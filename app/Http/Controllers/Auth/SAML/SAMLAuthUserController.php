@@ -41,7 +41,7 @@ class SAMLAuthUserController
         abort_unless($response, 404);
 
         /** @var User $user */
-        $user = User::findOrFail($response['libryo_user_id']);
+        $user = User::findOrFail($response['norma_user_id']);
 
         $user = $this->updateSAMLUserDetails($provider, $user, $response);
 

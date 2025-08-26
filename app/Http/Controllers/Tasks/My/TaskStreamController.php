@@ -9,11 +9,11 @@ use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Auth\User;
 use App\Models\Corpus\Reference;
 use App\Models\Corpus\ReferenceContentExtract;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Storage\My\File;
 use App\Models\Tasks\Task;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Services\Tasks\AITaskGenerator;
 use App\Stores\Tasks\TaskWatcherStore;
 use App\Traits\UpdatesReferenceContentExtract;
@@ -41,7 +41,7 @@ class TaskStreamController extends Controller
         $view = view('streams.single-partial', [
             'partialView' => 'partials.tasks.task.show-details',
             'target' => 'tasks-details-' . $task->id,
-            'task' => $task->load(['assignee', 'author', 'project', 'watchers', 'libryo:id,title']),
+            'task' => $task->load(['assignee', 'author', 'project', 'watchers', 'norma:id,title']),
             'user' => $user,
             'isActionsModule' => false,
         ]);
@@ -58,7 +58,7 @@ class TaskStreamController extends Controller
     public function indexForRelated(string $relation, string $id): Response
     {
         $model = $this->getModel($relation, (int) $id, 'taskable');
-        [$libryo, $organisation, $query] = $this->getLibryoOrgQuery($model);
+        [$norma, $organisation, $query] = $this->getNormaOrgQuery($model);
 
         $query = $query->with(['author', 'assignee']);
 
@@ -71,7 +71,7 @@ class TaskStreamController extends Controller
             'related' => $model,
             'taskableType' => $this->getLegacyName($relation, 'taskable'),
             'taskableId' => $model->getAttribute('id'),
-            'libryo' => $model instanceof AssessmentItemResponse ? $model->libryo : $libryo,
+            'norma' => $model instanceof AssessmentItemResponse ? $model->norma : $norma,
         ]);
 
         return turboStreamResponse($view);
@@ -80,16 +80,16 @@ class TaskStreamController extends Controller
     /**
      * @param string $relation
      * @param string $id
-     * @param string $libryo
+     * @param string $norma
      *
      * @return Response
      */
-    public function createForRelated(string $relation, string $id, string $libryo): Response
+    public function createForRelated(string $relation, string $id, string $norma): Response
     {
         /** @var User */
         $user = Auth::user();
 
-        $libryo = Libryo::whereKey((int) $libryo)
+        $norma = Norma::whereKey((int) $norma)
             ->userHasAccess($user)
             ->firstOrFail();
 
@@ -99,7 +99,7 @@ class TaskStreamController extends Controller
             'target' => 'create-task-for-related-' . $relation . '-' . $id,
             'taskableType' => $this->getLegacyName($relation, 'taskable'),
             'taskableId' => $id,
-            'libryo' => $libryo,
+            'norma' => $norma,
             'user' => $user,
             'remindWhomValue' => 1,
         ]);
@@ -163,16 +163,16 @@ class TaskStreamController extends Controller
     /**
      * @return array<mixed>
      */
-    private function getLibryoOrgQuery(Model $model): array
+    private function getNormaOrgQuery(Model $model): array
     {
         $taskRelation = $model instanceof File ? 'taskableTasks' : 'tasks';
-        $organisation = $libryo = null;
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        $organisation = $norma = null;
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
-            $query = $model->{$taskRelation}()->forLibryo($libryo);
+            /** @var Norma */
+            $norma = $manager->getActive();
+            $query = $model->{$taskRelation}()->forNorma($norma);
         } else {
             /** @var User */
             $user = Auth::user();
@@ -181,7 +181,7 @@ class TaskStreamController extends Controller
             $query = $model->{$taskRelation}()->forOrganisationUserAccess($organisation, $user);
         }
 
-        return [$libryo, $organisation, $query];
+        return [$norma, $organisation, $query];
     }
 
     /**
@@ -189,15 +189,15 @@ class TaskStreamController extends Controller
      *
      * @param string $relation
      * @param int    $id
-     * @param string $libryo
+     * @param string $norma
      *
      * @return Response
      */
-    public function suggestForRelated(string $relation, int $id, string $libryo): Response
+    public function suggestForRelated(string $relation, int $id, string $norma): Response
     {
         /** @var User $user */
         $user = Auth::user();
-        $libryo = Libryo::whereKey((int) $libryo)->userHasAccess($user)->firstOrFail();
+        $norma = Norma::whereKey((int) $norma)->userHasAccess($user)->firstOrFail();
 
         $response = match ($relation) {
             'reference' => $this->getReferenceExtracts($id),
@@ -210,7 +210,7 @@ class TaskStreamController extends Controller
             'target' => 'suggested-task-for-related-' . $relation . '-' . $id,
             'taskableType' => $this->getLegacyName($relation, 'taskable'),
             'taskableId' => $id,
-            'libryo' => $libryo,
+            'norma' => $norma,
             'user' => $user,
             'suggestions' => $response,
         ]);

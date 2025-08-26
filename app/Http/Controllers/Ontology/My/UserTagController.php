@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Ontology\My;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ontology\UserTag;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -17,8 +17,8 @@ class UserTagController extends Controller
      */
     public function indexJson(Request $request): JsonResponse
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         $organisation = $manager->getActiveOrganisation();
 
         $json = UserTag::forOrganisation($organisation->id)

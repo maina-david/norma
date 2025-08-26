@@ -3,38 +3,38 @@
 namespace App\Http\Controllers\Actions\My;
 
 use App\Models\Corpus\Reference;
-use App\Services\Customer\ActiveLibryosManager;
-use App\Traits\Actions\UsesActionAreasInLibryo;
+use App\Services\Customer\ActiveNormasManager;
+use App\Traits\Actions\UsesActionAreasInNorma;
 use App\Traits\UsesBackButton;
-use App\Traits\UsesReferencesForLibryo;
+use App\Traits\UsesReferencesForNorma;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class ActionAreaReferenceController
 {
-    use UsesActionAreasInLibryo;
+    use UsesActionAreasInNorma;
     use UsesBackButton;
-    use UsesReferencesForLibryo;
+    use UsesReferencesForNorma;
 
     /**
-     * @param \App\Services\Customer\ActiveLibryosManager $manager
+     * @param \App\Services\Customer\ActiveNormasManager $manager
      */
-    public function __construct(protected ActiveLibryosManager $manager)
+    public function __construct(protected ActiveNormasManager $manager)
     {
         $this->redirectIfNoActionAreas($this->manager->getActive());
     }
 
     /**
-     * @param \App\Services\Customer\ActiveLibryosManager $manager
+     * @param \App\Services\Customer\ActiveNormasManager $manager
      *
      * @return \Inertia\Response
      */
-    public function index(ActiveLibryosManager $manager): Response
+    public function index(ActiveNormasManager $manager): Response
     {
-        $libryo = $manager->getActive();
+        $norma = $manager->getActive();
         $organisation = $manager->getActiveOrganisation();
 
-        $references = $this->getReferenceSubQuery($libryo, $organisation);
+        $references = $this->getReferenceSubQuery($norma, $organisation);
 
         $query = Reference::whereIn('id', $references)
             ->forActiveWork()
@@ -43,7 +43,7 @@ class ActionAreaReferenceController
 
         $total = $query->clone()->count();
 
-        $completed = $query->whereHas('tasks', fn ($query) => $query->forLibryoOrOrganisation($libryo, $organisation))
+        $completed = $query->whereHas('tasks', fn ($query) => $query->forNormaOrOrganisation($norma, $organisation))
             ->count();
 
         return Inertia::render('Actions/My/ActionArea/RequirementPlannerPage', [

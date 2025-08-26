@@ -145,7 +145,7 @@ trait UsesAnnotationPage
             'context' => 'text-blue-600 bg-blue-100',
             'domains' => 'text-green-600 bg-green-100',
             'jurisdictions' => 'text-red-600 bg-red-100',
-            'tags' => 'text-libryo-gray-600 bg-libryo-gray-100',
+            'tags' => 'text-norma-gray-600 bg-norma-gray-100',
         ];
 
         $metaDrafts = [

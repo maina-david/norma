@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth\My;
 
 use App\Enums\Auth\UserActivityType;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Traits\GetsLibryoAndOrganisation;
+use App\Http\Controllers\Traits\GetsNormaAndOrganisation;
 use App\Models\Auth\User;
 use App\Repositories\Auth\UserActivityRepository;
 use Illuminate\Http\JsonResponse;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class UserActivityController extends Controller
 {
-    use GetsLibryoAndOrganisation;
+    use GetsNormaAndOrganisation;
 
     public function __construct(protected UserActivityRepository $userActivityRepository)
     {
@@ -38,8 +38,8 @@ class UserActivityController extends Controller
             $details = json_encode($details);
         }
 
-        [$libryo, $organisation] = $this->getActiveLibryoAndOrganisation();
-        $this->userActivityRepository->addActivity($user, $type, $details, $libryo, $organisation);
+        [$norma, $organisation] = $this->getActiveNormaAndOrganisation();
+        $this->userActivityRepository->addActivity($user, $type, $details, $norma, $organisation);
 
         return response()->json([]);
     }

@@ -23,7 +23,7 @@ class ReferenceResource extends JsonResource
             'title' => $this->refPlainText->plain_text ?? '',
             'content' => trim(app(HtmlToText::class)->convert($this->htmlContent->cached_content ?? '')),
             'work_id' => $this->work_id,
-            'streams' => $this->whenLoaded('libryos', fn () => $this->libryos->pluck('id')->all()),
+            'streams' => $this->whenLoaded('normas', fn () => $this->normas->pluck('id')->all()),
             'link' => route('my.corpus.references.show', ['reference' => $this->id], false),
             'consequences' => $this->whenLoaded('raisesConsequenceGroups', function () {
                 return $this->raisesConsequenceGroups->pluck('id')->reject(fn ($item) => $item === $this->id)->all();

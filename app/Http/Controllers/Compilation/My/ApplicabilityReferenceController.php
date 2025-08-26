@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Compilation\My;
 
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Traits\Corpus\UsesReferenceApplicability;
 use HotwiredLaravel\TurboLaravel\Http\PendingTurboStreamResponse;
 use Illuminate\Http\Response;
@@ -20,7 +20,7 @@ class ApplicabilityReferenceController
      */
     public function show(int $reference): PendingTurboStreamResponse|Response
     {
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
 
         if (!$manager->isSingleMode()) {
             /** @var Response */

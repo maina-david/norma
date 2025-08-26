@@ -9,12 +9,12 @@ use App\Http\Resources\Internals\My\Corpus\ReferenceResource;
 use App\Jobs\Actions\GenerateActionsPlannerExport;
 use App\Models\Actions\ActionArea;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Ontology\Category;
 use App\Models\Ontology\Pivots\CategoryClosure;
-use App\Services\Customer\ActiveLibryosManager;
-use App\Traits\UsesReferencesForLibryo;
+use App\Services\Customer\ActiveNormasManager;
+use App\Traits\UsesReferencesForNorma;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -22,22 +22,22 @@ use Illuminate\Support\Str;
 
 class ActionAreaListingController extends MyApiController
 {
-    use UsesReferencesForLibryo;
+    use UsesReferencesForNorma;
     use SelectsSummarisedReferenceFields;
 
     /**
      * Get the action areas for the planner.
      *
-     * @param \App\Services\Customer\ActiveLibryosManager $manager
+     * @param \App\Services\Customer\ActiveNormasManager $manager
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function categories(ActiveLibryosManager $manager): AnonymousResourceCollection
+    public function categories(ActiveNormasManager $manager): AnonymousResourceCollection
     {
-        $libryo = $manager->getActive();
+        $norma = $manager->getActive();
         $organisation = $manager->getActiveOrganisation();
 
-        $references = $this->getReferenceSubQuery($libryo, $organisation);
+        $references = $this->getReferenceSubQuery($norma, $organisation);
 
         $query = ActionArea::join(get_table(CategoryClosure::class, 'subject_closure'), 'subject_category_id', 'subject_closure.descendant')
             ->join(get_table(CategoryClosure::class, 'control_closure'), 'control_category_id', 'control_closure.descendant')
@@ -58,53 +58,53 @@ class ActionAreaListingController extends MyApiController
                 'references' => fn ($query) => $query->whereIn('id', $references),
             ]);
 
-        return ActionAreaResource::collection($this->applyCommonIncludes($query, $libryo, $organisation)->get());
+        return ActionAreaResource::collection($this->applyCommonIncludes($query, $norma, $organisation)->get());
     }
 
     /**
      * Get the references listing.
      *
-     * @param \App\Services\Customer\ActiveLibryosManager $manager
+     * @param \App\Services\Customer\ActiveNormasManager $manager
      * @param \Illuminate\Http\Request                    $request
      *
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function references(ActiveLibryosManager $manager, Request $request): AnonymousResourceCollection
+    public function references(ActiveNormasManager $manager, Request $request): AnonymousResourceCollection
     {
-        $libryo = $manager->getActive();
+        $norma = $manager->getActive();
         $organisation = $manager->getActiveOrganisation();
 
-        $references = $this->getReferenceSubQuery($libryo, $organisation);
+        $references = $this->getReferenceSubQuery($norma, $organisation);
 
         $query = $this->applyReferenceSelector((new Reference())->newQuery())
             ->whereIn(qualify_column(Reference::class, 'id'), $references)
             ->has('actionAreas')
             ->filter($request->all());
 
-        return ReferenceResource::collection($this->applyCommonIncludes($query, $libryo, $organisation)->get());
+        return ReferenceResource::collection($this->applyCommonIncludes($query, $norma, $organisation)->get());
     }
 
     /**
      * Apply the common query scopes.
      *
      * @param \Illuminate\Database\Eloquent\Builder $builder
-     * @param \App\Models\Customer\Libryo|null      $libryo
+     * @param \App\Models\Customer\Norma|null      $norma
      * @param \App\Models\Customer\Organisation     $organisation
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function applyCommonIncludes(Builder $builder, ?Libryo $libryo, Organisation $organisation): Builder
+    protected function applyCommonIncludes(Builder $builder, ?Norma $norma, Organisation $organisation): Builder
     {
-        $orgSubQuery = Libryo::select(['id'])->where('organisation_id', $organisation->id);
+        $orgSubQuery = Norma::select(['id'])->where('organisation_id', $organisation->id);
         $filters = request()->query();
 
         return $builder
-            ->when(!empty($filters), fn ($q) => $q->whereHas('tasks', fn ($query) => $query->forLibryoOrOrganisation($libryo, $organisation)->filter($filters)))
+            ->when(!empty($filters), fn ($q) => $q->whereHas('tasks', fn ($query) => $query->forNormaOrOrganisation($norma, $organisation)->filter($filters)))
             ->with([
                 'tasks' => fn ($query) => $query
-                    ->forLibryoOrOrganisation($libryo, $organisation)
+                    ->forNormaOrOrganisation($norma, $organisation)
                     ->select(['id', 'taskable_type', 'taskable_id', 'assigned_to_id', 'task_status', 'action_area_id'])
-                    ->whereIn('place_id', $libryo ? [$libryo->id] : $orgSubQuery),
+                    ->whereIn('place_id', $norma ? [$norma->id] : $orgSubQuery),
                 'tasks.assignee' => fn ($query) => $query->select(['id', 'fname', 'sname', 'avatar_attachment_id']),
             ]);
     }
@@ -120,15 +120,15 @@ class ActionAreaListingController extends MyApiController
 
         /** @var \App\Models\Auth\User $user */
         $user = $request->user();
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
         /** @var Organisation $organisation */
         $organisation = $manager->getActiveOrganisation();
 
         if ($manager->isSingleMode()) {
-            /** @var Libryo $libryo */
-            $libryo = $manager->getActive();
-            $filename = "{$libryo->title}{$filename}";
-            $job = new GenerateActionsPlannerExport($filename, $user, $libryo, $organisation, $filters, $forControl);
+            /** @var Norma $norma */
+            $norma = $manager->getActive();
+            $filename = "{$norma->title}{$filename}";
+            $job = new GenerateActionsPlannerExport($filename, $user, $norma, $organisation, $filters, $forControl);
         } else {
             $job = new GenerateActionsPlannerExport($filename, $user, null, $organisation, $filters, $forControl);
         }

@@ -146,7 +146,7 @@ abstract class AbstractApiController extends Controller
         if (!empty($this->includes)) {
             $with = [];
             foreach ($this->includes as $inc) {
-                // TODO: once needed uncomment this. used in AssessmentItemController in libryo-api.
+                // TODO: once needed uncomment this. used in AssessmentItemController in norma-api.
                 // But seeing that it's not being used, we might not need it at all
                 if (method_exists($this, 'getCustomIncludesQueries') && isset($this->getCustomIncludesQueries()[$inc])) {
                     $query->with([$inc => $this->getCustomIncludesQueries()[$inc]]);
