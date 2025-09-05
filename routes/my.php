@@ -24,7 +24,7 @@ use App\Http\Controllers\Compilation\My\ApplicabilityReferenceController;
 use App\Http\Controllers\Compilation\My\ApplicabilityRequirementsController;
 use App\Http\Controllers\Compilation\My\ApplicabilityStreamController;
 use App\Http\Controllers\Compilation\My\ContextQuestionController;
-use App\Http\Controllers\Compilation\My\ContextQuestionLibryoController;
+use App\Http\Controllers\Compilation\My\ContextQuestionNormaController;
 use App\Http\Controllers\Corpus\ContentResourceController;
 use App\Http\Controllers\Corpus\ContentResourceStreamController;
 use App\Http\Controllers\Corpus\My\ReferenceController;
@@ -32,8 +32,8 @@ use App\Http\Controllers\Corpus\My\ReferenceStreamController;
 use App\Http\Controllers\Corpus\My\WorkController;
 use App\Http\Controllers\Corpus\My\WorkStreamController;
 use App\Http\Controllers\Corpus\TocItemStreamController;
-use App\Http\Controllers\Customer\My\LibryoController;
-use App\Http\Controllers\Customer\My\LibryoStreamController;
+use App\Http\Controllers\Customer\My\NormaController;
+use App\Http\Controllers\Customer\My\NormaStreamController;
 use App\Http\Controllers\Dashboard\My\DashboardController;
 use App\Http\Controllers\Enablon\ReportController;
 use App\Http\Controllers\Geonames\My\ForFileLocationController;
@@ -152,28 +152,28 @@ Route::get('/applicability/export', [ContextQuestionController::class, 'export']
 Route::get('/applicability/{question}', [ContextQuestionController::class, 'show'])
     ->name('context-questions.show');
 
-Route::get('/applicability/{question}/{libryo}', [ContextQuestionController::class, 'showForLibryo'])
-    ->name('context-questions.libryo.show');
+Route::get('/applicability/{question}/{norma}', [ContextQuestionController::class, 'showForNorma'])
+    ->name('context-questions.norma.show');
 
-Route::put('/applicability/{question}/{libryo}', [ContextQuestionLibryoController::class, 'put'])
-    ->name('context-questions.libryo.answer');
+Route::put('/applicability/{question}/{norma}', [ContextQuestionNormaController::class, 'put'])
+    ->name('context-questions.norma.answer');
 
-Route::get('/applicability/{question}/{libryo}/references', [ApplicabilityStreamController::class, 'requirements'])
+Route::get('/applicability/{question}/{norma}/references', [ApplicabilityStreamController::class, 'requirements'])
     ->name('references.for.context-questions.index');
 
-Route::get('/applicability/{question}/{libryo}/assessment-items', [ApplicabilityStreamController::class, 'assessmentItems'])
+Route::get('/applicability/{question}/{norma}/assessment-items', [ApplicabilityStreamController::class, 'assessmentItems'])
     ->name('assessment-items.for.context-questions.index');
 
-Route::get('/applicability/{question}/{libryo}/action-areas', [ApplicabilityStreamController::class, 'actionAreas'])
+Route::get('/applicability/{question}/{norma}/action-areas', [ApplicabilityStreamController::class, 'actionAreas'])
     ->name('action-areas.for.context-questions.index');
 
-Route::get('/applicability/{question}/{libryo}/activities', [ApplicabilityStreamController::class, 'activities'])
+Route::get('/applicability/{question}/{norma}/activities', [ApplicabilityStreamController::class, 'activities'])
     ->name('activities.for.context-questions.index');
 
-Route::get('/applicability/{question}/{libryo}/tasks', [ApplicabilityStreamController::class, 'tasks'])
+Route::get('/applicability/{question}/{norma}/tasks', [ApplicabilityStreamController::class, 'tasks'])
     ->name('tasks.for.context-questions.index');
 
-Route::get('/applicability/{question}/{libryo}/comments', [ApplicabilityStreamController::class, 'comments'])
+Route::get('/applicability/{question}/{norma}/comments', [ApplicabilityStreamController::class, 'comments'])
     ->name('comments.for.context-questions.index');
 
 /*
@@ -210,29 +210,29 @@ Route::get('/categories/tagging/search', [CategoryJsonController::class, 'forTag
 | Customer Routes
 |--------------------------------------------------------------------------
 */
-Route::post('/libryos/{libryo}/activate', [LibryoController::class, 'activate'])
-    ->name('libryos.activate');
-Route::post('/libryos/activate/all', [LibryoController::class, 'activateAll'])
-    ->name('libryos.activate.all');
-Route::get('/libryos/activate/all/{organisation}', [LibryoController::class, 'activateAllRedirect'])
-    ->name('libryos.activate.all.redirect');
-Route::get('/libryos/activate/{libryo}', [LibryoController::class, 'activateRedirect'])
-    ->name('libryos.activate.redirect');
+Route::post('/normas/{norma}/activate', [NormaController::class, 'activate'])
+    ->name('normas.activate');
+Route::post('/normas/activate/all', [NormaController::class, 'activateAll'])
+    ->name('normas.activate.all');
+Route::get('/normas/activate/all/{organisation}', [NormaController::class, 'activateAllRedirect'])
+    ->name('normas.activate.all.redirect');
+Route::get('/normas/activate/{norma}', [NormaController::class, 'activateRedirect'])
+    ->name('normas.activate.redirect');
 
-Route::post('/libryos/switcher/search', [LibryoStreamController::class, 'switcherSearch'])
-    ->name('libryos.switcher.search');
+Route::post('/normas/switcher/search', [NormaStreamController::class, 'switcherSearch'])
+    ->name('normas.switcher.search');
 
-Route::get('/libryos/switcher/recent', [LibryoStreamController::class, 'switcherRecent'])
-    ->name('libryos.switcher.recent');
+Route::get('/normas/switcher/recent', [NormaStreamController::class, 'switcherRecent'])
+    ->name('normas.switcher.recent');
 
-Route::get('/legal-updates/{update}/libryos', [LibryoStreamController::class, 'applicableForLegalUpdate'])
-    ->name('notify.legal-updates.libryos.index');
+Route::get('/legal-updates/{update}/normas', [NormaStreamController::class, 'applicableForLegalUpdate'])
+    ->name('notify.legal-updates.normas.index');
 
-Route::get('/libryos', [LibryoController::class, 'index'])
-    ->name('customer.libryos.index');
+Route::get('/normas', [NormaController::class, 'index'])
+    ->name('customer.normas.index');
 
-Route::get('/libryos/markers', [LibryoController::class, 'forMarkers'])
-    ->name('customer.libryos.markers.index');
+Route::get('/normas/markers', [NormaController::class, 'forMarkers'])
+    ->name('customer.normas.markers.index');
 
 /*
 |--------------------------------------------------------------------------
@@ -273,9 +273,9 @@ Route::get('/drives/files/download/{file}', [FileController::class, 'download'])
 // Route::post('/drives/files/organisation/{organisation}/upload/{folder}', [FileController::class, 'uploadToOrganisation'])
 //    ->name('drives.files.upload.organisation')
 //    ->middleware('can:uploadFileForOrganisation,folder,organisation');
-// Route::post('/drives/files/libryo/{libryo}/upload/{folder}', [FileController::class, 'uploadToLibryo'])
-//    ->name('drives.files.upload.libryo')
-//    ->middleware('can:uploadFileForLibryo,folder,libryo');
+// Route::post('/drives/files/norma/{norma}/upload/{folder}', [FileController::class, 'uploadToNorma'])
+//    ->name('drives.files.upload.norma')
+//    ->middleware('can:uploadFileForNorma,folder,norma');
 Route::post('/drives/files/upload', [FileController::class, 'upload'])
     ->name('drives.files.upload');
 Route::delete('/drives/files/bulk', [FileController::class, 'bulkDelete'])
@@ -561,9 +561,9 @@ Route::middleware(['module:tasks'])->group(function () {
     Route::put('/tasks/{task}', [TaskController::class, 'update'])
         ->name('tasks.tasks.update')
         ->middleware(['can:update,task']);
-    Route::get('/tasks/for/{relation}/{id}/{libryo}/suggest', [TaskStreamController::class, 'suggestForRelated'])
+    Route::get('/tasks/for/{relation}/{id}/{norma}/suggest', [TaskStreamController::class, 'suggestForRelated'])
         ->name('tasks.tasks.for.related.suggest');
-    Route::get('/tasks/for/{relation}/{id}/{libryo}/create', [TaskStreamController::class, 'createForRelated'])
+    Route::get('/tasks/for/{relation}/{id}/{norma}/create', [TaskStreamController::class, 'createForRelated'])
         ->name('tasks.tasks.for.related.create');
     Route::get('/tasks/for/{relation}/{id}', [TaskStreamController::class, 'indexForRelated'])
         ->name('tasks.tasks.for.related.index');

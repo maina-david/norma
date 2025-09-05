@@ -4,7 +4,7 @@ use App\Http\Controllers\Collaborators\Collaborate\Applications\StageOneControll
 use App\Http\Controllers\Collaborators\Collaborate\Applications\StageTwoController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/apply-to-join-libryo-turks', [StageOneController::class, 'redirectToStageOne'])
+Route::get('/apply-to-join-norma-turks', [StageOneController::class, 'redirectToStageOne'])
     ->name('collaborator-application.stage-one.old');
 
 /**************************************************************************

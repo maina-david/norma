@@ -17,7 +17,7 @@ use App\Http\Controllers\Api\Internals\My\Corpus\ReferenceLinkedActionAreasContr
 use App\Http\Controllers\Api\Internals\My\Corpus\ReferenceReadWithController;
 use App\Http\Controllers\Api\Internals\My\Corpus\ReferenceRelationsController;
 use App\Http\Controllers\Api\Internals\My\Corpus\ReferenceSummaryController;
-use App\Http\Controllers\Api\Internals\My\Customer\LibryoController;
+use App\Http\Controllers\Api\Internals\My\Customer\NormaController;
 use App\Http\Controllers\Api\Internals\My\Notify\ReminderController;
 use App\Http\Controllers\Api\Internals\My\Ontology\CategoryController;
 use App\Http\Controllers\Api\Internals\My\Storage\FileController;
@@ -131,11 +131,11 @@ Route::post('/job-statuses/{job}', [JobStatusController::class, 'show'])
     ->name('job-statuses.show.by.job');
 
 /**************************************************************************
- * Libryos
+ * Normas
  **************************************************************************/
 
-Route::get('/organisation/libryos', [LibryoController::class, 'index'])
-    ->name('organisation.libryos.index');
+Route::get('/organisation/normas', [NormaController::class, 'index'])
+    ->name('organisation.normas.index');
 
 /**************************************************************************
  * References

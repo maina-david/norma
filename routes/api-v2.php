@@ -2,16 +2,16 @@
 
 use App\Http\Controllers\Api\V2\Assess\AssessmentItemController;
 use App\Http\Controllers\Api\V2\Assess\AssessmentRiskMetricsController;
-use App\Http\Controllers\Api\V2\Compilation\ContextQuestionForLibryoController;
+use App\Http\Controllers\Api\V2\Compilation\ContextQuestionForNormaController;
 use App\Http\Controllers\Api\V2\Corpus\ForOrganisationReferenceController;
 use App\Http\Controllers\Api\V2\Corpus\WorkForOrganisationController;
-use App\Http\Controllers\Api\V2\Customer\LibryoController;
-use App\Http\Controllers\Api\V2\Customer\LibryoForOrganisationController;
+use App\Http\Controllers\Api\V2\Customer\NormaController;
+use App\Http\Controllers\Api\V2\Customer\NormaForOrganisationController;
 use App\Http\Controllers\Api\V2\Customer\OrganisationForPartnerController;
 use App\Http\Controllers\Api\V2\Geonames\LocationSearchController;
 use App\Http\Controllers\Api\V2\Notify\FilteredLegalUpdateController;
 use App\Http\Controllers\Api\V2\Notify\LegalUpdateController;
-use App\Http\Controllers\Api\V2\Notify\LegalUpdateForLibryosController;
+use App\Http\Controllers\Api\V2\Notify\LegalUpdateForNormasController;
 use App\Http\Controllers\Api\V2\Requirements\LegalReportController;
 use App\Models\Customer\Organisation;
 use Illuminate\Support\Facades\Route;
@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 // /api/v2/legal-updates/latest
 // /api/v1/system-notifications/filtered
 // /api/v2/notifications/social/unread/users/me/count
-// /api/v2/users/me?activeLibryo=true&include=organisations&includeMetrics=true
+// /api/v2/users/me?activeNorma=true&include=organisations&includeMetrics=true
 
 // Ordered Alphabetically
 /*
@@ -31,36 +31,36 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/assessment-items/libryo/{libryo}', [AssessmentItemController::class, 'indexForLibryo'])
-    ->middleware(['can:view,libryo'])
-    ->name('assessment-items.for.libryo');
+Route::get('/assessment-items/norma/{norma}', [AssessmentItemController::class, 'indexForNorma'])
+    ->middleware(['can:view,norma'])
+    ->name('assessment-items.for.norma');
 
-Route::get('/assessment-items/{assessmentItem}/libryo/{libryo}', [AssessmentItemController::class, 'showForLibryo'])
-    ->middleware(['can:view,libryo'])
-    ->name('assessment-items.for.libryo.show');
+Route::get('/assessment-items/{assessmentItem}/norma/{norma}', [AssessmentItemController::class, 'showForNorma'])
+    ->middleware(['can:view,norma'])
+    ->name('assessment-items.for.norma.show');
 
-Route::post('/assessment-metrics/for-libryos', [AssessmentRiskMetricsController::class, 'metricsForLibryos'])
-    ->name('assessment-metrics.for.libryo');
+Route::post('/assessment-metrics/for-normas', [AssessmentRiskMetricsController::class, 'metricsForNormas'])
+    ->name('assessment-metrics.for.norma');
 /*
 |--------------------------------------------------------------------------
 | Context Questions
 |--------------------------------------------------------------------------
 */
 
-Route::get('/context-questions/libryo/{libryo}', [ContextQuestionForLibryoController::class, 'index'])
-    ->name('context-questions.libryo.index');
+Route::get('/context-questions/norma/{norma}', [ContextQuestionForNormaController::class, 'index'])
+    ->name('context-questions.norma.index');
 
-Route::post('/context-questions/{question}/libryo/{libryo}/{answer}', [ContextQuestionForLibryoController::class, 'store'])
-    ->name('context-questions.libryo.answer.store');
+Route::post('/context-questions/{question}/norma/{norma}/{answer}', [ContextQuestionForNormaController::class, 'store'])
+    ->name('context-questions.norma.answer.store');
 /*
 |--------------------------------------------------------------------------
 | Legal Updates
 |--------------------------------------------------------------------------
 */
 
-// has to be a POST to allow for a long list of libryo's
-Route::post('/legal-updates/for-libryos', [LegalUpdateForLibryosController::class, 'index'])
-    ->name('notify.legal-updates.index.for.libryos');
+// has to be a POST to allow for a long list of norma's
+Route::post('/legal-updates/for-normas', [LegalUpdateForNormasController::class, 'index'])
+    ->name('notify.legal-updates.index.for.normas');
 
 Route::get('/legal-updates/filtered', [FilteredLegalUpdateController::class, 'indexFiltered'])
     ->name('notify.legal-updates.filtered.index');
@@ -76,7 +76,7 @@ Route::patch('/legal-updates/understood/{update}', [LegalUpdateController::class
 |--------------------------------------------------------------------------
 */
 
-Route::get('/legislation/report/{libryo}', [LegalReportController::class, 'legalReport'])
+Route::get('/legislation/report/{norma}', [LegalReportController::class, 'legalReport'])
     ->name('legislation.report');
 
 Route::get('/citations/organisation/{organisation}', [ForOrganisationReferenceController::class, 'forOrganisation'])
@@ -85,23 +85,23 @@ Route::get('/citations/organisation/{organisation}', [ForOrganisationReferenceCo
 
 /*
 |--------------------------------------------------------------------------
-| Libryos
+| Normas
 |--------------------------------------------------------------------------
 */
 
-Route::get('/libryos', [LibryoController::class, 'index'])
-    ->name('libryos.index');
+Route::get('/normas', [NormaController::class, 'index'])
+    ->name('normas.index');
 
-Route::get('/libryos/{id}', [LibryoController::class, 'show'])
-    ->name('libryos.show');
+Route::get('/normas/{id}', [NormaController::class, 'show'])
+    ->name('normas.show');
 
-Route::post('/hq/organisations/{organisation}/libryos', [LibryoForOrganisationController::class, 'store'])
+Route::post('/hq/organisations/{organisation}/normas', [NormaForOrganisationController::class, 'store'])
     ->middleware([sprintf('can:administerOrganisation,%s,organisation', Organisation::class)])
-    ->name('hq.organisations.libryos.store');
+    ->name('hq.organisations.normas.store');
 
-Route::put('/hq/organisations/{organisation}/libryos/{libryo}', [LibryoForOrganisationController::class, 'update'])
+Route::put('/hq/organisations/{organisation}/normas/{norma}', [NormaForOrganisationController::class, 'update'])
     ->middleware([sprintf('can:administerOrganisation,%s,organisation', Organisation::class)])
-    ->name('hq.organisations.libryos.update')
+    ->name('hq.organisations.normas.update')
     ->scopeBindings();
 /*
 |--------------------------------------------------------------------------

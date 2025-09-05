@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Assess\My\Settings\AssessSetupStreamController;
-use App\Http\Controllers\Auth\My\Settings\ForLibryoUserController;
+use App\Http\Controllers\Auth\My\Settings\ForNormaUserController;
 use App\Http\Controllers\Auth\My\Settings\ForOrganisationUserController;
 use App\Http\Controllers\Auth\My\Settings\ForOrganisationUserImportController;
 use App\Http\Controllers\Auth\My\Settings\ForTeamUserController;
@@ -9,7 +9,7 @@ use App\Http\Controllers\Auth\My\Settings\PasswordResetController;
 use App\Http\Controllers\Auth\My\Settings\SSOPageController;
 use App\Http\Controllers\Auth\My\Settings\UserController;
 use App\Http\Controllers\Compilation\My\Settings\ForLegalUpdateLibraryController;
-use App\Http\Controllers\Compilation\My\Settings\ForLegalUpdateLibryoController;
+use App\Http\Controllers\Compilation\My\Settings\ForLegalUpdateNormaController;
 use App\Http\Controllers\Compilation\My\Settings\ForLibraryLibraryController;
 use App\Http\Controllers\Compilation\My\Settings\ForReferenceLibraryController;
 use App\Http\Controllers\Compilation\My\Settings\GenericCompilationController;
@@ -20,17 +20,17 @@ use App\Http\Controllers\Corpus\ForSelectorReferenceController;
 use App\Http\Controllers\Corpus\ForSelectorWorkController;
 use App\Http\Controllers\Corpus\My\Settings\ForLibraryWorkController;
 use App\Http\Controllers\Corpus\My\Settings\ForManualCompilationWorkController;
-use App\Http\Controllers\Customer\My\Settings\ForLibraryLibryoController;
-use App\Http\Controllers\Customer\My\Settings\ForLibryoTeamController;
+use App\Http\Controllers\Customer\My\Settings\ForLibraryNormaController;
+use App\Http\Controllers\Customer\My\Settings\ForNormaTeamController;
 use App\Http\Controllers\Customer\My\Settings\ForOrganisationChildOrganisationController;
-use App\Http\Controllers\Customer\My\Settings\ForOrganisationLibryoController;
+use App\Http\Controllers\Customer\My\Settings\ForOrganisationNormaController;
 use App\Http\Controllers\Customer\My\Settings\ForOrganisationTeamController;
-use App\Http\Controllers\Customer\My\Settings\ForTeamLibryoController;
-use App\Http\Controllers\Customer\My\Settings\ForUserLibryoController;
+use App\Http\Controllers\Customer\My\Settings\ForTeamNormaController;
+use App\Http\Controllers\Customer\My\Settings\ForUserNormaController;
 use App\Http\Controllers\Customer\My\Settings\ForUserOrganisationController;
 use App\Http\Controllers\Customer\My\Settings\ForUserTeamController;
-use App\Http\Controllers\Customer\My\Settings\LibryoController;
-use App\Http\Controllers\Customer\My\Settings\LibryoRequirementsCollectionController;
+use App\Http\Controllers\Customer\My\Settings\NormaController;
+use App\Http\Controllers\Customer\My\Settings\NormaRequirementsCollectionController;
 use App\Http\Controllers\Customer\My\Settings\OrganisationController;
 use App\Http\Controllers\Customer\My\Settings\OrganisationStreamController;
 use App\Http\Controllers\Customer\My\Settings\TeamController;
@@ -38,7 +38,7 @@ use App\Http\Controllers\Dashboard\My\Settings\DashboardController;
 use App\Http\Controllers\Geonames\Settings\LocationJsonController;
 use App\Http\Controllers\Log\My\Settings\UserLifecycleActivitiesController;
 use App\Http\Controllers\Notify\My\Settings\LegalUpdateController;
-use App\Http\Controllers\Ontology\My\Settings\ForLibryoLegalDomainController;
+use App\Http\Controllers\Ontology\My\Settings\ForNormaLegalDomainController;
 use App\Http\Controllers\Ontology\My\Settings\LegalDomainController;
 use App\Http\Controllers\Storage\My\Settings\FolderController;
 use App\Http\Controllers\Storage\My\Settings\FolderStreamController;
@@ -80,7 +80,7 @@ Route::get('/legal-domains', [LegalDomainController::class, 'index'])
 
 Route::resources([
     'libraries' => LibraryController::class,
-    'libryos' => LibryoController::class,
+    'normas' => NormaController::class,
     'users' => UserController::class,
     'teams' => TeamController::class,
 ]);
@@ -167,11 +167,11 @@ Route::get('/organisations/{organisation}/teams', [ForOrganisationTeamController
     ->middleware(['can:access.org.settings.all']);
 /*
 |--------------------------------------------------------------------------
-| Libryos for Organisation
+| Normas for Organisation
 |--------------------------------------------------------------------------
 */
-Route::get('/organisations/{organisation}/libryos', [ForOrganisationLibryoController::class, 'index'])
-    ->name('libryos.for.organisation.index')
+Route::get('/organisations/{organisation}/normas', [ForOrganisationNormaController::class, 'index'])
+    ->name('normas.for.organisation.index')
     ->middleware(['can:access.org.settings.all']);
 /*
 |--------------------------------------------------------------------------
@@ -194,11 +194,11 @@ Route::post('/users/{user}/teams/add', [ForUserTeamController::class, 'addTeams'
 
 /*
 |--------------------------------------------------------------------------
-| Libryos for User
+| Normas for User
 |--------------------------------------------------------------------------
 */
-Route::get('/users/{user}/libryos', [ForUserLibryoController::class, 'index'])
-    ->name('libryos.for.user.index');
+Route::get('/users/{user}/normas', [ForUserNormaController::class, 'index'])
+    ->name('normas.for.user.index');
 /*
 |--------------------------------------------------------------------------
 | Organisations for Organisation
@@ -239,24 +239,24 @@ Route::post('/users/{user}/organisations/actions', [ForUserOrganisationControlle
 
 /*
 |--------------------------------------------------------------------------
-| Teams for libryo
+| Teams for norma
 |--------------------------------------------------------------------------
 */
-Route::get('/libryos/{libryo}/teams', [ForLibryoTeamController::class, 'index'])
-    ->middleware(['can:manageInSettings,libryo'])
-    ->name('teams.for.libryo.index');
+Route::get('/normas/{norma}/teams', [ForNormaTeamController::class, 'index'])
+    ->middleware(['can:manageInSettings,norma'])
+    ->name('teams.for.norma.index');
 
-Route::post('/libryos/{libryo}/teams/actions/all', [ForLibryoTeamController::class, 'actions'])
-    ->name('teams.for.libryo.actions.all')
+Route::post('/normas/{norma}/teams/actions/all', [ForNormaTeamController::class, 'actions'])
+    ->name('teams.for.norma.actions.all')
     ->middleware(['can:access.org.settings.all']);
 
-Route::post('/libryos/{libryo}/teams/actions/{organisation}', [ForLibryoTeamController::class, 'actions'])
-    ->name('teams.for.libryo.actions.organisation')
+Route::post('/normas/{norma}/teams/actions/{organisation}', [ForNormaTeamController::class, 'actions'])
+    ->name('teams.for.norma.actions.organisation')
     ->middleware(['can:access.org.settings,organisation']);
 
-Route::post('/libryos/{libryo}/teams/add', [ForLibryoTeamController::class, 'addTeams'])
-    ->middleware(['can:manageInSettings,libryo'])
-    ->name('teams.for.libryo.add');
+Route::post('/normas/{norma}/teams/add', [ForNormaTeamController::class, 'addTeams'])
+    ->middleware(['can:manageInSettings,norma'])
+    ->name('teams.for.norma.add');
 /*
 |--------------------------------------------------------------------------
 | Auth Routes
@@ -273,58 +273,58 @@ Route::post('/users/actions/{organisation}', [UserController::class, 'actionsFor
 
 /*
 |--------------------------------------------------------------------------
-| Users for libryo
+| Users for norma
 |--------------------------------------------------------------------------
 */
-Route::get('/libryos/{libryo}/users', [ForLibryoUserController::class, 'index'])
-    ->middleware(['can:manageInSettings,libryo'])
-    ->name('users.for.libryo.index');
+Route::get('/normas/{norma}/users', [ForNormaUserController::class, 'index'])
+    ->middleware(['can:manageInSettings,norma'])
+    ->name('users.for.norma.index');
 
 /*
 |--------------------------------------------------------------------------
-| Legal Domains for libryo
+| Legal Domains for norma
 |--------------------------------------------------------------------------
 */
-Route::get('/libryos/{libryo}/legal-domains', [ForLibryoLegalDomainController::class, 'index'])
-    ->middleware(['can:manageInSettings,libryo'])
-    ->name('libryos.compilation.legal-domains.index');
+Route::get('/normas/{norma}/legal-domains', [ForNormaLegalDomainController::class, 'index'])
+    ->middleware(['can:manageInSettings,norma'])
+    ->name('normas.compilation.legal-domains.index');
 
-Route::post('/libryos/{libryo}/legal-domains/actions', [ForLibryoLegalDomainController::class, 'actions'])
-    ->middleware(['can:manageInSettings,libryo'])
-    ->name('legal-domains.for.libryo.actions');
+Route::post('/normas/{norma}/legal-domains/actions', [ForNormaLegalDomainController::class, 'actions'])
+    ->middleware(['can:manageInSettings,norma'])
+    ->name('legal-domains.for.norma.actions');
 
-Route::post('/libryos/{libryo}/legal-domains/add', [ForLibryoLegalDomainController::class, 'add'])
-    ->middleware(['can:manageInSettings,libryo'])
-    ->name('legal-domains.for.libryo.add');
+Route::post('/normas/{norma}/legal-domains/add', [ForNormaLegalDomainController::class, 'add'])
+    ->middleware(['can:manageInSettings,norma'])
+    ->name('legal-domains.for.norma.add');
 
 /*
 |--------------------------------------------------------------------------
-| Libryos for team
+| Normas for team
 |--------------------------------------------------------------------------
 */
-Route::get('/teams/{team}/libryos', [ForTeamLibryoController::class, 'index'])
+Route::get('/teams/{team}/normas', [ForTeamNormaController::class, 'index'])
     ->middleware(['can:manageInSettings,team'])
-    ->name('libryos.for.team.index');
+    ->name('normas.for.team.index');
 
-Route::post('/teams/{team}/libryos/actions/all', [ForTeamLibryoController::class, 'actions'])
-    ->name('libryos.for.team.actions.all')
+Route::post('/teams/{team}/normas/actions/all', [ForTeamNormaController::class, 'actions'])
+    ->name('normas.for.team.actions.all')
     ->middleware(['can:access.org.settings.all']);
 
-Route::post('/teams/{team}/libryos/actions/{organisation}', [ForTeamLibryoController::class, 'actions'])
-    ->name('libryos.for.team.actions.organisation')
+Route::post('/teams/{team}/normas/actions/{organisation}', [ForTeamNormaController::class, 'actions'])
+    ->name('normas.for.team.actions.organisation')
     ->middleware(['can:access.org.settings,organisation']);
 
-Route::post('/teams/{team}/libryos/add', [ForTeamLibryoController::class, 'addLibryos'])
+Route::post('/teams/{team}/normas/add', [ForTeamNormaController::class, 'addNormas'])
     ->middleware(['can:manageInSettings,team'])
-    ->name('libryos.for.team.add');
+    ->name('normas.for.team.add');
 
 /*
 |--------------------------------------------------------------------------
-| Libryos for library
+| Normas for library
 |--------------------------------------------------------------------------
 */
-Route::get('/libraries/{library}/libryos', [ForLibraryLibryoController::class, 'index'])
-    ->name('libryos.for.library.index');
+Route::get('/libraries/{library}/normas', [ForLibraryNormaController::class, 'index'])
+    ->name('normas.for.library.index');
 
 Route::get('/libraries/{library}/requirements', [ForLibraryWorkController::class, 'index'])
     ->name('works.for.library.index')
@@ -353,39 +353,39 @@ Route::post('/teams/{team}/users/add', [ForTeamUserController::class, 'addUsers'
 
 /*
 |--------------------------------------------------------------------------
-| Libryos
+| Normas
 |--------------------------------------------------------------------------
 */
 
-Route::post('/libryos/{libryo}/clone', [LibryoController::class, 'clone'])
-    ->name('libryo.clone');
+Route::post('/normas/{norma}/clone', [NormaController::class, 'clone'])
+    ->name('norma.clone');
 
-Route::get('/libryos/legal-update/{update}', [ForLegalUpdateLibryoController::class, 'index'])
-    ->name('compilation.libryos.for.legal-update.index')
+Route::get('/normas/legal-update/{update}', [ForLegalUpdateNormaController::class, 'index'])
+    ->name('compilation.normas.for.legal-update.index')
     ->middleware(['can:access.org.settings.all']);
 
-Route::post('/libryos/actions/all', [LibryoController::class, 'actions'])
-    ->name('libryos.actions.all')
+Route::post('/normas/actions/all', [NormaController::class, 'actions'])
+    ->name('normas.actions.all')
     ->middleware(['can:access.org.settings.all']);
 
-Route::post('/libryos/actions/{organisation}', [LibryoController::class, 'actions'])
-    ->name('libryos.actions.organisation')
+Route::post('/normas/actions/{organisation}', [NormaController::class, 'actions'])
+    ->name('normas.actions.organisation')
     ->middleware(['can:access.org.settings,organisation']);
 
-Route::post('/libryos/{libryo}/modules', [LibryoController::class, 'updateModules'])
-    ->name('libryos.modules.update')
+Route::post('/normas/{norma}/modules', [NormaController::class, 'updateModules'])
+    ->name('normas.modules.update')
     ->middleware(['can:access.org.settings.all']);
 
-Route::get('/libryos/{libryo}/modules', [LibryoController::class, 'modules'])
-    ->name('libryos.modules.index')
+Route::get('/normas/{norma}/modules', [NormaController::class, 'modules'])
+    ->name('normas.modules.index')
     ->middleware(['can:access.org.settings.all']);
 
-Route::post('/libryos/{libryo}/compilation-settings', [LibryoController::class, 'updateCompilationSettings'])
-    ->name('libryos.compilation-settings.update')
+Route::post('/normas/{norma}/compilation-settings', [NormaController::class, 'updateCompilationSettings'])
+    ->name('normas.compilation-settings.update')
     ->middleware(['can:access.org.settings.all']);
 
-Route::get('/libryos/{libryo}/compilation-settings', [LibryoController::class, 'compilationSettings'])
-    ->name('libryos.compilation-settings.index')
+Route::get('/normas/{norma}/compilation-settings', [NormaController::class, 'compilationSettings'])
+    ->name('normas.compilation-settings.index')
     ->middleware(['can:access.org.settings.all']);
 /*
 |--------------------------------------------------------------------------
@@ -556,21 +556,21 @@ Route::post('/users/{user}/password-reset', [PasswordResetController::class, 'st
 | Assess Setup
 |--------------------------------------------------------------------------
 */
-Route::get('/libryos/{libryo}/assess/setup', [AssessSetupStreamController::class, 'setupForLibryo'])
-    ->middleware(['can:manageInSettings,libryo'])
-    ->name('assess.setup.for.libryo');
+Route::get('/normas/{norma}/assess/setup', [AssessSetupStreamController::class, 'setupForNorma'])
+    ->middleware(['can:manageInSettings,norma'])
+    ->name('assess.setup.for.norma');
 Route::get('/organisations/{organisation}/assess/setup', [AssessSetupStreamController::class, 'setupForOrganisation'])
     ->name('assess.setup.for.organisation')
     ->middleware(['can:access.org.settings,organisation']);
-Route::get('/libryos/{libryo}/assess/unused-items', [AssessSetupStreamController::class, 'unusedItemsForLibryo'])
-    ->middleware(['can:manageInSettings,libryo'])
-    ->name('assess.setup.unused.items.for.libryo');
-Route::get('/libryos/{libryo}/assess/used-items', [AssessSetupStreamController::class, 'usedItemsForLibryo'])
-    ->middleware(['can:manageInSettings,libryo'])
-    ->name('assess.setup.used.items.for.libryo');
-Route::post('/libryos/{libryo}/assess/setup/actions', [AssessSetupStreamController::class, 'actionsForLibryo'])
-    ->middleware(['can:manageInSettings,libryo'])
-    ->name('assess.setup.actions.for.libryo');
+Route::get('/normas/{norma}/assess/unused-items', [AssessSetupStreamController::class, 'unusedItemsForNorma'])
+    ->middleware(['can:manageInSettings,norma'])
+    ->name('assess.setup.unused.items.for.norma');
+Route::get('/normas/{norma}/assess/used-items', [AssessSetupStreamController::class, 'usedItemsForNorma'])
+    ->middleware(['can:manageInSettings,norma'])
+    ->name('assess.setup.used.items.for.norma');
+Route::post('/normas/{norma}/assess/setup/actions', [AssessSetupStreamController::class, 'actionsForNorma'])
+    ->middleware(['can:manageInSettings,norma'])
+    ->name('assess.setup.actions.for.norma');
 Route::post('/organisations/{organisation}/assess/setup/activate', [AssessSetupStreamController::class, 'activateUnusedItemsForOrganisation'])
     ->name('assess.setup.for.organisation.activate.items')
     ->middleware(['can:access.org.settings,organisation']);
@@ -582,7 +582,7 @@ Route::post('/organisations/{organisation}/assess/setup/activate', [AssessSetupS
 */
 Route::get('/drives/{type?}/{folder?}', [FolderController::class, 'setup'])
     ->name('drives.setup');
-Route::get('/drives/folders/{folder}/visible/{hideOrShow}', [FolderStreamController::class, 'hideOrShowLibryoCreatedFolders'])
+Route::get('/drives/folders/{folder}/visible/{hideOrShow}', [FolderStreamController::class, 'hideOrShowNormaCreatedFolders'])
     ->name('drives.setup.hide-or-show.folder')
     ->middleware(['can:hideOrShowInOrgSettings,folder']);
 
@@ -638,8 +638,8 @@ Route::post('/legal-updates/{update}/references', [LegalUpdateController::class,
     ->name('legal-updates.references.store')
     ->middleware(['can:my.notify.legal-update.update']);
 
-Route::post('/legal-updates/{update}/libryos', [LegalUpdateController::class, 'addByLibryos'])
-    ->name('legal-updates.libryos.store')
+Route::post('/legal-updates/{update}/normas', [LegalUpdateController::class, 'addByNormas'])
+    ->name('legal-updates.normas.store')
     ->middleware(['can:my.notify.legal-update.update']);
 
 Route::post('/legal-updates/{update}/actions', [LegalUpdateController::class, 'actions'])
@@ -652,14 +652,14 @@ Route::post('/legal-updates/{update}/actions', [LegalUpdateController::class, 'a
 |--------------------------------------------------------------------------
 */
 
-Route::group(['as' => 'libryos.compilation.requirements-collections.'], function () {
-    Route::get('/libryos/{libryo}/collections', [LibryoRequirementsCollectionController::class, 'index'])
+Route::group(['as' => 'normas.compilation.requirements-collections.'], function () {
+    Route::get('/normas/{norma}/collections', [NormaRequirementsCollectionController::class, 'index'])
         ->name('index');
-    Route::delete('/libryos/{libryo}/collections/{collection}', [LibryoRequirementsCollectionController::class, 'destroyPivot'])
+    Route::delete('/normas/{norma}/collections/{collection}', [NormaRequirementsCollectionController::class, 'destroyPivot'])
         ->name('destroy');
-    Route::get('/libryos/{libryo}/collections/create', [LibryoRequirementsCollectionController::class, 'create'])
+    Route::get('/normas/{norma}/collections/create', [NormaRequirementsCollectionController::class, 'create'])
         ->name('create');
-    Route::post('/libryos/{libryo}/collections', [LibryoRequirementsCollectionController::class, 'storePivot'])
+    Route::post('/normas/{norma}/collections', [NormaRequirementsCollectionController::class, 'storePivot'])
         ->name('store');
 });
 
