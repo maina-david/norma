@@ -4,7 +4,7 @@ import { inject } from 'vue';
 import { metaInfo } from '@/vue/composables/useMetaVisibility';
 import { useAxios } from '@/vue/composables/useAxios';
 import { useState } from '@/vue/composables/useState';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 import { confirm } from '@/vue/plugins/bus';
 import ReferenceMetaBadge from './ReferenceMetaBadge.vue';
 
@@ -75,12 +75,12 @@ function handleDeleteAllDraft() {
   <div v-loading="loading">
     <div v-if="reference[metaInfo[meta].field]" class="flex font-semibold text-xs">
       <div class="px-1 pt-0.5 w-6 h-5 flex justify-center items-center shrink-0">
-        <LibryoIcon icon-size="md" :name="metaInfo[meta].icon" />
+        <NormaIcon icon-size="md" :name="metaInfo[meta].icon" />
       </div>
 
       <div v-if="!noAttach && can(metaInfo[meta].attach)" class="flex items-start shrink-0 mr-1 pt-0.5">
         <button class="rounded-full mt-0.5" @click="() => emit('add', metaInfo[meta].label)">
-          <LibryoIcon icon-size="xl" name="plus-circle" />
+          <NormaIcon icon-size="xl" name="plus-circle" />
         </button>
       </div>
 
@@ -101,11 +101,11 @@ function handleDeleteAllDraft() {
 
         <div v-if="!noAttach && can(metaInfo[meta].apply)" class="ml-4 flex items-center">
           <button v-tooltip="`Convert draft changes to applied`" class="rounded-full tippy text-primary" @click="handleApplyAllDraft">
-            <LibryoIcon icon-size="xl" name="circle-check" />
+            <NormaIcon icon-size="xl" name="circle-check" />
           </button>
 
           <button v-if="!noDetach" v-tooltip="`Remove requested draft changes`" class="rounded-full tippy ml-2 text-secondary" @click="handleDeleteAllDraft">
-            <LibryoIcon icon-size="xl" name="times-circle" />
+            <NormaIcon icon-size="xl" name="times-circle" />
           </button>
         </div>
       </div>

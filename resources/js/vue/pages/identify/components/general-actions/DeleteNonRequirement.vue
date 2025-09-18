@@ -1,7 +1,7 @@
 <script setup>
 import { inject } from 'vue';
 import ConfirmButton from '@/vue/components/ConfirmButton.vue';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 
 const expression = inject('expression');
 const fetchAllReferences = inject('fetchAllReferences');
@@ -24,7 +24,7 @@ function handleConfirm() {
     @confirm="handleConfirm"
   >
     <span class="flex items-center">
-      <LibryoIcon name="trash" />
+      <NormaIcon name="trash" />
       <span class="ml-2 whitespace-nowrap">Delete Non-Requirements</span>
     </span>
   </ConfirmButton>

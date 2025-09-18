@@ -22,7 +22,7 @@ function triggerSave(value, callback) {
     <TaskInlineDropDownInput field="assigned_to_id" :row="row" :row-index="rowIndex">
       <template #display="{ toggle, changeValue }">
         <div v-if="row.assignee" class="relative group">
-          <button class="group-hover:flex hidden font-semibold absolute -top-1 -left-1 bg-white h-4 w-4 rounded-full border border-libryo-gray-200 items-center justify-center" @click="() => triggerSave(null, changeValue)">
+          <button class="group-hover:flex hidden font-semibold absolute -top-1 -left-1 bg-white h-4 w-4 rounded-full border border-norma-gray-200 items-center justify-center" @click="() => triggerSave(null, changeValue)">
             <span class="pb-0.5">x</span>
           </button>
 
@@ -31,8 +31,8 @@ function triggerSave(value, callback) {
           </button>
         </div>
 
-        <button v-else data-tippy-content="Unassigned" class="tippy rounded-full w-9 h-9 bg-libryo-gray-300 flex items-center justify-center" @click.prevent="toggle">
-          <AppIcon name="user" size="4" class="text-libryo-gray-800" />
+        <button v-else data-tippy-content="Unassigned" class="tippy rounded-full w-9 h-9 bg-norma-gray-300 flex items-center justify-center" @click.prevent="toggle">
+          <AppIcon name="user" size="4" class="text-norma-gray-800" />
         </button>
       </template>
 

@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import {mapActions, mapState} from 'vuex';
-import highlighter from '../libryo-highlighter';
+import highlighter from '../norma-highlighter';
 import LocalHighlighter from '../highlighter';
 import {namesAsKey} from '../reference-types';
 
@@ -15,7 +15,7 @@ export default {
       highlighterWidth: 300,
       highlighterParagraphShowing: false,
       paragraphButtonTimeout: null,
-      highlighterClass: 'libryo-highlight',
+      highlighterClass: 'norma-highlight',
       highlighterIdAttributeName: 'data-highlight-id',
       highlighterDialogShowing: false,
       recentlyUsedTypes: [namesAsKey.TYPE_OBLIGATION, namesAsKey.TYPE_PROHIBITION, namesAsKey.TYPE_CONSEQUENCE_GROUP],
@@ -244,7 +244,7 @@ export default {
       highlightElements.forEach((el) => {
         if (ref.summary_id && el.parentElement && this.showIcons) {
           const div = document.createElement('div');
-          div.innerHTML = '<i name="file-alt" style="position:absolute;left:-1.5rem;top:0.25rem;" class="libryo-icon fal fa-file-alt fa-xs text-danger"></i>';
+          div.innerHTML = '<i name="file-alt" style="position:absolute;left:-1.5rem;top:0.25rem;" class="norma-icon fal fa-file-alt fa-xs text-danger"></i>';
           el.parentElement.appendChild(div.firstChild);
         }
         el.addEventListener('click', (event) => {

@@ -18,7 +18,7 @@ defineProps({
   <div class="text-left">
     <div>
       <div class="px-6 py-4">
-        <div class="mb-1 text-libryo-gray-700 font-semibold">
+        <div class="mb-1 text-norma-gray-700 font-semibold">
           {{ $t('workflows.task.title') }}
         </div>
         <div>
@@ -26,9 +26,9 @@ defineProps({
         </div>
       </div>
 
-      <div class="grid grid-cols-6 gap-8 border-b border-libryo-gray-100 px-6 py-4">
+      <div class="grid grid-cols-6 gap-8 border-b border-norma-gray-100 px-6 py-4">
         <div>
-          <div class="mb-4 text-libryo-gray-700 font-semibold">
+          <div class="mb-4 text-norma-gray-700 font-semibold">
             {{ $t('tasks.status') }}
           </div>
 
@@ -36,7 +36,7 @@ defineProps({
         </div>
 
         <div>
-          <div class="mb-4 text-libryo-gray-700 font-semibold text-center">
+          <div class="mb-4 text-norma-gray-700 font-semibold text-center">
             {{ $t('tasks.impact') }}
           </div>
 
@@ -44,7 +44,7 @@ defineProps({
         </div>
 
         <div>
-          <div class="mb-1 text-libryo-gray-700 font-semibold text-center">
+          <div class="mb-1 text-norma-gray-700 font-semibold text-center">
             {{ $t('tasks.assigned_to') }}
           </div>
 
@@ -52,7 +52,7 @@ defineProps({
         </div>
 
         <div>
-          <div class="mb-4 text-libryo-gray-700 font-semibold text-center">
+          <div class="mb-4 text-norma-gray-700 font-semibold text-center">
             {{ $t('tasks.due_on') }}
           </div>
           <div class="text-center">
@@ -67,7 +67,7 @@ defineProps({
         </div>
 
         <div>
-          <div class="mb-4 text-libryo-gray-700 font-semibold text-center">
+          <div class="mb-4 text-norma-gray-700 font-semibold text-center">
             {{ $t('workflows.task.priority') }}
           </div>
           <div>
@@ -76,7 +76,7 @@ defineProps({
         </div>
 
         <div>
-          <div class="mb-1 text-libryo-gray-700 font-semibold text-center">
+          <div class="mb-1 text-norma-gray-700 font-semibold text-center">
             {{ $t('tasks.followers') }}
           </div>
           <div>
@@ -86,17 +86,17 @@ defineProps({
       </div>
 
       <div v-if="row.description" class="px-6 pb-4 pt-8">
-        <div class="mb-4 text-libryo-gray-800 font-semibold">
+        <div class="mb-4 text-norma-gray-800 font-semibold">
           {{ $t('workflows.task.description') }}
         </div>
         <div>
-          <div class="libryo-legislation wysiwyg-content" v-html="row.description" />
+          <div class="norma-legislation wysiwyg-content" v-html="row.description" />
         </div>
       </div>
     </div>
 
     <div class="px-6 pb-4 pt-8">
-      <div class="mb-4 text-libryo-gray-800 font-semibold">
+      <div class="mb-4 text-norma-gray-800 font-semibold">
         {{ $t('storage.attachment.index_title') }}
       </div>
 
@@ -106,7 +106,7 @@ defineProps({
         can-upload
         relation="task"
         :related-id="row.id"
-        :libryo-id="row.place_id"
+        :norma-id="row.place_id"
       />
     </div>
   </div>

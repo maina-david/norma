@@ -25,7 +25,7 @@ const hasSummaryDraft = computed(() => props.reference.summary_draft && props.re
 <template>
   <div>
     <div class="relative py-8">
-      <div v-if="reference.summary" class="libryo-legislation wysiwyg-content" v-html="reference.summary.summary_body" />
+      <div v-if="reference.summary" class="norma-legislation wysiwyg-content" v-html="reference.summary.summary_body" />
       <div v-else>
         No Summary
       </div>
@@ -33,7 +33,7 @@ const hasSummaryDraft = computed(() => props.reference.summary_draft && props.re
 
     <div class="flex justify-between items-center mt-4">
       <div>
-        <button v-if="(!hasSummary || !hasSummaryDraft) && can('collaborate.requirements.summary.draft.create')" class="px-4 py-2 rounded-md border border-gray-800 text-libryo-gray-800 text-xs font-semibold" @click.stop="requestUpdate">
+        <button v-if="(!hasSummary || !hasSummaryDraft) && can('collaborate.requirements.summary.draft.create')" class="px-4 py-2 rounded-md border border-gray-800 text-norma-gray-800 text-xs font-semibold" @click.stop="requestUpdate">
           <span v-if="hasSummary && !hasSummaryDraft">Request Update</span>
           <span v-else>Create Summary</span>
         </button>

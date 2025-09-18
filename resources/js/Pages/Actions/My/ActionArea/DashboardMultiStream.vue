@@ -1,6 +1,6 @@
 <script setup>
 import PageHeader from '@/vue/components/my/PageHeader.vue';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 import DashboardDataTable from '@/vue/components/my/actions/DashboardDataTable.vue';
 </script>
 
@@ -8,7 +8,7 @@ import DashboardDataTable from '@/vue/components/my/actions/DashboardDataTable.v
   <div class="h-full flex flex-col">
     <PageHeader class="flex-shrink-0">
       <div class="flex items-center">
-        <LibryoIcon name="clipboard-list" class="mr-3 ml-2  text-libryo-gray-400" />
+        <NormaIcon name="clipboard-list" class="mr-3 ml-2  text-norma-gray-400" />
         <span>
           {{ $t('actions.dashboard.actions_dashboard') }}
         </span>

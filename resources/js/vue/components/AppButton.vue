@@ -7,7 +7,7 @@ defineProps({
 const styles = {
   danger: 'border-negative text-negative hover:text-white hover:bg-negative',
   negative: 'border-negative text-negative hover:text-white hover:bg-negative',
-  default: 'border-libryo-gray-500 text-libryo-gray-500 hover:text-white hover:bg-libryo-gray-500',
+  default: 'border-norma-gray-500 text-norma-gray-500 hover:text-white hover:bg-norma-gray-500',
   primary: 'border-primary text-primary hover:text-white hover:bg-primary',
 };
 </script>

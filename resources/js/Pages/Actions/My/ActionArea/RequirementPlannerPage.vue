@@ -121,7 +121,7 @@ const completionPercent = computed(() => {
         {{ $t('actions.action_area.item_with_tasks', { item: $t('requirements.requirements') }) }}
       </div>
       <div class="flex items-center">
-        <div class="h-6 flex-grow border border-libryo-gray-200 rounded-full overflow-hidden bg-white">
+        <div class="h-6 flex-grow border border-norma-gray-200 rounded-full overflow-hidden bg-white">
           <div class="bg-primary h-full rounded-full" :style="`width:${completionPercent}%`" />
         </div>
         <div class="flex-shrink-0 pl-2">

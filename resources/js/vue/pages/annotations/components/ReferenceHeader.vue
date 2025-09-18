@@ -1,6 +1,6 @@
 <script setup>
 import { computed, inject } from 'vue';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 import { useState } from '@/vue/composables/useState';
 import InputElement from '@/vue/components/InputElement.vue';
 import ReferenceMeta from '@/vue/pages/annotations/components/meta/ReferenceMeta.vue';
@@ -36,20 +36,20 @@ const metaVisible = computed(() => Object.values(referenceMeta).some((e) => e));
 
       <div class="flex-shrink-0 flex items-center space-x-5">
         <span href="#" class="r-taggable" :class="{ 'active': reference.summary_count !== null, 'active-draft': reference.summary_draft_count !== null }">
-          <LibryoIcon v-if="reference.summary_draft_count !== null" :name="reference.summary_draft_count > 10 ? 'file-alt' : 'file'" icon-size="md" />
-          <LibryoIcon v-else :name="reference.summary_count > 10 ? 'file-alt' : 'file'" icon-size="md" />
+          <NormaIcon v-if="reference.summary_draft_count !== null" :name="reference.summary_draft_count > 10 ? 'file-alt' : 'file'" icon-size="md" />
+          <NormaIcon v-else :name="reference.summary_count > 10 ? 'file-alt' : 'file'" icon-size="md" />
         </span>
 
         <span href="#" class="r-taggable" :class="{ 'active': reference.requirement_count, 'active-draft': reference.requirement_draft_count }">
-          <LibryoIcon type="fas" name="marker" icon-size="md" />
+          <NormaIcon type="fas" name="marker" icon-size="md" />
         </span>
 
         <span href="#" class="r-taggable" :class="{ 'active': reference.linked_children_count || reference.linked_parents_count }">
-          <LibryoIcon name="paperclip" icon-size="md" />
+          <NormaIcon name="paperclip" icon-size="md" />
         </span>
 
         <span href="#" class="r-taggable" :class="{ 'active': reference.collaborate_comments_count }">
-          <LibryoIcon name="comments" icon-size="md" />
+          <NormaIcon name="comments" icon-size="md" />
         </span>
 
         <div class="w-6">
@@ -92,11 +92,11 @@ const metaVisible = computed(() => Object.values(referenceMeta).some((e) => e));
 }
 
 .r-title:hover {
-  @apply text-libryo-gray-800;
+  @apply text-norma-gray-800;
 }
 
 .r-taggable {
-  @apply text-libryo-gray-200;
+  @apply text-norma-gray-200;
 }
 
 .r-taggable.active:not(.active-draft) {

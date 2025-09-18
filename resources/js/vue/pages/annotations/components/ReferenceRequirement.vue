@@ -1,6 +1,6 @@
 <script setup>
 import { inject } from 'vue';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 import DeleteButton from '@/vue/components/DeleteButton.vue';
 import ConfirmButton from '@/vue/components/ConfirmButton.vue';
 import AppButton from '@/vue/components/AppButton.vue';
@@ -29,7 +29,7 @@ function requestRemoval() {
   <div v-loading="loading" class="pt-4">
     <div v-if="reference.requirement_draft_count === 1" class="flex flex-col items-center">
       <div class="font-semibold">
-        <LibryoIcon name="circle-info" class="text-info-darker" />
+        <NormaIcon name="circle-info" class="text-info-darker" />
         <span class="text-info-darker ml-4">Has Draft Requirement</span>
       </div>
 
@@ -62,7 +62,7 @@ function requestRemoval() {
 
     <div v-else-if="reference.requirement_count === 1" class="flex flex-col items-center">
       <div class="font-semibold">
-        <LibryoIcon name="circle-info" class="text-info-darker" />
+        <NormaIcon name="circle-info" class="text-info-darker" />
         <span class="text-info-darker ml-4">Has Requirement</span>
       </div>
 

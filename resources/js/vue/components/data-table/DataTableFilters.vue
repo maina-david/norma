@@ -39,7 +39,7 @@ function clear() {
             <AppIcon name="filter" size="4" />
           </span>
 
-          <span v-if="!open" class="flex justify-center pt-4 border-t border-libryo-gray-300">
+          <span v-if="!open" class="flex justify-center pt-4 border-t border-norma-gray-300">
             <span class="lg:hidden font-semibold flex-col flex">
               <span>O</span>
               <span>P</span>
@@ -56,7 +56,7 @@ function clear() {
             </span>
           </span>
 
-          <span v-else class="lg:hidden tracking-widest font-semibold mr-4 border-l border-libryo-gray-300 pl-4">
+          <span v-else class="lg:hidden tracking-widest font-semibold mr-4 border-l border-norma-gray-300 pl-4">
             CLOSE FILTERS
           </span>
         </button>
@@ -74,7 +74,7 @@ function clear() {
       </div>
 
       <template v-for="filter in filters" :key="filter.name">
-        <label class="text-sm font-medium text-libryo-gray-700 block mt-4 flex items-center">{{ $t(filter.label) }}</label>
+        <label class="text-sm font-medium text-norma-gray-700 block mt-4 flex items-center">{{ $t(filter.label) }}</label>
         <component :is="filter.component()" v-if="filter.component" v-model="filter.value" :multiple="filter.multiple" />
         <SelectElement v-else-if="filter.type === 'select'" v-model="filter.value" :multiple="filter.multiple" :options="filter.options" />
         <InputElement v-else v-model="filter.value" :type="filter.type" />

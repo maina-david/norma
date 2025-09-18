@@ -19,7 +19,7 @@ defineProps({
         {{ title }}
       </div>
 
-      <div class="font-light text-libryo-gray-500 text-sm text-center mt-2">
+      <div class="font-light text-norma-gray-500 text-sm text-center mt-2">
         {{ $t('interface.when_added_they_show_up') }}
       </div>
     </div>

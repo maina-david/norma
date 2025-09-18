@@ -8,7 +8,7 @@ import FolderSelector from '@/vue/components/my/files/FolderSelector.vue';
 
 const props = defineProps({
   folderId: { type: [String, Number], default: null },
-  libryoId: { type: [String, Number], default: null },
+  normaId: { type: [String, Number], default: null },
   multiple: { type: Boolean, default: false },
   name: { type: String, default: 'file' },
   relatedId: { type: [String, Number], default: null },
@@ -30,7 +30,7 @@ const server = {
     formData.append('relation', props.relation);
     formData.append('related_id', props.relatedId);
     formData.append('folder_id', selectedFolder.value);
-    formData.append('target_libryo_id', props.libryoId);
+    formData.append('target_norma_id', props.normaId);
 
     const controller = new AbortController();
 

@@ -6,7 +6,7 @@ import pastePostProcess from './legal-doc-html/pastePostProcess';
 
 const config = editorConfig({
   getNextVolume: () => {
-    const editor = document.querySelector('#libryo-document-editor');
+    const editor = document.querySelector('#norma-document-editor');
     const current = parseInt(editor.getAttribute('data-current'), 10);
     const last = parseInt(editor.getAttribute('data-last'), 10);
 
@@ -56,7 +56,7 @@ const init = debounce(() => {
   tinymce.remove();
 
   tinymce.init({
-    selector: '#libryo-document-editor',
+    selector: '#norma-document-editor',
     ...commonSettings,
   });
 }, 1500);

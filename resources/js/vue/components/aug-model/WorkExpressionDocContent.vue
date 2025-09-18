@@ -11,7 +11,7 @@ const props = defineProps({
 
 const docTitle = `<div class="text-3xl text-center mt-40 px-10">${props.doc.title}</div>`;
 const docTitleTranslation = props.doc.title_translation
-  ? `<div class="text-lg text-center mt-10 mb-40 px-10 text-libryo-gray-400">${props.doc.title_translation}</div>`
+  ? `<div class="text-lg text-center mt-10 mb-40 px-10 text-norma-gray-400">${props.doc.title_translation}</div>`
   : '';
 
 const loading = ref(false);
@@ -50,11 +50,11 @@ provide('changeContent', changeContent);
 </script>
 
 <template>
-  <div v-if="doc.resource_link" class="libryo-legislation shadow bg-white p-3 max-h-screen overflow-y-auto">
+  <div v-if="doc.resource_link" class="norma-legislation shadow bg-white p-3 max-h-screen overflow-y-auto">
     <div class="text-3xl text-center mt-40 px-10">
       {{ doc.title }}
     </div>
-    <div v-if="doc.title_translation" class="text-lg text-center mt-10 mb-40 px-10 text-libryo-gray-400">
+    <div v-if="doc.title_translation" class="text-lg text-center mt-10 mb-40 px-10 text-norma-gray-400">
       {{ doc.title_translation }}
     </div>
 
@@ -69,7 +69,7 @@ provide('changeContent', changeContent);
     </div>
 
     <div :id="`split-right-${doc.id}`">
-      <div class="libryo-legislation shadow bg-white ml-3 p-7 max-h-screen overflow-y-auto">
+      <div class="norma-legislation shadow bg-white ml-3 p-7 max-h-screen overflow-y-auto">
         <div v-html="currentContent" />
       </div>
     </div>

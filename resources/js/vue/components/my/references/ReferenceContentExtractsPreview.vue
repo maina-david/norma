@@ -34,14 +34,14 @@ function handleCreate(item) {
 
 <template>
   <div>
-    <div v-loading="loading" class="divide-y divide-libryo-gray-100 py-4">
+    <div v-loading="loading" class="divide-y divide-norma-gray-100 py-4">
       <div v-for="item in extracts" :key="item.id" class="flex py-2">
         <div class="px-6 flex-grow">
           <div class="font-semibold">
             {{ item.content }}
           </div>
           <div class="italic text-xs pt-1">
-            {{ $t('tasks.libryo_suggested_tasks') }}
+            {{ $t('tasks.norma_suggested_tasks') }}
           </div>
         </div>
         <div class="pr-4">

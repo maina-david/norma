@@ -65,7 +65,7 @@ export const metaInfo = {
   tags: {
     label: 'Tags',
     icon: 'tags',
-    colour: 'text-libryo-gray-600 bg-libryo-gray-100',
+    colour: 'text-norma-gray-600 bg-norma-gray-100',
     draft_field: 'tag_drafts',
     field: 'tags',
     attach: 'collaborate.corpus.work-expression.attach-tags',

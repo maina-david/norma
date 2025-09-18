@@ -13,7 +13,7 @@ const directives = {
 };
 
 const components = {
-  // LibryoIcon,
+  // NormaIcon,
   CatalogueDocSelector,
   VuePagination: Pagination,
   WorkSelector,

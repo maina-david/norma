@@ -14,7 +14,7 @@ const loading = ref(false);
 const canManageApplicability = ref(false);
 const locations = ref([]);
 const questions = ref([]);
-const libryo = ref({});
+const norma = ref({});
 const categories = ref([]);
 
 function fetchContent() {
@@ -23,7 +23,7 @@ function fetchContent() {
     .then(({ data }) => data)
     .then(({ data }) => {
       locations.value = data.locations;
-      libryo.value = data.libryo;
+      norma.value = data.norma;
       canManageApplicability.value = data.canManageApplicability;
       questions.value = data.questions;
       categories.value = data.categories;
@@ -39,7 +39,7 @@ fetchContent();
 <template>
   <div v-loading="loading">
     <div v-show="!loading">
-      <div class="wysiwyg-content libryo-legislation">
+      <div class="wysiwyg-content norma-legislation">
         <div class="mt-4 font-semibold text-lg">
           <p>
             {{ t('compilation.context_question.requirement_reason') }}
@@ -47,8 +47,8 @@ fetchContent();
         </div>
 
         <div>
-          <span class="text-libryo-gray-800 font-semibold text-sm">
-            {{ t('compilation.context_question.requirement_reason_location', { libryo: libryo.title }) }}
+          <span class="text-norma-gray-800 font-semibold text-sm">
+            {{ t('compilation.context_question.requirement_reason_location', { norma: norma.title }) }}
           </span>
 
           <div class="mt-0">
@@ -62,14 +62,14 @@ fetchContent();
       </div>
 
       <div v-if="questions.length > 0" class="mt-4">
-        <span class="text-libryo-gray-800 font-semibold text-sm">
+        <span class="text-norma-gray-800 font-semibold text-sm">
           {{ t('compilation.context_question.requirement_reason_context') }}
         </span>
         <div class="mt-0 mb-8">
           <div v-for="question in questions" :key="question.id">
             <div class="text-sm">
               <div v-if="canManageApplicability">
-                <a :href="`/applicability/${question.hash_id}/${libryo.hash_id}`" class="space-x-2 text-primary-lighter">
+                <a :href="`/applicability/${question.hash_id}/${norma.hash_id}`" class="space-x-2 text-primary-lighter">
                   {{ question.title }}
                 </a>
               </div>
@@ -82,7 +82,7 @@ fetchContent();
       </div>
 
       <div v-if="categories.length > 0" class="mt-4">
-        <span class="text-libryo-gray-800 font-semibold text-sm">
+        <span class="text-norma-gray-800 font-semibold text-sm">
           {{ t('assess.categories') }}
         </span>
         <div class="mt-0 mb-8">

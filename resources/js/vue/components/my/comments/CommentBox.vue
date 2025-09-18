@@ -52,7 +52,7 @@ function handleSubmit() {
     <div class="flex items-start space-x-4">
       <div class="min-w-0 flex-1">
         <form class="relative" @submit.prevent="handleSubmit">
-          <div class="border border-libryo-gray-300 rounded-lg shadow-sm overflow-hidden focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
+          <div class="border border-norma-gray-300 rounded-lg shadow-sm overflow-hidden focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
             <label for="comment" class="sr-only">Add your message</label>
 
             <div
@@ -67,8 +67,8 @@ function handleSubmit() {
             />
 
             <div v-show="showingEmojis">
-              <div class="px-4 mt-6 pb-2 flex text-libryo-gray-500">
-                <button type="button" class="-m-2.5 w-10 h-10 rounded-full flex items-center justify-center text-libryo-gray-400 hover:text-libryo-gray-500" @click="showingEmojis = !showingEmojis">
+              <div class="px-4 mt-6 pb-2 flex text-norma-gray-500">
+                <button type="button" class="-m-2.5 w-10 h-10 rounded-full flex items-center justify-center text-norma-gray-400 hover:text-norma-gray-500" @click="showingEmojis = !showingEmojis">
                   <AppIcon name="smile-wink" />
                 </button>
               </div>
@@ -86,7 +86,7 @@ function handleSubmit() {
           <div class="absolute bottom-0 inset-x-0 pl-3 pr-2 py-2 flex justify-between">
             <div class="flex items-center space-x-5">
               <div class="flex items-center">
-                <button type="button" class="-m-2.5 w-10 h-10 rounded-full flex items-center justify-center text-libryo-gray-400 hover:text-libryo-gray-500" @click="showingEmojis = !showingEmojis">
+                <button type="button" class="-m-2.5 w-10 h-10 rounded-full flex items-center justify-center text-norma-gray-400 hover:text-norma-gray-500" @click="showingEmojis = !showingEmojis">
                   <AppIcon name="smile-wink" />
                 </button>
               </div>

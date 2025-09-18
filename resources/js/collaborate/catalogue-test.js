@@ -4,7 +4,7 @@ import CatalogueTestPage from './CatalogueTestPage.vue';
 import bus from "../plugins/vue/bus";
 import loading from "../plugins/vue/loading";
 import store from './store';
-import LibryoIcon from "./components/LibryoIcon.vue";
+import NormaIcon from "./components/NormaIcon.vue";
 import Pagination from "./components/Pagination.vue";
 import '../../scss/toc.scss';
 
@@ -14,7 +14,7 @@ const init = debounce(() => {
         .use(bus)
         .use(loading)
         .use(store)
-        .component('LibryoIcon', LibryoIcon)
+        .component('NormaIcon', NormaIcon)
         .component('Pagination', Pagination)
         .mount('#app');
   }

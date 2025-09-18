@@ -1,8 +1,8 @@
-import highlighter from '../libryo-highlighter';
+import highlighter from '../norma-highlighter';
 import lodash from 'lodash';
 import Highlighter from '../highlighter';
 
-const highlighterClass = 'libryo-highlight';
+const highlighterClass = 'norma-highlight';
 const highlighterIdAttributeName = 'data-highlight-id';
 
 

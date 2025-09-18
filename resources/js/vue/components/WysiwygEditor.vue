@@ -20,7 +20,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <label v-if="label" class="text-sm font-medium text-libryo-gray-700 block mt-4">
+  <label v-if="label" class="text-sm font-medium text-norma-gray-700 block mt-4">
     <span v-if="required" class="text-red-400 mr-1">*</span>
     {{ label }}
   </label>
@@ -30,7 +30,7 @@ onMounted(() => {
     v-model="value"
     :required="required"
     rows="8"
-    :class="`libryo-editor-${type}`"
+    :class="`norma-editor-${type}`"
     class="px-3 py-2 border leading-normal rounded-md shadow-sm border-gray-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 block mt-1 w-full"
   />
 

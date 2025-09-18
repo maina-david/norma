@@ -1,7 +1,7 @@
 <script setup>
 import { computed, inject, ref } from 'vue';
 import useCRUD from '@/vue/pages/annotations/composables/useCRUD';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 import { useAxios } from '@/vue/composables/useAxios';
 
 const props = defineProps({
@@ -41,7 +41,7 @@ function handleClick(event, tocItem) {
     changeContent(`/content-resources/${tocItem.content_resource_id}/${tocItem.doc_id}`);
   }
 
-  window.setTimeout(() => window.scrollToItemWhenAvailable(`#${tocItem.uri_fragment}`, '.libryo-legislation', 'smooth'), 200);
+  window.setTimeout(() => window.scrollToItemWhenAvailable(`#${tocItem.uri_fragment}`, '.norma-legislation', 'smooth'), 200);
 }
 
 function toggleChildren() {
@@ -106,10 +106,10 @@ function getRequirementScoreColour() {
 <template>
   <div class="flex-grow flex flex-col overflow-hidden pl-2">
     <div v-loading="loading" class="py-2">
-      <div class="flex text-libryo-gray-800 relative group">
+      <div class="flex text-norma-gray-800 relative group">
         <div class="flex-shrink-0 w-6">
           <button v-if="item.children_count > 0" class="w-6 hover:text-primary " @click.prevent="toggleChildren">
-            <LibryoIcon :name="isOpen ? 'minus-square' : 'plus-square'" />
+            <NormaIcon :name="isOpen ? 'minus-square' : 'plus-square'" />
           </button>
         </div>
 
@@ -139,7 +139,7 @@ function getRequirementScoreColour() {
             class="w-6 hover:text-primary"
             @click.prevent.stop="handleInsert"
           >
-            <LibryoIcon icon-size="xl" name="rectangle-history-circle-plus" />
+            <NormaIcon icon-size="xl" name="rectangle-history-circle-plus" />
           </button>
 
           <button
@@ -148,7 +148,7 @@ function getRequirementScoreColour() {
             class="w-6 hover:text-primary"
             @click.prevent.stop="handleUpdate"
           >
-            <LibryoIcon icon-size="xl" name="recycle" />
+            <NormaIcon icon-size="xl" name="recycle" />
           </button>
         </div>
       </div>

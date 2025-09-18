@@ -6,15 +6,15 @@ import SubjectCategorySelector from '@/vue/components/my/categories/SubjectCateg
 import UserSelector from '@/vue/components/my/users/UserSelector.vue';
 import { TaskPriority } from '@/enums/actions/tasks/task-priorities';
 import { TaskTypes } from '@/enums/actions/tasks/task-types';
-import LibryoSelector from '@/vue/components/my/libryos/LibryoSelector.vue';
+import NormaSelector from '@/vue/components/my/normas/NormaSelector.vue';
 import ProjectSelector from '@/vue/components/my/projects/ProjectSelector.vue';
 import impactRange from '@/vue/components/my/tasks/impact-range';
 
 export default [
   new TableFilter({
     name: 'streams',
-    label: 'customer.libryo.libryo_stream',
-    component: () => LibryoSelector,
+    label: 'customer.norma.norma_stream',
+    component: () => NormaSelector,
     multiple: true,
     shouldShow: () => {
       const page = usePage();

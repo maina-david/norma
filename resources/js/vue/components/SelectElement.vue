@@ -25,7 +25,7 @@ onMounted(() => {
     render: {
       option: function (data) {
         let detailStr = data.$option.getAttribute('data-detail') || '';
-        detailStr = detailStr.length > 0 ? '<div class="text-libryo-gray-500">' + detailStr + '</div>' : '';
+        detailStr = detailStr.length > 0 ? '<div class="text-norma-gray-500">' + detailStr + '</div>' : '';
 
         return '<div>' +
             '<div>' + data.$option.innerHTML + '</div>' +
@@ -51,7 +51,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <label v-if="label" class="text-sm font-medium text-libryo-gray-700 block mt-4">
+  <label v-if="label" class="text-sm font-medium text-norma-gray-700 block mt-4">
     <span v-if="required" class="text-red-400 mr-1">*</span>
     {{ label }}
   </label>

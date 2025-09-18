@@ -130,12 +130,12 @@ function drawHighlightsAbovePdfCanvas(highlightEl) {
 }
 
 export const optionDefaults = {
-  highlightClass: "libryo-highlight",
+  highlightClass: "norma-highlight",
   cssClasses: [],
-  customElement: "libryo-highlight",
+  customElement: "norma-highlight",
   idAttributeName: "data-highlight_id",
-  firstClass: "libryo-highlight-first",
-  lastClass: "libryo-highlight-last",
+  firstClass: "norma-highlight-first",
+  lastClass: "norma-highlight-last",
   customAttributes: [],
 };
 

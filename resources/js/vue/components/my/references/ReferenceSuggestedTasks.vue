@@ -17,7 +17,7 @@ const typeRequirement = TaskTypes.requirements;
 <template>
   <div>
     <div class="px-2">
-      <div class="text-primary flex justify-between items-center border-b border-libryo-gray-200 py-6 px-4">
+      <div class="text-primary flex justify-between items-center border-b border-norma-gray-200 py-6 px-4">
         <div class="flex items-center">
           <AppIcon name="radar" />
           <div class="ml-2">

@@ -1,7 +1,7 @@
 <script setup>
 import { inject, ref } from 'vue';
 import AppButton from '@/vue/components/AppButton.vue';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 import DeleteButton from '@/vue/components/DeleteButton.vue';
 
 const props = defineProps({
@@ -39,7 +39,7 @@ function handleConfirmDelete(){
       no-border
       @click="() => performAction('move-up')"
     >
-      <LibryoIcon name="arrow-up" />
+      <NormaIcon name="arrow-up" />
     </AppButton>
 
     <AppButton
@@ -47,7 +47,7 @@ function handleConfirmDelete(){
       no-border
       @click="() => performAction('move-down')"
     >
-      <LibryoIcon name="arrow-down" />
+      <NormaIcon name="arrow-down" />
     </AppButton>
 
     <AppButton
@@ -56,7 +56,7 @@ function handleConfirmDelete(){
       no-border
       @click="() => performAction('insert')"
     >
-      <LibryoIcon name="plus-minus" />
+      <NormaIcon name="plus-minus" />
     </AppButton>
 
     <DeleteButton
@@ -67,7 +67,7 @@ function handleConfirmDelete(){
       no-border
       @confirm="handleConfirmDelete"
     >
-      <LibryoIcon name="trash-alt" />
+      <NormaIcon name="trash-alt" />
     </DeleteButton>
 
     <AppButton
@@ -76,7 +76,7 @@ function handleConfirmDelete(){
       no-border
       @click="() => performAction('request-update')"
     >
-      <LibryoIcon name="code-compare" />
+      <NormaIcon name="code-compare" />
     </AppButton>
   </div>
 </template>

@@ -1,7 +1,7 @@
 <script setup>
 import { computed, watch } from 'vue';
 
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 import { useState } from '@/vue/composables/useState';
 import MetaAttacher from '@/vue/pages/identify/components/meta/MetaAttacher.vue';
 
@@ -37,8 +37,8 @@ watch(visible, () => {
   <div v-if="visible.length > 0" class="border border-gray-200 rounded-lg bg-neutral-100">
     <div class="flex items-center justify-between">
       <div class="cursor-pointer flex items-center px-4 py-2 text-primary font-semibold text-sm" @click="toggleOpen">
-        <LibryoIcon v-if="open" name="angle-down" />
-        <LibryoIcon v-else name="angle-right" />
+        <NormaIcon v-if="open" name="angle-down" />
+        <NormaIcon v-else name="angle-right" />
 
         <div class="ml-2">
           Bulk Actions

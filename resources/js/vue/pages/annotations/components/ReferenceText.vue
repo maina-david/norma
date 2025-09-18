@@ -16,7 +16,7 @@ axios.get(`/references/${props.reference.id}/content`)
 </script>
 
 <template>
-  <div class="p-4 libryo-legislation">
+  <div class="p-4 norma-legislation">
     <div v-if="content.length > 0" class="relative" v-html="content" />
   </div>
 </template>

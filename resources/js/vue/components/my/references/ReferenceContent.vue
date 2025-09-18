@@ -50,7 +50,7 @@ function toCollaborate() {
       </div>
     </div>
 
-    <div class="wysiwyg-content libryo-legislation">
+    <div class="wysiwyg-content norma-legislation">
       <div v-html="content" />
     </div>
 

@@ -119,7 +119,7 @@ props.registerFetchHandler(fetchRows);
                 <button
                   v-if="sortable && column.sortable"
                   class="flex items-center"
-                  :class="sortedColumn === column.rowField() ? 'text-primary' : 'text-libryo-gray-400 hover:text-primary'"
+                  :class="sortedColumn === column.rowField() ? 'text-primary' : 'text-norma-gray-400 hover:text-primary'"
                   @click.prevent="() => changeSort(column.rowField())"
                 >
                   <span class="text-nowrap" :class="{ 'pl-4': index === 0 }">
@@ -130,7 +130,7 @@ props.registerFetchHandler(fetchRows);
                   <AppIcon v-else class="ml-1" :name="'caret-down'" />
                 </button>
 
-                <span v-else class="text-nowrap mr-2 text-libryo-gray-400" :class="{ 'pl-4': index === 0 }">
+                <span v-else class="text-nowrap mr-2 text-norma-gray-400" :class="{ 'pl-4': index === 0 }">
                   {{ column.label }}
                 </span>
               </span>
@@ -143,8 +143,8 @@ props.registerFetchHandler(fetchRows);
         <tbody class="w-full">
           <template v-for="(row, rowIndex) in rows" :key="JSON.stringify(row)">
             <tr
-              class="shadow text-libryo-gray-600"
-              :class="{ 'cursor-pointer': hasSubRow, 'rounded-t-md bg-libryo-gray-200': openRow === row[rowKey], 'rounded-md bg-white': openRow !== row[rowKey] }"
+              class="shadow text-norma-gray-600"
+              :class="{ 'cursor-pointer': hasSubRow, 'rounded-t-md bg-norma-gray-200': openRow === row[rowKey], 'rounded-md bg-white': openRow !== row[rowKey] }"
               @click="toggleOpenRow(row[rowKey])"
             >
               <slot name="dataRow" :row="row" :row-index="rowIndex">

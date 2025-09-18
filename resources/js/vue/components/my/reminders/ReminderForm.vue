@@ -36,7 +36,7 @@ const notifiable = computed(() => {
   ];
 
   if (page.props.stream.single) {
-    current.push({ label: page.props.stream.title, value: 'libryo' });
+    current.push({ label: page.props.stream.title, value: 'norma' });
   }
 
   return current;

@@ -2,7 +2,7 @@
 import { Link } from '@inertiajs/vue3';
 import { watch } from 'vue';
 import { useState } from '@/vue/composables/useState';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 
 const props = defineProps({
   active: { type: String, default: null },
@@ -36,10 +36,10 @@ function switchTab(event, tab) {
             v-tooltip="tab.tooltip ?? tab.label ?? tab"
             :href="tab.target ?? '#'"
             class="flex items-center whitespace-nowrap py-4 px-2 border-b-2 font-medium text-sm transition-colors ease-in-out duration-200 cursor-pointer"
-            :class="{ 'border-primary text-primary': isActive(tab), 'border-transparent text-libryo-gray-500 hover:border-primary hover:text-primary': !isActive(tab) }"
+            :class="{ 'border-primary text-primary': isActive(tab), 'border-transparent text-norma-gray-500 hover:border-primary hover:text-primary': !isActive(tab) }"
             @click="(e) => switchTab(e, tab)"
           >
-            <LibryoIcon v-if="tab.icon" :name="tab.icon" class="mr-3" />
+            <NormaIcon v-if="tab.icon" :name="tab.icon" class="mr-3" />
 
             <span>{{ tab.label ?? tab }}</span>
           </Link>
@@ -48,11 +48,11 @@ function switchTab(event, tab) {
             v-else
             v-tooltip="tab.tooltip ?? tab.label ?? tab"
             class="flex items-center whitespace-nowrap py-4 px-2 border-b-2 font-medium text-sm transition-colors ease-in-out duration-200 cursor-pointer"
-            :class="{ 'border-primary text-primary': isActive(tab), 'border-transparent text-libryo-gray-500 hover:border-primary hover:text-primary': !isActive(tab) }"
+            :class="{ 'border-primary text-primary': isActive(tab), 'border-transparent text-norma-gray-500 hover:border-primary hover:text-primary': !isActive(tab) }"
             :href="tab.target ?? '#'"
             @click="(e) => switchTab(e, tab)"
           >
-            <LibryoIcon v-if="tab.icon" :name="tab.icon" class="mr-3" />
+            <NormaIcon v-if="tab.icon" :name="tab.icon" class="mr-3" />
 
             <span>{{ tab.label ?? tab }}</span>
           </a>

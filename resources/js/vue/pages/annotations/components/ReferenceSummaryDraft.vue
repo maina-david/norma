@@ -1,6 +1,6 @@
 <script setup>
 import { inject, watch } from 'vue';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 import { useState } from '@/vue/composables/useState';
 import DeleteButton from '@/vue/components/DeleteButton.vue';
 import WysiwygEditor from '@/vue/components/WysiwygEditor.vue';
@@ -51,19 +51,19 @@ watch(props, () => {
   <div v-loading="loading">
     <div v-if="!editing">
       <div class="relative group py-8">
-        <div v-if="reference.summary_draft && reference.summary_draft.summary_body" class="libryo-legislation wysiwyg-content" v-html="reference.summary_draft.summary_body" />
+        <div v-if="reference.summary_draft && reference.summary_draft.summary_body" class="norma-legislation wysiwyg-content" v-html="reference.summary_draft.summary_body" />
         <div v-else>
           No Content
         </div>
 
         <button v-if="can('collaborate.requirements.summary.draft.update')" class="block absolute top-2 right-2 hover:text-primary hover:border-primary px-2 py-1 rounded-md border border-gray-500" @click="() => setEditing(true)">
-          <LibryoIcon name="pencil" />
+          <NormaIcon name="pencil" />
         </button>
       </div>
 
       <div class="flex justify-between items-center mt-4">
         <div>
-          <button v-if="can('collaborate.requirements.summary.draft.apply')" class="px-4 py-2 rounded-md border border-gray-800 text-libryo-gray-800 text-xs font-semibold" @click.stop="applySummary">
+          <button v-if="can('collaborate.requirements.summary.draft.apply')" class="px-4 py-2 rounded-md border border-gray-800 text-norma-gray-800 text-xs font-semibold" @click.stop="applySummary">
             <span>Apply Summary</span>
           </button>
         </div>

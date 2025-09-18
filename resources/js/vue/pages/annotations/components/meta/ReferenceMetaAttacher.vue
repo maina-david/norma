@@ -2,7 +2,7 @@
 import {computed, inject, ref, watch} from 'vue';
 import AppTabs from '@/vue/components/AppTabs.vue';
 import {metaInfo} from '@/vue/composables/useMetaVisibility';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 import {useState} from '@/vue/composables/useState';
 import ReferenceMetaLegalDomainForm from '@/vue/pages/annotations/components/meta/ReferenceMetaLegalDomainForm.vue';
 import ReferenceMetaLocationForm from '@/vue/pages/annotations/components/meta/ReferenceMetaLocationForm.vue';
@@ -72,7 +72,7 @@ function fetchOneReference() {
 <template>
   <div v-loading="loading" class="rounded-lg bg-neutral-100 p-4 relative notranslate">
     <button v-if="!withoutClose" class="absolute bg-white rounded-full -top-3 right-0" @click="() => emit('close')">
-      <LibryoIcon name="times-circle" icon-size="2xl" />
+      <NormaIcon name="times-circle" icon-size="2xl" />
     </button>
 
     <AppTabs :tabs="tabs" :active="activeTab">

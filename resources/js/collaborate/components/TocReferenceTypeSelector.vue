@@ -32,7 +32,7 @@ export default {
   <div class="relative" role="group">
     <button @click.stop.prevent="visible = !visible" type="button" class="btn btn-outline-secondary" style="border-top-left-radius:0;border-bottom-left-radius:0;border-top-right-radius:0.25rem;border-bottom-right-radius:0.25rem;border-right:1px solid">
       <span class="mr-1">{{ label }}</span>
-      <libryo-icon name="angle-down" />
+      <norma-icon name="angle-down" />
     </button>
     <ul class="absolute bg-white w-48 left-0 top-8 z-10 rounded-lg shadow-lg" v-show="visible">
       <li v-for="item in types" :key="item" class="px-4 py-1 border-b border-gray-100">

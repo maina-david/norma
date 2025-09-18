@@ -70,7 +70,7 @@ window.initTiny = ({ maxHeight } = {}) => {
   tinymce.remove();
 
   tinymce.init({
-    selector: '.libryo-editor-full',
+    selector: '.norma-editor-full',
     plugins: fullPlugins,
     toolbar: fullToolbar,
     ...commonSettings,
@@ -78,7 +78,7 @@ window.initTiny = ({ maxHeight } = {}) => {
   });
 
   tinymce.init({
-    selector: '.libryo-editor-content',
+    selector: '.norma-editor-content',
     plugins: fullPlugins,
     toolbar: fullToolbar,
     paste_as_text: false,
@@ -91,7 +91,7 @@ window.initTiny = ({ maxHeight } = {}) => {
   });
 
   tinymce.init({
-    selector: '.libryo-editor-basic',
+    selector: '.norma-editor-basic',
     plugins: basicPlugins,
     toolbar: basicToolbar,
     ...commonSettings,
@@ -99,7 +99,7 @@ window.initTiny = ({ maxHeight } = {}) => {
   });
 
   tinymce.init({
-    selector: '.libryo-editor-minimal',
+    selector: '.norma-editor-minimal',
     plugins: minimalPlugins,
     toolbar: minimalToolbar,
     menubar: false,

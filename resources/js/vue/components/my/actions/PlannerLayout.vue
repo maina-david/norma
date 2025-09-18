@@ -3,7 +3,7 @@ import { usePage } from '@inertiajs/vue3';
 import { useI18n } from 'vue-i18n';
 import { provide, ref } from 'vue';
 import PageHeader from '@/vue/components/my/PageHeader.vue';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 import AppTabs from '@/vue/components/AppTabs.vue';
 import DataTableFilters from '@/vue/components/data-table/DataTableFilters.vue';
 import { useModelFilters } from '@/vue/composables/useModelFilters';
@@ -62,12 +62,12 @@ provide('getAppliedFilters', getAppliedFilters);
   <div class="h-full flex flex-col">
     <PageHeader class="flex-shrink-0">
       <div class="flex items-center">
-        <LibryoIcon name="clipboard-list" class="mr-3 ml-2  text-libryo-gray-400" />
+        <NormaIcon name="clipboard-list" class="mr-3 ml-2  text-norma-gray-400" />
         <span>
           {{ $t('actions.action_area.actions_planner') }}
         </span>
 
-        <a target="_blank" class="ml-4" href="https://success.libryo.com/en/knowledge/actions-planner">
+        <a target="_blank" class="ml-4" href="https://success.norma.com/en/knowledge/actions-planner">
           <AppIcon name="question-circle" />
         </a>
       </div>

@@ -34,7 +34,7 @@ function updateCounts() {
 
 <template>
   <div>
-    <div class="hover:bg-libryo-gray-50 py-2">
+    <div class="hover:bg-norma-gray-50 py-2">
       <div class="flex flex-row justify-between mb-2">
         <div class="mr-3 flex-shrink-0">
           <UserAvatar :user="comment.author" :dimensions="12" />
@@ -78,7 +78,7 @@ function updateCounts() {
           <div>
             <div class="text-sm" v-html="$format.links(comment.comment)" />
 
-            <div v-if="!comment.place_id" class="text-xs text-libryo-gray-400 italic mt-2">
+            <div v-if="!comment.place_id" class="text-xs text-norma-gray-400 italic mt-2">
               {{ $t('comments.added_to_all_streams') }}
             </div>
           </div>
@@ -86,7 +86,7 @@ function updateCounts() {
       </div>
 
       <div class="grid justify-items-end">
-        <div class="italic text-libryo-gray-400 text-xs">
+        <div class="italic text-norma-gray-400 text-xs">
           {{ $format.datetime(comment.created_at) }}
         </div>
       </div>
@@ -94,18 +94,18 @@ function updateCounts() {
 
     <div
       v-if="comment.files_count && comment.files_count > 0"
-      class="py-1 bg-libryo-gray-50 text-center hover:bg-libryo-gray-100 cursor-pointer text-primary"
+      class="py-1 bg-norma-gray-50 text-center hover:bg-norma-gray-100 cursor-pointer text-primary"
       @click="showingFiles = !showingFiles"
     >
       {{ $t('comments.comment_files_count', comment.files_count, { value: comment.files_count }) }}
     </div>
 
-    <div v-if="showingFiles" class="ml-12 p-3 bg-libryo-gray-50 mt-4">
+    <div v-if="showingFiles" class="ml-12 p-3 bg-norma-gray-50 mt-4">
       <KeepAlive>
         <UploadedFiles
           requires-folder
           :can-upload="isAuthor"
-          :libryo-id="comment.place_id"
+          :norma-id="comment.place_id"
           :related-id="comment.id"
           relation="comment"
           multiple
@@ -115,13 +115,13 @@ function updateCounts() {
 
     <div
       v-if="!reply && comment.comments_count > 0"
-      class="mt-1 py-1 bg-libryo-gray-50 text-center hover:bg-libryo-gray-100 cursor-pointer text-primary"
+      class="mt-1 py-1 bg-norma-gray-50 text-center hover:bg-norma-gray-100 cursor-pointer text-primary"
       @click="showingReplies = !showingReplies"
     >
       {{ $t('comments.comment_replies_count', comment.comments_count, { 'value': comment.comments_count}) }}
     </div>
 
-    <div v-if="!reply && showingReplies" class="ml-12 p-3 bg-libryo-gray-50 mt-4">
+    <div v-if="!reply && showingReplies" class="ml-12 p-3 bg-norma-gray-50 mt-4">
       <KeepAlive>
         <CommentListing
           reply

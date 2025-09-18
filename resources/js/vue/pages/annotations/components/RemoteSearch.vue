@@ -65,7 +65,7 @@ onMounted(() => {
         return `<div class="p-2 italic">${text}</div>`;
       },
       option: function (data, escape) {
-        const detailStr = data.details ? '<div class="text-libryo-gray-500">' + escape(data.details) + '</div>' : '';
+        const detailStr = data.details ? '<div class="text-norma-gray-500">' + escape(data.details) + '</div>' : '';
         return '<div>' +
             '<div>' + escape(data.title) + '</div>' +
             detailStr +

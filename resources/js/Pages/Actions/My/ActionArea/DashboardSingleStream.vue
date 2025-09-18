@@ -33,11 +33,11 @@ provide('getAppliedFilters', getAppliedFilters);
     <PageHeader class="flex-shrink-0">
       <div class="flex items-center">
         <div class="flex items-center">
-          <AppIcon name="clipboard-list" class="mr-3 ml-2  text-libryo-gray-400" size="8" />
+          <AppIcon name="clipboard-list" class="mr-3 ml-2  text-norma-gray-400" size="8" />
 
           <div>
             <span>{{ $t('actions.dashboard.actions_dashboard') }}</span>
-            <span class="text-xs text-libryo-gray-500 italic ml-3">{{ page.props.stream.title }}</span>
+            <span class="text-xs text-norma-gray-500 italic ml-3">{{ page.props.stream.title }}</span>
           </div>
         </div>
       </div>

@@ -30,7 +30,7 @@ const usable = computed(() => [...uniqueUsers.value].splice(0, props.limit));
       <UserAvatar :user="user" :dimensions="dimensions" />
     </div>
 
-    <div v-if="reminder > 0" :class="`w-${dimensions} h-${dimensions}text-white bg-libryo-gray-400 rounded-full flex items-center justify-center ring-1 ring-white`">
+    <div v-if="reminder > 0" :class="`w-${dimensions} h-${dimensions}text-white bg-norma-gray-400 rounded-full flex items-center justify-center ring-1 ring-white`">
       <span>+{{ reminder }}</span>
     </div>
   </div>

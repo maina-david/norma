@@ -75,7 +75,7 @@ export default {
     <div v-if="!noActions && showDelete">
       <button class="btn btn-sm btn-outline-danger" @click.prevent="handleDelete">
         <span>
-          <libryo-icon name="trash-alt" icon-size="sm" />
+          <norma-icon name="trash-alt" icon-size="sm" />
         </span>
       </button>
     </div>

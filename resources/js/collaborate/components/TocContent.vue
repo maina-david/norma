@@ -1,7 +1,7 @@
 <script>
 import cuid from 'cuid';
 import { uniq } from 'lodash';
-import highlighter from '../libryo-highlighter';
+import highlighter from '../norma-highlighter';
 import Highlighter from '../highlighter';
 import checkVolumes from '../mixins/validate_volumes';
 import styles from '../mixins/styles';
@@ -238,7 +238,7 @@ export default {
     cleanContent(content) {
       content = content.replace(/&nbsp;/gim, ' ')
         .replace(/text-indent:\s*-(\d+\w+;)?/g, 'text-indent: $1')
-        .replace(/href=(["'])[^"']*\/files\//g, 'href=$1https://my.libryo.com/files/');
+        .replace(/href=(["'])[^"']*\/files\//g, 'href=$1https://my.norma.com/files/');
 
       content = (new DOMParser()).parseFromString(content, 'text/html');
       content.querySelectorAll('.pc').forEach((item) => item.classList.add('opened'));
@@ -769,7 +769,7 @@ export default {
               @click.stop="clearSuggestions"
             >
               <span>
-                <libryo-icon name="trash-alt" icon-size="sm" />
+                <norma-icon name="trash-alt" icon-size="sm" />
               </span>
             </button>
           </div>
@@ -830,7 +830,7 @@ export default {
                 class="btn btn-sm btn-danger py-1"
                 @click.stop="errorsVisible = !errorsVisible"
               >
-                <libryo-icon style="color: #fff" name="exclamation-circle" icon-size="lg" />
+                <norma-icon style="color: #fff" name="exclamation-circle" icon-size="lg" />
               </button>
 
               <template v-if="!noGeneration && canGenerate">
@@ -855,7 +855,7 @@ export default {
     <div
       id="toc-content"
       ref="content"
-      class="wysiwyg-content relative w-full libryo-legislation toc-editor lora px-4 overflow-auto custom-scroll h-full"
+      class="wysiwyg-content relative w-full norma-legislation toc-editor lora px-4 overflow-auto custom-scroll h-full"
       style="scroll-behavior: smooth;"
       :class="{ associate: associatePrevious }"
       @mousedown="handleMouseDown"
@@ -869,7 +869,7 @@ export default {
           Document Errors
         </div>
         <button type="button" class="btn btn-sm" style="padding:0.5rem;" @click.stop="errorsVisible = false">
-          <libryo-icon name="times-circle" />
+          <norma-icon name="times-circle" />
         </button>
       </div>
 

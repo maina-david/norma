@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import AppButton from '@/vue/components/AppButton.vue';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 import DropDown from '@/vue/components/DropDown.vue';
 import SelectElement from '@/vue/components/SelectElement.vue';
 import InputElement from '@/vue/components/InputElement.vue';
@@ -39,7 +39,7 @@ function handleForm() {
     <DropDown>
       <template #trigger="{ toggle }">
         <AppButton @click="toggle">
-          <libryo-icon name="play" />
+          <norma-icon name="play" />
         </AppButton>
       </template>
 
@@ -66,7 +66,7 @@ function handleForm() {
         <div v-show="formVisible" class="h-full w-full flex items-center justify-center">
           <div class="py-4 px-6 bg-white shadow-lg rounded-md w-96 max-w-screen-75">
             <form action="#" @submit.prevent="handleForm">
-              <label class="text-sm font-medium text-libryo-gray-700 block mt-4 mb-2">{{ $t(selectedAction.label) }}</label>
+              <label class="text-sm font-medium text-norma-gray-700 block mt-4 mb-2">{{ $t(selectedAction.label) }}</label>
 
               <component
                 :is="selectedAction.component()"

@@ -1,6 +1,6 @@
 <script setup>
 import { inject, ref } from 'vue';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 import CommentInput from '@/vue/components/CommentInput.vue';
 import useCRUD from '@/vue/pages/annotations/composables/useCRUD';
 import CommentItem from '@/vue/pages/annotations/components/CommentItem.vue';
@@ -59,7 +59,7 @@ function handleDelete(comment) {
   <div v-loading="loading">
     <div class="comment-box" />
     <div class="mb-4 flex items-center pl-1">
-      <LibryoIcon name="comments" />
+      <NormaIcon name="comments" />
       <span class="font-semibold ml-2">Comments</span>
     </div>
 

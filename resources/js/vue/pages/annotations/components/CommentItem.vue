@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 import ConfirmButton from '@/vue/components/ConfirmButton.vue';
 
 const props = defineProps({
@@ -36,15 +36,15 @@ function onDelete() {
       </div>
       <div v-if="editable || deletable" class="flex-shrink-0">
         <button class="px-3 py-1" @click="open = !open">
-          <LibryoIcon name="ellipsis-vertical" />
+          <NormaIcon name="ellipsis-vertical" />
         </button>
 
         <div v-if="open" class="fixed inset-0" @click="open = false" />
 
         <div v-if="open" class="relative">
-          <div class="text-xs text-libryo-gray-700 absolute top-0 right-0 z-20 shadow-lg rounded-b border border-gray-100 bg-white divide-gray-200 divide-y">
+          <div class="text-xs text-norma-gray-700 absolute top-0 right-0 z-20 shadow-lg rounded-b border border-gray-100 bg-white divide-gray-200 divide-y">
             <button v-if="editable" class="font-semibold flex items-center px-4 py-2 hover:text-primary" @click="onEdit">
-              <LibryoIcon name="pencil" size="3" />
+              <NormaIcon name="pencil" size="3" />
               <span class="ml-2">Edit</span>
             </button>
 
@@ -56,7 +56,7 @@ function onDelete() {
               theme="negative"
               @confirm="onDelete"
             >
-              <LibryoIcon name="trash" size="3" />
+              <NormaIcon name="trash" size="3" />
               <span class="ml-3">Delete</span>
             </ConfirmButton>
           </div>

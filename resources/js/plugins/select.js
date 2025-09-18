@@ -74,7 +74,7 @@ const initRemoteSelect = (select) => {
         return `<div class="p-2 italic">${ text }</div>`;
       },
       option: function (data, escape) {
-        const detailStr = data.details ? '<div class="text-libryo-gray-500">' + escape(data.details) + '</div>' : '';
+        const detailStr = data.details ? '<div class="text-norma-gray-500">' + escape(data.details) + '</div>' : '';
         return '<div>' +
             '<div>' + escape(data.title) + '</div>' +
             detailStr +
@@ -117,7 +117,7 @@ const initialiseTom = (select) => {
       render: {
         option: function (data, escape) {
           let detailStr = data.$option.getAttribute('data-detail') || '';
-          detailStr = detailStr.length > 0 ? '<div class="text-libryo-gray-500">' + detailStr + '</div>' : '';
+          detailStr = detailStr.length > 0 ? '<div class="text-norma-gray-500">' + detailStr + '</div>' : '';
 
           return '<div>' +
               '<div>' + data.$option.innerHTML + '</div>' +

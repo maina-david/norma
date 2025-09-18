@@ -146,7 +146,7 @@ fetchTask();
             </DeleteButton>
           </div>
         </div>
-        <div class="mt-1 text-sm font-normal text-libryo-gray-900">
+        <div class="mt-1 text-sm font-normal text-norma-gray-900">
           <div class="flex">
             <TaskInlineDropDownInput type="wysiwyg" field="description" :row="task" @change="(val) => task.description = val">
               <template #display="{ toggle }">
@@ -167,36 +167,36 @@ fetchTask();
       <!--    Table-->
       <div class="px-4 bg-white shadow sm:rounded-lg">
         <table class="w-full ">
-          <tr v-if="!page.props.stream.single && task.libryo" class="border-b">
-            <td class="px-6 py-4 text-sm font-medium whitespace-normal text-libryo-gray-900">
-              {{ $t('customer.libryo.libryo_stream') }}
+          <tr v-if="!page.props.stream.single && task.norma" class="border-b">
+            <td class="px-6 py-4 text-sm font-medium whitespace-normal text-norma-gray-900">
+              {{ $t('customer.norma.norma_stream') }}
             </td>
-            <td class="px-6 py-4 text-sm font-medium whitespace-normal text-libryo-gray-900">
+            <td class="px-6 py-4 text-sm font-medium whitespace-normal text-norma-gray-900">
               {{ task.title }}
             </td>
           </tr>
           <tr class="flex w-full border-b">
-            <td class="w-1/4 px-6 py-4 text-sm font-medium whitespace-normal text-libryo-gray-900">
+            <td class="w-1/4 px-6 py-4 text-sm font-medium whitespace-normal text-norma-gray-900">
               {{ $t('tasks.status') }}
             </td>
-            <td class="px-3 py-4 text-sm font-medium whitespace-normal text-libryo-gray-900">
+            <td class="px-3 py-4 text-sm font-medium whitespace-normal text-norma-gray-900">
               <TaskStatusSelector :row-index="1" :row="task" />
             </td>
           </tr>
           <tr class="flex w-full border-b">
-            <td class="w-1/4 px-6 py-4 text-sm font-medium whitespace-normal text-libryo-gray-900">
+            <td class="w-1/4 px-6 py-4 text-sm font-medium whitespace-normal text-norma-gray-900">
               {{ $t('timestamps.created_at') }}
             </td>
-            <td class="py-4 pl-3 text-sm font-medium whitespace-normal text-libryo-gray-900">
+            <td class="py-4 pl-3 text-sm font-medium whitespace-normal text-norma-gray-900">
               {{ $format.date(task.created_at) }}
             </td>
           </tr>
 
           <tr class="flex w-full border-b">
-            <td class="w-1/4 px-6 py-4 text-sm font-medium whitespace-normal text-libryo-gray-900">
+            <td class="w-1/4 px-6 py-4 text-sm font-medium whitespace-normal text-norma-gray-900">
               {{ $t('tasks.due_on') }}
             </td>
-            <td class="py-4 text-sm font-medium whitespace-normal text-libryo-gray-900">
+            <td class="py-4 text-sm font-medium whitespace-normal text-norma-gray-900">
               <div class="flex justify-center text-center">
                 <TaskInlineDropDownInput
                   field="due_on"
@@ -210,10 +210,10 @@ fetchTask();
           </tr>
 
           <tr class="flex w-full border-b">
-            <td class="w-1/4 px-6 py-4 text-sm font-medium whitespace-normal text-libryo-gray-900">
+            <td class="w-1/4 px-6 py-4 text-sm font-medium whitespace-normal text-norma-gray-900">
               {{ $t('tasks.project') }}
             </td>
-            <td class="py-4 text-sm font-medium whitespace-normal text-libryo-gray-900">
+            <td class="py-4 text-sm font-medium whitespace-normal text-norma-gray-900">
               <TaskInlineDropDownInput
                 field="task_project_id"
                 :row="task"
@@ -228,39 +228,39 @@ fetchTask();
           </tr>
 
           <tr class="flex w-full border-b">
-            <td class="w-1/4 px-6 py-4 text-sm font-medium whitespace-normal text-libryo-gray-900">
+            <td class="w-1/4 px-6 py-4 text-sm font-medium whitespace-normal text-norma-gray-900">
               {{ $t('tasks.assigned_to') }}
             </td>
-            <td class="px-3 py-4 text-sm font-medium whitespace-normal text-libryo-gray-900">
+            <td class="px-3 py-4 text-sm font-medium whitespace-normal text-norma-gray-900">
               <TaskAssigneeSelector :row-index="1" :row="task" />
             </td>
           </tr>
 
           <tr class="flex w-full border-b">
-            <td class="w-1/4 px-6 py-4 text-sm font-medium whitespace-normal text-libryo-gray-900">
+            <td class="w-1/4 px-6 py-4 text-sm font-medium whitespace-normal text-norma-gray-900">
               {{ $t('tasks.followers') }}
             </td>
-            <td class="px-3 py-4 text-sm font-medium whitespace-normal text-libryo-gray-900">
+            <td class="px-3 py-4 text-sm font-medium whitespace-normal text-norma-gray-900">
               <TaskFollowersSelector :row-index="1" :row="task" />
             </td>
           </tr>
 
           <tr class="flex w-full border-b">
-            <td class="w-1/4 px-6 py-4 text-sm font-medium whitespace-normal text-libryo-gray-900">
+            <td class="w-1/4 px-6 py-4 text-sm font-medium whitespace-normal text-norma-gray-900">
               {{ $t('tasks.priority') }}
             </td>
-            <td class="py-4 text-sm font-medium whitespace-normal text-libryo-gray-900">
-              <span class="text-libryo-gray-500">
+            <td class="py-4 text-sm font-medium whitespace-normal text-norma-gray-900">
+              <span class="text-norma-gray-500">
                 <TaskPrioritySelector :row-index="1" :row="task" />
               </span>
             </td>
           </tr>
 
           <tr v-if="page.props.stream.single && task.taskable_type === 'register_item'" class="flex w-full border-b">
-            <td class="w-1/4 px-6 py-4 text-sm font-medium whitespace-normal text-libryo-gray-900">
+            <td class="w-1/4 px-6 py-4 text-sm font-medium whitespace-normal text-norma-gray-900">
               {{ $t('tasks.instance') }}
             </td>
-            <td class="px-3 py-4 text-sm font-medium whitespace-normal text-libryo-gray-900">
+            <td class="px-3 py-4 text-sm font-medium whitespace-normal text-norma-gray-900">
               <div
                 v-if="task.source_task_id"
                 v-html="$t('tasks.copied_task_details', { route: `/requirements/citations/${task.taskable_id}`, 'requirement': task.sub_title })"
@@ -271,10 +271,10 @@ fetchTask();
             </td>
           </tr>
           <tr class="flex w-full border-b">
-            <td class="w-1/4 px-6 py-4 text-sm font-medium whitespace-normal text-libryo-gray-900">
+            <td class="w-1/4 px-6 py-4 text-sm font-medium whitespace-normal text-norma-gray-900">
               {{ $t('tasks.recurring.tasks') }}
             </td>
-            <td class="py-4 pl-3 text-sm font-medium whitespace-normal text-libryo-gray-900">
+            <td class="py-4 pl-3 text-sm font-medium whitespace-normal text-norma-gray-900">
               <RecurringTaskDropDownInput
                 :task="task"
                 @create="fetchTask"
@@ -284,7 +284,7 @@ fetchTask();
         </table>
       </div>
       <!-- Footer content-->
-      <div class="grid p-5 border-t lg:grid-cols-12 lg:gap-4 bg-libryo-gray-50 border-libryo-gray-100">
+      <div class="grid p-5 border-t lg:grid-cols-12 lg:gap-4 bg-norma-gray-50 border-norma-gray-100">
         <div class="lg:col-span-7">
           <AppTabs :tabs="leftTabs" :active="leftTabs[0].id">
             <template #default="{ active }">
@@ -300,7 +300,7 @@ fetchTask();
                   can-upload
                   relation="task"
                   :related-id="task.id"
-                  :libryo-id="task.place_id"
+                  :norma-id="task.place_id"
                 />
               </KeepAlive>
             </template>

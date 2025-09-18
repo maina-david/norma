@@ -7,10 +7,10 @@ const value = defineModel();
 const axios = useAxios();
 
 const { stored, loading } = useRootPersist({
-  key: 'libryos_filters',
+  key: 'normas_filters',
   defaultValue: [],
   fetchData() {
-    return axios.get('/organisation/libryos', { params: { libryo: true } })
+    return axios.get('/organisation/normas', { params: { norma: true } })
       .then(({ data }) => data)
       .then(({ data }) => data.map((item) => ({ value: item.id, label: item.title })));
   },

@@ -12,10 +12,10 @@ const model = defineModel();
 
 <template>
   <div>
-    <label v-if="label && ['checkbox', 'radio'].includes(type)" class="text-sm font-medium text-libryo-gray-700 mt-4 flex">
+    <label v-if="label && ['checkbox', 'radio'].includes(type)" class="text-sm font-medium text-norma-gray-700 mt-4 flex">
       <input
         v-model="model"
-        class="mr-2 mt-1 h-4 w-4 border-libryo-gray-300 text-primary focus:border-primary focus:ring-primary block leading-normal rounded-md shadow-sm"
+        class="mr-2 mt-1 h-4 w-4 border-norma-gray-300 text-primary focus:border-primary focus:ring-primary block leading-normal rounded-md shadow-sm"
         :class="{ 'w-full': !['checkbox', 'radio'].includes(type) }"
         :type="type"
         v-bind="$attrs"
@@ -27,14 +27,14 @@ const model = defineModel();
     </label>
 
     <template v-else>
-      <label v-if="label" class="text-sm font-medium text-libryo-gray-700 mt-4 block">
+      <label v-if="label" class="text-sm font-medium text-norma-gray-700 mt-4 block">
         <span v-if="required" class="text-red-400 mr-1">*</span>
         <span>{{ label }}</span>
       </label>
 
       <input
         v-model="model"
-        class="mr-2 border-libryo-gray-300 focus:border-primary focus:ring-primary block leading-normal rounded-md shadow-sm"
+        class="mr-2 border-norma-gray-300 focus:border-primary focus:ring-primary block leading-normal rounded-md shadow-sm"
         :class="type === 'checkbox' ? '' : 'w-full'"
         :type="type"
         v-bind="$attrs"

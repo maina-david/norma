@@ -19,7 +19,7 @@ export default {
         .then((data) => {
           let content = data.replace(/&nbsp;/gim, ' ')
             .replace(/text-indent:\s*-(\d+\w+;)?/g, 'text-indent: $1')
-            .replace(/href=(["'])[^"']*\/files\//g, 'href=$1https://my.libryo.com/files/');
+            .replace(/href=(["'])[^"']*\/files\//g, 'href=$1https://my.norma.com/files/');
 
           content = (new DOMParser()).parseFromString(content, 'text/html');
           content.querySelectorAll('[data-inline="num"][data-id],[data-inline="heading"][data-id]').forEach((item) => {

@@ -124,7 +124,7 @@ function saveAndRedirect() {
         :errors="errors.description ?? []"
         type="textarea"
         :label="$t('interface.description')"
-        class="libryo-editor-minimal"
+        class="norma-editor-minimal"
       />
     </div>
 

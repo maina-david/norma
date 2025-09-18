@@ -28,7 +28,7 @@ fetchContent();
 
 <template>
   <div v-loading="loading">
-    <div class="wysiwyg-content libryo-legislation">
+    <div class="wysiwyg-content norma-legislation">
       <div v-for="item in actionAreas" :key="item.id">
         <p class="text-primary">
           {{ item.title }}

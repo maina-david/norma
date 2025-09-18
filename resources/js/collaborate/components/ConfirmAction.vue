@@ -24,17 +24,17 @@
       >
         <div v-if="isOpen" class="z-20 pointer-events-auto inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:p-6">
           <div>
-            <h3 id="modal-title" class="text-xl leading-6 font-medium text-libryo-gray-900 flex items-center">
+            <h3 id="modal-title" class="text-xl leading-6 font-medium text-norma-gray-900 flex items-center">
               {{ title }}
             </h3>
             <div class="mt-2">
-              <p class="text-sm text-libryo-gray-500">
+              <p class="text-sm text-norma-gray-500">
                 {{ message }}
               </p>
             </div>
           </div>
           <div class="mt-5 sm:mt-6 flex justify-between">
-            <button type="button" class="mt-3 inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-libryo-gray-700 hover:bg-libryo-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 sm:mt-0 sm:col-start-1 sm:text-sm" @click.prevent="rejectAction">
+            <button type="button" class="mt-3 inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-norma-gray-700 hover:bg-norma-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 sm:mt-0 sm:col-start-1 sm:text-sm" @click.prevent="rejectAction">
               {{ rejectText }}
             </button>
             <button type="button" class="inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:col-start-2 sm:text-sm" @click.prevent="confirmAction">

@@ -1,7 +1,7 @@
 <script setup>
 import { nextTick, onMounted, ref } from 'vue';
 import { Picker } from 'emoji-picker-element';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 
 const props = defineProps({
   modelValue: { type: String, default: '' },
@@ -70,14 +70,14 @@ function handleSubmission() {
         <div class="pl-3 pr-2 py-2 flex justify-between">
           <div class="flex items-center space-x-5">
             <div class="flex items-center">
-              <button type="button" class="-m-1.5 w-10 h-10 rounded-full flex items-center justify-center text-libryo-gray-400 hover:text-libryo-gray-500" @click="showingEmojis = !showingEmojis">
-                <LibryoIcon name="smile-wink" />
+              <button type="button" class="-m-1.5 w-10 h-10 rounded-full flex items-center justify-center text-norma-gray-400 hover:text-norma-gray-500" @click="showingEmojis = !showingEmojis">
+                <NormaIcon name="smile-wink" />
               </button>
             </div>
           </div>
           <div class="shrink-0 px-4">
             <button type="button" class="text-primary" @click="handleSubmission">
-              <LibryoIcon name="paper-plane" />
+              <NormaIcon name="paper-plane" />
             </button>
           </div>
         </div>

@@ -7,7 +7,7 @@ import UserAvatar from '@/vue/components/my/users/UserAvatar.vue';
 import useRootPersist from '@/vue/composables/useRootPersist';
 
 const props = defineProps({
-  libryo: { type: Boolean, default: false },
+  norma: { type: Boolean, default: false },
   multiple: { type: Boolean, default: false },
 });
 
@@ -22,7 +22,7 @@ const checkedUsers = computed(() => {
 
   return props.multiple ? [...value.value] : [value.value];
 });
-const params = props.libryo ? { libryo: true } : {};
+const params = props.norma ? { norma: true } : {};
 
 const { stored, loading } = useRootPersist({
   key: 'user_listing_selector',
@@ -77,7 +77,7 @@ function selectUser(selected) {
         <div
           v-for="user in filtered"
           :key="user.id"
-          class="flex items-center hover:bg-libryo-gray-100 px-3 py-1 rounded-lg cursor-pointer"
+          class="flex items-center hover:bg-norma-gray-100 px-3 py-1 rounded-lg cursor-pointer"
           @click.stop="() => selectUser(user)"
         >
           <UserAvatar class="flex-shrink-0" size="4" :user="user" />

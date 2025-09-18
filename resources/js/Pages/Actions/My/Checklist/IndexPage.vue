@@ -154,9 +154,9 @@ function toggleSubCategoryCheckboxes(categoryId, subCategoryId, isChecked) {
       </div>
     </div>
 
-    <div v-for="(item, index) in items" :key="index" class="border-libryo-gray-200 rounded mb-2">
+    <div v-for="(item, index) in items" :key="index" class="border-norma-gray-200 rounded mb-2">
       <!-- Row Header Start -->
-      <div class="bg-libryo-gray-200 rounded-lg shadow border border-libryo-gray-200 flex flex-row" @click="toggleOpen(item.id)">
+      <div class="bg-norma-gray-200 rounded-lg shadow border border-norma-gray-200 flex flex-row" @click="toggleOpen(item.id)">
         <div class="flex justify-between w-full p-4">
           <div class="flex items-center space-x-4">
             <InputElement v-model="item.checked" type="checkbox" @change="toggleChildCheckboxes(item.id, item.checked)" />

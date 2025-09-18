@@ -1,6 +1,6 @@
 <script setup>
 import { computed, inject } from 'vue';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 import ReferenceMeta from '@/vue/pages/annotations/components/meta/ReferenceMeta.vue';
 import ReferenceActions from '@/vue/pages/identify/components/ReferenceActions.vue';
 import InputElement from '@/vue/components/InputElement.vue';
@@ -36,19 +36,19 @@ const metaVisible = computed(() => Object.values(referenceMeta).some((e) => e));
         <ReferenceActions :reference="reference" />
 
         <span v-tooltip="`${reference.has_linked_toc ? '' : 'Not '}Linked to Toc Item`" href="#" class="r-taggable" :class="{ 'active-draft': !reference.has_linked_toc }">
-          <LibryoIcon type="fas" name="list" icon-size="md" />
+          <NormaIcon type="fas" name="list" icon-size="md" />
         </span>
 
         <span href="#" class="r-taggable" :class="{ 'active': reference.requirement_count, 'active-draft': reference.requirement_draft_count }">
-          <LibryoIcon type="fas" name="marker" icon-size="md" />
+          <NormaIcon type="fas" name="marker" icon-size="md" />
         </span>
 
         <span href="#" class="r-taggable" :class="{ 'active': reference.linked_children_count || reference.linked_parents_count }">
-          <LibryoIcon name="paperclip" icon-size="md" />
+          <NormaIcon name="paperclip" icon-size="md" />
         </span>
 
         <span href="#" class="r-taggable" :class="{ 'active': reference.collaborate_comments_count }">
-          <LibryoIcon name="comments" icon-size="md" />
+          <NormaIcon name="comments" icon-size="md" />
         </span>
 
         <div class="w-6">
@@ -124,11 +124,11 @@ const metaVisible = computed(() => Object.values(referenceMeta).some((e) => e));
 }
 
 .r-title:hover {
-  @apply text-libryo-gray-800;
+  @apply text-norma-gray-800;
 }
 
 .r-taggable {
-  @apply text-libryo-gray-200;
+  @apply text-norma-gray-200;
 }
 
 .r-taggable.active:not(.active-draft) {

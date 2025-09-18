@@ -1,6 +1,6 @@
 <script setup>
 import { inject } from 'vue';
-import LibryoIcon from '@/vue/components/LibryoIcon.vue';
+import NormaIcon from '@/vue/components/NormaIcon.vue';
 import InputElement from '@/vue/components/InputElement.vue';
 import ReferenceVisibilityFilters from '@/vue/pages/annotations/components/ReferenceVisibilityFilters.vue';
 
@@ -55,7 +55,7 @@ const can = inject('can');
           :class="`active${actionAreas}`"
           @click.prevent="() => emit('toggle', 'actionAreas')"
         >
-          <LibryoIcon name="clipboard-list-check" />
+          <NormaIcon name="clipboard-list-check" />
         </a>
 
         <a
@@ -65,7 +65,7 @@ const can = inject('can');
           :class="`active${assessmentItems}`"
           @click.prevent="() => emit('toggle', 'assessmentItems')"
         >
-          <LibryoIcon name="check" />
+          <NormaIcon name="check" />
         </a>
 
         <a
@@ -75,7 +75,7 @@ const can = inject('can');
           :class="`active${categories}`"
           @click.prevent="() => emit('toggle', 'categories')"
         >
-          <LibryoIcon name="hashtag" />
+          <NormaIcon name="hashtag" />
         </a>
 
         <a
@@ -85,7 +85,7 @@ const can = inject('can');
           :class="`active${contextQuestions}`"
           @click.prevent="() => emit('toggle', 'contextQuestions')"
         >
-          <LibryoIcon name="question" />
+          <NormaIcon name="question" />
         </a>
 
         <a
@@ -95,7 +95,7 @@ const can = inject('can');
           :class="`active${legalDomains}`"
           @click.prevent="() => emit('toggle', 'legalDomains')"
         >
-          <LibryoIcon name="scale-balanced" />
+          <NormaIcon name="scale-balanced" />
         </a>
 
         <a
@@ -105,7 +105,7 @@ const can = inject('can');
           :class="`active${locations}`"
           @click.prevent="() => emit('toggle', 'locations')"
         >
-          <LibryoIcon name="location-dot" />
+          <NormaIcon name="location-dot" />
         </a>
 
         <a
@@ -115,7 +115,7 @@ const can = inject('can');
           :class="`active${tags}`"
           @click.prevent="() => emit('toggle', 'tags')"
         >
-          <LibryoIcon name="tags" />
+          <NormaIcon name="tags" />
         </a>
 
         <a
@@ -125,7 +125,7 @@ const can = inject('can');
           :class="`active${summary}`"
           @click.prevent="() => emit('toggle', 'summary')"
         >
-          <LibryoIcon name="file" />
+          <NormaIcon name="file" />
         </a>
 
         <a
@@ -135,7 +135,7 @@ const can = inject('can');
           :class="`active${requirement}`"
           @click.prevent="() => emit('toggle', 'requirement')"
         >
-          <LibryoIcon name="marker" />
+          <NormaIcon name="marker" />
         </a>
 
         <a
@@ -145,7 +145,7 @@ const can = inject('can');
           :class="`active${linking}`"
           @click.prevent="() => emit('toggle', 'linking')"
         >
-          <LibryoIcon name="paperclip" />
+          <NormaIcon name="paperclip" />
         </a>
 
         <a
@@ -155,7 +155,7 @@ const can = inject('can');
           :class="`active${comments}`"
           @click.prevent="() => emit('toggle', 'comments')"
         >
-          <LibryoIcon name="comments" />
+          <NormaIcon name="comments" />
         </a>
       </div>
 

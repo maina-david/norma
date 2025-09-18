@@ -18,20 +18,20 @@ const loadMapsScript = () => {
 };
 
 
-class LibryoMap {
+class NormaMap {
 
-  constructor(element, activeLibryo, zoom, centerLat, centerLng) {
+  constructor(element, activeNorma, zoom, centerLat, centerLng) {
     this.element = element;
-    this.activeLibryo = activeLibryo;
+    this.activeNorma = activeNorma;
     this.zoom = zoom;
     this.centerLat = centerLat;
     this.centerLng = centerLng;
     this.map = {};
-    this.activeLibryoMarker = {};
-    this.allLibryos = [];
+    this.activeNormaMarker = {};
+    this.allNormas = [];
     this.otherMarkers = [];
     this.infoWindow = {};
-    this.loadLibryosTimeout = {};
+    this.loadNormasTimeout = {};
     this.address = '';
     this.zooming = false;
     this.countGoogleRetries = 0;
@@ -50,7 +50,7 @@ class LibryoMap {
     });
 
     this.map.addListener('idle', () => {
-      this.loadLibryos();
+      this.loadNormas();
     });
 
     this.infoWindow = new window.google.maps.InfoWindow();
@@ -72,25 +72,25 @@ class LibryoMap {
     return iconSrc;
   }
 
-  libryoMarkers() {
+  normaMarkers() {
     if (typeof this.map.getDiv !== 'function') {
       return;
     }
 
-    if (typeof this.activeLibryoMarker.setMap === 'function') {
-      this.activeLibryoMarker.setMap(null);
+    if (typeof this.activeNormaMarker.setMap === 'function') {
+      this.activeNormaMarker.setMap(null);
     }
 
-    if (this.activeLibryo) {
-      //this.setActiveLibryoMarker();
+    if (this.activeNorma) {
+      //this.setActiveNormaMarker();
     }
 
     this.otherMarkers.forEach(marker => marker.setMap(null));
     this.otherMarkers = [];
-    this.allLibryos.forEach(place => {
+    this.allNormas.forEach(place => {
       const newMarker = this.createNewMarker(
         {
-          position: this.getPositionFromLibryo(place),
+          position: this.getPositionFromNorma(place),
           title: place.quantity > 1 ? place.quantity.toString() : place.title,
           label: place.quantity > 1 ? place.quantity.toString() : null,
           icon: this.getIconForMarker(place),
@@ -106,10 +106,10 @@ class LibryoMap {
     });
   }
 
-  setActiveLibryoMarker() {
+  setActiveNormaMarker() {
     const markerProps = {
-      position: this.activeLibryoPosition,
-      title: this.activeLibryo.title,
+      position: this.activeNormaPosition,
+      title: this.activeNorma.title,
       icon: '/img/map-icons/active.png',
       zIndex: 10,
     };
@@ -118,13 +118,13 @@ class LibryoMap {
       markerProps.draggable = true;
     }
 
-    this.activeLibryoMarker = this.createNewMarker(markerProps, this.activeLibryo);
-    this.activeLibryoMarker.setMap(this.map);
+    this.activeNormaMarker = this.createNewMarker(markerProps, this.activeNorma);
+    this.activeNormaMarker.setMap(this.map);
 
     if (!this.editable) return;
 
-    window.google.maps.event.clearListeners(this.activeLibryoMarker, 'dragend');
-    this.activeLibryoMarker.addListener('dragend', e => {
+    window.google.maps.event.clearListeners(this.activeNormaMarker, 'dragend');
+    this.activeNormaMarker.addListener('dragend', e => {
       this.$emit('marker-moved', {
         lat: e.latLng.lat(),
         lng: e.latLng.lng(),
@@ -154,36 +154,36 @@ class LibryoMap {
 
   addInfoWindowClick(place) {
     setTimeout(() => {
-      const marker = document.getElementById(`map_libryo_${place.id}`);
+      const marker = document.getElementById(`map_norma_${place.id}`);
       if (marker) marker.addEventListener('click', this.handleMarkerClick);
     }, 100);
   }
 
   handleMarkerClick(event) {
     const id = event.srcElement.getAttribute('data-id');
-    if (id !== this.activeLibryo.id) {
+    if (id !== this.activeNorma.id) {
       this.$emit('update', id);
     }
   }
 
-  getMarkerContent(marker, libryo) {
+  getMarkerContent(marker, norma) {
     /* eslint-disable prefer-template */
-    return `<a id="map_libryo_${libryo.id}" data-id="${libryo.id}">${marker.title}</a><small>
+    return `<a id="map_norma_${norma.id}" data-id="${norma.id}">${marker.title}</a><small>
       <br/>
-      ${libryo.address ? '<br/>' + this.$t.t('libryos.address') + ': ' + libryo.address : ''}
+      ${norma.address ? '<br/>' + this.$t.t('normas.address') + ': ' + norma.address : ''}
       </small>
     `;
     /* eslint-enable prefer-template */
   }
 
-  getPositionFromLibryo(libryo) {
+  getPositionFromNorma(norma) {
     return {
-      lat: parseFloat(libryo.geo_lat),
-      lng: parseFloat(libryo.geo_lng),
+      lat: parseFloat(norma.geo_lat),
+      lng: parseFloat(norma.geo_lng),
     };
   }
 
-  loadLibryos() {
+  loadNormas() {
     const northEast = this.map.getBounds().getNorthEast();
     const southWest = this.map.getBounds().getSouthWest();
     const north = northEast.lat();
@@ -192,13 +192,13 @@ class LibryoMap {
     const west = southWest.lng();
     return window.axios
       .get(
-        `/libryos/markers?bounds=${north},${east},${south},${west}&zoom=${this.map.getZoom()}`,
+        `/normas/markers?bounds=${north},${east},${south},${west}&zoom=${this.map.getZoom()}`,
       )
       .then((response) => {
-        this.allLibryos = response.data;
-        this.libryoMarkers();
+        this.allNormas = response.data;
+        this.normaMarkers();
         this.zooming = false;
-        return this.allLibryos;
+        return this.allNormas;
       });
   }
 
@@ -223,7 +223,7 @@ class LibryoMap {
     }
     loadMapsScript();
     this.countGoogleRetries += 1;
-    if (window.google === undefined || !this.activeLibryo) {
+    if (window.google === undefined || !this.activeNorma) {
       setTimeout(() => {
         this.initializeMapWhenGoogleReady();
       }, 500);
@@ -236,7 +236,7 @@ class LibryoMap {
 
   setupStreetView() {
     this.panorama = this.map.getStreetView();
-    this.panorama.setPosition(this.activeLibryoPosition);
+    this.panorama.setPosition(this.activeNormaPosition);
     this.panorama.setPov({
       heading: 0,
       pitch: -10,
@@ -245,4 +245,4 @@ class LibryoMap {
 }
 
 
-window.LibryoMap = LibryoMap;
+window.NormaMap = NormaMap;

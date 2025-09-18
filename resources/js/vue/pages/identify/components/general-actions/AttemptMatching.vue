@@ -1,7 +1,7 @@
 <script setup>
 import {inject} from 'vue';
 import ConfirmButton from '@/vue/components/ConfirmButton.vue';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 
 const expression = inject('expression');
 const fetchAllReferences = inject('fetchAllReferences');
@@ -25,7 +25,7 @@ function handleConfirm() {
     :payload="{ 'action': 'match-tocs' }"
   >
     <span class="flex items-center">
-      <LibryoIcon name="list" />
+      <NormaIcon name="list" />
       <span class="ml-2 whitespace-nowrap">Attempt Toc Matching</span>
     </span>
   </ConfirmButton>

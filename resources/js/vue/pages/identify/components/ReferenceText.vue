@@ -5,7 +5,7 @@ import { useAxios } from '@/vue/composables/useAxios';
 import WysiwygEditor from '@/vue/components/WysiwygEditor.vue';
 import InputElement from '@/vue/components/InputElement.vue';
 import AppButton from '@/vue/components/AppButton.vue';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 
 const can = inject('can');
 const expression = inject('expression');
@@ -63,16 +63,16 @@ watch(contentDraft, () => getContent());
 </script>
 
 <template>
-  <div v-if="!loading" class="p-4 libryo-legislation">
+  <div v-if="!loading" class="p-4 norma-legislation">
     <div v-if="canEdit" class="notranslate">
       <form action="#" @submit.prevent="handleSaveContent">
-        <div class="text-sm font-medium text-libryo-gray-700 block mt-4 mb-1">
+        <div class="text-sm font-medium text-norma-gray-700 block mt-4 mb-1">
           Title
         </div>
 
         <InputElement v-model="title" />
 
-        <div class="text-sm font-medium text-libryo-gray-700 block mt-4 mb-1">
+        <div class="text-sm font-medium text-norma-gray-700 block mt-4 mb-1">
           Text
         </div>
 
@@ -94,7 +94,7 @@ watch(contentDraft, () => getContent());
           Previous Versions
         </div>
 
-        <LibryoIcon :name="previousOpen ? 'angle-down' : 'angle-right'" class="flex-shrink-0" />
+        <NormaIcon :name="previousOpen ? 'angle-down' : 'angle-right'" class="flex-shrink-0" />
       </div>
 
       <div v-if="previousOpen" class="mt-2">
@@ -102,13 +102,13 @@ watch(contentDraft, () => getContent());
           <div class="text-right mb-4 text-sm font-semibold mt-2">
             {{ $format.datetime(version.created_at) }}
           </div>
-          <div class="text-sm font-medium text-libryo-gray-700 block mt-4 mb-1">
+          <div class="text-sm font-medium text-norma-gray-700 block mt-4 mb-1">
             Title
           </div>
           <div class="font-semibold">
             {{ version.title }}
           </div>
-          <div class="text-sm font-medium text-libryo-gray-700 block mt-4 mb-1">
+          <div class="text-sm font-medium text-norma-gray-700 block mt-4 mb-1">
             Text
           </div>
           <div v-html="version.html_content" />

@@ -35,7 +35,7 @@ function fetchTasks() {
         <BackButton :target="page.props.backButton" />
 
         <div class="flex items-center ml-4">
-          <AppIcon name="clipboard-list" class="mr-3 ml-2  text-libryo-gray-400" size="8" />
+          <AppIcon name="clipboard-list" class="mr-3 ml-2  text-norma-gray-400" size="8" />
 
           <span class="space-x-2">
             <span v-tooltip="page.props.action.control.description ?? ''" :class="{ 'underline-offset-8 underline decoration-dotted decoration-2 cursor-pointer': page.props.action.control.description }">
@@ -65,7 +65,7 @@ function fetchTasks() {
           >
             <template #subRow="{ row, rowIndex }">
               <div class="md:grid grid-cols-5 gap-4 pt-8">
-                <div class="col-span-3 border-r border-libryo-gray-100 text-libryo-gray-600">
+                <div class="col-span-3 border-r border-norma-gray-100 text-norma-gray-600">
                   <TaskDetailsSubRow :row="row" :row-index="rowIndex" />
                 </div>
 
@@ -92,7 +92,7 @@ function fetchTasks() {
           >
             <template #subRow="{ row }">
               <div class="md:grid grid-cols-5 gap-4">
-                <div class="col-span-5 lg:col-span-2 border-r border-libryo-gray-100 text-libryo-gray-600">
+                <div class="col-span-5 lg:col-span-2 border-r border-norma-gray-100 text-norma-gray-600">
                   <ReferenceSuggestedTasks :reference-id="row.id" :action-area="page.props.action" @create="fetchTasks" />
                 </div>
 

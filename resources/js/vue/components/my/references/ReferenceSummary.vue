@@ -35,7 +35,7 @@ fetchContent();
 
 <template>
   <div v-loading="loading">
-    <div v-if="!loading && !content" class="text-center text-libryo-gray-600 pt-8">
+    <div v-if="!loading && !content" class="text-center text-norma-gray-600 pt-8">
       {{ $t('requirements.no_notes') }}
     </div>
 
@@ -46,7 +46,7 @@ fetchContent();
         </div>
       </div>
 
-      <div class="wysiwyg-content libryo-legislation">
+      <div class="wysiwyg-content norma-legislation">
         <div v-html="content" />
       </div>
     </div>

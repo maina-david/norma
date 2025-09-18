@@ -12,7 +12,7 @@ const props = defineProps({
   canUpload: { type: Boolean, default: false },
   requiresFolder: { type: Boolean, default: false },
   folderId: { type: [String, Number], default: null },
-  libryoId: { type: [String, Number], default: null },
+  normaId: { type: [String, Number], default: null },
   multiple: { type: Boolean, default: false },
   relatedId: { type: [String, Number], default: null },
   relation: { type: String, default: null },
@@ -61,7 +61,7 @@ fetchFiles();
             <FileUploader
               :requires-folder="requiresFolder"
               :folder-id="folderId"
-              :libryo-id="libryoId"
+              :norma-id="normaId"
               :multiple="multiple"
               name="file"
               :related-id="relatedId"
@@ -88,7 +88,7 @@ fetchFiles();
         <div class="flex-grow mr-4">
           <a :href="`/drives/files/${file.id}`" class="block">
             <div class="text-primary max-w-screen-md">{{ file.title }}</div>
-            <div class="text-libryo-gray-500 text-xs">{{ file.description ?? '-' }}</div>
+            <div class="text-norma-gray-500 text-xs">{{ file.description ?? '-' }}</div>
           </a>
         </div>
 

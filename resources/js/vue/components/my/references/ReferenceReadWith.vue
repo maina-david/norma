@@ -35,11 +35,11 @@ fetchReadWiths();
 
 <template>
   <div class="-mt-4">
-    <div v-if="!loading && (totalReads === 0)" class="text-center text-libryo-gray-600 pt-8">
+    <div v-if="!loading && (totalReads === 0)" class="text-center text-norma-gray-600 pt-8">
       {{ $t('requirements.no_read_with') }}
     </div>
 
-    <div class="divide-y divide-libryo-gray-100">
+    <div class="divide-y divide-norma-gray-100">
       <ReferenceRelationsListing
         v-if="amendments"
         relation="amendments"

@@ -1,6 +1,6 @@
 <script setup>
 import { inject } from 'vue';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 import { useAxios } from '@/vue/composables/useAxios';
 
 const axios = useAxios();
@@ -39,7 +39,7 @@ function handleDelete() {
 
     <div v-if="canDelete">
       <button class="border rounded-md px-2 py-1 border-negative text-negative" @click.stop="handleDelete">
-        <LibryoIcon name="unlink" icon-size="md" />
+        <NormaIcon name="unlink" icon-size="md" />
       </button>
     </div>
   </div>

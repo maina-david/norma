@@ -36,7 +36,7 @@ fetchAll();
 
 <template>
   <div class="flex-grow flex flex-col overflow-hidden">
-    <div v-loading="loading" class="text-left font-semibold text-sm flex-grow relative overflow-y-auto custom-scroll bg-white px-4 py-2 libryo-legislation divide-y divide-gray-200">
+    <div v-loading="loading" class="text-left font-semibold text-sm flex-grow relative overflow-y-auto custom-scroll bg-white px-4 py-2 norma-legislation divide-y divide-gray-200">
       <div
         v-for="(item, index) in items"
         :key="item.id"

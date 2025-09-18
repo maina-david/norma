@@ -4,7 +4,7 @@ import AppButton from '@/vue/components/AppButton.vue';
 import { metaInfo } from '@/vue/composables/useMetaVisibility';
 import { useState } from '@/vue/composables/useState';
 import { useAxios } from '@/vue/composables/useAxios';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 import { confirm } from '@/vue/plugins/bus';
 
 const axios = useAxios();
@@ -127,11 +127,11 @@ function handleDeleteAllDraft() {
 
       <div class="ml-4 flex items-center">
         <button v-tooltip="`Convert draft changes to applied metadata`" class="rounded-full tippy text-primary" @click="handleApplyAllDraft">
-          <LibryoIcon icon-size="xl" name="circle-check" />
+          <NormaIcon icon-size="xl" name="circle-check" />
         </button>
 
         <button v-tooltip="`Remove requested draft changes`" class="rounded-full tippy ml-2 text-secondary" @click="handleDeleteAllDraft">
-          <LibryoIcon icon-size="xl" name="times-circle" />
+          <NormaIcon icon-size="xl" name="times-circle" />
         </button>
       </div>
     </div>

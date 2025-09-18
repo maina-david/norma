@@ -64,13 +64,13 @@ fetchReminders();
 
     <EmptyState v-if="!loading && reminders.length < 1" :title="$t('notify.reminder.no_reminders_added')" icon="alarm-clock" />
 
-    <ul role="list" class="divide-y divide-libryo-gray-200 mt-4">
+    <ul role="list" class="divide-y divide-norma-gray-200 mt-4">
       <li v-for="reminder in reminders" :key="reminder.id">
         <div class="block bg-white">
           <div class="px-4 py-4 flex items-center sm:px-6">
             <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
               <div class="mt-4 shrink-0 sm:mt-0 sm:ml-5">
-                <div class="text-libryo-gray-500">
+                <div class="text-norma-gray-500">
                   {{ $format.date(reminder.remind_on) }}
                 </div>
               </div>

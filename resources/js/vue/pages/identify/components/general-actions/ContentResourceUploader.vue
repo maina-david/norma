@@ -1,7 +1,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 import { useAxios } from '@/vue/composables/useAxios';
 import AppButton from '@/vue/components/AppButton.vue';
 
@@ -33,7 +33,7 @@ function processUpload(event) {
   <div>
     <AppButton class="w-full" @click="open = true">
       <span class="flex items-center">
-        <LibryoIcon name="upload" />
+        <NormaIcon name="upload" />
         <span class="ml-4 whitespace-nowrap">File Upload</span>
       </span>
     </AppButton>
@@ -46,7 +46,7 @@ function processUpload(event) {
           </div>
 
           <button class="p-2 hover:text-primary" @click="open = false">
-            <LibryoIcon name="times" />
+            <NormaIcon name="times" />
           </button>
         </div>
 
@@ -58,10 +58,10 @@ function processUpload(event) {
             >
               <div class="space-y-4 text-center">
                 <div>
-                  <LibryoIcon name="upload" icon-size="lg" />
+                  <NormaIcon name="upload" icon-size="lg" />
                 </div>
 
-                <div class="flex text-sm text-libryo-gray-600">
+                <div class="flex text-sm text-norma-gray-600">
                   <span
                     class="cursor-pointer relative cursor-pointer rounded-md font-medium text-primary hover:text-primary-darker focus-within:outline-none"
                   >
@@ -76,7 +76,7 @@ function processUpload(event) {
                     >
                   </span>
                 </div>
-                <p class="text-xs text-libryo-gray-500">50MB Max</p>
+                <p class="text-xs text-norma-gray-500">50MB Max</p>
               </div>
             </label>
           </form>

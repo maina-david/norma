@@ -2,13 +2,13 @@ function getColour(status) {
   return {
     1: 'text-warning',
     2: 'text-primary',
-  }[status] ?? 'text-libryo-gray-500';
+  }[status] ?? 'text-norma-gray-500';
 }
 
 function getBackgroundColour(status) {
   return {
     0: 'bg-negative text-white',
-    1: 'bg-info text-libryo-gray-800',
+    1: 'bg-info text-norma-gray-800',
     2: 'bg-primary text-white',
     3: 'bg-warning',
   }[status] ?? '';

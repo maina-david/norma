@@ -2,7 +2,7 @@
 import { usePage } from '@inertiajs/vue3';
 import { provide, ref } from 'vue';
 import PageHeader from '@/vue/components/my/PageHeader.vue';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 import DataTableFilters from '@/vue/components/data-table/DataTableFilters.vue';
 import { useModelFilters } from '@/vue/composables/useModelFilters';
 import filters from '@/Pages/Actions/My/Checklist/filters';
@@ -34,10 +34,10 @@ provide('getAppliedFilters', getAppliedFilters);
   <div class="h-full flex flex-col">
     <PageHeader class="flex-shrink-0">
       <div class="flex items-center">
-        <LibryoIcon name="clipboard-list" class="mr-3 ml-2  text-libryo-gray-400" />
+        <NormaIcon name="clipboard-list" class="mr-3 ml-2  text-norma-gray-400" />
         <div>
           <span>{{ $t('actions.checklist.checklists') }}</span>
-          <span class="text-xs text-libryo-gray-500 italic ml-3">{{ page.props.stream.title }}</span>
+          <span class="text-xs text-norma-gray-500 italic ml-3">{{ page.props.stream.title }}</span>
         </div>
       </div>
 

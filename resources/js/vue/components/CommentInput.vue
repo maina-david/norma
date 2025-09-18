@@ -1,6 +1,6 @@
 <script setup>
 import { nextTick, ref } from 'vue';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 import WysiwygEditor from '@/vue/components/WysiwygEditor.vue';
 
 const props = defineProps({
@@ -57,8 +57,8 @@ function handleSubmission() {
       <div class="absolute bottom-0.5 right-0.5 z-10 bg-white rounded-lg">
         <div class="pl-3 pr-2 py-2 flex justify-end">
           <div class="shrink-0">
-            <button type="button" class="hover:text-primary text-libryo-gray-800 border border-gray-800 hover:border-primary rounded-full h-10 w-10 flex items-center justify-center" @click="handleSubmission">
-              <LibryoIcon name="paper-plane" />
+            <button type="button" class="hover:text-primary text-norma-gray-800 border border-gray-800 hover:border-primary rounded-full h-10 w-10 flex items-center justify-center" @click="handleSubmission">
+              <NormaIcon name="paper-plane" />
             </button>
           </div>
         </div>

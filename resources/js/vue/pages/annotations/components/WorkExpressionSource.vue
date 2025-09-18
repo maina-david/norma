@@ -25,7 +25,7 @@ function fetchContent() {
 fetchContent();
 </script>
 <template>
-  <div class="flex-grow w-full overflow-hidden libryo-legislation bg-white">
+  <div class="flex-grow w-full overflow-hidden norma-legislation bg-white">
     <div v-if="plainText" class="w-full h-full py-4 px-6 overflow-y-auto" v-html="text" />
     <embed v-else class="w-full h-full" :src="`/work-expressions/${expression.id}/source/content`">
   </div>

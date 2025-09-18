@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: 'LibryoIcon',
+  name: 'NormaIcon',
   props: {
     name: {
       type: String,
@@ -40,7 +40,7 @@ export default {
   methods: {
     getClass() {
       const css = {};
-      css['libryo-icon'] = true;
+      css['norma-icon'] = true;
       css[this.type] = true;
       css[`fa-${this.name}`] = true;
       css['fa-fw'] = this.fixedWidth;

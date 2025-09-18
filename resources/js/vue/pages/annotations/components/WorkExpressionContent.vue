@@ -43,7 +43,7 @@ defineExpose({ scrollToSelection, changePage: handleChangePage, setScrollTo });
   <WorkExpressionDocContent v-if="items[0] && items[0].doc" :doc="items[0].doc" :expression="expression" />
 
   <div v-else-if="items[0] && items[0].content !== null" v-loading="loading" class="flex-grow flex flex-col overflow-hidden">
-    <div class="flex-grow relative overflow-y-auto custom-scroll bg-white p-6 libryo-legislation">
+    <div class="flex-grow relative overflow-y-auto custom-scroll bg-white p-6 norma-legislation">
       <div v-if="items[0] && items[0].content" ref="contentElement" v-html="items[0].content" />
     </div>
 

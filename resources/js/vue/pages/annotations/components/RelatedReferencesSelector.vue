@@ -2,7 +2,7 @@
 import { computed, inject, ref } from 'vue';
 import { useState } from '@/vue/composables/useState';
 import { useAxios } from '@/vue/composables/useAxios';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 import WorkSelector from '@/vue/pages/annotations/components/WorkSelector.vue';
 import AppButton from '@/vue/components/AppButton.vue';
 import ReferenceSelector from '@/vue/components/content-management/ReferenceSelector.vue';
@@ -86,13 +86,13 @@ function onLink(references) {
               <div v-if="linkType">
                 {{ linkType.label || '' }}
               </div>
-              <div v-if="selectedWork" class="text-xs text-libryo-gray-600">
+              <div v-if="selectedWork" class="text-xs text-norma-gray-600">
                 Linking to {{ selectedWork.title }}
               </div>
             </div>
 
             <button class="p-2 hover:text-primary" @click="onClose">
-              <LibryoIcon name="times" />
+              <NormaIcon name="times" />
             </button>
           </div>
 

@@ -12,7 +12,7 @@ defineProps({
       <div class="font-semibold text-primary">
         {{ related.title }}
       </div>
-      <div class="text-libryo-gray-500">
+      <div class="text-norma-gray-500">
         {{ related.work_title }}
       </div>
     </div>

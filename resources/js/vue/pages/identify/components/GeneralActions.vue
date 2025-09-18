@@ -4,7 +4,7 @@ import ContentResourceUploader from '@/vue/pages/identify/components/general-act
 import GenerateUpdates from '@/vue/pages/identify/components/general-actions/GenerateUpdates.vue';
 import DeleteNonRequirement from '@/vue/pages/identify/components/general-actions/DeleteNonRequirement.vue';
 import ApplyDrafts from '@/vue/pages/identify/components/general-actions/ApplyDrafts.vue';
-import LibryoIcon from '@/vue/components/LibryoIcon.vue';
+import NormaIcon from '@/vue/components/NormaIcon.vue';
 import AttemptMatching from "@/vue/pages/identify/components/general-actions/AttemptMatching.vue";
 
 const can = inject('can');
@@ -14,7 +14,7 @@ const open = ref(false);
 <template>
   <div class="relative">
     <button v-tooltip="`Actions`" class="hover:text-primary" @click.prevent="open = !open">
-      <LibryoIcon name="hand-pointer" />
+      <NormaIcon name="hand-pointer" />
     </button>
 
     <div v-if="open" class="fixed inset-0" @click="open = false" />

@@ -43,7 +43,7 @@ export default {
       @click.stop="$emit('indent')"
     >
       <span>
-        <libryo-icon name="indent" />
+        <norma-icon name="indent" />
       </span>
     </button>
     <button
@@ -54,7 +54,7 @@ export default {
       @click.stop="$emit('outdent')"
     >
       <span>
-        <libryo-icon name="outdent" />
+        <norma-icon name="outdent" />
       </span>
     </button>
 

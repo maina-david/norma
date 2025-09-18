@@ -20,7 +20,7 @@ axios.get(`/references/${props.reference.id}/content/extracts`)
 </script>
 
 <template>
-  <div class="p-4 libryo-legislation pl-8">
+  <div class="p-4 norma-legislation pl-8">
     <ul class="list-disc">
       <li v-for="extract in extracts" :key="extract.id" v-html="extract.content" />
     </ul>

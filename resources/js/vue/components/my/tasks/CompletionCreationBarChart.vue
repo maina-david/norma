@@ -23,7 +23,7 @@ function fetchItems() {
         {
           label: t('actions.dashboard.tasks_created'),
           data: data.created,
-          backgroundColor: window.getComputedStyle(document.body).getPropertyValue('--libryo-gray-400'),
+          backgroundColor: window.getComputedStyle(document.body).getPropertyValue('--norma-gray-400'),
           borderColor: '',
         },
         {

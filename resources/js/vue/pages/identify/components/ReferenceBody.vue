@@ -6,7 +6,7 @@ import AppButton from '@/vue/components/AppButton.vue';
 import AppTabs from '@/vue/components/AppTabs.vue';
 import ReferenceRelated from '@/vue/pages/annotations/components/ReferenceRelated.vue';
 import ReferenceRequirement from '@/vue/pages/annotations/components/ReferenceRequirement.vue';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 import { useAxios } from '@/vue/composables/useAxios';
 import ReferenceText from './ReferenceText.vue';
 
@@ -54,7 +54,7 @@ refresh();
   <div v-loading="loading" class="border-t border-gray-200 px-6 py-4">
     <div class="h-10">
       <AppButton v-if="reference.requirement_count === 0 && reference.requirement_draft_count === 0 && can('collaborate.corpus.reference.requirement.create')" @click="requestRequirement">
-        <LibryoIcon name="marker" />
+        <NormaIcon name="marker" />
       </AppButton>
     </div>
     <AppTabs :tabs="tabs">

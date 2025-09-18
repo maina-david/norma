@@ -37,7 +37,7 @@ fetchItems();
 
 <template>
   <div v-loading="loading" class="min-h-20">
-    <ul v-if="activities.length > 0" role="list" class="divide-y divide-libryo-gray-200">
+    <ul v-if="activities.length > 0" role="list" class="divide-y divide-norma-gray-200">
       <li v-for="activity in activities" :key="activity.id" class="py-4">
         <div class="flex space-x-3">
           <div v-if="activity.user">
@@ -49,12 +49,12 @@ fetchItems();
               <h3 class="text-sm font-medium">
                 {{ activity.user?.name ?? '' }}
               </h3>
-              <p class="text-sm text-libryo-gray-500">
+              <p class="text-sm text-norma-gray-500">
                 {{ $format.dateDiff(activity.created_at) }}
               </p>
             </div>
             <div>
-              <p class="text-sm text-libryo-gray-500">
+              <p class="text-sm text-norma-gray-500">
                 <span class="inline-block mr-4">
                   <AppIcon :name="getIcon(activity.activity_type)" />
                 </span>

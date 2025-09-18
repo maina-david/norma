@@ -1,6 +1,6 @@
 <script setup>
 import { inject } from 'vue';
-import LibryoIcon from '@/vue/components/LibryoIcon.vue';
+import NormaIcon from '@/vue/components/NormaIcon.vue';
 
 defineProps({
   actionAreas: { type: Boolean, required: true },
@@ -25,8 +25,8 @@ const emit = defineEmits(['toggle']);
 
 <template>
   <div class="px-4 bg-white border-b border-gray-100 flex items-center space-x-2 flex-shrink-0">
-    <div class="flex items-center space-x-2 text-libryo-gray-500 mr-2">
-      <LibryoIcon name="eye" /> <span>Show</span>
+    <div class="flex items-center space-x-2 text-norma-gray-500 mr-2">
+      <NormaIcon name="eye" /> <span>Show</span>
     </div>
 
     <a
@@ -36,7 +36,7 @@ const emit = defineEmits(['toggle']);
       :class="{ 'active': actionAreas }"
       @click.prevent="() => emit('toggle', 'actionAreas')"
     >
-      <LibryoIcon name="clipboard-list-check" />
+      <NormaIcon name="clipboard-list-check" />
     </a>
 
     <a
@@ -46,7 +46,7 @@ const emit = defineEmits(['toggle']);
       :class="{ 'active': assessmentItems }"
       @click.prevent="() => emit('toggle', 'assessmentItems')"
     >
-      <LibryoIcon name="check" />
+      <NormaIcon name="check" />
     </a>
 
     <a
@@ -56,7 +56,7 @@ const emit = defineEmits(['toggle']);
       :class="{ 'active': categories }"
       @click.prevent="() => emit('toggle', 'categories')"
     >
-      <LibryoIcon name="hashtag" />
+      <NormaIcon name="hashtag" />
     </a>
 
     <a
@@ -66,7 +66,7 @@ const emit = defineEmits(['toggle']);
       :class="{ 'active': contextQuestions }"
       @click.prevent="() => emit('toggle', 'contextQuestions')"
     >
-      <LibryoIcon name="question" />
+      <NormaIcon name="question" />
     </a>
 
     <a
@@ -76,7 +76,7 @@ const emit = defineEmits(['toggle']);
       :class="{ 'active': legalDomains }"
       @click.prevent="() => emit('toggle', 'legalDomains')"
     >
-      <LibryoIcon name="scale-balanced" />
+      <NormaIcon name="scale-balanced" />
     </a>
 
     <a
@@ -86,7 +86,7 @@ const emit = defineEmits(['toggle']);
       :class="{ 'active': locations }"
       @click.prevent="() => emit('toggle', 'locations')"
     >
-      <LibryoIcon name="location-dot" />
+      <NormaIcon name="location-dot" />
     </a>
 
     <a
@@ -96,7 +96,7 @@ const emit = defineEmits(['toggle']);
       :class="{ 'active': tags }"
       @click.prevent="() => emit('toggle', 'tags')"
     >
-      <LibryoIcon name="tags" />
+      <NormaIcon name="tags" />
     </a>
 
     <a
@@ -107,7 +107,7 @@ const emit = defineEmits(['toggle']);
       :class="{ 'active': toc }"
       @click.prevent="() => emit('toggle', 'toc')"
     >
-      <LibryoIcon name="list" />
+      <NormaIcon name="list" />
     </a>
 
     <a
@@ -117,7 +117,7 @@ const emit = defineEmits(['toggle']);
       :class="{ 'active': sourceDocument }"
       @click.prevent="() => emit('toggle', 'sourceDocument')"
     >
-      <LibryoIcon name="file-pdf" />
+      <NormaIcon name="file-pdf" />
     </a>
 
     <a
@@ -128,7 +128,7 @@ const emit = defineEmits(['toggle']);
       :class="{ 'active': plainText }"
       @click.prevent="() => emit('toggle', 'plainText')"
     >
-      <LibryoIcon name="file-lines" />
+      <NormaIcon name="file-lines" />
     </a>
 
     <a
@@ -140,7 +140,7 @@ const emit = defineEmits(['toggle']);
       @click.prevent="() => emit('toggle', 'notes')"
     >
       <span :class="{ 'bg-primary text-white rounded-full p-2': hasNotes }">
-        <LibryoIcon name="notes" />
+        <NormaIcon name="notes" />
       </span>
     </a>
   </div>

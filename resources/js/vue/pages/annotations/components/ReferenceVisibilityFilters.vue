@@ -1,6 +1,6 @@
 <script setup>
 import { computed, inject, onBeforeUpdate, ref, watch } from 'vue';
-import LibryoIcon from '@/vue/components/LibryoIcon.vue';
+import NormaIcon from '@/vue/components/NormaIcon.vue';
 import { useState } from '@/vue/composables/useState';
 import AssessmentItemSearch from '@/vue/pages/annotations/components/AssessmentItemSearch.vue';
 import ContextQuestionSearch from '@/vue/pages/annotations/components/ContextQuestionSearch.vue';
@@ -81,7 +81,7 @@ function handleApply() {
       :class="{ 'active': hasApplied }"
       @click="() => setOpen(!open)"
     >
-      <LibryoIcon name="filter" />
+      <NormaIcon name="filter" />
     </button>
 
     <div v-if="open" class="fixed inset-0 z-10" @click="() => setOpen(false)" />
@@ -108,7 +108,7 @@ function handleApply() {
           />
         </div>
         <div>
-          <label class="text-sm font-semibold text-libryo-gray-600">Assessment Items</label>
+          <label class="text-sm font-semibold text-norma-gray-600">Assessment Items</label>
           <AssessmentItemSearch
             :ref="setFilterRef"
             with-remove
@@ -119,7 +119,7 @@ function handleApply() {
           />
         </div>
         <div>
-          <label class="text-sm font-semibold text-libryo-gray-600">Context Questions</label>
+          <label class="text-sm font-semibold text-norma-gray-600">Context Questions</label>
           <ContextQuestionSearch
             :ref="setFilterRef"
             with-remove
@@ -130,7 +130,7 @@ function handleApply() {
           />
         </div>
         <div>
-          <label class="text-sm font-semibold text-libryo-gray-600">Locations</label>
+          <label class="text-sm font-semibold text-norma-gray-600">Locations</label>
           <LocationSearch
             :ref="setFilterRef"
             with-remove
@@ -141,7 +141,7 @@ function handleApply() {
           />
         </div>
         <div>
-          <label class="text-sm font-semibold text-libryo-gray-600">Legal Domains</label>
+          <label class="text-sm font-semibold text-norma-gray-600">Legal Domains</label>
           <LegalDomainSearch
             :ref="setFilterRef"
             with-remove
@@ -152,7 +152,7 @@ function handleApply() {
           />
         </div>
         <div>
-          <label class="text-sm font-semibold text-libryo-gray-600">Topics</label>
+          <label class="text-sm font-semibold text-norma-gray-600">Topics</label>
           <CategorySearch
             :ref="setFilterRef"
             with-remove

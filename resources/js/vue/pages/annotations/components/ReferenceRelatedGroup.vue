@@ -1,7 +1,7 @@
 <script setup>
 import { inject } from 'vue';
 import ReferenceRelatedItem from '@/vue/pages/annotations/components/ReferenceRelatedItem.vue';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 import { confirm } from '@/vue/plugins/bus';
 import { useAxios } from '@/vue/composables/useAxios';
 
@@ -53,14 +53,14 @@ function confirmDelete(type) {
     <div class="flex items-center justify-between cursor-pointer" @click="() => emit('toggle')">
       <div>
         <span class="w-3">
-          <LibryoIcon :name="visible ? 'angle-down' : 'angle-right'" icon-size="md" />
+          <NormaIcon :name="visible ? 'angle-down' : 'angle-right'" icon-size="md" />
         </span>
         <span class="ml-2 font-semibold">{{ labels[linkType] }}</span>
       </div>
 
       <div v-if="canDelete">
         <button class="border border-gray-300 rounded-md px-2 py-1 hover:border-negative hover:text-negative" @click.stop="() => confirmDelete(linkType)">
-          <LibryoIcon name="unlink" icon-size="md" />
+          <NormaIcon name="unlink" icon-size="md" />
         </button>
       </div>
     </div>

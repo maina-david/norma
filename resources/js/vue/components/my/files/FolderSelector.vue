@@ -26,7 +26,7 @@ function clearSelected() {
   <div>
     <DropDown>
       <template #trigger="{ toggle }">
-        <div class="relative flex items-center h-11 px-3 py-2 cursor-pointer p-3 border rounded-md border-libryo-gray-200 flex-row justify-between bg-white text-ellipsis" @click="toggle">
+        <div class="relative flex items-center h-11 px-3 py-2 cursor-pointer p-3 border rounded-md border-norma-gray-200 flex-row justify-between bg-white text-ellipsis" @click="toggle">
           <span class="flex-grow pr-8">{{ selected }}</span>
 
           <button v-if="selected" class="flex-shrink-0" @click="clearSelected">

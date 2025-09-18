@@ -1,8 +1,8 @@
 <script setup>
 // bg-[#e57061] bg-[#e05773] bg-[#f7c73b] bg-[#64b775] bg-[#45a8ba]
-// text-purple-600 bg-purple-100 text-white text-blue-600 bg-blue-100 text-green-600 bg-green-100 text-red-600 bg-red-100 text-libryo-gray-600 bg-libryo-gray-100
+// text-purple-600 bg-purple-100 text-white text-blue-600 bg-blue-100 text-green-600 bg-green-100 text-red-600 bg-red-100 text-norma-gray-600 bg-norma-gray-100
 import { computed, inject } from 'vue';
-import LibryoIcon from '@/collaborate/components/LibryoIcon.vue';
+import NormaIcon from '@/collaborate/components/NormaIcon.vue';
 import { metaInfo } from '@/vue/composables/useMetaVisibility';
 import DeleteButton from '@/vue/components/DeleteButton.vue';
 
@@ -47,7 +47,7 @@ const updated = computed(() => props.items.map((item) => {
     <span v-if="change && item.change_status === 0">Remove:</span>
     <span class="ml-1" :class="{ 'line-through': (change && item.change_status === 0) || item.removed }">{{ item.title }}</span>
     <button v-if="!noDetach && can(metaInfo[meta].detach) && !item.removed" class="ml-2" @click="() => emit('delete', item.id)">
-      <LibryoIcon name="times" icon-size="sm" />
+      <NormaIcon name="times" icon-size="sm" />
     </button>
   </span>
 
@@ -59,7 +59,7 @@ const updated = computed(() => props.items.map((item) => {
       class="px-1.5 pt-0.5 pb-0"
       @delete="() => emit('delete', 'all')"
     >
-      <LibryoIcon icon-size="sm" name="times" />
+      <NormaIcon icon-size="sm" name="times" />
     </DeleteButton>
   </div>
 </template>

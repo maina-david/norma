@@ -20,7 +20,7 @@ function handleClick() {
 </script>
 
 <template>
-  <div class="w-full" :class="{ 'bg-libryo-gray-200 rounded-lg shadow border border-libryo-gray-200 overflow-hidden': parent }">
+  <div class="w-full" :class="{ 'bg-norma-gray-200 rounded-lg shadow border border-norma-gray-200 overflow-hidden': parent }">
     <PlannerItem
       :category="category"
       :collapsable="collapsable"

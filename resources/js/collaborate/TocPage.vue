@@ -658,7 +658,7 @@ export default {
 </template>
 
 <style scoped lang="scss">
-.libryo-legislation {
+.norma-legislation {
   font-size: 1rem;
   line-height: 2;
 }

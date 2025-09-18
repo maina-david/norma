@@ -7,7 +7,7 @@ import tooltips from '@/vue/plugins/tooltips';
 import i18n from '@/vue/plugins/i18n';
 
 createInertiaApp({
-  id: 'my-libryo',
+  id: 'my-norma',
   resolve: (name) => {
     const pages = import.meta.glob('./Pages/**/*.vue', { eager: true });
 

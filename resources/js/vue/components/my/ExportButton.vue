@@ -102,7 +102,7 @@ onUnmounted(() => {
       leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
     >
       <div v-if="hasBody && bodyOpen" class="z-50 fixed inset-0 h-screen w-screen bg-gray-500 bg-opacity-75 flex items-start justify-center pt-10">
-        <div class="inline-block align-bottom bg-white rounded-lg shadow-xl transform transition-all relative border border-libryo-gray-200 max-w-screen-90">
+        <div class="inline-block align-bottom bg-white rounded-lg shadow-xl transform transition-all relative border border-norma-gray-200 max-w-screen-90">
           <slot
             :update-body-payload="updateBodyPayload"
             :trigger-export="handleExport"
@@ -121,7 +121,7 @@ onUnmounted(() => {
       leave-to-class="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
     >
       <div v-if="open" class="z-50 fixed inset-0 h-screen w-screen bg-gray-500 bg-opacity-75 flex items-start justify-center pt-10">
-        <div class="inline-block align-bottom bg-white rounded-lg shadow-xl transform transition-all relative border border-libryo-gray-200 p-4 w-screen-50">
+        <div class="inline-block align-bottom bg-white rounded-lg shadow-xl transform transition-all relative border border-norma-gray-200 p-4 w-screen-50">
           <div class="flex justify-end">
             <button @click="handleClose">
               <AppIcon name="times" />
@@ -138,7 +138,7 @@ onUnmounted(() => {
             </div>
 
             <div class="relative pt-8">
-              <div class="overflow-hidden h-2 text-xs flex rounded bg-libryo-gray-200">
+              <div class="overflow-hidden h-2 text-xs flex rounded bg-norma-gray-200">
                 <div
                   :style="`width: ${percentage}%;`"
                   class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-primary"
