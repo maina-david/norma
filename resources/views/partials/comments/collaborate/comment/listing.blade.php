@@ -24,7 +24,7 @@
               </button>
             </x-slot>
 
-            <div class="divide-y divide-libryo-gray-200 text-sm">
+            <div class="divide-y divide-norma-gray-200 text-sm">
               @can('update', $comment)
               <a class="px-4 py-1 flex items-center" href="{{ route('collaborate.comments.edit', ['comment' => $comment->id]) }}">
                 <x-ui.icon name="pencil" size="4" />
@@ -44,7 +44,7 @@
         </div>
 
         <div class="flex justify-end items-center p-1 space-x-2">
-          <span class="text-xs text-libryo-gray-600">{{ $comment->created_at->diffForHumans() }}</span>
+          <span class="text-xs text-norma-gray-600">{{ $comment->created_at->diffForHumans() }}</span>
           <x-workflows.task-type.task-type-badge :type="$comment->task->taskType" />
         </div>
 

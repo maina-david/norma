@@ -4,7 +4,7 @@
       <x-ui.icon name="chevron-left" />
     </a>
     {{ __('tasks.manage_projects') }}
-    <span class="text-xs text-libryo-gray-500 mt-1 ml-1 italic">{{ __('interface.beta') }}</span>
+    <span class="text-xs text-norma-gray-500 mt-1 ml-1 italic">{{ __('interface.beta') }}</span>
   </x-slot>
   <x-slot name="actions">
     <div>

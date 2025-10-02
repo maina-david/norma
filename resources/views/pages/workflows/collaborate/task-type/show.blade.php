@@ -30,7 +30,7 @@
 
   <x-ui.show-field :label="__('workflows.task_type.task_route_id')" :value="$resource->taskRoute->name ?? null" />
 
-  <div class="md:col-span-2 font-semibold border-b border-libryo-gray-200 mt-6">
+  <div class="md:col-span-2 font-semibold border-b border-norma-gray-200 mt-6">
     {{ __('workflows.task_type.validations') }}
   </div>
 

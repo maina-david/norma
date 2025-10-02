@@ -26,7 +26,7 @@
               </span>
               {{ $update->title }}
             </p>
-            <p class="mt-2 flex items-center text-sm text-libryo-gray-500">
+            <p class="mt-2 flex items-center text-sm text-norma-gray-500">
               <span class="truncate">
                 {{ $update->legalDomains->implode('title', ', ') ?? '' }}
               </span>
@@ -35,10 +35,10 @@
         </div>
       </div>
       <div class="hidden md:block">
-        @if (isset($update->libryos_count))
-          <span data-tippy-content="{{ __('customer.libryo.applicable_libryo_streams_this_many') }}"
-                class="tippy inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-libryo-gray-100 text-libryo-gray-800 mr-3">
-            {{ $update->libryos_count }}
+        @if (isset($update->normas_count))
+          <span data-tippy-content="{{ __('customer.norma.applicable_norma_streams_this_many') }}"
+                class="tippy inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-norma-gray-100 text-norma-gray-800 mr-3">
+            {{ $update->normas_count }}
           </span>
         @endif
         <x-ui.icon name="chevron-right" size="3" />

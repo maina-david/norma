@@ -6,7 +6,7 @@
 @endphp
 <div x-data="{{ json_encode($data) }}" class="mt-4">
   @foreach($references as $key => $group)
-    <div class="border-b border-libryo-gray-200 pb-2">
+    <div class="border-b border-norma-gray-200 pb-2">
       <div class="flex justify-between border-b pb-2">
         <div @click="{{ $type }}_{{ $key }} = !{{ $type }}_{{ $key }}" class="font-semibold cursor-pointer text-sm flex items-center">
           <x-ui.icon name="angle-down" size="3" x-show="{{ $type }}_{{ $key }}" />

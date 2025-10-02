@@ -1,4 +1,4 @@
-<x-customer.libryo.my.settings.layout :libryo="$libryo">
+<x-customer.norma.my.settings.layout :norma="$norma">
   <div class="mt-10">
     <x-ui.tabs>
 
@@ -11,18 +11,18 @@
 
       <x-ui.tab-content name="unused">
         <div class="mt-5">
-          <turbo-frame loading="lazy" id="settings-assess-setup-for-libryo-unused-items-{{ $libryo->id }}"
-                       src="{{ route('my.settings.assess.setup.unused.items.for.libryo', ['libryo' => $libryo]) }}">
+          <turbo-frame loading="lazy" id="settings-assess-setup-for-norma-unused-items-{{ $norma->id }}"
+                       src="{{ route('my.settings.assess.setup.unused.items.for.norma', ['norma' => $norma]) }}">
           </turbo-frame>
         </div>
       </x-ui.tab-content>
 
       <x-ui.tab-content name="used">
-        <turbo-frame loading="lazy" id="settings-assess-setup-for-libryo-used-items-{{ $libryo->id }}"
-                     src="{{ route('my.settings.assess.setup.used.items.for.libryo', ['libryo' => $libryo]) }}">
+        <turbo-frame loading="lazy" id="settings-assess-setup-for-norma-used-items-{{ $norma->id }}"
+                     src="{{ route('my.settings.assess.setup.used.items.for.norma', ['norma' => $norma]) }}">
         </turbo-frame>
       </x-ui.tab-content>
 
     </x-ui.tabs>
   </div>
-</x-customer.libryo.my.settings.layout>
+</x-customer.norma.my.settings.layout>

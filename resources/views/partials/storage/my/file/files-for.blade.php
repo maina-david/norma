@@ -18,7 +18,7 @@
           :route="route('my.drives.files.upload')"
           :relation="$relation"
           :related-id="$related->id"
-          :libryo-id="$libryo->id ?? null"
+          :norma-id="$norma->id ?? null"
         />
       </x-ui.modal>
     </div>

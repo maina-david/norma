@@ -1,5 +1,5 @@
 <div class="text-right">
-  @if($row->libraries_count > 0 || $row->libryos_count > 0)
+  @if($row->libraries_count > 0 || $row->normas_count > 0)
   <span class="text-green-600">
     {{ $count }}
   </span>

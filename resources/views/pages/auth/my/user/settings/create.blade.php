@@ -1,7 +1,7 @@
 <x-layouts.settings>
   <x-slot name="header">
     <span class="flex items-center">
-      <x-ui.icon name="user" size="10" class="mr-5 text-libryo-gray-600" type="duotone" />
+      <x-ui.icon name="user" size="10" class="mr-5 text-norma-gray-600" type="duotone" />
       <span>
       {{ __('auth.user.create_title') }}
       </span>

@@ -13,7 +13,7 @@ background-position: center;
 background-color: #014E20;
 background-size: cover;
 ">
-<h1 style="padding: 100px 0">{{ __('mail.welcome_libryo_platform') }}</h1>
+<h1 style="padding: 100px 0">{{ __('mail.welcome_norma_platform') }}</h1>
 </div>
 </div>
 <br>
@@ -33,21 +33,21 @@ background-size: cover;
 {{ __('mail.click_to_set_password') }}
 </div>
 @component('mail::button', ['color' => 'green', 'url' => config('app.url') . '/reset-password/' . $token])
-{{ __('mail.join_my_libryo') }}
+{{ __('mail.join_my_norma') }}
 @endcomponent
 <img style="width: 250px;display: block;margin: 0 auto;"
     src="{{ config('app.url') }}/img/welcome_email_graphic.png">
 <br>
 <div style="font-size: 20px; line-height: 35px; color: #014e20">
-<strong>{{ __('mail.what_is_libryo_platform') }}</strong>
+<strong>{{ __('mail.what_is_norma_platform') }}</strong>
 </div>
 <br>
 <p style="font-size: 15px; line-height: 26px; color: #1a2434">
-{{ __('mail.libryo_platform_description') }}
+{{ __('mail.norma_platform_description') }}
 </p>
 <div style="font-size: 15px; line-height: 26px; color: #1a2434">
 <br>
-<strong style="color: #014e20;">{{ __('mail.with_libryo_you_can') }}:</strong>
+<strong style="color: #014e20;">{{ __('mail.with_norma_you_can') }}:</strong>
 </div>
 <ul style="font-size: 15px; line-height: 26px; color: #1a2434">
 <li>{{ __('mail.know_without_clutter') }}</li>
@@ -59,17 +59,17 @@ background-size: cover;
 {{ __('mail.your_account_is_ready') }}
 </div>
 @component('mail::button', ['color' => 'green', 'url' => ($baseClientUrl ?? config('app.url')) .'/reset-password/' . $token])
-{{ __('mail.join_my_libryo') }}
+{{ __('mail.join_my_norma') }}
 @endcomponent
     <div style="font-size: 20px; line-height: 35px; color: #014e20">
         <strong>{{ __('mail.have_questions') }}</strong>
     </div>
     <br>
     <p style="font-size: 15px; line-height: 26px; color: #1a2434">
-        {!! __('mail.email_customer_success_team', ['anchor' => '<a href="mailto:info@libryo.com" style="color: #018219; font-weight: 600;">', 'anchor-close' => '</a>']) !!}
+        {!! __('mail.email_customer_success_team', ['anchor' => '<a href="mailto:info@norma.com" style="color: #018219; font-weight: 600;">', 'anchor-close' => '</a>']) !!}
     </p>
 @component('mail::subcopy')
-{{ __('mail.trouble_clicking_button', ['button' => __('mail.join_my_libryo')]) }}
+{{ __('mail.trouble_clicking_button', ['button' => __('mail.join_my_norma')]) }}
 [{{ ($baseClientUrl ?? config('app.url')) . '/reset-password/' . $token }}]({{ ($baseClientUrl ?? config('app.url')) . '/reset-password/' . $token }})
 @endcomponent
 </div>

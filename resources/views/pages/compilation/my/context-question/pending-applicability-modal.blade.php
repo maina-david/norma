@@ -18,7 +18,7 @@
         {{ __('compilation.context_question.pending_applicability_modal.title', ['number' => $pendingApplicability]) }}
       </div>
 
-      <div class="text-libryo-gray-600 space-y-2">
+      <div class="text-norma-gray-600 space-y-2">
         <p>
           {!! __('compilation.context_question.pending_applicability_modal.paragraph_1', ['number' => $pendingApplicability]) !!}
         </p>
@@ -30,7 +30,7 @@
         </p>
       </div>
 
-      <div class="flex justify-end items-center mt-2 border-t border-libryo-gray-200 pt-4">
+      <div class="flex justify-end items-center mt-2 border-t border-norma-gray-200 pt-4">
         <x-ui.button type="button" styling="outline" theme="primary" @click="document.cookie = 'applicability_dismissed=1; max-age=' + 7*24*60*60;open = false;">
           {{ __('compilation.context_question.pending_applicability_modal.later') }}
         </x-ui.button>

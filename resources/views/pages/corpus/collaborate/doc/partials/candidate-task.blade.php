@@ -24,7 +24,7 @@
     <x-ui.dropdown position="left">
       <x-slot name="trigger">
         <div>
-          <button class="flex items-center border border-libryo-gray-200 rounded-r-full">
+          <button class="flex items-center border border-norma-gray-200 rounded-r-full">
             @if($task ?? false)
               @if($task->taskType ?? false)
                 <x-workflows.task-type.task-type-badge text-size="text-sm" class="rounded-l-none" :type="$task->taskType"/>

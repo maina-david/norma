@@ -3,7 +3,7 @@
     <div class="font-semibold">{{ $reference->title }}</div>
   </div>
 
-  <div class="libryo-legislation">
+  <div class="norma-legislation">
     {!! $reference->htmlContent?->cached_content !!}
   </div>
 </x-corpus.reference.collaborate-nav>

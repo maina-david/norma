@@ -34,7 +34,7 @@
     </div>
 
   </div>
-  <ul role="list" class="divide-y divide-libryo-gray-200">
+  <ul role="list" class="divide-y divide-norma-gray-200">
     @forelse ($folders as $folder)
       <li class="py-1">
         <div class="flex items-center space-x-4">

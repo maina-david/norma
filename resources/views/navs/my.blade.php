@@ -4,12 +4,12 @@ use App\Services\Auth\ImpersonationManager;
 
 
 <div x-data="{ sidebar: false }" class="fixed w-full top-0 left-0 z-30 print:hidden">
-  <nav class="bg-navbar border-b border-libryo-gray-200 ">
+  <nav class="bg-navbar border-b border-norma-gray-200 ">
     <div class="px-2 md:px-4">
       <div class="flex h-16">
         <div class="-ml-2 mr-2 flex items-center sm:hidden">
           <button @click="sidebar = !sidebar" type="button"
-                  class="bg-white inline-flex items-center justify-center p-2 rounded-md text-libryo-gray-400 hover:text-libryo-gray-500 hover:bg-libryo-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                  class="bg-white inline-flex items-center justify-center p-2 rounded-md text-norma-gray-400 hover:text-norma-gray-500 hover:bg-norma-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                   aria-controls="mobile-menu" aria-expanded="false">
             <span class="sr-only">Open main menu</span>
             <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -25,10 +25,10 @@ use App\Services\Auth\ImpersonationManager;
 
         <div class="flex grow">
           <div class="shrink-0 hidden md:flex items-center">
-            <x-ui.libryo-logo height="h-10" style="max-width: 200px;"></x-ui.libryo-logo>
+            <x-ui.norma-logo height="h-10" style="max-width: 200px;"></x-ui.norma-logo>
           </div>
           <div class="mt-1 ml-3 md:ml-5">
-            <x-customer.libryo-switcher />
+            <x-customer.norma-switcher />
           </div>
           {{-- <div
              class="bg-navbar h-full sm:h-auto sm:bg-transparent w-80 sm:w-auto fixed sm:relative pt-2 sm:pt-0 mt-16 sm:mt-0 flex flex-col sm:flex-row sm:-my-px sm:ml-6 sm:space-x-8 sm:left-0 p-2 sm:p-0"
@@ -54,19 +54,19 @@ use App\Services\Auth\ImpersonationManager;
 
             @if (app(ImpersonationManager::class)->isImpersonating())
               <a href="{{ route('my.users.impersonate.leave') }}"
-                 class="text-libryo-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1"
+                 class="text-norma-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1"
                  id="menu-item-0">{{ __('auth.user.leave_impersonation') }}</a>
             @endif
 
 
-            <a class="block hover:bg-libryo-gray-50 px-4 py-2 text-sm text-libryo-gray-700 w-full text-left"
+            <a class="block hover:bg-norma-gray-50 px-4 py-2 text-sm text-norma-gray-700 w-full text-left"
                href="{{ route('my.user.settings.profile.show') }}">
               {{ __('auth.user.profile_settings') }}
             </a>
 
 
             <x-ui.form method="post" action="{{ route('logout') }}">
-              <button class="hover:bg-libryo-gray-50 px-4 py-2 text-sm text-libryo-gray-700 w-full text-left" role="menuitem"
+              <button class="hover:bg-norma-gray-50 px-4 py-2 text-sm text-norma-gray-700 w-full text-left" role="menuitem"
                       tabindex="-1">
                 {{ __('actions.sign_out') }}
               </button>

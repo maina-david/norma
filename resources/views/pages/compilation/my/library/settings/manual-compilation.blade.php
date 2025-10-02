@@ -5,7 +5,7 @@ use App\Enums\Application\ApplicationType;
 <x-layouts.settings>
   <x-slot name="header">
     <div class="flex items-center">
-      <x-ui.icon name="check-square" size="10" class="mr-5 text-libryo-gray-600" />
+      <x-ui.icon name="check-square" size="10" class="mr-5 text-norma-gray-600" />
       <span>{{ __('settings.nav.compilation') }}</span>
     </div>
 
@@ -135,7 +135,7 @@ use App\Enums\Application\ApplicationType;
 
     @foreach ($works as $work)
       <x-ui.card x-data="{ showingWork: false}" class="mt-5">
-        <table class="min-w-full divide-y divide-libryo-gray-200">
+        <table class="min-w-full divide-y divide-norma-gray-200">
           <thead>
             <tr>
               <th>

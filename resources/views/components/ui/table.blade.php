@@ -3,10 +3,10 @@
 <div class="flex flex-col">
   <div class="overflow-x-auto {{ $noMargins ? '' : 'sm:-mx-6 lg:-mx-8 -my-2' }}">
     <div class="py-2 align-middle inline-block min-w-full {{ $noMargins ? '' : 'sm:px-6 lg:px-8' }}">
-      <div class="shadow overflow-hidden border-b border-libryo-gray-200 {{ $notRounded ? '' : 'rounded-lg' }}">
-        <table {{ $attributes->merge(['class' => 'min-w-full divide-y divide-libryo-gray-200 bg-white']) }}>
+      <div class="shadow overflow-hidden border-b border-norma-gray-200 {{ $notRounded ? '' : 'rounded-lg' }}">
+        <table {{ $attributes->merge(['class' => 'min-w-full divide-y divide-norma-gray-200 bg-white']) }}>
           @if (isset($head) || isset($title))
-            <thead class="{{ $whiteHeader ? '' : 'bg-libryo-gray-50' }}">
+            <thead class="{{ $whiteHeader ? '' : 'bg-norma-gray-50' }}">
               @if(isset($title) || !($noSearch ?? false))
                 <tr>
                   <td colspan="20">
@@ -27,7 +27,7 @@
 
                             <button x-show="search.length > 0" style="display:none" type="button"
                                     @click="$refs.search.value = ''; $refs.form.submit();"
-                                    class="mt-1 hover:text-primary text-libryo-gray-300 transition-colors ease-in-out w-8 flex justify-center items-center absolute right-0 top-0 h-full bg-transparent">
+                                    class="mt-1 hover:text-primary text-norma-gray-300 transition-colors ease-in-out w-8 flex justify-center items-center absolute right-0 top-0 h-full bg-transparent">
                               <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                                    stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

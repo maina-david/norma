@@ -14,12 +14,12 @@
 
 <div class="flex flex-wrap items-center mt-4">
   @foreach($user->ratingAverage as $rating)
-    <div class="flex items-center space-x-2 rounded-full bg-primary-lighter  text-libryo-gray-50 py-1 px-4 mr-2 mt-2">
+    <div class="flex items-center space-x-2 rounded-full bg-primary-lighter  text-norma-gray-50 py-1 px-4 mr-2 mt-2">
       @if($rating->type)
         <x-ui.icon :name="$rating->type->icon" />
       @endif
       <span>{{ $rating->type->name ?? '' }}</span>
-      <x-ui.rating-star text-class="font-semibold text-libryo-gray-50 pr-1" :value="$rating->score" class="h-4 w-4  text-libryo-gray-50" />
+      <x-ui.rating-star text-class="font-semibold text-norma-gray-50 pr-1" :value="$rating->score" class="h-4 w-4  text-norma-gray-50" />
     </div>
   @endforeach
 </div>

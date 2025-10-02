@@ -1,5 +1,5 @@
 <div class="lg:grid grid-cols-5 gap-4">
-  <div class="col-span-2 border-r border-libryo-gray-100 text-libryo-gray-600">
+  <div class="col-span-2 border-r border-norma-gray-100 text-norma-gray-600">
     @include('partials.actions.my.action-area.references.suggested-tasks')
   </div>
 

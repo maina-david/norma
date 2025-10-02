@@ -11,7 +11,7 @@
             @endif
           </x-ui.tab-nav>
 
-          @if($libryo->hasAssessModule())
+          @if($norma->hasAssessModule())
           <x-ui.tab-nav name="assess">
             <x-ui.icon name="clipboard-list" class="mr-2" />
             {{ __('nav.assessment_items') }}
@@ -21,7 +21,7 @@
           </x-ui.tab-nav>
           @endif
 
-          @if($libryo->hasActionsModule())
+          @if($norma->hasActionsModule())
           <x-ui.tab-nav name="actions">
             <x-ui.icon name="clipboard-list-check" class="mr-2" />
             {{ __('nav.action_areas') }}
@@ -42,7 +42,7 @@
         <div class="mt-5">
           <x-ui.tab-content name="requirements">
             <turbo-frame
-              src="{{ route('my.references.for.context-questions.index', ['question' => $question, 'libryo' => $libryo]) }}"
+              src="{{ route('my.references.for.context-questions.index', ['question' => $question, 'norma' => $norma]) }}"
               loading="lazy"
               id="requirements-for-context-question-{{ $question->id }}"
             >
@@ -50,10 +50,10 @@
             </turbo-frame>
           </x-ui.tab-content>
 
-          @if($libryo->hasAssessModule())
+          @if($norma->hasAssessModule())
           <x-ui.tab-content name="assess">
             <turbo-frame
-              src="{{ route('my.assessment-items.for.context-questions.index', ['question' => $question, 'libryo' => $libryo]) }}"
+              src="{{ route('my.assessment-items.for.context-questions.index', ['question' => $question, 'norma' => $norma]) }}"
               loading="lazy"
               id="assessment-for-context-question-{{ $question->id }}"
             >
@@ -62,10 +62,10 @@
           </x-ui.tab-content>
           @endif
 
-          @if($libryo->hasActionsModule())
+          @if($norma->hasActionsModule())
           <x-ui.tab-content name="actions">
             <turbo-frame
-              src="{{ route('my.action-areas.for.context-questions.index', ['question' => $question, 'libryo' => $libryo]) }}"
+              src="{{ route('my.action-areas.for.context-questions.index', ['question' => $question, 'norma' => $norma]) }}"
               loading="lazy"
               id="action-areas-for-context-question-{{ $question->id }}"
             >
@@ -76,7 +76,7 @@
 
           <x-ui.tab-content name="activities">
             <turbo-frame
-                src="{{ route('my.activities.for.context-questions.index', ['question' => $question, 'libryo' => $libryo]) }}"
+                src="{{ route('my.activities.for.context-questions.index', ['question' => $question, 'norma' => $norma]) }}"
                 loading="lazy"
                 id="activities-for-context-question-{{ $question->id }}"
             >
@@ -120,7 +120,7 @@
           <x-ui.tab-content name="tasks">
             <turbo-frame
               loading="lazy"
-              src="{{ route('my.tasks.for.context-questions.index', ['question' => $question->id, 'libryo' => $libryo->id]) }}"
+              src="{{ route('my.tasks.for.context-questions.index', ['question' => $question->id, 'norma' => $norma->id]) }}"
               id="tasks-for-context-question-{{ $question->id }}"
             >
               <x-ui.skeleton />
@@ -131,7 +131,7 @@
           @ifOrgHasModule('comments')
           <x-ui.tab-content name="comments">
             <turbo-frame
-              src="{{ route('my.comments.for.context-questions.index', ['question' => $question->id, 'libryo' => $libryo->id]) }}"
+              src="{{ route('my.comments.for.context-questions.index', ['question' => $question->id, 'norma' => $norma->id]) }}"
               loading="lazy" id="comments-for-context-question-{{ $question->id }}"
             >
               <x-ui.skeleton />

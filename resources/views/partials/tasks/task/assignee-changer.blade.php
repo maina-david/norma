@@ -37,7 +37,7 @@
   @if ($task->assignee)
     <div class="flex flex-row items-center">
       <x-ui.user-avatar :user="$task->assignee"/>
-      <div class="ml-3 text-libryo-gray-500">{{ $task->assignee->fullName }}</div>
+      <div class="ml-3 text-norma-gray-500">{{ $task->assignee->fullName }}</div>
     </div>
   @else
     <div>-</div>

@@ -1,11 +1,11 @@
 @php use App\Models\Collaborators\Team; @endphp
 @php use App\Services\Auth\ImpersonationManager; @endphp
-<nav class="bg-navbar border-b border-libryo-gray-200 relative shrink-0 z-20">
+<nav class="bg-navbar border-b border-norma-gray-200 relative shrink-0 z-20">
   <div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex h-16" x-data="{ sidebar: false }">
       <div class="-ml-2 mr-2 flex items-center sm:hidden">
         <button @click="sidebar = !sidebar" type="button"
-                class="bg-transparent inline-flex items-center justify-center p-2 rounded-md text-libryo-gray-100 hover:text-libryo-gray-100 hover:bg-libryo-gray-100 focus:outline-none focus:bg-transparent active:bg-transparent"
+                class="bg-transparent inline-flex items-center justify-center p-2 rounded-md text-norma-gray-100 hover:text-norma-gray-100 hover:bg-norma-gray-100 focus:outline-none focus:bg-transparent active:bg-transparent"
                 aria-controls="mobile-menu" aria-expanded="false">
           <span class="sr-only">Open main menu</span>
           <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -20,7 +20,7 @@
       </div>
 
       <div class="flex grow">
-        <div class="shrink-0 flex items-center text-libryo-gray-900">
+        <div class="shrink-0 flex items-center text-norma-gray-900">
           <x-logo.collaborate class="h-8"/>
         </div>
         <div
@@ -156,7 +156,7 @@
             @endcollaborateViewAny
 
             @collaborateViewAny(['system.processing-job'])
-            <div class="w-full border-b border-libryo-gray-200"></div>
+            <div class="w-full border-b border-norma-gray-200"></div>
             <x-ui.nav-item class="whitespace-nowrap" block route="collaborate.processing-jobs.index">
               {{ __('nav.processing_jobs') }}
             </x-ui.nav-item>
@@ -315,7 +315,7 @@
 
       <div class="flex items-center">
         <button type="button"
-                class="mr-4 bg-white p-1 rounded-full text-libryo-gray-400 hover:text-libryo-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                class="mr-4 bg-white p-1 rounded-full text-norma-gray-400 hover:text-norma-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
           <span class="sr-only">{{ __('nav.view_notifications') }}</span>
 
           <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -338,29 +338,29 @@
           <div class="whitespace-nowrap w-48">
 
             <a href="{{ route('collaborate.profile.show') }}"
-               class="hover:text-primary block px-4 py-2 text-sm text-libryo-gray-700"
+               class="hover:text-primary block px-4 py-2 text-sm text-norma-gray-700"
                role="menuitem" tabindex="-1" id="user-menu-item-0">
               {{ __('nav.profile') }}
             </a>
 
             @can('manage', Team::class)
               <a href="{{ route('collaborate.collaborators.teams.billing.edit') }}"
-                 class="block px-4 py-2 text-sm text-libryo-gray-700"
+                 class="block px-4 py-2 text-sm text-norma-gray-700"
                  role="menuitem" tabindex="-1" id="user-menu-item-0">
                 {{ __('nav.billing') }}
               </a>
             @endcan
 
-            <a href="https://learn.libryo.com/"
+            <a href="https://learn.norma.com/"
                target="_blank"
-               class="hover:text-primary block px-4 py-2 text-sm text-libryo-gray-700"
+               class="hover:text-primary block px-4 py-2 text-sm text-norma-gray-700"
                role="menuitem" tabindex="-1" id="user-menu-item-0">
               {{ __('nav.learn') }}
             </a>
 
             <a href="https://forms.clickup.com/f/4axm9-1334/DS1W7A03NO5BU0BUYG"
                target="_blank"
-               class="hover:text-primary block px-4 py-2 text-sm text-libryo-gray-700"
+               class="hover:text-primary block px-4 py-2 text-sm text-norma-gray-700"
                role="menuitem" tabindex="-1" id="user-menu-item-0">
               {{ __('nav.support') }}
             </a>
@@ -368,14 +368,14 @@
             @if (app(ImpersonationManager::class)->isImpersonating())
               <a
                   href="{{ route('collaborate.collaborator.impersonate.leave') }}"
-                  class="hover:text-primary text-libryo-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1"
+                  class="hover:text-primary text-norma-gray-700 block px-4 py-2 text-sm" role="menuitem" tabindex="-1"
                   id="menu-item-0">
                 {{ __('auth.user.leave_impersonation') }}
               </a>
             @endif
 
             <x-ui.form method="post" action="{{ route('logout') }}">
-              <button class="hover:text-primary px-4 py-2 text-sm text-libryo-gray-700 w-full text-left" role="menuitem"
+              <button class="hover:text-primary px-4 py-2 text-sm text-norma-gray-700 w-full text-left" role="menuitem"
                       tabindex="-1">
                 Sign out
               </button>

@@ -7,7 +7,7 @@
   @endif
 
   @if (!empty($label))
-    <span class="text-sm inline-flex {{ $type === 'checkbox' ? '' : 'mt-4 text-libryo-gray-500' }}">
+    <span class="text-sm inline-flex {{ $type === 'checkbox' ? '' : 'mt-4 text-norma-gray-500' }}">
       <span>{{ $label }}</span> {{ $labelSuffix ?? '' }}
     </span>
   @endif
@@ -21,7 +21,7 @@
           @if ($key !== '--disabled--')
             <div>
               <x-ui.boolean :value="(is_array($value) && in_array($key, $value)) || $key === $value" />
-              <span class="text-sm {{ $type === 'checkbox' ? '' : 'mt-4 text-libryo-gray-500' }}">
+              <span class="text-sm {{ $type === 'checkbox' ? '' : 'mt-4 text-norma-gray-500' }}">
                 {{ $optionLabel }}
               </span>
             </div>

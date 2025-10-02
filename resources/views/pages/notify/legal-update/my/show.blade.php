@@ -27,30 +27,30 @@
     <div class="shadow p-3">
       <x-ui.card class="mb-10">
 
-        <dl class="lg:divide-y lg:divide-libryo-gray-200">
+        <dl class="lg:divide-y lg:divide-norma-gray-200">
           <div class="py-4 lg:py-5 lg:grid lg:grid-cols-5 lg:gap-4 lg:px-6">
-            <dt class="text-sm font-medium text-libryo-gray-500">
+            <dt class="text-sm font-medium text-norma-gray-500">
               {{ __('notify.legal_update.notified_about') }}
             </dt>
-            <dd class="mt-1 text-sm text-libryo-gray-900 lg:mt-0 lg:col-span-4">
+            <dd class="mt-1 text-sm text-norma-gray-900 lg:mt-0 lg:col-span-4">
               <a href="{{ route('my.notify.legal-updates.preview', ['update' => $update->id]) }}"
                  class="text-primary">{{ __('notify.legal_update.view_document') }}</a>
             </dd>
           </div>
           <div class="py-4 lg:py-5 lg:grid lg:grid-cols-5 lg:gap-4 lg:px-6">
-            <dt class="text-sm font-medium text-libryo-gray-500">
+            <dt class="text-sm font-medium text-norma-gray-500">
               {{ __('notify.legal_update.date_notified') }}
             </dt>
-            <dd class="mt-1 text-sm text-libryo-gray-900 lg:mt-0 lg:col-span-4">
+            <dd class="mt-1 text-sm text-norma-gray-900 lg:mt-0 lg:col-span-4">
               <x-ui.timestamp :timestamp="$update->notification_date"/>
             </dd>
           </div>
           @if ($update->primaryLocation)
             <div class="py-4 lg:py-5 lg:grid lg:grid-cols-5 lg:gap-4 lg:px-6">
-              <dt class="text-sm font-medium text-libryo-gray-500">
+              <dt class="text-sm font-medium text-norma-gray-500">
                 {{ __('notify.legal_update.jurisdiction') }}
               </dt>
-              <dd class="mt-1 text-sm text-libryo-gray-900 lg:mt-0 lg:col-span-4">
+              <dd class="mt-1 text-sm text-norma-gray-900 lg:mt-0 lg:col-span-4">
 
                 <x-ui.country-flag class="rounded-full inline-block w-6 h-6 mr-4"
                                    :country-code="$update->primaryLocation->flag"/>
@@ -114,7 +114,7 @@
 
           <x-ui.tabs>
             <x-slot name="nav">
-              <x-ui.tab-nav name="streams">{{ __('customer.libryo.applicable_libryo_streams') }}</x-ui.tab-nav>
+              <x-ui.tab-nav name="streams">{{ __('customer.norma.applicable_norma_streams') }}</x-ui.tab-nav>
               @ifOrgAdmin()
               <x-ui.tab-nav name="read_status">{{ __('notify.legal_update.read_and_understood_status') }}
               </x-ui.tab-nav>
@@ -124,7 +124,7 @@
             <x-ui.tab-content name="streams">
               <div class="pt-5">
                 <turbo-frame id="update-applicable-streams-{{ $update->id }}"
-                             src="{{ route('my.notify.legal-updates.libryos.index', ['update' => $update]) }}"
+                             src="{{ route('my.notify.legal-updates.normas.index', ['update' => $update]) }}"
                              loading="lazy"></turbo-frame>
               </div>
             </x-ui.tab-content>

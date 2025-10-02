@@ -11,27 +11,27 @@
     <x-ui.icon
       size="4"
       name="{{ strlen($reference->summaryDraft?->summary_body ?? '') > 10 || strlen($reference->summary?->summary_body ?? '') > 10 ? 'file-alt' : 'file' }}"
-      class="{{ ($reference->summaryDraft ?? false) ? 'text-negative' : ($reference->summary ? 'text-primary' : 'text-libryo-gray-200') }}"
+      class="{{ ($reference->summaryDraft ?? false) ? 'text-negative' : ($reference->summary ? 'text-primary' : 'text-norma-gray-200') }}"
     />
 
     <x-ui.icon
       type="solid"
       size="4"
       name="marker"
-      class="{{ $reference->requirementDraft ? 'text-negative' : ($reference->refRequirement ? 'text-primary' : 'text-libryo-gray-200') }}"
+      class="{{ $reference->requirementDraft ? 'text-negative' : ($reference->refRequirement ? 'text-primary' : 'text-norma-gray-200') }}"
     />
   @endif
 
   <x-ui.icon
       name="paperclip"
       size="4"
-      class="{{ $reference->linked_parents_count > 0 || $reference->linked_children_count > 0 ? 'text-primary' : 'text-libryo-gray-200' }}"
+      class="{{ $reference->linked_parents_count > 0 || $reference->linked_children_count > 0 ? 'text-primary' : 'text-norma-gray-200' }}"
   />
 
   <x-ui.icon
       name="comments"
       size="4"
-      class="{{ $reference->collaborate_comments_count > 0 ? 'text-primary' : 'text-libryo-gray-200' }}"
+      class="{{ $reference->collaborate_comments_count > 0 ? 'text-primary' : 'text-norma-gray-200' }}"
   />
 
   @if($showBulkActions ?? false)

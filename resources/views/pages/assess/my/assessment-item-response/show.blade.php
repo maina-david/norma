@@ -7,7 +7,7 @@
       </div>
 
       <div class="flex items-center">
-        <div><x-ui.icon name="clipboard-list" class="text-libryo-gray-400" size="8" /></div>
+        <div><x-ui.icon name="clipboard-list" class="text-norma-gray-400" size="8" /></div>
         <div>{{ __('my.nav.assessment_items') }}</div>
       </div>
     </div>
@@ -23,7 +23,7 @@
       @include('bookmarks.bookmark-button', ['bookmarks' => $assessmentItem->bookmarks, 'turboKey' => "assess-{$assessmentItem->id}", 'routePrefix' => 'my.assess.bookmarks', 'routePayload' => ['item' => $assessmentItem->id]])
 
 
-      <a target="_blank" class="ml-4" href="https://success.libryo.com/en/knowledge/libryo-assess">
+      <a target="_blank" class="ml-4" href="https://success.norma.com/en/knowledge/norma-assess">
         <x-ui.icon name="question-circle" />
       </a>
     </div>

@@ -4,11 +4,11 @@
   </x-ui.alert-box>
 
   <x-assess.assessment-item.assessment-item-data-table :base-query="$baseQuery"
-                                                       :route="route('my.settings.assess.setup.unused.items.for.libryo', ['libryo' => $libryo])"
+                                                       :route="route('my.settings.assess.setup.unused.items.for.norma', ['norma' => $norma])"
                                                        :fields="['description']"
                                                        actionable
                                                        :actions="['add_unused_items']"
-                                                       :actions-route="route('my.settings.assess.setup.actions.for.libryo', ['libryo' => $libryo])"
+                                                       :actions-route="route('my.settings.assess.setup.actions.for.norma', ['norma' => $norma])"
                                                        :paginate="250">
   </x-assess.assessment-item.assessment-item-data-table>
 

@@ -1,5 +1,5 @@
 <div class="md:grid grid-cols-4 lg:grid-cols-5 gap-4 pt-8">
-  <div class="col-span-2 lg:col-span-3 border-r border-libryo-gray-100 text-libryo-gray-600">
+  <div class="col-span-2 lg:col-span-3 border-r border-norma-gray-100 text-norma-gray-600">
     @include('partials.actions.my.action-area.tasks.task-details-subrow')
   </div>
 

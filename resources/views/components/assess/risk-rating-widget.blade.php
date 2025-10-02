@@ -8,7 +8,7 @@
 
   <div class="flex items-center">
     <div class="shrink-0">
-      <div class="rounded-md bg-libryo-gray-900 m-auto py-5 px-3 relative h-80 flex flex-col">
+      <div class="rounded-md bg-norma-gray-900 m-auto py-5 px-3 relative h-80 flex flex-col">
         @foreach ($riskRatings as $rating)
           <div
                class="bg-{{ $ratingColors[$rating] }} inline-block rounded-full w-16 h-16  opacity-{{ $getOpacityForRisk($risk, $rating) }} mb-6 relative m-auto">
@@ -23,11 +23,11 @@
             @foreach ($ratingDescription as $langKey)
 
               <div class="sm:grid sm:grid-cols-2 sm:gap-2 ">
-                <dt class=" text-libryo-gray-500 truncate">
+                <dt class=" text-norma-gray-500 truncate">
                   {{ __('assess.risk_rating_descriptions.labels.' . $langKey) }}
                 </dt>
                 <dd>
-                  <div class="text-libryo-gray-900 sm:text-right">
+                  <div class="text-norma-gray-900 sm:text-right">
                     {{ $getLangString($rating, $langKey) }}
                   </div>
                 </dd>

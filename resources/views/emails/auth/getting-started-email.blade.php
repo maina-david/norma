@@ -28,16 +28,16 @@
 alt="Success Portal" width="100" height="100"></td>
 <td style="padding-bottom: 20px;">
 <h2 style="font-size: 22px;margin-bottom: 0;">{{ __('mail.success_portal') }}</h2>
-<p style="font-size: 15px; line-height: 26px; color: #1a2434">{!! __('mail.success_portal_text', ['anchor' => '<a href="https://success.libryo.com/knowledge" target="_blank" class="clean accent">', 'anchor-close' => '</a>']) !!}</p>
+<p style="font-size: 15px; line-height: 26px; color: #1a2434">{!! __('mail.success_portal_text', ['anchor' => '<a href="https://success.norma.com/knowledge" target="_blank" class="clean accent">', 'anchor-close' => '</a>']) !!}</p>
 </td>
 </tr>
 <tr>
 <td align="center" valign="top" width="180"><img
-src="{{ config('app.url') }}/img/erm_libryo_support.png" alt="Libryo Support" width="100"
+src="{{ config('app.url') }}/img/erm_norma_support.png" alt="Norma Support" width="100"
 height="100"></td>
 <td style="padding-bottom: 20px;">
-<h2 style="font-size: 22px;margin-bottom: 0;">{{ __('mail.libryo_support') }}</h2>
-<p style="font-size: 15px; line-height: 26px; color: #1a2434">{!! __('mail.libryo_support_text', ['anchor' => '<a href="https://success.libryo.com/knowledge/getting-started-with-libryo/have-a-question/live-chat" target="_blank" class="clean accent">', 'anchor-close' => '</a>']) !!}</p>
+<h2 style="font-size: 22px;margin-bottom: 0;">{{ __('mail.norma_support') }}</h2>
+<p style="font-size: 15px; line-height: 26px; color: #1a2434">{!! __('mail.norma_support_text', ['anchor' => '<a href="https://success.norma.com/knowledge/getting-started-with-norma/have-a-question/live-chat" target="_blank" class="clean accent">', 'anchor-close' => '</a>']) !!}</p>
 </td>
 </tr>
 <tr>
@@ -45,7 +45,7 @@ height="100"></td>
 alt="Training Webinars" width="100" height="100"></td>
 <td style="padding-bottom: 20px;">
 <h2 style="font-size: 22px;margin-bottom: 0;">{{ __('mail.training_webinars') }}</h2>
-<p style="font-size: 15px; line-height: 26px; color: #1a2434">{!! __('mail.training_webinars_text', ['anchor' => '<a href="https://info.libryo.com/training" target="_blank" class="clean accent">', 'anchor-close' => '</a>']) !!}</p>
+<p style="font-size: 15px; line-height: 26px; color: #1a2434">{!! __('mail.training_webinars_text', ['anchor' => '<a href="https://info.norma.com/training" target="_blank" class="clean accent">', 'anchor-close' => '</a>']) !!}</p>
 </td>
 </tr>
 </table>
@@ -59,11 +59,11 @@ alt="Training Webinars" width="100" height="100"></td>
 </div>
 <br>
 <p style="font-size: 15px; line-height: 26px; color: #1a2434">
-{!! __('mail.have_questions_email_us', ['anchor' => '<a href="mailto:info@libryo.com" class="clean">', 'anchor-close' => '</a>']) !!}
+{!! __('mail.have_questions_email_us', ['anchor' => '<a href="mailto:info@norma.com" class="clean">', 'anchor-close' => '</a>']) !!}
 </p>
 <br>
 <p style="font-size: 15px; line-height: 26px; color: #1a2434">{{ __('mail.best_regards') }}</p>
-<p class="accent">{{ __('mail.libryo') }}</p>
+<p class="accent">{{ __('mail.norma') }}</p>
 
 
 </div>

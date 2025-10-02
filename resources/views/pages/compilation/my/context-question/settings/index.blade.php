@@ -51,7 +51,7 @@
 
     <div class="pt-4 flex justify-end">
       <a target="_blank"
-         href="https://success.libryo.com/en/knowledge/online-applicability">
+         href="https://success.norma.com/en/knowledge/online-applicability">
         <x-ui.icon name="question-circle" />
       </a>
     </div>
@@ -63,7 +63,7 @@
         :base-query="$baseQuery"
         :route="route('my.context-questions.index')"
         searchable
-        :fields="$libryo ? ['title', 'yes_radio', 'no_radio', 'maybe_radio'] : ['title', 'libryos_count', 'yes_count', 'no_count', 'maybe_count']"
+        :fields="$norma ? ['title', 'yes_radio', 'no_radio', 'maybe_radio'] : ['title', 'normas_count', 'yes_count', 'no_count', 'maybe_count']"
         actionable
         :actions="[
       'applicability_answer_yes',

@@ -17,7 +17,7 @@
         @foreach ($taskTypes as $type)
           <div class="shadow w-80 flex-shrink-0 bg-white mr-4 max-h-full flex flex-col rounded-lg">
 
-            <div class="flex-shrink-0 font-semibold text-center p-2 border-b border-t-4 border-libryo-gray-200 rounded-t"
+            <div class="flex-shrink-0 font-semibold text-center p-2 border-b border-t-4 border-norma-gray-200 rounded-t"
                  style="border-color:{{ $type['colour'] }};">
               {{ $type['name'] }}
             </div>

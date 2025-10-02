@@ -1,5 +1,5 @@
 <div>
-  <ul role="list" class="divide-y divide-libryo-gray-200">
+  <ul role="list" class="divide-y divide-norma-gray-200">
     @forelse ($activities as $activity)
       <li class="py-4">
         <div class="flex space-x-3">
@@ -12,12 +12,12 @@
           <div class="flex-1 space-y-1">
             <div class="flex items-center justify-between">
               <h3 class="text-sm font-medium">{{ $activity->user?->fullName ?? '' }}</h3>
-              <p class="text-sm text-libryo-gray-500">
+              <p class="text-sm text-norma-gray-500">
                 <x-ui.timestamp type="diff" :timestamp="$activity->created_at" />
               </p>
             </div>
             <div>
-              <p class="text-sm text-libryo-gray-500">
+              <p class="text-sm text-norma-gray-500">
                 <span class="inline-block mr-4">
                   <x-tasks.task-activity.activity-icon :activity-type="$activity->activity_type" />
                 </span>

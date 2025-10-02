@@ -17,7 +17,7 @@
 
 <br>
 
-@component('mail::view-task', ['id' => $task->id, 'libryoId' => $task->place_id])
+@component('mail::view-task', ['id' => $task->id, 'normaId' => $task->place_id])
 @endcomponent
 
 <!-- Salutation -->

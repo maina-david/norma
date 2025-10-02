@@ -60,7 +60,7 @@
 <br>
 <br>
 {{--{{ !empty($whitelabel) ? $whitelabel->title : config('app.name') }}--}}
-<p class="accent">{{ !empty($whitelabel) ? $whitelabel->title : __('mail.libryo') }}</p>
+<p class="accent">{{ !empty($whitelabel) ? $whitelabel->title : __('mail.norma') }}</p>
 
 </div>
 @endif

@@ -2,7 +2,7 @@
 
 @php($oldPermissions = old('permissions') ? array_keys(old('permissions')) : $resource->permissions)
 
-<div class="text-sm mt-4 mb-2 text-libryo-gray-500">
+<div class="text-sm mt-4 mb-2 text-norma-gray-500">
   {{ __('auth.role.permissions') }}
 </div>
 

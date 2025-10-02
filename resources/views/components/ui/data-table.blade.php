@@ -85,7 +85,7 @@
 >
   <div class="-my-2">
     <div class="py-2 align-middle inline-block min-w-full w-full">
-      <div class="shadow border-b border-libryo-gray-200 rounded-lg w-full ">
+      <div class="shadow border-b border-norma-gray-200 rounded-lg w-full ">
         @if ($primaryFilter !== '')
           <div class="flex flex-row justify-between bg-white px-5 pt-3">
             <div>
@@ -176,7 +176,7 @@
                         <button type="button"
                                 @click="submitActionForm('{{ $actionName }}')"
                                 form="data-table-actions-form-{{ $attributes->id ?? '' }}"
-                                class="text-libryo-gray-700 block px-4 py-2 text-sm hover:bg-libryo-gray-200 hover:text-libryo-gray-900 w-full text-left"
+                                class="text-norma-gray-700 block px-4 py-2 text-sm hover:bg-norma-gray-200 hover:text-norma-gray-900 w-full text-left"
                                 role="menuitem" tabindex="-1">
                           {{ $action['label'] }}
                         </button>
@@ -297,9 +297,9 @@
           @isset($body)
             {{ $body }}
           @else
-            <div class="flex max-w-full min-w-full h-full bg-white border-t border-libryo-gray-200">
+            <div class="flex max-w-full min-w-full h-full bg-white border-t border-norma-gray-200">
               @if ($filterable && $sideFilters)
-                <div class="flex-shrink-0 max-w-sm side-filter hidden lg:block border-r border-libryo-gray-200" @filtered="handleFilter($event)">
+                <div class="flex-shrink-0 max-w-sm side-filter hidden lg:block border-r border-norma-gray-200" @filtered="handleFilter($event)">
                   @include('partials.ui.data-table.filters', ['aside' => true])
                 </div>
               @endif
@@ -309,7 +309,7 @@
                   @if(isset($tableBody))
                     {{ $tableBody }}
                   @else
-                    <table class="w-full divide-y divide-libryo-gray-200 bg-white table-auto">
+                    <table class="w-full divide-y divide-norma-gray-200 bg-white table-auto">
                       <thead class="bg-white {{ $stickyHeadings ? 'sticky' : '' }}">
                       <tr>
                         @if ($actionable)
@@ -343,7 +343,7 @@
                           @foreach ($selectedFields as $key => $field)
                             <td
                                 {{ isset($field['colspan']) ? "colspan={$field['colspan']}" : ''  }}
-                                class="{{ $field['classes'] ?? 'px-4 py-2 print:py-1 whitespace-normal text-sm font-medium text-libryo-gray-900' }} {{ isset($field['align']) ? ' text-' . $field['align'] : '' }}">
+                                class="{{ $field['classes'] ?? 'px-4 py-2 print:py-1 whitespace-normal text-sm font-medium text-norma-gray-900' }} {{ isset($field['align']) ? ' text-' . $field['align'] : '' }}">
                               {!! $renderField($key, $row) !!}
                             </td>
                           @endforeach

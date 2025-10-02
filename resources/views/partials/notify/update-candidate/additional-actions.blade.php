@@ -19,7 +19,7 @@
     </x-slot>
   </x-ui.form>
 
-  <div class="border-b border-libryo-gray-300"></div>
+  <div class="border-b border-norma-gray-300"></div>
 @endif
 
 

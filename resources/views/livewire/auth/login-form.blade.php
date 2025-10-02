@@ -35,7 +35,7 @@ $init = $hasErrors ? "grecaptcha.render(document.querySelector('.g-recaptcha'))"
 
         <a
             href="{{ route('password.request') }}"
-            class="underline text-sm text-libryo-gray-600 hover:text-libryo-gray-900"
+            class="underline text-sm text-norma-gray-600 hover:text-norma-gray-900"
         >
           Forgot your password?
         </a>
@@ -52,7 +52,7 @@ $init = $hasErrors ? "grecaptcha.render(document.querySelector('.g-recaptcha'))"
       @endif
 
 
-      <div class="italic text-xs text-center mb-4 text-libryo-gray-500">
+      <div class="italic text-xs text-center mb-4 text-norma-gray-500">
         {!! __('interface.agree_terms_of_use') !!}
       </div>
 
@@ -73,7 +73,7 @@ $init = $hasErrors ? "grecaptcha.render(document.querySelector('.g-recaptcha'))"
           value="{{ old('email', request()->input('email')) }}"
       />
 
-      <div class="italic text-xs text-center my-4 text-libryo-gray-500">
+      <div class="italic text-xs text-center my-4 text-norma-gray-500">
         {!! __('interface.agree_terms_of_use') !!}
       </div>
 

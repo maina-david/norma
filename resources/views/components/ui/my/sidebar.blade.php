@@ -26,7 +26,7 @@ timeout: null,
             {{ $item['label'] }}
           </span>
           @if (isset($item['beta']) && $item['beta'])
-            <span class="text-xs text-libryo-gray-300 mt-1 ml-1.5 italic">{{ __('interface.beta') }}</span>
+            <span class="text-xs text-norma-gray-300 mt-1 ml-1.5 italic">{{ __('interface.beta') }}</span>
           @endif
         </a>
 

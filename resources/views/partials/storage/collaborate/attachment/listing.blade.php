@@ -6,7 +6,7 @@
   <div class="mt-4 space-y-2">
     @foreach($attachments as $attachment)
       <div class="relative group">
-        <a target="_blank" class="flex items-center rounded px-2 py-1 block border border-libryo-gray-200 hover:border-primary text-primary overflow-x-hidden" href="{{ route('collaborate.task.attachments.show', ['attachment' => $attachment->id, 'task' => $task->id]) }}">
+        <a target="_blank" class="flex items-center rounded px-2 py-1 block border border-norma-gray-200 hover:border-primary text-primary overflow-x-hidden" href="{{ route('collaborate.task.attachments.show', ['attachment' => $attachment->id, 'task' => $task->id]) }}">
           <x-ui.file-icon :mime-type="$attachment->mime_type" />
           <span class="whitespace-nowrap ml-1 flex-grow overflow-x-hidden text-ellipsis">{{ $attachment->name }}</span>
         </a>

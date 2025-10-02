@@ -1,7 +1,7 @@
 <x-layouts.settings-two-col>
   <x-slot name="header">
     <span class="flex items-center">
-      <x-ui.icon name="user" size="10" class="mr-5 text-libryo-gray-600" type="duotone" />
+      <x-ui.icon name="user" size="10" class="mr-5 text-norma-gray-600" type="duotone" />
       <span>
       {{ $user->full_name }}
       </span>
@@ -22,7 +22,7 @@
           @if(session()->has('generated-reset-token'))
             <p class="text-sm font-light">{{ __('auth.user.use_reset_link') }}</p>
 
-            <p class="text-xs text-left mt-4 font-mono px-4 py-2 bg-libryo-gray-200 rounded-lg leading-6" onclick="range = document.createRange();range.selectNodeContents(this);window.getSelection().removeAllRanges();window.getSelection().addRange(range)">
+            <p class="text-xs text-left mt-4 font-mono px-4 py-2 bg-norma-gray-200 rounded-lg leading-6" onclick="range = document.createRange();range.selectNodeContents(this);window.getSelection().removeAllRanges();window.getSelection().addRange(range)">
               {{ session('generated-reset-token') }}
             </p>
           @endif
@@ -86,8 +86,8 @@
           <x-ui.tab-nav name="teams" url="{{ route('my.settings.teams.for.user.index', ['user' => $user->id]) }}">
             {{ __('settings.nav.teams') }}
           </x-ui.tab-nav>
-          <x-ui.tab-nav name="libryos" url="{{ route('my.settings.libryos.for.user.index', ['user' => $user->id]) }}">
-            {{ __('settings.nav.libryo_streams') }}</x-ui.tab-nav>
+          <x-ui.tab-nav name="normas" url="{{ route('my.settings.normas.for.user.index', ['user' => $user->id]) }}">
+            {{ __('settings.nav.norma_streams') }}</x-ui.tab-nav>
           <x-ui.tab-nav name="organisations" url="{{ route('my.settings.organisations.for.user.index', ['user' => $user->id]) }}">
             {{ __('settings.nav.organisations') }}</x-ui.tab-nav>
           @if (userCanManageAllOrgs())
@@ -103,8 +103,8 @@
           </turbo-frame>
         </x-ui.tab-content>
 
-        <x-ui.tab-content name="libryos">
-          <turbo-frame id="settings-libryos-for-user-{{ $user->id }}">
+        <x-ui.tab-content name="normas">
+          <turbo-frame id="settings-normas-for-user-{{ $user->id }}">
             <x-ui.skeleton />
           </turbo-frame>
         </x-ui.tab-content>

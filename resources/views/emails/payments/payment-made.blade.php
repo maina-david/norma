@@ -22,7 +22,7 @@
             <br>
             <br>
             {{ __('payments.mail.many_thanks') }}
-            <div style="font-weight: bold">{{ __('mail.libryo') }}</div>
+            <div style="font-weight: bold">{{ __('mail.norma') }}</div>
           </div>
         </div>
       </div>

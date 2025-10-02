@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
   <input x-model="selected" type="hidden" name="{{ $name }}" />
   <x-ui.dropdown class="w-96">
     <x-slot name="trigger">
-      <div class="p-3 border rounded-md border-libryo-gray-200 flex flex-row justify-between bg-white">
+      <div class="p-3 border rounded-md border-norma-gray-200 flex flex-row justify-between bg-white">
         <div class="text-ellipsis" x-text="selectedTitle"></div>
         <div>
           <x-ui.icon name="chevron-down" size="3" class="mx-2" />

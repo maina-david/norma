@@ -10,7 +10,7 @@
       <div class="flex items-center space-x-2 md:mr-6 mt-1">
         <input
             @click="{{ $onCLick }}"
-            class="libryo-radio text-primary focus:ring-primary cursor-pointer disabled:text-libryo-gray-500 disabled:cursor-default"
+            class="norma-radio text-primary focus:ring-primary cursor-pointer disabled:text-norma-gray-500 disabled:cursor-default"
             type="radio"
             name="{{ $canUpdate ? "priority" : '' }}"
             id="priority_{{ $task->id }}_{{ $item['value'] }}"

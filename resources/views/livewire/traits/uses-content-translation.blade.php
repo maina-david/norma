@@ -9,6 +9,6 @@
   </div>
 @endif
 
-<div class="libryo-legislation p-3" wire:loading.class="text-libryo-gray-300">
+<div class="norma-legislation p-3" wire:loading.class="text-norma-gray-300">
   {!! $content !!}
 </div>

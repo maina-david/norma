@@ -4,7 +4,7 @@ use App\Enums\Storage\My\FolderType;
 <x-layouts.settings>
   <x-slot name="header">
     <div class="flex items-center">
-      <x-ui.icon name="hdd" size="10" class="mr-5 text-libryo-gray-600" /> {{ __('settings.nav.drives') }}
+      <x-ui.icon name="hdd" size="10" class="mr-5 text-norma-gray-600" /> {{ __('settings.nav.drives') }}
     </div>
   </x-slot>
 
@@ -22,7 +22,7 @@ use App\Enums\Storage\My\FolderType;
         </div>
         <div>
           <div class="font-bold text-lg">{{ __('storage.drives.organisation_drive_setup') }}</div>
-          <div class="text-libryo-gray-600 text-sm">{{ __('storage.drives.organisation_drive_setup_info') }}</div>
+          <div class="text-norma-gray-600 text-sm">{{ __('storage.drives.organisation_drive_setup_info') }}</div>
         </div>
       </div>
 
@@ -41,8 +41,8 @@ use App\Enums\Storage\My\FolderType;
           <x-ui.alert-box class="mb-10">
             {{ __('storage.drives.organisation_drive_setup_explainer') }}
           </x-ui.alert-box>
-          <turbo-frame id="settings-drives-libryo-specific-folders-{{ FolderType::organisation()->value }}">
-            <x-storage.my.folder.settings.libryo-folder-setup :folder-type="FolderType::organisation()->value" />
+          <turbo-frame id="settings-drives-norma-specific-folders-{{ FolderType::organisation()->value }}">
+            <x-storage.my.folder.settings.norma-folder-setup :folder-type="FolderType::organisation()->value" />
           </turbo-frame>
         </div>
       </div>
@@ -50,7 +50,7 @@ use App\Enums\Storage\My\FolderType;
     </div>
 
 
-    {{-- Libryo Stream Drive Setup --}}
+    {{-- Norma Stream Drive Setup --}}
 
     <div class="p-5 bg-white rounded shadow mt-10">
       <div class="flex flex-row items-center mb-3">
@@ -58,28 +58,28 @@ use App\Enums\Storage\My\FolderType;
           <x-ui.icon name="hdd" size="10" class="text-primary" />
         </div>
         <div>
-          <div class="font-bold text-lg">{{ __('storage.drives.libryo_stream_drive_setup') }}</div>
-          <div class="text-libryo-gray-600 text-sm">{{ __('storage.drives.libryo_stream_drive_setup_info') }}</div>
+          <div class="font-bold text-lg">{{ __('storage.drives.norma_stream_drive_setup') }}</div>
+          <div class="text-norma-gray-600 text-sm">{{ __('storage.drives.norma_stream_drive_setup_info') }}</div>
         </div>
       </div>
 
       <div class="grid md:grid-cols-2 gap-4">
         <div class="p-5">
           <x-ui.alert-box class="mb-10">
-            {{ __('storage.setup.organisation_folders_setup_info_libryo_streams') }}
+            {{ __('storage.setup.organisation_folders_setup_info_norma_streams') }}
           </x-ui.alert-box>
 
-          <turbo-frame id="settings-drives-setup-organisation-folders-{{ FolderType::libryo()->value }}" data-turbo-action="advance">
-            <x-storage.my.folder.settings.organisation-folder-setup :folder-id="$libryoFolderId" :folder-type="FolderType::libryo()->value" />
+          <turbo-frame id="settings-drives-setup-organisation-folders-{{ FolderType::norma()->value }}" data-turbo-action="advance">
+            <x-storage.my.folder.settings.organisation-folder-setup :folder-id="$normaFolderId" :folder-type="FolderType::norma()->value" />
           </turbo-frame>
         </div>
 
         <div class="p-5">
           <x-ui.alert-box class="mb-10">
-            {{ __('storage.drives.libryo_stream_drive_setup_explainer') }}
+            {{ __('storage.drives.norma_stream_drive_setup_explainer') }}
           </x-ui.alert-box>
-          <turbo-frame id="settings-drives-libryo-specific-folders-{{ FolderType::libryo()->value }}">
-            <x-storage.my.folder.settings.libryo-folder-setup :folder-type="FolderType::libryo()->value" />
+          <turbo-frame id="settings-drives-norma-specific-folders-{{ FolderType::norma()->value }}">
+            <x-storage.my.folder.settings.norma-folder-setup :folder-type="FolderType::norma()->value" />
           </turbo-frame>
         </div>
       </div>

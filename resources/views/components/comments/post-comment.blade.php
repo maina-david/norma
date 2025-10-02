@@ -31,7 +31,7 @@
   },
   handleAtMentionSelect: function(e) {
     this.showingUserSelector = false;
-    window.Libryo.comments.comment.replaceMentions($refs.commentBox, e.target);
+    window.Norma.comments.comment.replaceMentions($refs.commentBox, e.target);
     window.placeCaretAtEnd($refs.commentBox);
   }
   }"
@@ -47,15 +47,15 @@
       class="relative"
     >
 
-      @if($libryoId)
-        <input type="hidden" name="target_libryo_id" value="{{ $libryoId }}"/>
+      @if($normaId)
+        <input type="hidden" name="target_norma_id" value="{{ $normaId }}"/>
       @endif
 
       @if($redirect)
         <input type="hidden" name="save_and_back" value="{{ $redirect }}"/>
       @endif
       <div
-           class="border border-libryo-gray-300 rounded-lg shadow-sm overflow-hidden focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
+           class="border border-norma-gray-300 rounded-lg shadow-sm overflow-hidden focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
         <label for="comment" class="sr-only">Add your comment</label>
 
         <div
@@ -67,7 +67,7 @@
              class="full-width block w-full font-normal px-3 py-4 border-0 resize-none outline-none focus:ring-0 sm:text-sm bg-white">
         </div>
         <div x-show="showingUserSelector" class="">
-          <div class="p-1 border border-libryo-gray-50 bg-libryo-gray-50 flex justify-end text-libryo-gray-500">
+          <div class="p-1 border border-norma-gray-50 bg-norma-gray-50 flex justify-end text-norma-gray-500">
             <x-ui.icon @click="showingUserSelector = false" name="times" size="3" class="cursor-pointer" />
           </div>
           <x-auth.user.my.user-selector x-ref="userSelector"
@@ -77,7 +77,7 @@
         </div>
 
         <div x-show="showingEmojis">
-          <div class="p-1 border border-libryo-gray-50 bg-libryo-gray-50 flex justify-end text-libryo-gray-500">
+          <div class="p-1 border border-norma-gray-50 bg-norma-gray-50 flex justify-end text-norma-gray-500">
             <x-ui.icon @click="showingEmojis = false" name="times" size="3" class="cursor-pointer" />
           </div>
           <emoji-picker class="w-full" x-on:emoji-click="handleEmojiClick($event.detail)"></emoji-picker>
@@ -96,20 +96,20 @@
         <div class="flex items-center space-x-5">
           {{-- <div class="flex items-center">
             <button type="button"
-                    class="-m-2.5 w-10 h-10 rounded-full flex items-center justify-center text-libryo-gray-400 hover:text-libryo-gray-500">
+                    class="-m-2.5 w-10 h-10 rounded-full flex items-center justify-center text-norma-gray-400 hover:text-norma-gray-500">
               <x-ui.icon name="paperclip" />
               <span class="sr-only">Attach a file</span>
             </button>
           </div> --}}
           <div class="flex items-center">
             <button @click="showingEmojis = !showingEmojis" type="button"
-                    class="-m-2.5 w-10 h-10 rounded-full flex items-center justify-center text-libryo-gray-400 hover:text-libryo-gray-500">
+                    class="-m-2.5 w-10 h-10 rounded-full flex items-center justify-center text-norma-gray-400 hover:text-norma-gray-500">
               <x-ui.icon name="smile-wink" />
             </button>
           </div>
           {{-- <div class="flex items-center">
             <button type="button"
-                    class="-m-2.5 w-10 h-10 rounded-full flex items-center justify-center text-libryo-gray-400 hover:text-libryo-gray-500">
+                    class="-m-2.5 w-10 h-10 rounded-full flex items-center justify-center text-norma-gray-400 hover:text-norma-gray-500">
               <x-ui.icon name="at" />
             </button>
           </div> --}}

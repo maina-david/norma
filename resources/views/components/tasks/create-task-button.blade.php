@@ -1,4 +1,4 @@
-@props(['taskableId' => null, 'taskableType' => null, 'libryoId' => null, 'redirectTo' => url()->current()])
+@props(['taskableId' => null, 'taskableType' => null, 'normaId' => null, 'redirectTo' => url()->current()])
 
 @php
   use App\Enums\Tasks\TaskPriority;
@@ -25,8 +25,8 @@
           <input type="hidden" name="taskable_type" value="{{ $taskableType }}"/>
           <input type="hidden" name="taskable_id" value="{{ $taskableId }}"/>
         @endif
-        @if($libryoId)
-          <input type="hidden" name="target_libryo_id" value="{{ $libryoId }}"/>
+        @if($normaId)
+          <input type="hidden" name="target_norma_id" value="{{ $normaId }}"/>
         @endif
 
         <input type="hidden" name="task_status" value="{{ TaskStatus::notStarted()->value }}"/>
@@ -56,7 +56,7 @@
               :value="old('description', $task->description ?? '')"
               name="description"
               label="{{ __('interface.description') }}"
-              class="libryo-editor-minimal"
+              class="norma-editor-minimal"
           />
         </div>
 

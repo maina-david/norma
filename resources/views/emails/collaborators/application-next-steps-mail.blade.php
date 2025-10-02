@@ -13,10 +13,10 @@
   </p>
 
   <p>
-    {!! __('collaborators.collaborator_application.accessing_libryo_learn_heading') !!}<br/>
+    {!! __('collaborators.collaborator_application.accessing_norma_learn_heading') !!}<br/>
   </p>
   <p>
-    {!! __('collaborators.collaborator_application.accessing_libryo_learn') !!}
+    {!! __('collaborators.collaborator_application.accessing_norma_learn') !!}
   </p>
 
   <p>

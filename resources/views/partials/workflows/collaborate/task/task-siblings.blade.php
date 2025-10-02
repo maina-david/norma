@@ -4,7 +4,7 @@ $siblings = Task::siblings(auth()->user(), null, $resource);
 @endphp
 
 @if($siblings->isNotEmpty())
-<div class="divide-y divide-libryo-gray-200 mt-6" data-turbo="false">
+<div class="divide-y divide-norma-gray-200 mt-6" data-turbo="false">
     @foreach($siblings as $sibling)
       <div class="mb-2 py-2">
         <div class="flex justify-between items-center">

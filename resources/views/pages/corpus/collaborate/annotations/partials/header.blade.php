@@ -123,7 +123,7 @@
         </span>
       @else
         <a target="_top" x-bind:href="window.location.href.replace(/{{ $expression->id }}/, {{ $expr->id }})"
-           class="inline-flex rounded-full items-center py-0.5 px-2 text-xs font-medium bg-libryo-gray-300">
+           class="inline-flex rounded-full items-center py-0.5 px-2 text-xs font-medium bg-norma-gray-300">
           @if($expr->id === $expression->work->active_work_expression_id)
             <x-ui.icon name="lightbulb-on" size="4" class="mr-2" />
           @endif

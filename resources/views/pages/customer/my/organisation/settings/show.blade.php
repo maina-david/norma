@@ -1,7 +1,7 @@
 <x-layouts.settings>
   <x-slot name="header">
     <span class="flex items-center">
-      <x-ui.icon name="sitemap" size="10" class="mr-5 text-libryo-gray-600" type="duotone" />
+      <x-ui.icon name="sitemap" size="10" class="mr-5 text-norma-gray-600" type="duotone" />
       <span>{{ $organisation->title }}</span>
     </span>
   </x-slot>
@@ -38,8 +38,8 @@
           </x-ui.tab-nav>
         @endif
 
-        <x-ui.tab-nav name="libryos">
-          {{ __('settings.nav.libryo_streams') }}
+        <x-ui.tab-nav name="normas">
+          {{ __('settings.nav.norma_streams') }}
         </x-ui.tab-nav>
         <x-ui.tab-nav name="teams">
           {{ __('settings.nav.teams') }}</x-ui.tab-nav>
@@ -70,9 +70,9 @@
         </x-ui.tab-content>
       @endif
 
-      <x-ui.tab-content name="libryos">
-        <turbo-frame loading="lazy" id="settings-libryos-for-organisation-{{ $organisation->id }}"
-                     src="{{ route('my.settings.libryos.for.organisation.index', ['organisation' => $organisation->id]) }}">
+      <x-ui.tab-content name="normas">
+        <turbo-frame loading="lazy" id="settings-normas-for-organisation-{{ $organisation->id }}"
+                     src="{{ route('my.settings.normas.for.organisation.index', ['organisation' => $organisation->id]) }}">
           <x-ui.skeleton />
         </turbo-frame>
       </x-ui.tab-content>

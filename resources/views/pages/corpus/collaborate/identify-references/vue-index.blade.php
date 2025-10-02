@@ -12,7 +12,7 @@
 <x-layouts.collaborate fluid no-padding>
   <x-slot name="pageHead">
     <script>
-      window.magi = {!! json_encode(config('services.libryo_ai.enabled')) !!};
+      window.magi = {!! json_encode(config('services.norma_ai.enabled')) !!};
       window.pageMeta = {!! json_encode($pageMeta) !!};
       window.activateReference = {!! json_encode(request()->query('activate')) !!};
       window.hasNotes = {!! json_encode($hasNotes) !!};

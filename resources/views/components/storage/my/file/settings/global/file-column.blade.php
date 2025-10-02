@@ -1,4 +1,4 @@
-<div class="border-b border-libryo-gray-200 pb-4">
+<div class="border-b border-norma-gray-200 pb-4">
   <x-storage.file-panel
       :file="$file"
       allow-delete
@@ -11,7 +11,7 @@
     <div class="text-xs">
       <div class="flex flex-wrap">
         @foreach ($file->legalDomains as $domain)
-          <div class="mr-2 rounded-full px-2 bg-libryo-gray-200">{{ $domain->title }}</div>
+          <div class="mr-2 rounded-full px-2 bg-norma-gray-200">{{ $domain->title }}</div>
         @endforeach
       </div>
       <div class="flex flex-wrap mt-1">

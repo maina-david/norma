@@ -56,9 +56,9 @@
               <livewire:compilation.context-question.applicability-requirement-changer
                 bulk="handleBulkAction('add')"
                 prefix="add"
-                :libryo-ids="[]"
+                :norma-ids="[]"
                 :reference-ids="[]"
-                :in-libryo="false"
+                :in-norma="false"
                 :key="Str::random(64)"
               />
             </div>
@@ -67,9 +67,9 @@
             <livewire:compilation.context-question.applicability-requirement-changer
                 bulk="handleBulkAction('remove')"
                 prefix="remove"
-                :libryo-ids="[]"
+                :norma-ids="[]"
                 :reference-ids="[]"
-                :in-libryo="true"
+                :in-norma="true"
                 :key="Str::random(64)"
               />
             </div>
@@ -81,7 +81,7 @@
         <x-slot:head>
           <th class="w-10"></th>
           <x-ui.th class=""></x-ui.th>
-          @if($libryo)
+          @if($norma)
             <x-ui.th class="text-center w-40">{{ __('compilation.context_question.recommended') }}</x-ui.th>
             <x-ui.th class="text-center w-40">{{ __('compilation.context_question.included_in_stream') }}</x-ui.th>
           @else

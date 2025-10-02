@@ -23,7 +23,7 @@
 
   <div class="col-span-10">
     <div class="text-sm">
-      <div class="inline-block mr-2 rounded bg-libryo-gray-200 text-libryo-gray-700 px-1.5 py-0.5 text-xs">
+      <div class="inline-block mr-2 rounded bg-norma-gray-200 text-norma-gray-700 px-1.5 py-0.5 text-xs">
         <div class="flex flex-row items-center">
           <x-ui.icon name="file-alt" size="3" class="mr-1" />
           {{ __('corpus.work.types.' . $work->work_type) }}
@@ -32,10 +32,10 @@
 
       <span class="text-primary">{{ $work->title }}</span>
       @if ($work->title_translation)
-        <span class="text-libryo-gray-500 text-sm">[{{ $work->title_translation }}]</span>
+        <span class="text-norma-gray-500 text-sm">[{{ $work->title_translation }}]</span>
       @endif
       @foreach ($work->parents as $parent)
-        <div class="text-libryo-gray-600 mt-1 text-xs">{{ $parent->title }}</div>
+        <div class="text-norma-gray-600 mt-1 text-xs">{{ $parent->title }}</div>
       @endforeach
 
     </div>

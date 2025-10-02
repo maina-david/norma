@@ -4,13 +4,13 @@
       <x-ui.icon name="gavel" class="mr-3 ml-5" size="8" />
       <div>
         {{ __('corpus.work.legal_register_export') }}
-        <span class="text-xs text-libryo-gray-500 italic ml-3">{{ $libryo->title ?? ($organisation->title ?? '') }}</span>
+        <span class="text-xs text-norma-gray-500 italic ml-3">{{ $norma->title ?? ($organisation->title ?? '') }}</span>
       </div>
     </div>
   </x-slot>
 
   {{-- only available in single stream mode --}}
-  @if ($libryo)
+  @if ($norma)
     <div class="flex justify-center mt-10 print:hidden">
       {{-- <x-ui.modal>
         <x-slot name="trigger">
@@ -39,10 +39,10 @@
 
     <div class="relative mt-10 mb-5 print:hidden">
       <div class="absolute inset-0 flex items-center" aria-hidden="true">
-        <div class="w-full border-t border-libryo-gray-300"></div>
+        <div class="w-full border-t border-norma-gray-300"></div>
       </div>
       <div class="relative flex justify-center">
-        <span class="px-2 bg-libryo-gray-50 text-sm text-libryo-gray-500"> {{ __('corpus.work.export_preview') }} </span>
+        <span class="px-2 bg-norma-gray-50 text-sm text-norma-gray-500"> {{ __('corpus.work.export_preview') }} </span>
       </div>
     </div>
 
@@ -62,7 +62,7 @@
             <x-ui.icon x-show="showingRerences" @click="showingRerences = !showingRerences" name="toggle-on"
                        class="cursor-pointer text-primary " size="8" />
             <x-ui.icon x-show="!showingRerences" @click="showingRerences = !showingRerences" name="toggle-off"
-                       class="cursor-pointer text-libryo-gray-400" size="8" />
+                       class="cursor-pointer text-norma-gray-400" size="8" />
           </div>
         </x-slot>
       </x-corpus.work.work-requirements-data-table>

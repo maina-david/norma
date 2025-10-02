@@ -11,7 +11,7 @@
     </div>
 
     <div class="mt-6 text-sm">
-      <div class="font-semibold px-2 mb-2 pb-2 border-b border-libryo-gray-100">
+      <div class="font-semibold px-2 mb-2 pb-2 border-b border-norma-gray-100">
         {{ __('corpus.work.selected_works') }}
       </div>
 
@@ -23,8 +23,8 @@
 
       <table class="w-full">
         <template x-for="(work,index) in works">
-          <tr class="group" x-bind:class="index % 2 == 0 ? 'bg-white' : 'bg-libryo-gray-50'" @click="works.splice(index, 1)">
-            <td class="px-2 py-1 whitespace-normal text-sm font-medium text-libryo-gray-900 relative">
+          <tr class="group" x-bind:class="index % 2 == 0 ? 'bg-white' : 'bg-norma-gray-50'" @click="works.splice(index, 1)">
+            <td class="px-2 py-1 whitespace-normal text-sm font-medium text-norma-gray-900 relative">
               <span x-text="work.title"></span>
               <span class="cursor-pointer hidden group-hover:flex bg-gray-50 bg-opacity-90 absolute top-0 left-0 w-full h-full items-center justify-center">
                 <span>{{ __('actions.click_to_remove') }}</span>

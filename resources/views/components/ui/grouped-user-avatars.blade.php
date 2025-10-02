@@ -13,7 +13,7 @@
   @endforeach
 
   @if($remainder > 0)
-      <div class="text-white bg-libryo-gray-400 w-{{ $dimensions }} h-{{ $dimensions }} rounded-full flex items-center justify-center ring-1 ring-white">
+      <div class="text-white bg-norma-gray-400 w-{{ $dimensions }} h-{{ $dimensions }} rounded-full flex items-center justify-center ring-1 ring-white">
         <span>+{{ $remainder }}</span>
       </div>
   @endif

@@ -12,7 +12,7 @@
     {{ $question->toQuestion() }}
   </x-ui.link>
 
-  <div class="text-xs text-libryo-gray-500 flex flex-col items-start">
+  <div class="text-xs text-norma-gray-500 flex flex-col items-start">
     @foreach($categories as $cat)
       <div
         class="tippy"

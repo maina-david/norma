@@ -11,7 +11,7 @@
 <br>
 <br>
 <p style="text-align: left; font-size: .85em; padding: none">
-{!! __('mail.here_to_help', ['anchor' => '<a href="mailto:info@libryo.com">', 'anchor-close' => '</a>']) !!}
+{!! __('mail.here_to_help', ['anchor' => '<a href="mailto:info@norma.com">', 'anchor-close' => '</a>']) !!}
 </p>
 <br>
 @endif

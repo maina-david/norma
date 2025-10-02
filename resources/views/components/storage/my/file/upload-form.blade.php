@@ -24,8 +24,8 @@
         <input type="hidden" name="related_id" value="{{ $relatedId }}" />
       @endif
 
-      @if($libryoId)
-        <input type="hidden" name="target_libryo_id" value="{{ $libryoId }}"/>
+      @if($normaId)
+        <input type="hidden" name="target_norma_id" value="{{ $normaId }}"/>
       @endif
 
       {{ $slot ?? '' }}
@@ -62,7 +62,7 @@
 
     @else
       <label x-show="showUploader"
-             class="grid place-content-center py-96 w-full bg-libryo-gray-200 rounded-2xl cursor-pointer text-xl">
+             class="grid place-content-center py-96 w-full bg-norma-gray-200 rounded-2xl cursor-pointer text-xl">
         {{ __('storage.select_files') }}
         <x-ui.input class="hidden" type="file" :name="$name" multiple
                     accept="{{ implode(',', $acceptedUploads) }}"

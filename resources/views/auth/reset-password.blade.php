@@ -3,7 +3,7 @@
     <x-ui.card>
 
       <div class="sm:mx-auto sm:w-full sm:max-w-md mb-8 mt-2">
-        <x-ui.libryo-logo login height="h-16" class="px-4 max-w-sm"></x-ui.libryo-logo>
+        <x-ui.norma-logo login height="h-16" class="px-4 max-w-sm"></x-ui.norma-logo>
 
         <x-slot name="title"></x-slot>
       </div>

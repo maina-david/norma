@@ -21,7 +21,7 @@
 
         <div class="min-w-0 flex-1">
           <div @click="selectFolder({{ $folder->id }}, '{{ $folder->title }}');"
-               class="flex flex-row cursor-pointer hover:bg-libryo-gray-100 px-3 py-1"
+               class="flex flex-row cursor-pointer hover:bg-norma-gray-100 px-3 py-1"
                :class="selected === {{ $folder->id }} ? 'bg-primary-lighter text-white hover:bg-primary-lighter hover:text-white' : ''">
             <x-ui.icon name="{{ $showingChildren ? 'folder-open' : 'folder' }}" class="mr-3" />
             <div>{{ $folder->title }}</div>

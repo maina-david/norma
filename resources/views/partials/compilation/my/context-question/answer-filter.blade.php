@@ -14,7 +14,7 @@
   $allChecked = collect($options)->keys()->reduce(fn ($a, $b) => $a && in_array($b, $value), true);
 @endphp
 <div
-  class="border-t border-libryo-gray-200 pt-4 check-group"
+  class="border-t border-norma-gray-200 pt-4 check-group"
   x-data="{
     toggleChildren: function (event) {
       var ids = [];

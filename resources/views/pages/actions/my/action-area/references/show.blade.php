@@ -3,7 +3,7 @@
     <div class="flex items-center">
       <x-ui.back-referrer-button fallback="{{ route('my.actions.action-areas.subject.index') }}"/>
 
-      <x-ui.icon name="clipboard-list" class="mr-3 ml-5 text-libryo-gray-400" size="8" />
+      <x-ui.icon name="clipboard-list" class="mr-3 ml-5 text-norma-gray-400" size="8" />
       <div>
         {{ $reference->refPlainText->plain_text ?? '' }}
       </div>

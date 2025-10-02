@@ -48,8 +48,8 @@
     </form>
   </div>
 
-  <div class="flex flex-grow overflow-hidden bg-white border-t border-libryo-gray-200">
-    <div class="overflow-hidden w-80 flex-shrink-0 pt-4 border-r border-libryo-gray-200">
+  <div class="flex flex-grow overflow-hidden bg-white border-t border-norma-gray-200">
+    <div class="overflow-hidden w-80 flex-shrink-0 pt-4 border-r border-norma-gray-200">
       <div class="h-full w-full overflow-hidden">
         <form class="page-filter-form h-full w-full pl-1 flex flex-col" @submit.prevent="submitFilters($event.target)">
 
@@ -66,7 +66,7 @@
             </div>
           </div>
 
-          <div class="page-filters border-b border-t border-libryo-gray-200 py-4 pl-2 pr-4 divide-y divide-libryo-gray-200 flex-grow overflow-y-auto">
+          <div class="page-filters border-b border-t border-norma-gray-200 py-4 pl-2 pr-4 divide-y divide-norma-gray-200 flex-grow overflow-y-auto">
             <livewire:ontology.category.category-tree
                 :domains="$domains"
                 :locations="$locations"
@@ -78,7 +78,7 @@
                 :applied="$filters['domains'] ?? []"
             />
 
-            <x-geonames.location.my.libryo-organisation-location-filter
+            <x-geonames.location.my.norma-organisation-location-filter
                 :locations="$locations"
                 :applied="$filters['locations'] ?? []"
             />
@@ -110,7 +110,7 @@
           :key="Str::random(64)"
           :domains="$domains"
           :locations="$locations"
-          :libryos="$libryos"
+          :normas="$normas"
         />
       </div>
     </div>

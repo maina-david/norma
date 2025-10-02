@@ -5,7 +5,7 @@
       <button @click.stop="" type="submit" class="tippy hidden group-hover:block" data-tippy-content="{{ __('bookmarks.bookmark') }}">
         <x-ui.icon
             type="light"
-            class="text-libryo-gray-400 mr-3"
+            class="text-norma-gray-400 mr-3"
             name="bookmark"
             size="{{ $size ?? 3 }}"
         />

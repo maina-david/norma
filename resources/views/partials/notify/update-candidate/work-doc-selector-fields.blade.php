@@ -15,7 +15,7 @@
 </x-ui.label>
 <div class="flex items-start group">
   <div class="flex-grow">
-    <div class="catalogue-doc-id-input mt-2 font-medium text-libryo-gray-900">
+    <div class="catalogue-doc-id-input mt-2 font-medium text-norma-gray-900">
       <div class="doc-title">{{ $item->catalogueDoc->title ?? '-' }}</div>
       <div class="doc-title-translation">{{ $item->catalogueDoc->title_translation ?? '' }}</div>
     </div>
@@ -56,7 +56,7 @@
 </x-ui.label>
 <div class="flex items-start group">
   <div class="flex-grow">
-    <div class="work-id-input mt-2 font-medium text-libryo-gray-900">
+    <div class="work-id-input mt-2 font-medium text-norma-gray-900">
       <div class="doc-title">{{ $item->work->title ?? '-' }}</div>
       <div class="doc-title-translation">{{ $item->work->title_translation ?? '' }}</div>
     </div>

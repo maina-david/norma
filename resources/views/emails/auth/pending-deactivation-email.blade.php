@@ -49,11 +49,11 @@
 </div>
 <br>
 <p style="font-size: 15px; line-height: 26px; color: #1a2434">
-{!! __('mail.have_questions_email_us', ['anchor' => '<a href="mailto:info@libryo.com">', 'anchor-close' => '</a>']) !!}
+{!! __('mail.have_questions_email_us', ['anchor' => '<a href="mailto:info@norma.com">', 'anchor-close' => '</a>']) !!}
 </p>
 <br>
 <p style="font-size: 15px; line-height: 26px; color: #1a2434">{{ __('mail.best_regards') }}</p>
-<p class="accent">{{ __('mail.libryo') }}</p>
+<p class="accent">{{ __('mail.norma') }}</p>
 </div>
 </div>
 </div>

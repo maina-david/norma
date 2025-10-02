@@ -3,7 +3,7 @@
       hoveringOverItem: false,
       handleItemClick: function(id) {
           if (id === '') return;
-          window.setTimeout(function() { window.scrollToItemWhenAvailable('#' + id, '.libryo-legislation', 'smooth'); }, 200);
+          window.setTimeout(function() { window.scrollToItemWhenAvailable('#' + id, '.norma-legislation', 'smooth'); }, 200);
       }
   }" class="relative py-1 pl-2 pr-1 list-none text-sm">
     @if (!is_null($tocItem))
@@ -15,13 +15,13 @@
             @if (!$showingChildren)
               <a
                  href="{{ route('collaborate.docs.identify-toc', ['expression' => $expression, 'doc' => $doc->id, 'itemId' => $tocItem->id, 'show' => 1]) }}">
-                <x-ui.icon name="plus-square" class="mr-1 text-libryo-gray-400" />
+                <x-ui.icon name="plus-square" class="mr-1 text-norma-gray-400" />
 
               </a>
             @else
               <a
                  href="{{ route('collaborate.docs.identify-toc', ['expression' => $expression, 'doc' => $doc->id, 'itemId' => $tocItem->id, 'show' => 0]) }}">
-                <x-ui.icon name="minus-square" class="mr-1 text-libryo-gray-400" />
+                <x-ui.icon name="minus-square" class="mr-1 text-norma-gray-400" />
               </a>
             @endif
           @endif
@@ -64,7 +64,7 @@
 
               <div
                   @click="$el.closest('form').requestSubmit()"
-                  class="cursor-pointer tippy w-6 text-libryo-gray-400 hover:text-libryo-gray-800"
+                  class="cursor-pointer tippy w-6 text-norma-gray-400 hover:text-norma-gray-800"
                   data-tippy-delay="300"
                   data-tippy-content="{{ __('corpus.reference.insert_from_toc_item_tooltip') }}"
               >
@@ -80,7 +80,7 @@
 
             <div
               @click="$el.closest('form').requestSubmit()"
-              class="cursor-pointer tippy w-6 text-libryo-gray-400 hover:text-libryo-gray-800 mt-0.5"
+              class="cursor-pointer tippy w-6 text-norma-gray-400 hover:text-norma-gray-800 mt-0.5"
               data-tippy-delay="300"
               data-tippy-content="{{ __('corpus.reference.update_from_toc_item_tooltip') }}"
             >
@@ -93,7 +93,7 @@
     @endif
 
     @if (!empty($items) && $showingChildren)
-      <ul role="list" class="divide-y divide-libryo-gray-200 py-1">
+      <ul role="list" class="divide-y divide-norma-gray-200 py-1">
         @foreach ($items as $i)
           @include('partials.corpus.collaborate.toc-item.identify-tree-item', [
               'doc' => $doc,

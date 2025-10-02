@@ -117,7 +117,7 @@
   </x-ui.tab-content>
 
   @if($resource->contentResource ?? false)
-    <x-ui.tab-content name="related" class="h-screen-75 overflow-y-auto libryo-legislation custom-scroll">
+    <x-ui.tab-content name="related" class="h-screen-75 overflow-y-auto norma-legislation custom-scroll">
       @if($resource->contentResource->mime_type !== 'text/html')
         <embed class="w-full h-full" src="{{ asset($resource->contentResource->path) }}">
       @else

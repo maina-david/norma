@@ -7,7 +7,7 @@ use App\Enums\Collaborators\IdentityDocumentType;
 <div>
   <div class="flex flex-wrap">
     @if($showIdentities ?? true)
-      <div class="w-full md:w-1/2 mt-2 border-b border-libryo-gray-100 pb-4">
+      <div class="w-full md:w-1/2 mt-2 border-b border-norma-gray-100 pb-4">
         @include('pages.collaborators.collaborate.collaborator.partials.attachment-field', [
           'label' => __('collaborators.identity_document'),
           'type' => DocumentType::IDENTIFICATION,
@@ -16,7 +16,7 @@ use App\Enums\Collaborators\IdentityDocumentType;
         ])
       </div>
 
-      <div class="w-full md:w-1/2 mt-2 border-b border-libryo-gray-100 pb-4">
+      <div class="w-full md:w-1/2 mt-2 border-b border-norma-gray-100 pb-4">
         @include('pages.collaborators.collaborate.collaborator.partials.attachment-field', [
           'label' => __('collaborators.Visa'),
           'type' => DocumentType::VISA,
@@ -27,7 +27,7 @@ use App\Enums\Collaborators\IdentityDocumentType;
       </div>
     @endif
 
-    <div class="w-full md:w-1/2 mt-2 border-b border-libryo-gray-100 pb-4">
+    <div class="w-full md:w-1/2 mt-2 border-b border-norma-gray-100 pb-4">
       @include('pages.collaborators.collaborate.collaborator.partials.attachment-field', [
         'label' => __('collaborators.curriculum_vitae'),
         'type' => DocumentType::VITAE,
@@ -35,14 +35,14 @@ use App\Enums\Collaborators\IdentityDocumentType;
       ])
     </div>
 
-    <div class="w-full md:w-1/2 mt-2 border-b border-libryo-gray-100 pb-4">
+    <div class="w-full md:w-1/2 mt-2 border-b border-norma-gray-100 pb-4">
       @include('pages.collaborators.collaborate.collaborator.partials.attachment-field', [
         'label' => __('collaborators.education_transcript'),
         'type' => DocumentType::TRANSCRIPT,
         'defaultTextField' => __('collaborators.valid'),
       ])
     </div>
-    <div class="w-full md:w-1/2 mt-2 border-b border-libryo-gray-100 pb-4">
+    <div class="w-full md:w-1/2 mt-2 border-b border-norma-gray-100 pb-4">
       @include('pages.collaborators.collaborate.collaborator.partials.attachment-field', [
         'label' => __('collaborators.contract'),
         'type' => DocumentType::CONTRACT,
@@ -53,7 +53,7 @@ use App\Enums\Collaborators\IdentityDocumentType;
     </div>
 
     @if(ContractType::zeroHour()->value == ($resource->profile->contract->subtype ?? '-'))
-      <div class="w-full md:w-1/2 mt-2 border-b border-libryo-gray-100 pb-4">
+      <div class="w-full md:w-1/2 mt-2 border-b border-norma-gray-100 pb-4">
         @include('pages.collaborators.collaborate.collaborator.partials.attachment-field', [
           'label' => __('collaborators.schedule_a'),
           'type' => DocumentType::SCHEDULE_A,
@@ -61,7 +61,7 @@ use App\Enums\Collaborators\IdentityDocumentType;
         ])
       </div>
 
-      <div class="w-full md:w-1/2 mt-2 border-b border-libryo-gray-100 pb-4">
+      <div class="w-full md:w-1/2 mt-2 border-b border-norma-gray-100 pb-4">
         @include('pages.collaborators.collaborate.collaborator.partials.attachment-field', [
           'label' => __('collaborators.term_dates'),
           'type' => DocumentType::TERM_DATES,

@@ -16,16 +16,16 @@ use App\Enums\Tasks\TaskStatus;
                   required />
     </div>
   </div>
-  <div class="border-t border-libryo-gray-200 py-5 ">
+  <div class="border-t border-norma-gray-200 py-5 ">
     <dl class="grid grid-cols-1 gap-x-4 gap-y-4 sm:grid-cols-3">
       <div class="sm:col-span-3">
-        <dd class="mt-1 text-sm text-libryo-gray-900">
+        <dd class="mt-1 text-sm text-norma-gray-900">
           <x-ui.input type="textarea" :value="old('description', $task->description ?? '')" name="description"
-                      label="{{ __('interface.description') }}" class="libryo-editor-minimal" />
+                      label="{{ __('interface.description') }}" class="norma-editor-minimal" />
         </dd>
       </div>
       <div class="sm:col-span-1">
-        <dd class="mt-1 text-sm text-libryo-gray-900">
+        <dd class="mt-1 text-sm text-norma-gray-900">
           <x-tasks.status-select :value="old('task_status', $task->task_status ?? TaskStatus::notStarted()->value)"
                                  name="task_status"
                                  :label="__('tasks.status')"
@@ -33,21 +33,21 @@ use App\Enums\Tasks\TaskStatus;
         </dd>
       </div>
       <div class="sm:col-span-1">
-        <dd class="mt-1 text-sm text-libryo-gray-900">
+        <dd class="mt-1 text-sm text-norma-gray-900">
           <x-ui.input type="date" :value="old('due_on', isset($task) ? ($task->due_on?->format('Y-m-d') ?? '') : '')"
                       name="due_on"
                       label="{{ __('tasks.due_on') }}" />
         </dd>
       </div>
       <div class="sm:col-span-1">
-        <dd class="mt-1 text-sm text-libryo-gray-900">
+        <dd class="mt-1 text-sm text-norma-gray-900">
           <x-tasks.priority-select :value="old('priority', $task->priority ?? TaskPriority::medium()->value)"
                                    :label="__('tasks.priority')" />
         </dd>
       </div>
       <div class="sm:col-span-1">
 
-        <dd class="mt-1 text-sm text-libryo-gray-900">
+        <dd class="mt-1 text-sm text-norma-gray-900">
 
           <x-auth.user.my.user-selector :value="old('assigned_to_id', $task->assigned_to_id ?? $user->id)"
                                         name="assigned_to_id"
@@ -55,7 +55,7 @@ use App\Enums\Tasks\TaskStatus;
         </dd>
       </div>
       <div class="sm:col-span-1">
-        <dd class="mt-1 text-sm text-libryo-gray-900">
+        <dd class="mt-1 text-sm text-norma-gray-900">
           <x-auth.user.my.user-selector :value="old('followers', isset($task) ? ($task->watchers?->pluck('id')->toArray() ?? []) : [])"
                                         name="followers[]"
                                         multiple
@@ -63,7 +63,7 @@ use App\Enums\Tasks\TaskStatus;
         </dd>
       </div>
       <div class="sm:col-span-1">
-        <dd class="mt-1 text-sm text-libryo-gray-900">
+        <dd class="mt-1 text-sm text-norma-gray-900">
           <x-tasks.task-project.project-selector name="task_project_id"
                                                  :value="old('task_project_id', $task->task_project_id ?? null)"
                                                  :label="__('tasks.project')" />

@@ -5,7 +5,7 @@
         {{ $languages[$lang->language_code]['name'] ?? $lang->language_code }}
       </div>
       @if ($lang->proficiency)
-        <div class="text-xs text-libryo-gray-700 border border-primary px-1 rounded">
+        <div class="text-xs text-norma-gray-700 border border-primary px-1 rounded">
           {{ \App\Enums\Collaborators\LanguageProficiency::lang()[$lang->proficiency] ?? $lang->proficiency }}
         </div>
       @endif

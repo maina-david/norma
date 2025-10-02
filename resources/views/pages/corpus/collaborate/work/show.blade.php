@@ -1,6 +1,6 @@
 <div class="mb-8">
   <div class="font-semibold">{{ $resource->title }}</div>
-  <div class="text-sm text-libryo-gray-700 italic">{{ $resource->title_translation }}</div>
+  <div class="text-sm text-norma-gray-700 italic">{{ $resource->title_translation }}</div>
 </div>
 
 
@@ -135,13 +135,13 @@
                     <a href="{{ route('collaborate.legal-updates.show', ['legal_update' => $update->id]) }}" class="text-primary">
                       <span class="flex flex-col w-full">
                         <span>{{ $update->title }}</span>
-                        <span class="text-libryo-gray-600 font-normal">{{ $update->title_translation }}</span>
+                        <span class="text-norma-gray-600 font-normal">{{ $update->title_translation }}</span>
                       </span>
                     </a>
                   @else
                     <span class="flex flex-col w-full">
                       <span>{{ $update->title }}</span>
-                      <span class="text-libryo-gray-600 font-normal">{{ $update->title_translation }}</span>
+                      <span class="text-norma-gray-600 font-normal">{{ $update->title_translation }}</span>
                     </span>
                   @endcan
                 </x-ui.td>
@@ -171,13 +171,13 @@
                     <a href="{{ route('collaborate.corpus.docs.show', ['doc' => $doc->id]) }}" class="text-primary">
                       <span class="flex flex-col w-full">
                         <span>{{ $doc->title }}</span>
-                        <span class="text-libryo-gray-600 font-normal">{{ $doc->docMeta->title_translation ?? '-' }}</span>
+                        <span class="text-norma-gray-600 font-normal">{{ $doc->docMeta->title_translation ?? '-' }}</span>
                       </span>
                     </a>
                   @else
                     <span class="flex flex-col w-full">
                       span>{{ $doc->title }}</span>
-                    <span class="text-libryo-gray-600 font-normal">{{ $doc->docMeta->title_translation ?? '-' }}</span>
+                    <span class="text-norma-gray-600 font-normal">{{ $doc->docMeta->title_translation ?? '-' }}</span>
                     </span>
                   @endcan
                 </x-ui.td>

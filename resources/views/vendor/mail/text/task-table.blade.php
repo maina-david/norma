@@ -12,7 +12,7 @@
 | {{__('tasks.due_on')}}      | {{ $due_on }}    | 
 @endif
 @if(!empty($task) && !empty($task->place))
-| {{__('tasks.libryo_stream')}}      | {{$task->libryo->title}}    | 
+| {{__('tasks.norma_stream')}}      | {{$task->norma->title}}    | 
 @endif
 @if(!empty($task))
 | {{__('tasks.current_status')}}      | {{__('tasks.task.status.' . $task->task_status)}}    | 

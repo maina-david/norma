@@ -9,7 +9,7 @@
     </div>
   </x-slot>
 
-  <x-customer.libryo.libryo-data-table
+  <x-customer.norma.norma-data-table
     :base-query="$baseQuery"
     :route="route('my.context-questions.show', ['question' => $question])"
     searchable

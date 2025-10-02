@@ -1,5 +1,5 @@
 @php
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 @endphp
 <div x-data="{ openHelp: false }">
   <div
@@ -59,7 +59,7 @@ use App\Services\Customer\ActiveLibryosManager;
           </x-ui.form>
         </div>
 
-        @if (app(ActiveLibryosManager::class)->getActiveOrganisation()->hasLiveChat())
+        @if (app(ActiveNormasManager::class)->getActiveOrganisation()->hasLiveChat())
           <div class="my-12">
             <div class="text-lg font-medium mb-5">{{ __('help.want_to_chat') }}</div>
             <div class="text-sm mb-5 cursor-pointer">{{ __('help.want_to_chat_help') }}</div>
@@ -75,7 +75,7 @@ use App\Services\Customer\ActiveLibryosManager;
           <div class="text-lg font-medium mb-5">{{ __('help.need_training') }}</div>
           <div class="text-sm mb-5">{{ __('help.need_training_help') }}</div>
           <div>
-            <x-ui.button target="_blank" href="https://info.libryo.com/training" theme="primary" type="link">
+            <x-ui.button target="_blank" href="https://info.norma.com/training" theme="primary" type="link">
               {{ __('help.need_training_sign_up') }}</x-ui.button>
           </div>
         </div>

@@ -21,7 +21,7 @@
 
 <br>
 
-@component('mail::view-task', ['id' => $task->id, 'libryoId' => $task->place_id])
+@component('mail::view-task', ['id' => $task->id, 'normaId' => $task->place_id])
 @endcomponent
 
 <!-- Salutation -->
@@ -30,7 +30,7 @@
 @else
 <br>
 <span style="font-size: 15px; line-height: 26px; color: #1a2434">
-{{ __('mail.until_next_time') }},<br><br> <p class="accent">{{ !empty($whitelabel) ? $whitelabel->title : __('mail.libryo') }}</p>
+{{ __('mail.until_next_time') }},<br><br> <p class="accent">{{ !empty($whitelabel) ? $whitelabel->title : __('mail.norma') }}</p>
 {{--    {{ trans('mail.until_next_time') }},<br>{{ !empty($whitelabel) ? $whitelabel->title : config('app.name') }}--}}
 </span>
 @endif

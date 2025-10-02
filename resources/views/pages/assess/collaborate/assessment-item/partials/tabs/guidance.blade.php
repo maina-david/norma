@@ -37,7 +37,7 @@
           <x-ui.tr :loop="$loop">
 
             <x-ui.td>
-              <div class="text-libryo-gray-500 text-xs">
+              <div class="text-norma-gray-500 text-xs">
                 {{ $note->location->title ?? __('assess.guidance_note.all_countries') }}
               </div>
 

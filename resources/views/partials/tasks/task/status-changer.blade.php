@@ -1,8 +1,8 @@
 @php
   use App\Enums\Tasks\TaskStatus;
-  $task->load('libryo.organisation');
-  $organisation = $task->libryo ?? null;
-  $canChangeStatus = ($task->libryo ?? false) && $user->hasLibryoAccess($task->libryo);
+  $task->load('norma.organisation');
+  $organisation = $task->norma ?? null;
+  $canChangeStatus = ($task->norma ?? false) && $user->hasNormaAccess($task->norma);
 @endphp
 
 @if($canChangeStatus)
@@ -31,7 +31,7 @@
   </div>
 </x-ui.dropdown>
 @else
-  <span class="text-libryo-gray-500">
+  <span class="text-norma-gray-500">
     {{ TaskStatus::fromValue($task->task_status)->label() }}
   </span>
 @endif

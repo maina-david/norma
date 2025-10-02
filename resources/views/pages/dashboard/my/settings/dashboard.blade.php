@@ -7,13 +7,13 @@
         <div class="absolute rounded-md p-3">
           <x-ui.icon name="heartbeat" class="text-primary" size="8" />
         </div>
-        <p class="ml-16 text-sm font-medium text-libryo-gray-500 truncate">{{ __('auth.user.active_users') }}</p>
+        <p class="ml-16 text-sm font-medium text-norma-gray-500 truncate">{{ __('auth.user.active_users') }}</p>
       </dt>
       <dd class="ml-16 pb-6 flex items-baseline sm:pb-7">
-        <p class="text-2xl font-semibold text-libryo-gray-900">
+        <p class="text-2xl font-semibold text-norma-gray-900">
           {{ $activeUsersCount }}
         </p>
-        <div class="absolute bottom-0 inset-x-0 bg-libryo-gray-50 px-4 py-4 sm:px-6">
+        <div class="absolute bottom-0 inset-x-0 bg-norma-gray-50 px-4 py-4 sm:px-6">
           <div class="text-sm">
             <a href="{{ route('my.settings.users.index') }}"
                class="font-medium text-primary hover:text-primary-darker">{{ __('interface.view_all') }}</a>
@@ -27,13 +27,13 @@
         <div class="absolute rounded-md p-3">
           <x-ui.icon name="users" class="text-secondary" size="8" />
         </div>
-        <p class="ml-16 text-sm font-medium text-libryo-gray-500 truncate">{{ __('customer.team.teams') }}</p>
+        <p class="ml-16 text-sm font-medium text-norma-gray-500 truncate">{{ __('customer.team.teams') }}</p>
       </dt>
       <dd class="ml-16 pb-6 flex items-baseline sm:pb-7">
-        <p class="text-2xl font-semibold text-libryo-gray-900">
+        <p class="text-2xl font-semibold text-norma-gray-900">
           {{ $teamsCount }}
         </p>
-        <div class="absolute bottom-0 inset-x-0 bg-libryo-gray-50 px-4 py-4 sm:px-6">
+        <div class="absolute bottom-0 inset-x-0 bg-norma-gray-50 px-4 py-4 sm:px-6">
           <div class="text-sm">
             <a href="{{ route('my.settings.teams.index') }}"
                class="font-medium text-primary hover:text-primary-darker">{{ __('interface.view_all') }}</a>
@@ -47,15 +47,15 @@
         <div class="absolute rounded-md p-3">
           <x-ui.icon name="map-marker" class="text-tertiary" size="8" />
         </div>
-        <p class="ml-16 text-sm font-medium text-libryo-gray-500 truncate">{{ __('customer.libryo.libryo_streams') }}</p>
+        <p class="ml-16 text-sm font-medium text-norma-gray-500 truncate">{{ __('customer.norma.norma_streams') }}</p>
       </dt>
       <dd class="ml-16 pb-6 flex items-baseline sm:pb-7">
-        <p class="text-2xl font-semibold text-libryo-gray-900">
-          {{ $libryosCount }}
+        <p class="text-2xl font-semibold text-norma-gray-900">
+          {{ $normasCount }}
         </p>
-        <div class="absolute bottom-0 inset-x-0 bg-libryo-gray-50 px-4 py-4 sm:px-6">
+        <div class="absolute bottom-0 inset-x-0 bg-norma-gray-50 px-4 py-4 sm:px-6">
           <div class="text-sm">
-            <a href="{{ route('my.settings.libryos.index') }}"
+            <a href="{{ route('my.settings.normas.index') }}"
                class="font-medium text-primary hover:text-primary-darker">{{ __('interface.view_all') }}</a>
           </div>
         </div>
@@ -68,11 +68,11 @@
       <div class="absolute">
         <x-ui.icon name="bell" class="text-warning" size="8" />
       </div>
-      <p class="ml-16 text-sm font-medium text-libryo-gray-500 truncate">
+      <p class="ml-16 text-sm font-medium text-norma-gray-500 truncate">
         {{ __('notify.legal_update.updates_sent') }}</p>
     </dt>
     <dd class="ml-16 pb-6 flex items-baseline sm:pb-7">
-      <ol role="list" class="border border-libryo-gray-300 rounded-md divide-y divide-libryo-gray-300 lg:flex lg:divide-y-0 flex-grow">
+      <ol role="list" class="border border-norma-gray-300 rounded-md divide-y divide-norma-gray-300 lg:flex lg:divide-y-0 flex-grow">
         @foreach ($updates as $update)
           <li class="relative md:flex-1 md:flex">
             <div class="group w-full">
@@ -81,7 +81,7 @@
                       class="shrink-0 w-10 h-10 flex items-center justify-center text-white bg-primary rounded-full group-hover:bg-primary">
                   {{ $update['count'] }}
                 </span>
-                <span class="ml-4 text-sm font-medium text-libryo-gray-900 w-24">
+                <span class="ml-4 text-sm font-medium text-norma-gray-900 w-24">
                   {{ $update['month'] }}
                 </span>
               </span>
@@ -90,7 +90,7 @@
             @if (!$loop->last)
               <!-- Arrow separator for lg screens and up -->
               <div class="hidden lg:block absolute top-0 right-0 h-full w-5" aria-hidden="true">
-                <svg class="h-full w-full text-libryo-gray-300" viewBox="0 0 22 80" fill="none" preserveAspectRatio="none">
+                <svg class="h-full w-full text-norma-gray-300" viewBox="0 0 22 80" fill="none" preserveAspectRatio="none">
                   <path d="M0 -2L20 40L0 82" vector-effect="non-scaling-stroke" stroke="currentcolor"
                         stroke-linejoin="round" />
                 </svg>

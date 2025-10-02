@@ -42,7 +42,7 @@
 @endif
 @if(!empty($task) && !empty($task->place))
 <tr>
-<td><b>{{__('tasks.libryo_stream')}}</b></td>
+<td><b>{{__('tasks.norma_stream')}}</b></td>
 <td>
 {{$task->place->title}}
 </td>

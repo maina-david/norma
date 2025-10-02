@@ -2,7 +2,7 @@
   <li x-data="{
       handleItemClick: function(id) {
           if (id === '') return;
-          window.setTimeout(function() { window.scrollToItemWhenAvailable('#' + id, '.libryo-legislation', 'smooth'); }, 200);
+          window.setTimeout(function() { window.scrollToItemWhenAvailable('#' + id, '.norma-legislation', 'smooth'); }, 200);
       }
   }" class="relative py-1 pl-2 pr-1 list-none text-sm">
     @if (!is_null($tocItem))
@@ -12,12 +12,12 @@
           @if ($tocItem->children_count)
             @if (!$showingChildren)
               <a href="{{ route('my.docs.toc', ['doc' => $doc->id, 'itemId' => $tocItem->id, 'show' => 1]) }}">
-                <x-ui.icon name="plus-square" class="mr-1 text-libryo-gray-400" />
+                <x-ui.icon name="plus-square" class="mr-1 text-norma-gray-400" />
 
               </a>
             @else
               <a href="{{ route('my.docs.toc', ['doc' => $doc->id, 'itemId' => $tocItem->id, 'show' => 0]) }}">
-                <x-ui.icon name="minus-square" class="mr-1 text-libryo-gray-400" />
+                <x-ui.icon name="minus-square" class="mr-1 text-norma-gray-400" />
               </a>
             @endif
           @endif
@@ -52,7 +52,7 @@
     @endif
 
     @if (!empty($items) && $showingChildren)
-      <ul role="list" class="divide-y divide-libryo-gray-200 py-1">
+      <ul role="list" class="divide-y divide-norma-gray-200 py-1">
         @foreach ($items as $i)
           @include('partials.corpus.toc-item.tree-item', [
               'doc' => $doc,

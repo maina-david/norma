@@ -21,7 +21,7 @@
 <img src="{{ config('app.url_client') }}/img/whitelabels/small-app.png" alt="" width="130" height="auto">
 </td>
 <td class="social" width="50%" align="right">
-    <a href="https://www.linkedin.com/company/libryo/" title="linkedin Libryo" alt="linkedin Libryo">
+    <a href="https://www.linkedin.com/company/norma/" title="linkedin Norma" alt="linkedin Norma">
         <img src="{{config('app.url') }}/img/linkedin_original_black.png" alt="" width="24" height="24">
     </a>
 </td>

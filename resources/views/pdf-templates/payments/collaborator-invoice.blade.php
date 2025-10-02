@@ -41,7 +41,7 @@
 <div style="margin-top:1.5em;">
   <div style="float:left">
     <div style="font-weight:900;font-size:1.1em">Invoice To</div>
-    <div>Libryo Ltd</div>
+    <div>Norma Ltd</div>
     <div>100 Avebury Boulevard</div>
     <div>Milton Keynes</div>
     <div>MK9 1FH</div>

@@ -29,7 +29,7 @@ $baseClientUrl = app(WhitelabelsForUser::class)->getBaseUrlForUser($user);
 {{-- Body --}}
 {{ $slot }}
 <p>{{ __('mail.best_wishes') }}</p>
-<p class="text-green">{{ __('mail.libryo') }}</p>
+<p class="text-green">{{ __('mail.norma') }}</p>
 
 {{-- Subcopy --}}
 @if (isset($subcopy))
@@ -49,7 +49,7 @@ $baseClientUrl = app(WhitelabelsForUser::class)->getBaseUrlForUser($user);
 {{ !empty($whitelabel) ? $whitelabel->email_address : config('collaborate.get_in_touch_email') }} | powered by
 <a href="{{ config('collaborate.website_address') }}" target="_blank"> {{ config('collaborate.website_address') }}</a>
 <br />
-&copy; {{ date('Y') }} Libryo Limited. All rights reserved.
+&copy; {{ date('Y') }} Norma Limited. All rights reserved.
 </p>
 <p style="text-align: left;  color: #74787E">
 @if (isset($unsubscribe))

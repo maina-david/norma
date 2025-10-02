@@ -16,7 +16,7 @@
               type="textarea"
               :value="old('description', $task->description ?? '')"
               name="description"
-              label="{{ __('interface.description') }}" class="libryo-editor-minimal"
+              label="{{ __('interface.description') }}" class="norma-editor-minimal"
           />
 
           <div class="mt-4">

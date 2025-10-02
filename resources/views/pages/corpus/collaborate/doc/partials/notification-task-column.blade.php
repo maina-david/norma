@@ -65,7 +65,7 @@
               <div>{{ __('corpus.doc.view_update') }}</div>
 
               <div
-                  class="font-normal font-sans hidden group-hover:block absolute top-10 left-0 bg-white shadow-lg rounded-lg p-4 w-96 max-w-screen overflow-hidden z-10 text-xs text-libryo-gray-600 border border-libryo-gray-100">
+                  class="font-normal font-sans hidden group-hover:block absolute top-10 left-0 bg-white shadow-lg rounded-lg p-4 w-96 max-w-screen overflow-hidden z-10 text-xs text-norma-gray-600 border border-norma-gray-100">
                 <table class="w-full">
                   <tr>
                     <th class="text-left">{{ __('corpus.doc.id') }}</th>

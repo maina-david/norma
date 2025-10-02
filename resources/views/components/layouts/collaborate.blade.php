@@ -12,12 +12,12 @@
   </style>
 </head>
 
-<body class="bg-libryo-gray-50 font-sans text-libryo-gray-900 antialiased h-screen overflow-hidden flex flex-col">
+<body class="bg-norma-gray-50 font-sans text-norma-gray-900 antialiased h-screen overflow-hidden flex flex-col">
   @include('navs.collaborate')
 
   @if (isset($header) || isset($actions))
     <header class="bg-white shadow-sm shrink-0 z-10">
-      <div class="{{ $fluid ? '' : 'max-w-7xl' }} {{ $noPadding ? '' : ' mx-auto py-2 px-4 sm:px-6 lg:px-8' }} text-2xl font-semibold text-libryo-gray-900 text-libryo-red flex justify-between">
+      <div class="{{ $fluid ? '' : 'max-w-7xl' }} {{ $noPadding ? '' : ' mx-auto py-2 px-4 sm:px-6 lg:px-8' }} text-2xl font-semibold text-norma-gray-900 text-norma-red flex justify-between">
         <div class="flex-grow">{{ $header ?? '' }}</div>
         <div class="flex-shrink-0">{{ $actions ?? '' }}</div>
       </div>

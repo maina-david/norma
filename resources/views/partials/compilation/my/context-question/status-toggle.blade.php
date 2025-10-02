@@ -1,6 +1,6 @@
 <livewire:compilation.context-question.context-question-answer-toggle
   :question-id="$question"
-  :libryo-id="$libryo"
+  :norma-id="$norma"
   :answer="$answer"
   :key="Str::random(64)"
 />

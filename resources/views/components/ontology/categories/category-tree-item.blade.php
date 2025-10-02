@@ -26,10 +26,10 @@
     </div>
 
     @if(!empty($node['children']))
-      <a x-show="!open" class="text-libryo-gray-600 px-1" href="#" @click.prevent="open = true" style="display: none;">
+      <a x-show="!open" class="text-norma-gray-600 px-1" href="#" @click.prevent="open = true" style="display: none;">
         <x-ui.icon name="plus" size="4" />
       </a>
-      <a x-show="open" class="text-libryo-gray-600 px-1" href="#" @click.prevent="open = false" style="display: none;">
+      <a x-show="open" class="text-norma-gray-600 px-1" href="#" @click.prevent="open = false" style="display: none;">
         <x-ui.icon name="minus" size="4" />
       </a>
     @endif

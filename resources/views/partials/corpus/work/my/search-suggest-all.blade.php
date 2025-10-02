@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
     @if ($tag)
       <div class="text-center mt-3 italic">
         {{ __('interface.try_searching_tag') }}
-        <span class="bg-libryo-gray-50 mx-1 p-1">{{ Str::limit($tag->title, 100, '...') }}</span>
+        <span class="bg-norma-gray-50 mx-1 p-1">{{ Str::limit($tag->title, 100, '...') }}</span>
       </div>
     @endif
 

@@ -1,7 +1,7 @@
 <x-layouts.settings>
   <x-slot name="header">
     <div class="{{ $action === 'compile' ? 'text-positive' : 'text-negative' }}">
-      <x-ui.icon name="books" size="10" class="mr-5 text-libryo-gray-600" /> {{ __('settings.nav.generic_compilation') }}:
+      <x-ui.icon name="books" size="10" class="mr-5 text-norma-gray-600" /> {{ __('settings.nav.generic_compilation') }}:
       {{ ucfirst($action) }}
       {{ $library->title }}
     </div>

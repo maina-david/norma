@@ -6,7 +6,7 @@
   <x-slot name="actions">
     <div class="-mt-3">
       <a target="_blank"
-         href="https://success.libryo.com/en/knowledge/getting-started-with-libryo/dashboard/understanding-your-dashboard">
+         href="https://success.norma.com/en/knowledge/getting-started-with-norma/dashboard/understanding-your-dashboard">
         <x-ui.icon name="question-circle" />
       </a>
     </div>

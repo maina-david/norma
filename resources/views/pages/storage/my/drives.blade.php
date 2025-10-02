@@ -1,10 +1,10 @@
 <x-layouts.app>
   <x-slot name="header">
     <div class="flex items-center">
-      <x-ui.icon name="folder-open" class="mr-5 text-libryo-gray-400" size="8" />
+      <x-ui.icon name="folder-open" class="mr-5 text-norma-gray-400" size="8" />
       <div>
         {{ __('my.nav.drives') }}
-        <span class="text-xs text-libryo-gray-500 italic ml-3">{{ $subTitle }}</span>
+        <span class="text-xs text-norma-gray-500 italic ml-3">{{ $subTitle }}</span>
       </div>
     </div>
   </x-slot>
@@ -12,7 +12,7 @@
     <div class="flex flex-row justify-between items-center">
       <div class="w-60 ">
         <x-ui.progress :color="$storageColor" :percentage="$percentage" />
-        <div class="text-xs text-libryo-gray-600 mt-2">
+        <div class="text-xs text-norma-gray-600 mt-2">
           {!! __('storage.drives.storage_used_description', [
     'percentage' => $percentage,
     'used' => $storageAllocation['used_gb'],
@@ -22,7 +22,7 @@
         </div>
       </div>
       <a class="ml-5" target="_blank"
-         href="https://success.libryo.com/en/knowledge/getting-started-with-libryo/documents/delving-into-your-documents">
+         href="https://success.norma.com/en/knowledge/getting-started-with-norma/documents/delving-into-your-documents">
         <x-ui.icon name="question-circle" />
       </a>
     </div>
@@ -30,7 +30,7 @@
 
   <div class="grid justify-items-center">
     <a href="{{ route('my.drives.files.index') }}"
-       class="w-full md:w-1/2 lg:w-1/5 flex flex-row items-center cursor-pointer border bg-white rounded-lg px-3 py-2 text-libryo-gray-500">
+       class="w-full md:w-1/2 lg:w-1/5 flex flex-row items-center cursor-pointer border bg-white rounded-lg px-3 py-2 text-norma-gray-500">
       <div>{{ __('storage.drives.search_drives') }}...</div>
     </a>
   </div>
@@ -43,9 +43,9 @@
 
   @if ($singleMode)
     <x-storage.my.drive-panel class="mb-5" color="primary"
-                              :route="route('my.drives.folders.show.root', ['type' => 'libryo'])"
-                              :subtext="__('storage.drives.libryo_drive_info')">
-      {{ __('storage.drives.libryo_drive', ['title' => $libryo->title]) }}
+                              :route="route('my.drives.folders.show.root', ['type' => 'norma'])"
+                              :subtext="__('storage.drives.norma_drive_info')">
+      {{ __('storage.drives.norma_drive', ['title' => $norma->title]) }}
     </x-storage.my.drive-panel>
   @endif
 

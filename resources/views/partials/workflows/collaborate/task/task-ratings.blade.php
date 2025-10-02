@@ -23,7 +23,7 @@ $jsRatings = array_map(fn () => 5, $ratingTypes->toArray())
       </div>
 
       @if($task->user_id)
-      <x-ui.form method="post" :action="route('collaborate.task.rate', ['task' => $task->id])" class="grid grid-cols-2 gap-4 mt-4 border-b border-libryo-gray-200 pb-6" x-show="rating">
+      <x-ui.form method="post" :action="route('collaborate.task.rate', ['task' => $task->id])" class="grid grid-cols-2 gap-4 mt-4 border-b border-norma-gray-200 pb-6" x-show="rating">
         @foreach($ratingTypes as $index => $toRate)
           <div>
             <div class="flex items-center font-semibold">
@@ -56,7 +56,7 @@ $jsRatings = array_map(fn () => 5, $ratingTypes->toArray())
   @endif
 
   @foreach($ratings as $rating)
-    <div class="p-4 border border-libryo-gray-200 rounded-lg">
+    <div class="p-4 border border-norma-gray-200 rounded-lg">
       <div class="flex items-center justify-between">
         <div class="font-semibold">
           @if($rating->type->course_link)
@@ -69,7 +69,7 @@ $jsRatings = array_map(fn () => 5, $ratingTypes->toArray())
           <span>{{ number_format($rating->score, 1) }}</span>
         </div>
       </div>
-      <p class="text-libryo-gray-800">
+      <p class="text-norma-gray-800">
         {{ $rating->comments }}
       </p>
     </div>

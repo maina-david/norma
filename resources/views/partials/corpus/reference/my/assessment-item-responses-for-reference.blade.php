@@ -4,7 +4,7 @@
 
 <div>
   @foreach($reference->assessmentItems as $item)
-    <div class="flex items-center border-b border-libryo-gray-300 py-4">
+    <div class="flex items-center border-b border-norma-gray-300 py-4">
       <div class="px-4 flex-shrink-0">
         <span
           class="tippy rounded-full inline-block mr-1 w-3 h-3 bg-{{ RiskRating::colors()[$item->risk_rating] }}"
@@ -22,7 +22,7 @@
         </div>
       </div>
       @if($item->assessmentResponses->first()->next_due_at)
-        <div class="px-4 flex-shrink-0 text-libryo-gray-600 text-xs">
+        <div class="px-4 flex-shrink-0 text-norma-gray-600 text-xs">
           <span class="mr-1">{{ __('workflows.task.due') }}</span>
           <span>{{ $item->assessmentResponses->first()->next_due_at?->format('d M Y') }}</span>
         </div>

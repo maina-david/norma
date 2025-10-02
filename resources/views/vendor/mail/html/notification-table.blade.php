@@ -5,7 +5,7 @@
         <span class="notice-count-indicator-text">{{ $index }}</span>
     </div>
 @if(!empty($notification->first_applicable_place_id))
-    <a style="font-size: 16px" class="notification-link" href="{{ $baseClientUrl ?? config('app.url_client') }}{{ route('my.libryos.activate.redirect', ['libryo' => $notification->first_applicable_place_id], false) }}?redirect={{ route('my.notify.legal-updates.show', ['update' => $notification->id], false) }}" target="_blank">{{ $notification->title }}</a>
+    <a style="font-size: 16px" class="notification-link" href="{{ $baseClientUrl ?? config('app.url_client') }}{{ route('my.normas.activate.redirect', ['norma' => $notification->first_applicable_place_id], false) }}?redirect={{ route('my.notify.legal-updates.show', ['update' => $notification->id], false) }}" target="_blank">{{ $notification->title }}</a>
 @else
     <a style="font-size: 16px" class="notification-link" href="{{ $baseClientUrl ?? config('app.url_client') }}{{ route('my.notify.legal-updates.show', ['update' => $notification->id], false) }}" target="_blank">{{ $notification->title }}</a>
 @endif

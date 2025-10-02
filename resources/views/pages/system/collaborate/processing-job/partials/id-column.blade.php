@@ -18,7 +18,7 @@
       <div>{{ $row->workExpression->work->title }}</div>
     @endif
 
-    <div class="text-libryo-gray-700">{{ \App\Enums\System\ProcessingJobStatus::lang()[$row->status] ?? $row->status }}</div>
+    <div class="text-norma-gray-700">{{ \App\Enums\System\ProcessingJobStatus::lang()[$row->status] ?? $row->status }}</div>
 
     <div>{{ $row->id }}</div>
 

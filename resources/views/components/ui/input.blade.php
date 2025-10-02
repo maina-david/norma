@@ -6,7 +6,7 @@
     <input id="{{ $id ?? $name }}" @if ($value) checked @endif name="{{ $name }}"
            type="{{ $type }}"
            value="{{ $checkboxValue }}" {{ $required ? 'required' : '' }}
-        {{ $attributes->merge(['class' => 'mr-2 h-4 w-4 text-primary focus:ring-primary border-libryo-gray-300 rounded']) }} />
+        {{ $attributes->merge(['class' => 'mr-2 h-4 w-4 text-primary focus:ring-primary border-norma-gray-300 rounded']) }} />
   @endif
 
   @if ($label)
@@ -28,7 +28,7 @@
           data-tomselect="{{ $tomselect ? 'true' : 'false' }}"
           name="{{ $name }}"
           placeholder="{{ $placeholder ?? '' }}"
-          {{ $attributes->merge(['class' =>'sm:pb-3 block focus:ring-primary focus:border-primary w-full shadow-sm sm:text-sm border-libryo-gray-300 rounded-md']) }}
+          {{ $attributes->merge(['class' =>'sm:pb-3 block focus:ring-primary focus:border-primary w-full shadow-sm sm:text-sm border-norma-gray-300 rounded-md']) }}
         >
 
           @foreach ($options as $key => $optionLabel)
@@ -51,13 +51,13 @@
       @elseif($type === 'textarea')
         <textarea id="{{ $name }}" name="{{ $name }}" type="{{ $type }}"
                   placeholder="{{ $placeholder ?? '' }}"
-          {{ $attributes->merge(['class' =>'px-3 py-2 border leading-normal rounded-md shadow-sm border-libryo-gray-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 block mt-1 w-full']) }}
+          {{ $attributes->merge(['class' =>'px-3 py-2 border leading-normal rounded-md shadow-sm border-norma-gray-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 block mt-1 w-full']) }}
             {{ $required ? 'required' : '' }}>{{ $value }}</textarea>
       @else
         <input value="{{ $value }}" id="{{ $name }}" name="{{ $name }}"
                type="{{ $type }}" placeholder="{{ $placeholder ?? '' }}"
                maxlength="{{ $maxlength ?? '255' }}" {{ $required ? 'required' : '' }}
-            {{ $attributes->merge(['class' =>'px-3 py-2 border leading-normal rounded-md shadow-sm border-libryo-gray-300 focus:border-primary focus:ring-primary block mt-1 w-full']) }} />
+            {{ $attributes->merge(['class' =>'px-3 py-2 border leading-normal rounded-md shadow-sm border-norma-gray-300 focus:border-primary focus:ring-primary block mt-1 w-full']) }} />
 
       @endif
 

@@ -75,11 +75,11 @@
         <div
             x-show="Object.values(selectedRefs).filter(function (i) { return !!i }).length > 0"
             x-bind:class="showActions ? '' : 'h-10'"
-            class="flex-shrink-0 flex flex-col overflow-hidden border-b border-l border-libryo-gray-300 rounded-bl w-screen-50 bg-libryo-gray-100"
+            class="flex-shrink-0 flex flex-col overflow-hidden border-b border-l border-norma-gray-300 rounded-bl w-screen-50 bg-norma-gray-100"
             style="max-height:50vh"
             x-data="{showActions: false}"
         >
-          <div @click="showActions = !showActions" class="flex-shrink-0 px-4 py-2 cursor-pointer flex items-center justify-center font-medium text-primary bg-libryo-gray-200">
+          <div @click="showActions = !showActions" class="flex-shrink-0 px-4 py-2 cursor-pointer flex items-center justify-center font-medium text-primary bg-norma-gray-200">
             <span class="mr-2">{{ __('corpus.work_expression.bulk_actions') }} - </span>
             <span class="mr-2" x-html="Object.keys(selectedRefs).length"></span>
             <x-ui.icon name="angle-down" x-show="!showActions" />

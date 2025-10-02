@@ -26,7 +26,7 @@
           <div class="text-lg font-semibold">
             <a class="text-primary" href="{{ $legislation->getUsableSourceURL() }}" target="_blank">
               <div>{{ $legislation->title }}</div>
-              <div class="text-libryo-gray-500 font-normal text-sm">{{ $legislation->title_translation }}</div>
+              <div class="text-norma-gray-500 font-normal text-sm">{{ $legislation->title_translation }}</div>
             </a>
           </div>
 
@@ -35,7 +35,7 @@
             <div class="ml-1 font-normal">{{ AffectedLegislationType::tryFrom($legislation->type)->label() }}</div>
           </div>
 
-          <div class="border-t border-libryo-gray-200 mt-4"></div>
+          <div class="border-t border-norma-gray-200 mt-4"></div>
 
 
           @php
@@ -65,7 +65,7 @@
             </x-ui.form>
           @endif
 
-          <div class="border-t border-libryo-gray-200 mt-4"></div>
+          <div class="border-t border-norma-gray-200 mt-4"></div>
 
           @if($legislation->handovers->isNotEmpty())
             <x-ui.form

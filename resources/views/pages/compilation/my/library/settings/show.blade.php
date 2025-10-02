@@ -1,6 +1,6 @@
 <x-layouts.settings>
   <x-slot name="header">
-    <x-ui.icon name="books" size="10" class="mr-5 text-libryo-gray-600" /> {{ $library->title }}
+    <x-ui.icon name="books" size="10" class="mr-5 text-norma-gray-600" /> {{ $library->title }}
   </x-slot>
 
   <x-slot name="actions">
@@ -20,8 +20,8 @@
     <x-ui.tabs>
 
       <x-slot name="nav">
-        <x-ui.tab-nav name="libryos" :url="route('my.settings.libryos.for.library.index', ['library' => $library->id])">
-          {{ __('settings.nav.libryo_streams') }}</x-ui.tab-nav>
+        <x-ui.tab-nav name="normas" :url="route('my.settings.normas.for.library.index', ['library' => $library->id])">
+          {{ __('settings.nav.norma_streams') }}</x-ui.tab-nav>
         <x-ui.tab-nav name="children"
                       :url="route('my.settings.children-parents.for.library.index', [
                           'library' => $library->id,
@@ -39,8 +39,8 @@
           {{ __('settings.nav.requirements') }}</x-ui.tab-nav>
       </x-slot>
 
-      <x-ui.tab-content name="libryos">
-        <turbo-frame id="settings-libryos-for-library-{{ $library->id }}">
+      <x-ui.tab-content name="normas">
+        <turbo-frame id="settings-normas-for-library-{{ $library->id }}">
           <x-ui.skeleton class="mt-5" />
         </turbo-frame>
       </x-ui.tab-content>

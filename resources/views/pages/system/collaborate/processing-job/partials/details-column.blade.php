@@ -1,5 +1,5 @@
 <div class="flex flex-col justify-center mr-3 whitespace-nowrap">
-  <div class="sub-row text-libryo-gray-700">
+  <div class="sub-row text-norma-gray-700">
 
     @isset($row->payload['source_id'])
       <div>{{ __('system.processing_job.source_id') }}: {{ $row->payload['source_id'] }}</div>

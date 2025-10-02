@@ -6,7 +6,7 @@ $activeTab = $active ?? ($matches[1] ?? null);
 
 <div x-data="{ tab: '{{ $activeTab }}' }">
   <input type="hidden" name="_tab" x-model="tab">
-  <div class="border-b border-libryo-gray-200">
+  <div class="border-b border-norma-gray-200">
     <nav class="-mb-px flex space-x-8 w-full overflow-x-auto custom-scroll pb-2">
       {{ $nav }}
     </nav>

@@ -5,8 +5,8 @@ $editable = (!($row->updateCandidate->checked_at ?? false))|| auth()->user()->ca
 <div id="doc-justification-{{ $row->id }}" class="relative group">
 
   @if($row->updateCandidate)
-    <div class="whitespace-nowrap {{ $editable ? '' : 'text-libryo-gray-400' }}">{!! $row->updateCandidate->justification_status ? __('corpus.doc.required') : __('corpus.doc.not_required') !!}</div>
-    <div class="italic text-xs mt-2 w-96 {{ $editable ? '' : 'text-libryo-gray-400' }}">
+    <div class="whitespace-nowrap {{ $editable ? '' : 'text-norma-gray-400' }}">{!! $row->updateCandidate->justification_status ? __('corpus.doc.required') : __('corpus.doc.not_required') !!}</div>
+    <div class="italic text-xs mt-2 w-96 {{ $editable ? '' : 'text-norma-gray-400' }}">
       <x-doc.view-more>
         {!! $row->updateCandidate->justification !!}
       </x-doc.view-more>

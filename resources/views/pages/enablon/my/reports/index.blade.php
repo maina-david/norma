@@ -1,7 +1,7 @@
 <x-layouts.app>
   <x-slot name="header">
     <div class="flex items-center">
-      <x-ui.icon name="clipboard-list" class="mr-3 ml-5  text-libryo-gray-400" size="8" />
+      <x-ui.icon name="clipboard-list" class="mr-3 ml-5  text-norma-gray-400" size="8" />
       <div>
         {{ __('corpus.enablon.exports') }}
       </div>

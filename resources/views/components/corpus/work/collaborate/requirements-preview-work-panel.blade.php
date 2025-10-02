@@ -1,5 +1,5 @@
 @props(['work', 'isChild' => false, 'showFlag' => true])
-<div {{ $attributes->merge(['class' => 'border-b border-libryo-gray-100 pb-2 mb-5 print:mb-1']) }}>
+<div {{ $attributes->merge(['class' => 'border-b border-norma-gray-100 pb-2 mb-5 print:mb-1']) }}>
     <div>
         <div class="p-2 flex flex-row justify-between">
             <div>
@@ -7,7 +7,7 @@
                 <a class="hover:text-primary text-sm font-semibold"
                    href="{{ $work->source_url }}">{{ $work->title }}</a>
                 @if ($work->title_translation)
-                    <span class="text-libryo-gray-500 text-sm">[{{ $work->title_translation }}]</span>
+                    <span class="text-norma-gray-500 text-sm">[{{ $work->title_translation }}]</span>
                 @endif
             </div>
 
@@ -26,7 +26,7 @@
                             <div class="pl-10 flex items-center">
 
                                 <x-ui.icon name="arrow-turn-down-right" size="3"
-                                           class="text-libryo-gray-400 mr-3" />
+                                           class="text-norma-gray-400 mr-3" />
                                 <a href="{{ route('collaborate.corpus.requirements.preview.reference.show', ['reference' => $ref->id]) }}"
                                    class="cursor-pointer text-primary hover:text-primary-darker text-xs">{{ $ref->refPlainText?->plain_text }}</a>
                             </div>

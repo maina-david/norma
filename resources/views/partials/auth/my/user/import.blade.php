@@ -1,5 +1,5 @@
 <div>
-  <div class="font-semibold text-lg text-libryo-gray-900">
+  <div class="font-semibold text-lg text-norma-gray-900">
     {{ $organisation->title }} - {{ __('auth.user.import.create_title') }}
   </div>
   <p class="text-sm mt-2">

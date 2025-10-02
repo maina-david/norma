@@ -14,7 +14,7 @@
   id="{{ $name }}"
   name="{{ $name }}"
   {{ $required && !$wysiwyg ? 'required' : '' }}
-  {{ $attributes->merge(['rows' => 8, 'class' => ($wysiwyg ? "libryo-editor-{$wysiwyg} " : '') . 'px-3 py-2 border leading-normal rounded-md shadow-sm border-libryo-gray-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 block mt-1 w-full' ]) }}
+  {{ $attributes->merge(['rows' => 8, 'class' => ($wysiwyg ? "norma-editor-{$wysiwyg} " : '') . 'px-3 py-2 border leading-normal rounded-md shadow-sm border-norma-gray-300 focus:border-primary focus:ring focus:ring-primary focus:ring-opacity-50 block mt-1 w-full' ]) }}
 >{{ old($name, $value ?? '') }}</textarea>
 
 @error($name)

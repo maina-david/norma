@@ -1,6 +1,6 @@
 @php
   use App\Enums\Tasks\TaskStatus;
-  use App\Services\Customer\ActiveLibryosManager;
+  use App\Services\Customer\ActiveNormasManager;
   $canUpdate = $user->can('update', $task);
   $stack = collect(session('_ref_back', []));
   $previous = $stack->last();
@@ -35,7 +35,7 @@
     </div>
   </div>
 
-  <div class="mt-1 text-sm text-libryo-gray-900 font-normal wysiwyg-content">
+  <div class="mt-1 text-sm text-norma-gray-900 font-normal wysiwyg-content">
     @include('partials.tasks.task.description-changer')
   </div>
 </div>
@@ -51,11 +51,11 @@
         </x-ui.td>
       </tr>
     @endif
-    @if(!app(ActiveLibryosManager::class)->isSingleMode() && $task->libryo)
+    @if(!app(ActiveNormasManager::class)->isSingleMode() && $task->norma)
       <tr class="border-b">
-        <x-ui.td>{{ __('customer.libryo.libryo_stream') }}</x-ui.td>
+        <x-ui.td>{{ __('customer.norma.norma_stream') }}</x-ui.td>
         <x-ui.td>
-          {{ $task->libryo->title }}
+          {{ $task->norma->title }}
         </x-ui.td>
       </tr>
     @endif
@@ -68,7 +68,7 @@
     <tr class="border-b">
       <x-ui.td>{{ __('timestamps.created_at') }}</x-ui.td>
       <x-ui.td>
-        <x-ui.timestamp class="text-libryo-gray-500" :timestamp="$task->created_at"/>
+        <x-ui.timestamp class="text-norma-gray-500" :timestamp="$task->created_at"/>
       </x-ui.td>
     </tr>
 
@@ -105,7 +105,7 @@
     <tr class="border-b">
       <x-ui.td>{{ __('tasks.priority') }}</x-ui.td>
       <x-ui.td>
-        <span class="text-libryo-gray-500">
+        <span class="text-norma-gray-500">
           @include('partials.tasks.task.priority-changer')
         </span>
       </x-ui.td>
@@ -120,7 +120,7 @@
           </span>
         </x-ui.td>
         <x-ui.td>
-          <span class="text-libryo-gray-500">
+          <span class="text-norma-gray-500">
             @include('partials.tasks.task.frequency-changer')
           </span>
         </x-ui.td>
@@ -153,7 +153,7 @@
 </div>
 
 
-<div class="grid lg:grid-cols-12 lg:gap-4 bg-libryo-gray-50 border-t border-libryo-gray-100 p-5">
+<div class="grid lg:grid-cols-12 lg:gap-4 bg-norma-gray-50 border-t border-norma-gray-100 p-5">
   {{-- LEFT SIDE --}}
   <div class="lg:col-span-7">
     <x-ui.tabs x-cloak>

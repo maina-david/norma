@@ -8,7 +8,7 @@
       <div class="col-span-10">
         <div class="text-sm">
           @if ($showType)
-            <div class="inline-block mr-2 rounded bg-libryo-gray-200 text-libryo-gray-700 px-1.5 py-0.5 text-xs">
+            <div class="inline-block mr-2 rounded bg-norma-gray-200 text-norma-gray-700 px-1.5 py-0.5 text-xs">
               <div class="flex flex-row items-center">
                 <x-ui.icon name="file-alt" size="3" class="mr-1" />
                 {{ __('corpus.work.types.' . $work->work_type) }}
@@ -25,7 +25,7 @@
       </div>
     </div>
 
-    <div x-cloak x-show="contentShowing" class="mt-5 p-2 pt-3 bg-libryo-gray-50 shadow-inner ">
+    <div x-cloak x-show="contentShowing" class="mt-5 p-2 pt-3 bg-norma-gray-50 shadow-inner ">
       {{ $slot }}
     </div>
   </div>

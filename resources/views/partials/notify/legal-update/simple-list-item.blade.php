@@ -17,7 +17,7 @@
               <span class="font-medium text-primary ">{{ $update->title }}</span>
 
             </p>
-            <p class="mt-2 flex items-center text-sm text-libryo-gray-500">
+            <p class="mt-2 flex items-center text-sm text-norma-gray-500">
               <span class="truncate">
                 {{ $update->legalDomains->implode('title', ', ') ?? '' }}
               </span>

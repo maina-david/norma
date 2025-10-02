@@ -3,7 +3,7 @@
 
 @include('partials.ui.my.guest-head')
 
-<body class="font-sans text-libryo-gray-900 antialiased">
+<body class="font-sans text-norma-gray-900 antialiased">
   {{ $slot }}
   @livewireScriptConfig
 </body>

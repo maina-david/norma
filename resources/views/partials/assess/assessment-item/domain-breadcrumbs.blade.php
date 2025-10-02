@@ -1,4 +1,4 @@
-<div class="text-libryo-gray-400 text-xs italic">
+<div class="text-norma-gray-400 text-xs italic">
   @if ($assessmentItem?->legalDomain?->topParent)
     <span>{{ $assessmentItem->legalDomain->topParent->title }}</span>
     <span> ... </span>

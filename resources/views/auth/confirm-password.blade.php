@@ -3,14 +3,14 @@
     <x-ui.card>
 
       <div class="sm:mx-auto sm:w-full sm:max-w-md mb-8 mt-2">
-        <x-ui.libryo-logo login height="h-16 max-w-sm" class="px-4"></x-ui.libryo-logo>
+        <x-ui.norma-logo login height="h-16 max-w-sm" class="px-4"></x-ui.norma-logo>
 
         <x-slot name="title"></x-slot>
       </div>
 
       <x-ui.form class="space-y-2" method="post" action="{{ route('password.confirm') }}">
 
-        <div class="font-light text-lg text-libryo-gray-900">{{ __('auth.user.confirm_password') }}</div>
+        <div class="font-light text-lg text-norma-gray-900">{{ __('auth.user.confirm_password') }}</div>
         <p class="text-sm mt-2">{{ __('auth.user.confirm_password_explanation') }}</p>
 
         <x-ui.input minlength="8" autocomplete="off" name="password" type="password" label="Password" required class="mb-2">

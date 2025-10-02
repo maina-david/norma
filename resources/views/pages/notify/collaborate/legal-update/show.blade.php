@@ -151,13 +151,13 @@
                     <a href="{{ route('collaborate.works.show', ['work' => $work->id]) }}" class="text-primary">
                   <span class="flex flex-col w-full">
                     <span>{{ $work->title }}</span>
-                    <span class="text-libryo-gray-600 font-normal">{{ $work->title_translation }}</span>
+                    <span class="text-norma-gray-600 font-normal">{{ $work->title_translation }}</span>
                   </span>
                     </a>
                   @else
                     <span class="flex flex-col w-full">
                   <span>{{ $work->title }}</span>
-                  <span class="text-libryo-gray-600 font-normal">{{ $work->title_translation }}</span>
+                  <span class="text-norma-gray-600 font-normal">{{ $work->title_translation }}</span>
                 </span>
                   @endcan
                 </x-ui.th>

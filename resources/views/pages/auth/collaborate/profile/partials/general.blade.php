@@ -1,7 +1,7 @@
 <div class="flex w-full">
   <div class="space-y-1 grow">
-    <h3 class="text-lg leading-6 font-medium text-libryo-gray-900">{{ __('collaborators.profile.information') }}</h3>
-    <p class="max-w-2xl text-sm text-libryo-gray-500">{{ __('collaborators.profile.information_description') }}</p>
+    <h3 class="text-lg leading-6 font-medium text-norma-gray-900">{{ __('collaborators.profile.information') }}</h3>
+    <p class="max-w-2xl text-sm text-norma-gray-500">{{ __('collaborators.profile.information_description') }}</p>
   </div>
 
   <x-ui.form

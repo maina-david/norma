@@ -45,8 +45,8 @@ $baseClientUrl = app(WhitelabelsForUser::class)->getBaseUrlForUser($user);
 ])
 <div>
 <p style="text-align: left; color: #74787E">
-{{ !empty($whitelabel) ? $whitelabel->email_address : 'info@libryo.com' }} | powered by <a
-href="{{ config('libryo.website_address') }}" target="_blank">{{ config('libryo.website_address') }}</a>
+{{ !empty($whitelabel) ? $whitelabel->email_address : 'info@norma.com' }} | powered by <a
+href="{{ config('norma.website_address') }}" target="_blank">{{ config('norma.website_address') }}</a>
 <br />
 &copy; {{ date('Y') }} {{ config('app.name') }} Limited. All rights reserved.
 </p>

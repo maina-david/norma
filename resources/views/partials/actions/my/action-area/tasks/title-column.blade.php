@@ -12,10 +12,10 @@ use App\Models\Corpus\Reference;
     @endif
   </div>
 @if($row->taskable_type === (new Reference)->getMorphClass())
-  <div class="text-xs text-libryo-gray-500 mt-1">{{ $row->taskable->refPlainText->plain_text ?? '-' }}</div>
+  <div class="text-xs text-norma-gray-500 mt-1">{{ $row->taskable->refPlainText->plain_text ?? '-' }}</div>
 @endif
 
-@if(multi_stream() && $row->libryo)
-  <div class="text-xs text-libryo-gray-500 mt-1">{{ $row->libryo->title }}</div>
+@if(multi_stream() && $row->norma)
+  <div class="text-xs text-norma-gray-500 mt-1">{{ $row->norma->title }}</div>
 @endif
 </td>

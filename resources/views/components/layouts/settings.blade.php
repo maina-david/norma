@@ -5,8 +5,8 @@
   @include('partials.head')
 </head>
 
-<body class="bg-libryo-gray-50 font-sans text-libryo-gray-900 antialiased">
-  <div x-data="{ 'sidebarShow': false }" class="h-screen flex overflow-hidden bg-libryo-gray-100">
+<body class="bg-norma-gray-50 font-sans text-norma-gray-900 antialiased">
+  <div x-data="{ 'sidebarShow': false }" class="h-screen flex overflow-hidden bg-norma-gray-100">
     <!-- Off-canvas menu for mobile, show/hide based on off-canvas menu state. -->
     <div :class="{ 'hidden': !sidebarShow }" class="fixed inset-0 flex z-30 lg:relative lg:w-64 lg:block" role="dialog"
          aria-modal="true">
@@ -73,7 +73,7 @@
                               d="M4 6h16M4 12h8m-8 6h16" />
                       </svg>
                     </button>
-                    <div class="text-xl font-semibold text-libryo-gray-900">{{ $header ?? '' }}</div>
+                    <div class="text-xl font-semibold text-norma-gray-900">{{ $header ?? '' }}</div>
                   </div>
                   <div class="flex-shrink-0">{{ $actions ?? '' }}</div>
                 </div>

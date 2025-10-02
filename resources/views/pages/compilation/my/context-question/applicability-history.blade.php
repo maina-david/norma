@@ -2,10 +2,10 @@
 <x-layouts.app>
   <x-slot name="header">
     <div class="flex items-center">
-      <x-ui.icon name="ballot-check" size="10" class="mr-4 text-libryo-gray-600" />
+      <x-ui.icon name="ballot-check" size="10" class="mr-4 text-norma-gray-600" />
       <div>{{ __('compilation.context_question.applicability_change_history') }}</div>
     </div>
-    <div class="text-libryo-gray-500 text-sm font-base mt-2">
+    <div class="text-norma-gray-500 text-sm font-base mt-2">
       {{ __('compilation.context_question.applicability_change_history_description') }}
     </div>
   </x-slot>

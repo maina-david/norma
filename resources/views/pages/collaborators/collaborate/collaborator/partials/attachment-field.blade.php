@@ -162,7 +162,7 @@ $previousDocs = $inactiveDocuments->where('type', $type);
 
       <div x-show="open" class="space-y-1">
         @foreach($previousDocs as $doc)
-          <div class="flex items-center py-3 px-4 bg-libryo-gray-100 rounded-lg">
+          <div class="flex items-center py-3 px-4 bg-norma-gray-100 rounded-lg">
             <div class="flex-grow">
               {{ $doc->created_at->format('dS F Y') }}
             </div>

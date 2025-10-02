@@ -6,6 +6,6 @@
 >
    <span class="font-semibold">{{ $task->title }}</span>
    @if(!$singleMode)
-      <span class="ml-1 text-libryo-gray-400">/ {{ $task->libryo->title }}</span>
+      <span class="ml-1 text-norma-gray-400">/ {{ $task->norma->title }}</span>
    @endif
 </a>

@@ -6,7 +6,7 @@
 <td width="50%">
 <a href="{{ $url }}" title="{{ $slot }}" alt="{{ $slot }}">
 @if(empty($whitelabel))
-<img src="{{ config('app.url') }}/img/libryo.png" alt="" width="200" height="auto">
+<img src="{{ config('app.url') }}/img/norma.png" alt="" width="200" height="auto">
 @endif
 @if(!empty($whitelabel))
 <img width="160" height="auto" src="{{ config('app.url') }}/img/whitelabels/small-{{ $whitelabel->shortname}}.png">
@@ -15,7 +15,7 @@
 </td>
 <td class="social" width="50%" align="right">
 @if(empty($whitelabel))
-<a href="https://www.linkedin.com/company/libryo/" title="linkedin Libryo" alt="linkedin Libryo">
+<a href="https://www.linkedin.com/company/norma/" title="linkedin Norma" alt="linkedin Norma">
 <img src="{{config('app.url') }}/img/linkedin_original_black.png" alt="" width="24" height="24">
 </a>
 @else

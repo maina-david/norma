@@ -22,9 +22,9 @@
       <div></div>
     </div>
   </td>
-  @if($libryo)
+  @if($norma)
     <td class="w-40">
-      @if($reference->libryo_recommended || in_array($reference->work_id, $siteWorks))
+      @if($reference->norma_recommended || in_array($reference->work_id, $siteWorks))
         <x-ui.modal>
           <x-slot name="trigger">
             <div class="flex items-center justify-center">
@@ -48,10 +48,10 @@
     </td>
     <td class="w-40">
       <livewire:compilation.context-question.applicability-requirement-changer
-        :libryo-ids="[$libryo->id]"
+        :norma-ids="[$norma->id]"
         :reference-ids="[$reference->id]"
-        :in-libryo="$reference->included_in_stream"
-        :key="sprintf('%d-%d-%s-%s', $libryo->id, $reference->id, $reference->included_in_stream ? 'y' : 'n', Str::random(64))"
+        :in-norma="$reference->included_in_stream"
+        :key="sprintf('%d-%d-%s-%s', $norma->id, $reference->id, $reference->included_in_stream ? 'y' : 'n', Str::random(64))"
       />
     </td>
   @else

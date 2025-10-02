@@ -1,4 +1,4 @@
-<a href="{{ route('collaborate.tasks.show', $task->id) }}" class="group relative flex flex-col w-full px-6 py-6 border-b border-libryo-gray-200 hover:bg-libryo-gray-100 overflow-x-hidden" target="_top">
+<a href="{{ route('collaborate.tasks.show', $task->id) }}" class="group relative flex flex-col w-full px-6 py-6 border-b border-norma-gray-200 hover:bg-norma-gray-100 overflow-x-hidden" target="_top">
 
   <div class="absolute top-1 left-2 group-hover:block" :class="selected[{{ $task->id }}] ? '' : 'hidden'">
     <x-ui.input x-model="selected[{{ $task->id }}]" type="checkbox" name="actions-checkbox-{{ $task->id }}" class="rounded-full" />

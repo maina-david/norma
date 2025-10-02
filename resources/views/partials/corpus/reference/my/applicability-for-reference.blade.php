@@ -4,14 +4,14 @@
   </div>
 
   <div class="mt-4 mb-8">
-    <div class="text-libryo-gray-800 font-semibold">{{ __('compilation.context_question.requirement_reason_location', ['libryo' => $libryo->title]) }}</div>
+    <div class="text-norma-gray-800 font-semibold">{{ __('compilation.context_question.requirement_reason_location', ['norma' => $norma->title]) }}</div>
     @foreach($locations as $location)
       <div class="mt-2">{{ $location }}</div>
     @endforeach
   </div>
   @if(!$questions->isEmpty())
   <div class="mt-4 mb-8">
-    <div class="text-libryo-gray-800 font-semibold mb-2">{{ __('compilation.context_question.requirement_reason_context') }}</div>
+    <div class="text-norma-gray-800 font-semibold mb-2">{{ __('compilation.context_question.requirement_reason_context') }}</div>
 
     @if(auth()->user()->canManageApplicability())
       @foreach($questions as $question)
@@ -29,7 +29,7 @@
 
 
   <div class="mt-4 mb-8">
-    <div class="text-libryo-gray-800 font-semibold mb-2">{{ __('assess.categories') }}</div>
+    <div class="text-norma-gray-800 font-semibold mb-2">{{ __('assess.categories') }}</div>
 
     @if($categories->isEmpty())
       <div>{{ __('compilation.context_question.no_categories') }}</div>

@@ -4,7 +4,7 @@
     <x-ui.card>
 
       <div class="sm:mx-auto sm:w-full sm:max-w-md mb-8 mt-2">
-        <x-ui.libryo-logo login height="h-32" class="px-4 max-w-sm "></x-ui.libryo-logo>
+        <x-ui.norma-logo login height="h-32" class="px-4 max-w-sm "></x-ui.norma-logo>
 
         <x-slot name="title"></x-slot>
       </div>
@@ -18,7 +18,7 @@
 
       {{-- SSO --}}
       @if ($ssoEnabled)
-        <div class="italic text-xs text-center my-4 text-libryo-gray-500">
+        <div class="italic text-xs text-center my-4 text-norma-gray-500">
           {!! __('interface.agree_terms_of_use') !!}
         </div>
 
@@ -41,12 +41,12 @@
       {{-- @endif --}}
 
 
-      <div class="text-xs text-center mt-10 text-libryo-gray-400">
-        <a class="hover:text-libryo-gray-700" href="https://libryo.com/privacy-policy/" target="_blank">
+      <div class="text-xs text-center mt-10 text-norma-gray-400">
+        <a class="hover:text-norma-gray-700" href="https://norma.com/privacy-policy/" target="_blank">
           {{ __('interface.privacy_policy') }}
         </a>
         |
-        <a class="hover:text-libryo-gray-700" href="https://libryo.com/libryo-user-terms/" target="_blank">
+        <a class="hover:text-norma-gray-700" href="https://norma.com/norma-user-terms/" target="_blank">
           {{ __('interface.user_terms') }}
         </a>
       </div>

@@ -8,14 +8,14 @@
       @foreach ($task->watchers as $watcher)
         <div class="flex items-center relative space-x-2 mr-4 mt-1">
           <x-ui.user-avatar :user="$watcher" class="inline-block flex-shrink-0"/>
-          <span class="ml-3 text-libryo-gray-500">{{ $watcher->full_name }}</span>
+          <span class="ml-3 text-norma-gray-500">{{ $watcher->full_name }}</span>
         </div>
       @endforeach
     @endif
 
     <x-ui.dropdown>
       <x-slot:trigger>
-        <button class="flex items-center justify-center rounded-full bg-libryo-gray-200 h-8 w-8">
+        <button class="flex items-center justify-center rounded-full bg-norma-gray-200 h-8 w-8">
           <x-ui.icon name="plus" class="text-white pl-[0.06rem]" />
         </button>
       </x-slot:trigger>
@@ -44,7 +44,7 @@
   @if ($task->assignee)
     <div class="flex flex-row items-center">
       <x-ui.user-avatar :user="$task->assignee"/>
-      <div class="ml-3 text-libryo-gray-500">{{ $task->assignee->fullName }}</div>
+      <div class="ml-3 text-norma-gray-500">{{ $task->assignee->fullName }}</div>
     </div>
   @else
     <div>-</div>

@@ -122,7 +122,7 @@
               <x-slot name="footer">
                 <div class="px-4 pb-4 flex justify-end flex-grow space-x-4">
                   <button @click="open = false" type="button"
-                          class="mt-3 w-full inline-flex justify-center rounded-md border border-libryo-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-libryo-gray-700 hover:bg-libryo-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:mt-0 sm:w-auto sm:text-sm">
+                          class="mt-3 w-full inline-flex justify-center rounded-md border border-norma-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-norma-gray-700 hover:bg-norma-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:mt-0 sm:w-auto sm:text-sm">
                     {{ __('actions.cancel') }}
                   </button>
 

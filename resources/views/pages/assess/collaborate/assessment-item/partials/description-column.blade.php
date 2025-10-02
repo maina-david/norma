@@ -14,7 +14,7 @@
     @else
       <div>-</div>
     @endif
-    <div class="text-libryo-gray-700">{{ RiskRating::lang()[$row->risk_rating] }}</div>
+    <div class="text-norma-gray-700">{{ RiskRating::lang()[$row->risk_rating] }}</div>
   </div>
 </div>
 

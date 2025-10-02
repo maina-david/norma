@@ -76,7 +76,7 @@
       <div class="text-semibold text-sm">{{ __('corpus.doc.affected_legislation') }}</div>
 
       @foreach($resource->updateCandidate->legislation as $index => $item)
-        <div class="border-b border-libryo-gray-200 pb-4 group legislation-group" x-bind:key="{{ $index }}">
+        <div class="border-b border-norma-gray-200 pb-4 group legislation-group" x-bind:key="{{ $index }}">
           <input type="hidden" name="affected_legislation[{{ $index }}][id]" value="{{ $item->id }}">
           <input type="hidden" class="work-id" name="affected_legislation[{{ $index }}][work_id]" value="{{ $item->work_id }}">
           <input type="hidden" class="catalogue-doc-id" name="affected_legislation[{{ $index }}][catalogue_doc_id]" value="{{ $item->catalogue_doc_id }}">
@@ -163,7 +163,7 @@
       @endforeach
 
       <template x-for="num in legislation" :key="num">
-        <div class="border-b border-libryo-gray-200 pb-4 group legislation-group">
+        <div class="border-b border-norma-gray-200 pb-4 group legislation-group">
           <input type="hidden" class="work-id" x-bind:name="'affected_legislation[' + num + '][work_id]'" value="">
           <input type="hidden" class="catalogue-doc-id" x-bind:name="'affected_legislation[' + num + '][catalogue_doc_id]'" value="">
 

@@ -9,7 +9,7 @@ $label = "Two Factor {$label} Code";
     <x-ui.card>
 
       <div class="sm:mx-auto sm:w-full sm:max-w-md mb-8 mt-2">
-        <x-ui.libryo-logo login height="h-16" class="px-4 max-w-sm"></x-ui.libryo-logo>
+        <x-ui.norma-logo login height="h-16" class="px-4 max-w-sm"></x-ui.norma-logo>
 
         <x-slot name="title"></x-slot>
       </div>
@@ -20,12 +20,12 @@ $label = "Two Factor {$label} Code";
         </x-ui.input>
 
         <div>
-          <p class="text-xs text-libryo-gray-700">{{ __('auth.user.two_factor_authentication_instructions') }}</p>
+          <p class="text-xs text-norma-gray-700">{{ __('auth.user.two_factor_authentication_instructions') }}</p>
         </div>
 
         <div class="flex justify-end items-center py-2">
           <a href="{{ route('two-factor.login', ['type' => $alt]) }}"
-             class="underline text-sm text-libryo-gray-600 hover:text-libryo-gray-900">Use
+             class="underline text-sm text-norma-gray-600 hover:text-norma-gray-900">Use
             {{ Str::title(str_replace('_', ' ', $alt)) }}?</a>
         </div>
 

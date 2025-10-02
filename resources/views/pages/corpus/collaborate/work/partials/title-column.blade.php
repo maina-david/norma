@@ -5,7 +5,7 @@
       <span>({{ $row->title_translation }})</span>
     @endif
   </div>
-  <div class="text-xs text-libryo-gray-400 italic">
+  <div class="text-xs text-norma-gray-400 italic">
     <div>{{ $row->primaryLocation->title ?? '' }}</div>
     <div>
       {{ \App\Enums\Corpus\WorkType::lang()[$row->work_type] ?? $row->work_type }}:

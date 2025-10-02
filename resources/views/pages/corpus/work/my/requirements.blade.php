@@ -1,10 +1,10 @@
 {{-- <x-layouts.app>
   <x-slot name="header">
     <div class="flex items-center">
-      <x-ui.icon name="gavel" class="mr-3 ml-5 text-libryo-gray-400" size="8" />
+      <x-ui.icon name="gavel" class="mr-3 ml-5 text-norma-gray-400" size="8" />
       <div>
         {{ __('my.nav.requirements') }}
-        <span class="text-xs text-libryo-gray-500 italic ml-3">{{ $libryo ? $libryo->title : $organisation->title }}</span>
+        <span class="text-xs text-norma-gray-500 italic ml-3">{{ $norma ? $norma->title : $organisation->title }}</span>
       </div>
     </div>
   </x-slot>
@@ -12,7 +12,7 @@
   <x-slot name="actions">
     <div class="flex flex-row justify-between items-center">
       <a target="_blank"
-         href="https://success.libryo.com/en/knowledge/getting-started-with-libryo/your-legal-register/your-custom-legal-register">
+         href="https://success.norma.com/en/knowledge/getting-started-with-norma/your-legal-register/your-custom-legal-register">
         <x-ui.icon name="question-circle" />
       </a>
     </div>
@@ -20,9 +20,9 @@
 
   <div>
 
-    @if ($libryo && $libryo->compilation_in_progress)
+    @if ($norma && $norma->compilation_in_progress)
       <div class="text-white bg-secondary p-5 my-10">
-        {{ __('customer.libryo.compilation_in_progress_info') }}
+        {{ __('customer.norma.compilation_in_progress_info') }}
       </div>
     @endif
 

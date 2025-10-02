@@ -2,7 +2,7 @@
 <x-layouts.settings-two-col :header="__('settings.nav.legal_updates')">
     <x-slot name="header">
     <span class="flex items-center">
-      <x-ui.icon name="bell" size="10" class="mr-5 text-libryo-gray-600" type="duotone"/>
+      <x-ui.icon name="bell" size="10" class="mr-5 text-norma-gray-600" type="duotone"/>
       <span>{{ $update->title }}</span>
     </span>
     </x-slot>
@@ -100,14 +100,14 @@
                     <x-slot name="trigger">
                         <x-ui.button size="sm" @click="open = true" theme="primary" styling="outline" class="ml-2">
                             <x-ui.icon name="plus" class="mr-2"/>
-                            {{ __('settings.nav.libryo_streams') }}
+                            {{ __('settings.nav.norma_streams') }}
                         </x-ui.button>
                     </x-slot>
 
                     <div class="lg:w-screen-50">
 
-                        <x-ui.form method="post" :action="route('my.settings.legal-updates.libryos.store', ['update' => $update->id])">
-                            <x-customer.libryo.libryo-selector name="libryos[]" id="libryos" required multiple />
+                        <x-ui.form method="post" :action="route('my.settings.legal-updates.normas.store', ['update' => $update->id])">
+                            <x-customer.norma.norma-selector name="normas[]" id="normas" required multiple />
 
                             <div class="flex justify-end mt-10 space-x-4">
                                 <x-ui.button type="submit" theme="primary" styling="outline"
@@ -141,8 +141,8 @@
 
             <div>
                 <turbo-frame
-                    src="{{ route('my.settings.compilation.libryos.for.legal-update.index', ['update' => $update]) }}"
-                    id="libryos-for-legal-update-{{ $update->id }}"
+                    src="{{ route('my.settings.compilation.normas.for.legal-update.index', ['update' => $update]) }}"
+                    id="normas-for-legal-update-{{ $update->id }}"
                 >
                     <x-ui.skeleton/>
                 </turbo-frame>

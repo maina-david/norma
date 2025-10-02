@@ -1,4 +1,4 @@
-<div class="p-4 border-t border-libryo-gray-200 relative">
+<div class="p-4 border-t border-norma-gray-200 relative">
   @if (auth()->user()->can('collaborate.corpus.reference.update') && $reference->contentDraft)
     <x-ui.form method="put" :action="route('collaborate.work-expressions.identify.references.content.update', [
         'expression' => $expression->id,
@@ -46,7 +46,7 @@
       </div>
     </x-ui.form>
   @else
-    <div class="mt-2 libryo-legislation">
+    <div class="mt-2 norma-legislation">
       {!! $reference->htmlContent?->cached_content !!}
     </div>
   @endif
@@ -58,10 +58,10 @@
     </div>
     @foreach ($reference->contentVersions as $version)
       <div x-data="{ show: false }" class="py-1">
-        <x-ui.card class="cursor-pointer border border-libryo-gray-200 text-primary" @click="show = !show">
+        <x-ui.card class="cursor-pointer border border-norma-gray-200 text-primary" @click="show = !show">
           <span class="font-semibold">{{ __('interface.date_created') }}:</span> {{ $version->created_at }}
         </x-ui.card>
-        <x-ui.card x-show="show" class="border border-libryo-gray-200 mt-0.5">
+        <x-ui.card x-show="show" class="border border-norma-gray-200 mt-0.5">
           @include('pages.corpus.collaborate.identify-references.partials.preview-content', [
               'title' => $version->title,
               'htmlContent' => $version->versionContentHtml?->html_content,

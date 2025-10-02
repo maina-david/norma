@@ -28,8 +28,8 @@
     <div class="flex flex-col overflow-hidden">
       <x-ui.form x-ref="contentForm" method="GET" x-bind:action="'{{ route('collaborate.work-expressions.volume.show', ['expression' => $expression->id]) }}?volume='+volume"/>
 
-      <div class="flex items-center flex-shrink-0 pl-4 py-1 bg-white space-x-2 border-b border-libryo-gray-100">
-        <span class="flex items-center space-x-2 text-libryo-gray-500">
+      <div class="flex items-center flex-shrink-0 pl-4 py-1 bg-white space-x-2 border-b border-norma-gray-100">
+        <span class="flex items-center space-x-2 text-norma-gray-500">
           <x-ui.icon name="eye"/>
           <span>{{ __('actions.show') }}</span>
         </span>

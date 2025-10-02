@@ -1,6 +1,6 @@
 
 <div>
-  <div class="font-light text-lg text-libryo-gray-900">{{ __('auth.user.two_factor_disabled') }}</div>
+  <div class="font-light text-lg text-norma-gray-900">{{ __('auth.user.two_factor_disabled') }}</div>
   <p class="text-sm mt-2">{{ __('auth.user.two_factor_disabled_explanation') }}</p>
 </div>
 

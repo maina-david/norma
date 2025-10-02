@@ -1,5 +1,5 @@
 @props(['home' => '/'])
-<nav {{ $attributes->merge(['class' => 'flex text-libryo-gray-600 breadcrumb']) }} aria-label="Breadcrumb">
+<nav {{ $attributes->merge(['class' => 'flex text-norma-gray-600 breadcrumb']) }} aria-label="Breadcrumb">
   <ol role="list" class="bg-white flex space-x-4">
     <li class="flex">
       <div class="flex items-center">

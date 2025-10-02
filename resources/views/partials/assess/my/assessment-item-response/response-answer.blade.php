@@ -8,7 +8,7 @@
           </x-ui.button>
         @else
           <input {!! isset($checked) && $checked ? '@click="$event.preventDefault();"' : '@click="$event.preventDefault(); open = true;"' !!}
-                 class="libryo-radio text-primary focus:ring-primary cursor-pointer"
+                 class="norma-radio text-primary focus:ring-primary cursor-pointer"
                  type="radio"
                  name="answer_{{ $response->id }}"
                  id="answer_{{ $response->id }}_{{ $forAnswer }}"

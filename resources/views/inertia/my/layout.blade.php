@@ -11,6 +11,6 @@
     </script>
   @endsection
 
-  @inertia('my-libryo')
+  @inertia('my-norma')
 
 </x-layouts.app>

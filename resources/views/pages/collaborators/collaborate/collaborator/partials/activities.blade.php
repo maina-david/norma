@@ -13,7 +13,7 @@
     </form>
   </div>
 </div>
-<div class="border-b border-libryo-gray-200 my-6"></div>
+<div class="border-b border-norma-gray-200 my-6"></div>
 
 @foreach($tasks as $task)
   <div class="flex items-center">
@@ -43,7 +43,7 @@
       {{ $task->completed_at?->format('dS M Y') }}
     </div>
   </div>
-  <div class="border-b border-libryo-gray-200 my-6"></div>
+  <div class="border-b border-norma-gray-200 my-6"></div>
 @endforeach
 
 <div>

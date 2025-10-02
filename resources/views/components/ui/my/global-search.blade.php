@@ -1,7 +1,7 @@
 <x-ui.modal>
   <x-slot name="trigger">
     <button @click="open = true" type="button"
-            class="bg-white p-1 rounded-full text-libryo-gray-600 hover:text-libryo-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-900 mr-1.5 md:mr-5">
+            class="bg-white p-1 rounded-full text-norma-gray-600 hover:text-norma-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-900 mr-1.5 md:mr-5">
       <span class="sr-only">Search</span>
 
       <x-ui.icon name="search" />
@@ -27,7 +27,7 @@
       <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
         @foreach ($searchItems as $item)
           <div
-               class="relative rounded-lg border border-libryo-gray-100 bg-white px-6 py-5 shadow-sm flex items-center space-x-10 hover:border-primary focus-within:ring-2 focus-within:ring-offset-2 focus-within:primary">
+               class="relative rounded-lg border border-norma-gray-100 bg-white px-6 py-5 shadow-sm flex items-center space-x-10 hover:border-primary focus-within:ring-2 focus-within:ring-offset-2 focus-within:primary">
             <div class="flex-shrink-0">
               <x-ui.icon :name="$item['icon']" />
             </div>
@@ -35,8 +35,8 @@
               <a @click="handleNavigate('{{ $item['link'] }}')"
                  class="focus:outline-none cursor-pointer">
                 <span class="absolute inset-0" aria-hidden="true"></span>
-                <p class="text-sm font-medium text-libryo-gray-900">{{ $item['heading'] }}</p>
-                <p class="text-sm text-libryo-gray-500 truncate">{{ $item['text'] }}
+                <p class="text-sm font-medium text-norma-gray-900">{{ $item['heading'] }}</p>
+                <p class="text-sm text-norma-gray-500 truncate">{{ $item['text'] }}
                   <span class="cursorPointer text-primary hover:text-primary-darker" x-text="searchStr"></span>
                 </p>
               </a>

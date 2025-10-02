@@ -1,6 +1,6 @@
 <x-layouts.settings>
   <x-slot name="header">
-    <x-ui.icon name="books" size="10" class="mr-5 text-libryo-gray-600" /> {{ __('settings.nav.libraries') }}
+    <x-ui.icon name="books" size="10" class="mr-5 text-norma-gray-600" /> {{ __('settings.nav.libraries') }}
   </x-slot>
 
   <x-slot name="actions">

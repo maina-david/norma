@@ -13,7 +13,7 @@
   },
  }" x-on:mouseenter="debounce(() => showingButtons = true, 150)"
      @mouseover.away="debounce(() => showingButtons = false, 0)"
-     {{ $attributes->merge(['class' => 'flex flex-row justify-between bg-white hover:bg-libryo-gray-50 border p-2 items-center -mt-px']) }}
+     {{ $attributes->merge(['class' => 'flex flex-row justify-between bg-white hover:bg-norma-gray-50 border p-2 items-center -mt-px']) }}
 >
   <div class="flex items-center w-8">
     @if($allowDelete && $bulk)
@@ -26,7 +26,7 @@
   </div>
   <a href="{{ $route }}" data-turbo-frame="_top" class="block grow">
     <div class="text-primary max-w-screen-md">{{ $file->title }}</div>
-    <div class="text-libryo-gray-500 text-xs">{{ $file->description ?? '-' }}</div>
+    <div class="text-norma-gray-500 text-xs">{{ $file->description ?? '-' }}</div>
     <div>{{ $slot ?? '' }}</div>
   </a>
 
@@ -62,13 +62,13 @@
 
   @if ($showDetails)
 
-    <div class="text-sm px-4 w-20 text-libryo-gray-400">
+    <div class="text-sm px-4 w-20 text-norma-gray-400">
       {{ $file->extension }}
     </div>
-    <div class="text-sm px-4 w-20 text-libryo-gray-400">
+    <div class="text-sm px-4 w-20 text-norma-gray-400">
       {{ $file->getHumanReadableSize() }}
     </div>
-    <div class="text-sm pl-4 w-32 text-libryo-gray-400">
+    <div class="text-sm pl-4 w-32 text-norma-gray-400">
       <x-ui.timestamp :timestamp="$file->updated_at" />
     </div>
 

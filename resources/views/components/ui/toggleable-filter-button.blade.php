@@ -28,7 +28,7 @@
       </button>
 
       <div class="relative">
-        <div @filtered="isFiltered" x-show="open" style="display: none" class="mt-1 bg-white shadow-xl border border-libryo-gray-200 rounded-lg max-h-[70vh] z-10 absolute top-0 left-0 max-w-screen-75 overflow-y-auto custom-scroll">
+        <div @filtered="isFiltered" x-show="open" style="display: none" class="mt-1 bg-white shadow-xl border border-norma-gray-200 rounded-lg max-h-[70vh] z-10 absolute top-0 left-0 max-w-screen-75 overflow-y-auto custom-scroll">
           {{ $slot }}
         </div>
       </div>

@@ -1,7 +1,7 @@
 @props(['value', 'textClass' => 'text-xs'])
 
 <div class="flex items-center">
-  <div class="text-libryo-gray-600 {{ $textClass }}">{{ number_format($value, 2) }}</div>
+  <div class="text-norma-gray-600 {{ $textClass }}">{{ number_format($value, 2) }}</div>
 
   <svg xmlns="http://www.w3.org/2000/svg" {{ $attributes->merge(['class' => 'text-primary']) }} fill="none"
        viewBox="0 0 24 24" stroke="currentColor">

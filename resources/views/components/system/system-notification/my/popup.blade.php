@@ -8,7 +8,7 @@ use App\Enums\System\SystemNotificationAlertType;
       <x-slot name="trigger"></x-slot>
       <div class="w-screen-50">
         <div class="text-xl font-semibold">{{ $systemNotification->title }}</div>
-        <div class="text-baseline text-libryo-gray-700 mt-10">{{ $systemNotification->content }}</div>
+        <div class="text-baseline text-norma-gray-700 mt-10">{{ $systemNotification->content }}</div>
         <div class="flex justify-between mt-10">
           <div>
             @if ($systemNotification->user_action_link)

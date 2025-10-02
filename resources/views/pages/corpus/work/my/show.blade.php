@@ -61,7 +61,7 @@
   </div>
 
 
-  <div class="grid lg:grid-cols-12 lg:gap-4 bg-libryo-gray-50 border-t border-libryo-gray-100 p-5">
+  <div class="grid lg:grid-cols-12 lg:gap-4 bg-norma-gray-50 border-t border-norma-gray-100 p-5">
     {{-- LEFT SIDE --}}
     <div class="lg:col-span-7">
       <x-ui.tabs x-cloak>
@@ -81,7 +81,7 @@
 
         @if (!$work->children->isEmpty())
           <x-ui.tab-content name="child_documents">
-            <div class="pt-5 divide-y divide-libryo-gray-100">
+            <div class="pt-5 divide-y divide-norma-gray-100">
               @foreach ($work->children as $child)
                 <a class="block text-primary mb-3" turbo-frame="_top"
                    href="{{ route('my.corpus.works.show', ['work' => $child->id]) }}">
@@ -95,7 +95,7 @@
 
         @if (!$work->parents->isEmpty())
           <x-ui.tab-content name="parent_documents">
-            <div class="pt-5 divide-y divide-libryo-gray-100">
+            <div class="pt-5 divide-y divide-norma-gray-100">
               @foreach ($work->parents as $parent)
                 <a class="block text-primary mb-3" turbo-frame="_top"
                    href="{{ route('my.corpus.works.show', ['work' => $parent->id]) }}">

@@ -1,6 +1,6 @@
 <div x-data="{ allDomains: {{ $allLegalDomains ? 'false' : 'true' }} }" class="mb-16">
   <div class="text-lg font-bold">{{ __('auth.user.notifications.updates') }}</div>
-  <div class="text-sm text-libryo-gray-500 mb-5">{{ __('auth.user.notifications.updates_info') }}</div>
+  <div class="text-sm text-norma-gray-500 mb-5">{{ __('auth.user.notifications.updates_info') }}</div>
 
   <x-ui.input @change="allDomains = !allDomains" type="checkbox" :value="$allLegalDomains"
               name="all_legal_domains"
@@ -22,11 +22,11 @@
   <div class="mt-5">
     <x-ui.input type="checkbox" :value="$email_daily" name="email_daily"
                 :label="__('auth.user.notifications.daily_email_notifications')" />
-    <div class="text-sm text-libryo-gray-500 mb-5">{{ __('auth.user.notifications.daily_email_notifications_info') }}</div>
+    <div class="text-sm text-norma-gray-500 mb-5">{{ __('auth.user.notifications.daily_email_notifications_info') }}</div>
 
     <x-ui.input type="checkbox" :value="$email_monthly" name="email_monthly"
                 :label="__('auth.user.notifications.monthly_email_notifications')" />
-    <div class="text-sm text-libryo-gray-500 mb-5">{{ __('auth.user.notifications.monthly_email_notifications_info') }}</div>
+    <div class="text-sm text-norma-gray-500 mb-5">{{ __('auth.user.notifications.monthly_email_notifications_info') }}</div>
   </div>
 </div>
 
@@ -34,31 +34,31 @@
 
 <div class="mb-16">
   <div class="text-lg font-bold">{{ __('auth.user.notifications.comments') }}</div>
-  <div class="text-sm text-libryo-gray-500  mb-5">{{ __('auth.user.notifications.comments_info') }}</div>
+  <div class="text-sm text-norma-gray-500  mb-5">{{ __('auth.user.notifications.comments_info') }}</div>
 
 
   <x-ui.input type="checkbox"
               :value="isset($settings['email_comment_mention']) ? $settings['email_comment_mention'] : true"
               name="email_comment_mention"
               :label="__('auth.user.notifications.comment_mention_email')" />
-  <div class="text-sm text-libryo-gray-500 mb-5">{{ __('auth.user.notifications.comment_mention_email_info') }}</div>
+  <div class="text-sm text-norma-gray-500 mb-5">{{ __('auth.user.notifications.comment_mention_email_info') }}</div>
 
   <x-ui.input type="checkbox" :value="isset($settings['email_comment_reply']) ? $settings['email_comment_reply'] : true"
               name="email_comment_reply"
               :label="__('auth.user.notifications.comment_reply_email')" />
-  <div class="text-sm text-libryo-gray-500 mb-5">{{ __('auth.user.notifications.comment_reply_email_info') }}</div>
+  <div class="text-sm text-norma-gray-500 mb-5">{{ __('auth.user.notifications.comment_reply_email_info') }}</div>
 
 </div>
 
 <div class="mb-16">
   <div class="text-lg font-bold">{{ __('auth.user.notifications.tasks') }}</div>
-  <div class="text-sm text-libryo-gray-500  mb-5">{{ __('auth.user.notifications.tasks_info') }}</div>
+  <div class="text-sm text-norma-gray-500  mb-5">{{ __('auth.user.notifications.tasks_info') }}</div>
 
 
   <x-ui.input type="checkbox" :value="isset($settings['email_task_assigned']) ? $settings['email_task_assigned'] : true"
               name="email_task_assigned"
               :label="__('auth.user.notifications.task_assigned')" />
-  <div class="text-sm text-libryo-gray-500 mb-5">{{ __('auth.user.notifications.task_assigned_info') }}</div>
+  <div class="text-sm text-norma-gray-500 mb-5">{{ __('auth.user.notifications.task_assigned_info') }}</div>
 
   <table>
     <thead>
@@ -92,13 +92,13 @@
 
 <div class="mb-16">
   <div class="text-lg font-bold">{{ __('auth.user.notifications.reminders') }}</div>
-  <div class="text-sm text-libryo-gray-500  mb-5">{{ __('auth.user.notifications.reminders_info') }}</div>
+  <div class="text-sm text-norma-gray-500  mb-5">{{ __('auth.user.notifications.reminders_info') }}</div>
 
 
   <x-ui.input type="checkbox" :value="isset($settings['email_reminder']) ? $settings['email_reminder'] : true"
               name="email_reminder"
               :label="__('auth.user.notifications.reminder_email')" />
-  <div class="text-sm text-libryo-gray-500 mb-5">{{ __('auth.user.notifications.reminder_email_info') }}</div>
+  <div class="text-sm text-norma-gray-500 mb-5">{{ __('auth.user.notifications.reminder_email_info') }}</div>
 
 </div>
 

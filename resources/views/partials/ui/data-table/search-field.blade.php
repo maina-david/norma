@@ -62,7 +62,7 @@
   </div>
   <button x-show="search.length > 0" style="display:none" type="button"
           @click="search.value = ''; $refs['filter-inputs-search'].value=''; submitFilterForm();"
-          class="mt-1 hover:text-primary text-libryo-gray-300 transition-colors ease-in-out w-8 flex justify-center items-center absolute right-0 top-0 h-full bg-transparent">
+          class="mt-1 hover:text-primary text-norma-gray-300 transition-colors ease-in-out w-8 flex justify-center items-center absolute right-0 top-0 h-full bg-transparent">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
          stroke="currentColor">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

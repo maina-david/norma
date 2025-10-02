@@ -1,10 +1,10 @@
 <x-layouts.app>
   <x-slot name="header">
     <div class="flex items-center">
-      <x-ui.icon name="clipboard-list" class="mr-3 ml-5  text-libryo-gray-400" size="8" />
+      <x-ui.icon name="clipboard-list" class="mr-3 ml-5  text-norma-gray-400" size="8" />
       <div>
         {{ __('assess.assess_dashboard') }}
-        <span class="text-xs text-libryo-gray-500 italic ml-3">{{ $subTitle }}</span>
+        <span class="text-xs text-norma-gray-500 italic ml-3">{{ $subTitle }}</span>
       </div>
     </div>
   </x-slot>
@@ -17,7 +17,7 @@
     </div>
     @if ($isSingleMode && userIsOrgAdmin())
       <div class="mt-20 flex flex-col items-center">
-        <x-ui.button type="link" :href="route('my.settings.libryos.show', ['libryo' => $libryo, 't' => 'assess'])"
+        <x-ui.button type="link" :href="route('my.settings.normas.show', ['norma' => $norma, 't' => 'assess'])"
                      theme="secondary" size="xl">{{ __('settings.nav.assess_setup') }}</x-ui.button>
       </div>
     @endif
@@ -53,11 +53,11 @@
           @foreach ($stats as $key => $stat)
             @if (!in_array($key, ['no', 'high', 'medium', 'percentage']))
               <div class="flex flex-col justify-center text-center px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6">
-                <dt class="text-sm font-medium text-libryo-gray-500 ">
+                <dt class="text-sm font-medium text-norma-gray-500 ">
                   {{ $stat['label'] }}
                 </dt>
                 <dd
-                    class="mt-1 text-3xl font-semibold text-libryo-gray-700 {{ isset($stat['color']) ? 'text-' . $stat['color'] : '' }}">
+                    class="mt-1 text-3xl font-semibold text-norma-gray-700 {{ isset($stat['color']) ? 'text-' . $stat['color'] : '' }}">
                   @if (isset($stat['last_answered']))
                     @if ($stat['value'])
                       <x-ui.timestamp :timestamp="$stat['value']" />
@@ -72,23 +72,23 @@
           @endforeach
 
           <div class="text-center px-4 py-5 bg-white shadow rounded-lg overflow-hidden sm:p-6 col-span-2 md:col-span-3 lg:col-span-2">
-            <dt class="text-sm font-medium text-libryo-gray-500 ">
+            <dt class="text-sm font-medium text-norma-gray-500 ">
               {{ $stats['no']['label'] }}
             </dt>
-            <dd class="mt-1 text-3xl font-semibold text-libryo-gray-700 {{ isset($stats['no']['color']) ? 'text-' . $stats['no']['color'] : '' }}">
+            <dd class="mt-1 text-3xl font-semibold text-norma-gray-700 {{ isset($stats['no']['color']) ? 'text-' . $stats['no']['color'] : '' }}">
 
               <div>{{ $stats['no']['value'] }}</div>
 
               <div>
-                <div class="flex justify-between text-sm font-medium text-libryo-gray-500">
+                <div class="flex justify-between text-sm font-medium text-norma-gray-500">
                   <div>{{ $stats['high']['label'] }}</div>
                   <div>{{ $stats['high']['value'] }}</div>
                 </div>
-                <div class="flex justify-between text-sm font-medium text-libryo-gray-500">
+                <div class="flex justify-between text-sm font-medium text-norma-gray-500">
                   <div>{{ $stats['medium']['label'] }}</div>
                   <div>{{ $stats['medium']['value'] }}</div>
                 </div>
-                <div class="flex justify-between text-sm font-medium text-libryo-gray-500">
+                <div class="flex justify-between text-sm font-medium text-norma-gray-500">
                   <div>{{ $stats['percentage']['label'] }}</div>
                   <div>{{ $stats['percentage']['value'] }}</div>
                 </div>

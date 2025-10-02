@@ -7,7 +7,7 @@
 <div class="col-md-8 col-md-offset-2">
 <div class="panel panel-default">
 <div class="panel-block" style="padding-bottom: 30px;">
-<h1 style="color: #0b7e58">{{ __('mail.introducing_libryo') }}</h1>
+<h1 style="color: #0b7e58">{{ __('mail.introducing_norma') }}</h1>
 </div>
 <div class="panel-body panel-border">
 <br>
@@ -22,12 +22,12 @@
 @component('mail::hr')
 @endcomponent
 <div class="heading">
-<strong>{{ __('mail.what_is_libryo_platform') }}</strong>
+<strong>{{ __('mail.what_is_norma_platform') }}</strong>
 </div>
 <br>
-<p style="font-size: 15px; line-height: 26px; color: #1a2434">{{ __('mail.libryo_platform_description_onboard') }}</p>
+<p style="font-size: 15px; line-height: 26px; color: #1a2434">{{ __('mail.norma_platform_description_onboard') }}</p>
 <div class="heading">
-<strong>{{ __('mail.how_can_libryo_help') }}</strong>
+<strong>{{ __('mail.how_can_norma_help') }}</strong>
 </div>
 <ul style="font-size: 15px; line-height: 26px; color: #1a2434">
 <li>{{ __('mail.how_help_legislation') }}</li>
@@ -50,11 +50,11 @@
 </div>
 <br>
 <p style="font-size: 15px; line-height: 26px; color: #1a2434">
-{!! __('mail.have_questions_email_us', ['anchor' => '<a href="mailto:info@libryo.com">', 'anchor-close' => '</a>']) !!}
+{!! __('mail.have_questions_email_us', ['anchor' => '<a href="mailto:info@norma.com">', 'anchor-close' => '</a>']) !!}
 </p>
 <br>
 <p style="font-size: 15px; line-height: 26px; color: #1a2434">{{ __('mail.best_regards') }}</p>
-<p class="accent">{{ __('mail.libryo') }}</p>
+<p class="accent">{{ __('mail.norma') }}</p>
 </div>
 </div>
 </div>

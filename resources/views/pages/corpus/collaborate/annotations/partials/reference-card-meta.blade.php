@@ -1,4 +1,4 @@
-{{-- text-purple-600 bg-purple-100 text-white text-blue-600 bg-blue-100 text-green-600 bg-green-100 text-red-600 bg-red-100 text-libryo-gray-600 bg-libryo-gray-100 --}}
+{{-- text-purple-600 bg-purple-100 text-white text-blue-600 bg-blue-100 text-green-600 bg-green-100 text-red-600 bg-red-100 text-norma-gray-600 bg-norma-gray-100 --}}
 @php
   use App\Enums\Corpus\MetaChangeStatus;
 
@@ -24,7 +24,7 @@
         </div>
         <div class="flex items-center shrink-0 mr-2">
           @if (Arr::get($permissions, "{$key}.attach", false))
-            <a href="#" class="rounded-full border border-libryo-gray-200 px-1.5 pt-1 pb-0.5"
+            <a href="#" class="rounded-full border border-norma-gray-200 px-1.5 pt-1 pb-0.5"
                @click.prevent.stop="toggleOpenRef($el);showMeta({{ $reference->id }}, '{{ $relation }}')">
               <x-ui.icon name="plus" size="3" />
             </a>

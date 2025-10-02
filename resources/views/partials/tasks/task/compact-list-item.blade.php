@@ -12,7 +12,7 @@
       <x-tasks.task-status :status="$task->task_status" />
     </div>
     @if ($task->due_on)
-      <div class="text-libryo-gray-400 ">
+      <div class="text-norma-gray-400 ">
         <x-ui.timestamp :timestamp="$task->due_on->format('Y-m-d')" />
       </div>
     @endif

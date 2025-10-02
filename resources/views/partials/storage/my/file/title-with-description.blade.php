@@ -6,7 +6,7 @@
   <span class="flex flex-col">
     <span>{{ $title }}</span>
     @if(!empty($description))
-      <span class="text-libryo-gray-500 text-xs">{{ $description }}</span>
+      <span class="text-norma-gray-500 text-xs">{{ $description }}</span>
     @endif
   </span>
 </x-ui.link>

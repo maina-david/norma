@@ -164,7 +164,7 @@
   @if($task->description || ($task->parent_task_id && $task->parent->description))
     <div class="px-4 my-4">
       <x-ui.label for="description">
-        <span class="text-libryo-gray-500 uppercase text-xs font-medium">{{ __('assess.assessment_item.description') }}</span>
+        <span class="text-norma-gray-500 uppercase text-xs font-medium">{{ __('assess.assessment_item.description') }}</span>
       </x-ui.label>
       <div class="text-sm py-2">
         <x-ui.collaborate.wysiwyg-content :content="$task->parent->description ?? ''"/>

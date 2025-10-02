@@ -13,12 +13,12 @@
     </div>
     <div>
       <div class="font-bold text-lg">{{ __('storage.drives.shared_drive_setup') }}</div>
-      <div class="text-libryo-gray-600 text-sm">{{ __('storage.drives.shared_drive_setup_info') }}</div>
+      <div class="text-norma-gray-600 text-sm">{{ __('storage.drives.shared_drive_setup_info') }}</div>
     </div>
   </div>
 
   @if(!$fileQuery)
-  <ul role="list" class="divide-y divide-libryo-gray-200">
+  <ul role="list" class="divide-y divide-norma-gray-200">
     @if ($folders->isEmpty())
       <x-ui.empty-state-icon
           icon="folder-open"
@@ -92,7 +92,7 @@
       <x-slot name="prepend">
         @foreach ($folders as $folder)
           <x-ui.tr :loop="$loop">
-            <td class="px-4 py-2 whitespace-normal text-sm font-medium text-libryo-gray-900 border-b border-libryo-gray-200">
+            <td class="px-4 py-2 whitespace-normal text-sm font-medium text-norma-gray-900 border-b border-norma-gray-200">
               @include('components.storage.my.file.settings.global.folder-item')
             </td>
           </x-ui.tr>

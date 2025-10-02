@@ -1,4 +1,4 @@
-<div class="libryo-legislation p-3">
+<div class="norma-legislation p-3">
   {!! $reference->htmlContent?->cached_content !!}
 
   @if (!$reference->childReferences->isEmpty())
@@ -8,7 +8,7 @@
   @endif
 </div>
 @if ($reference->work->source)
-  <div class="italic text-libryo-gray-600 p-5 text-xs">
+  <div class="italic text-norma-gray-600 p-5 text-xs">
     {!! $reference->work->source->source_content !!}
   </div>
 @endif

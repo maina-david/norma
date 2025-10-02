@@ -8,7 +8,7 @@
      id="reference_{{ $reference->id }}">
 
   <div
-       class="w-full rounded border shadow-sm bg-white {{ $reference->contentDraft ? 'border-secondary' : 'border-libryo-gray-200' }}">
+       class="w-full rounded border shadow-sm bg-white {{ $reference->contentDraft ? 'border-secondary' : 'border-norma-gray-200' }}">
     <div class="rounded text-sm">
       <div class="flex items-center font-semibold group">
         <a
@@ -21,7 +21,7 @@
           @if ($reference->refRequirement || $reference->requirementDraft)
             <span class="mr-2 tippy" data-tippy-content="{{ __('corpus.reference.has_requirements') }}">
               <x-ui.icon name="octagon-exclamation" size="4"
-                         class="{{ $reference->requirementDraft ? 'text-negative' : ($reference->refRequirement ? 'text-primary' : 'text-libryo-gray-200') }}" />
+                         class="{{ $reference->requirementDraft ? 'text-negative' : ($reference->refRequirement ? 'text-primary' : 'text-norma-gray-200') }}" />
             </span>
           @endif
           <span class="flex-grow text-primary">

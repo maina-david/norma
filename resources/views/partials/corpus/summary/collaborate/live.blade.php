@@ -1,5 +1,5 @@
 <div>
-  <div class="libryo-legislation py-4">
+  <div class="norma-legislation py-4">
     <x-ui.collaborate.wysiwyg-content :content="$reference->summary->summary_body ?? __('corpus.summary.no_summary')" />
   </div>
 

@@ -13,12 +13,12 @@
     </div>
 
     <div id="split-right-{{ $doc->id }}">
-      <div class="libryo-legislation shadow bg-white ml-3 p-7 max-h-screen overflow-y-auto h-full">
+      <div class="norma-legislation shadow bg-white ml-3 p-7 max-h-screen overflow-y-auto h-full">
         <turbo-frame id="content-full-text-{{ $doc->id }}">
           <div class="text-3xl text-center mt-40 px-10">
             {{ $doc->title }}
           </div>
-          <div class="text-lg text-center mt-10 mb-40 px-10 text-libryo-gray-400">
+          <div class="text-lg text-center mt-10 mb-40 px-10 text-norma-gray-400">
             {{ $doc->docMeta->title_translation }}
           </div>
         </turbo-frame>
@@ -27,12 +27,12 @@
     </div>
   </div>
 @else
-  <div class="libryo-legislation shadow bg-white p-3 max-h-screen overflow-y-auto">
+  <div class="norma-legislation shadow bg-white p-3 max-h-screen overflow-y-auto">
     <div class="text-3xl text-center mt-3 px-10">
       {{ $doc->title }}
     </div>
     @if ($doc->docMeta->title_translation)
-      <div class="text-lg text-center mt-10 mb-40 px-10 text-libryo-gray-400">
+      <div class="text-lg text-center mt-10 mb-40 px-10 text-norma-gray-400">
         {{ $doc->docMeta->title_translation }}
       </div>
     @endif

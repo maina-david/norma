@@ -1,7 +1,7 @@
 <div>
 
   <div class="flex items-center justify-end">
-    @if (!empty($libryo))
+    @if (!empty($norma))
       @if($relation === 'reference')
         <x-ui.modal>
           <x-slot name="trigger">
@@ -17,7 +17,7 @@
 
           <div class="max-w-[80vw]">
             <turbo-frame
-                src="{{ route('my.tasks.tasks.for.related.suggest', ['relation' => $relation, 'id' => $related->id, 'libryo' => $libryo]) }}"
+                src="{{ route('my.tasks.tasks.for.related.suggest', ['relation' => $relation, 'id' => $related->id, 'norma' => $norma]) }}"
                 loading="lazy"
                 id="suggested-task-for-related-{{ $relation }}-{{ $related->id }}"
             >
@@ -43,7 +43,7 @@
 {{--            </x-ui.button>--}}
 
 
-            <x-tasks.create-task-button taskable-type="{{ $taskableType }}" taskable-id="{{ $taskableId }}" libryo-id="{{ $libryo->id }}" />
+            <x-tasks.create-task-button taskable-type="{{ $taskableType }}" taskable-id="{{ $taskableId }}" norma-id="{{ $norma->id }}" />
           </div>
 
         </x-slot>
@@ -51,7 +51,7 @@
         <turbo-frame src="{{ route('my.tasks.tasks.for.related.create', [
             'relation' => $relation,
             'id' => $related->id,
-            'libryo' => $libryo,
+            'norma' => $norma,
         ]) }}"
                      loading="lazy" id="create-task-for-related-{{ $relation }}-{{ $related->id }}">
           <x-ui.skeleton />

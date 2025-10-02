@@ -4,7 +4,7 @@
       <div
         x-data="{selectors: {{ json_encode($reference->refSelector?->selectors ?? []) }} }"
         @click="function () { evaluateSelector($event.target.closest('.toc-ref'), this.selectors) }"
-        class="px-2 py-1 border-b border-libryo-gray-100 cursor-pointer toc-ref"
+        class="px-2 py-1 border-b border-norma-gray-100 cursor-pointer toc-ref"
         id="toc{{ $reference->id }}"
         data-volume="{{ $reference->volume }}"
       >

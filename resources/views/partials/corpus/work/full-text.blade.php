@@ -1,6 +1,6 @@
 @php
 $isPDF = $work->isPDFSource();
-$scrollOnLoad = $scrollTo ? "setTimeout(function () { window.scrollToItem(document.getElementById('{$scrollTo}'), '.libryo-legislation'); }, 500);" : '';
+$scrollOnLoad = $scrollTo ? "setTimeout(function () { window.scrollToItem(document.getElementById('{$scrollTo}'), '.norma-legislation'); }, 500);" : '';
 @endphp
 
 <div
@@ -20,7 +20,7 @@ $scrollOnLoad = $scrollTo ? "setTimeout(function () { window.scrollToItem(docume
         @foreach ($references as $index => $reference)
           @if ($volume === $reference->volume)
             <a
-              @click="window.scrollToItem(document.getElementById('{{ $reference->id }}'), '.libryo-legislation')"
+              @click="window.scrollToItem(document.getElementById('{{ $reference->id }}'), '.norma-legislation')"
               data-turbo-frame="_top"
               class="text-primary block mb-1 hover:text-primary cursor-pointer text-sm indent-{{ $reference->level }}"
             >
@@ -28,7 +28,7 @@ $scrollOnLoad = $scrollTo ? "setTimeout(function () { window.scrollToItem(docume
             </a>
           @else
             <a
-              @click="setTimeout( function () { window.scrollToItem(document.querySelector('#split-left-{{ $work->id }} > a:nth-child({{ $index }})'), '#split-left-{{ $work->id }}', 'instant'); window.scrollToItem(document.getElementById('{{ $reference->id }}'), '.libryo-legislation');  }, 1800)"
+              @click="setTimeout( function () { window.scrollToItem(document.querySelector('#split-left-{{ $work->id }} > a:nth-child({{ $index }})'), '#split-left-{{ $work->id }}', 'instant'); window.scrollToItem(document.getElementById('{{ $reference->id }}'), '.norma-legislation');  }, 1800)"
               href="{{ route('my.works.full-text.show', ['work' => $work->id, 'volume' => $reference->volume, 'page' => $page]) }}#{{ $reference->id }}"
               class="text-primary block mb-1 hover:text-primary cursor-pointer text-sm indent-{{ $reference->level }}"
             >
@@ -38,16 +38,16 @@ $scrollOnLoad = $scrollTo ? "setTimeout(function () { window.scrollToItem(docume
         @endforeach
       @endif
 
-      <div class="mt-5 pt-4 mr-2 border-t border-libryo-gray-200">
+      <div class="mt-5 pt-4 mr-2 border-t border-norma-gray-200">
          {{ $references->links() }}
        </div>
     </div>
   </div>
 
   <div id="split-right-{{ $work->id }}" class="h-full overflow-hidden">
-    <div class="overflow-auto h-full libryo-legislation">
+    <div class="overflow-auto h-full norma-legislation">
       @if (!empty($work->source->source_content ?? '') && '<p>&nbsp;</p>' !== ($work->source->source_content ?? ''))
-        <div class="italic text-libryo-gray-600 md:ml-6 py-5 text-xs">
+        <div class="italic text-norma-gray-600 md:ml-6 py-5 text-xs">
           {!! $work->source->source_content !!}
         </div>
       @endif

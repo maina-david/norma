@@ -18,12 +18,12 @@
     @foreach ($results as $result)
       <div class="space-y-2  rounded-lg bg-white shadow p-2 mb-1">
         <div><a class="text-primary" href="{{ $result['page_url'] }}" target="_blank">{{ $result['title'] }}</a></div>
-        <div class="text-xs text-libryo-gray-500 italic">{{ $result['url_host'] }}</div>
+        <div class="text-xs text-norma-gray-500 italic">{{ $result['url_host'] }}</div>
         @if (!empty($result['documents']))
           <x-ui.collapse title-size="text-base" title="{{ $result['documents'][0]['text'] }}" flat
-                         class="border-b border-libryo-gray-200">
+                         class="border-b border-norma-gray-200">
             @foreach ($result['documents'] as $doc)
-              <div class="text-libryo-gray-400 text-xs italic">{{ $doc['text'] }}</div>
+              <div class="text-norma-gray-400 text-xs italic">{{ $doc['text'] }}</div>
             @endforeach
           </x-ui.collapse>
         @endif

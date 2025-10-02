@@ -26,8 +26,8 @@
                         </x-ui.tab-nav>
                     </x-slot>
 
-                    <x-ui.tab-content name="content" class="border-libryo-gray-200 lg:border-r lg:mr-4">
-                        <div class="libryo-legislation p-3">
+                    <x-ui.tab-content name="content" class="border-norma-gray-200 lg:border-r lg:mr-4">
+                        <div class="norma-legislation p-3">
                             {!! $reference->htmlContent?->cached_content !!}
 
                             @if (!$reference->childReferences->isEmpty())
@@ -37,7 +37,7 @@
                             @endif
                         </div>
                         @if ($reference->work->source)
-                            <div class="italic text-libryo-gray-600 p-5 text-xs">
+                            <div class="italic text-norma-gray-600 p-5 text-xs">
                                 {!! $reference->work->source->source_content !!}
                             </div>
                         @endif
@@ -70,12 +70,12 @@
 
                     <x-ui.tab-content name="summary">
                         @if (empty($reference->summary->summary_body ?? ''))
-                            <div class="text-center text-libryo-gray-600 pt-8">
+                            <div class="text-center text-norma-gray-600 pt-8">
                                 {{ __('requirements.no_notes') }}
                             </div>
                         @else
                             <div class="p-4 wysiwyg-content">
-                                <div class="libryo-summary mt-5">
+                                <div class="norma-summary mt-5">
                                     <turbo-frame id="summary-content-{{ $reference->summary->reference_id }}"
                                                  target="_top">
                                         {!! $reference->summary->summary_body !!}
@@ -89,7 +89,7 @@
                     <x-ui.tab-content name="read-with">
                         <div>
                             @if ($totalReadWith === 0)
-                                <div class="text-center text-libryo-gray-600 pt-8">
+                                <div class="text-center text-norma-gray-600 pt-8">
                                     {{ __('requirements.no_read_with') }}
                                 </div>
                             @endif
@@ -98,7 +98,7 @@
                                 <x-ui.collapse title-size="text-base"
                                                title="{{ ReferenceLinkType::AMENDMENT->label() }} ({{ $amendmentsCount }})"
                                                flat
-                                               class="border-b border-libryo-gray-200">
+                                               class="border-b border-norma-gray-200">
                                     @foreach ($amendments as $amendment)
                                         <div><a class="text-primary"
                                                href="{{ route('collaborate.corpus.requirements.preview.reference.show', ['reference' => $amendment->id]) }} ">{{ $amendment->refPlainText->plain_text }}</a>
@@ -112,7 +112,7 @@
                                 <x-ui.collapse title-size="text-base"
                                                title="{{ ReferenceLinkType::READ_WITH->label() }} ({{ $readWithsCount }})"
                                                flat
-                                               class="border-b border-libryo-gray-200">
+                                               class="border-b border-norma-gray-200">
                                     @foreach ($readWiths as $readWith)
                                         <div><a class="text-primary mb-5"
                                                href="{{ route('collaborate.corpus.requirements.preview.reference.show', ['reference' => $readWith->id]) }} ">{{ $readWith->refPlainText->plain_text }}</a>
@@ -124,7 +124,7 @@
                             @if ($reference->raises_consequence_groups_count > 0)
                                 <x-ui.collapse title-size="text-base"
                                                title="{{ ReferenceLinkType::CONSEQUENCE->label() }} ({{ $reference->raises_consequence_groups_count }})"
-                                               flat class="border-b border-libryo-gray-200">
+                                               flat class="border-b border-norma-gray-200">
                                     <div>
                                         @foreach ($reference->raisesConsequenceGroups as $consequenceGroup)
                                             <div><a class="text-primary mb-5"

@@ -6,6 +6,6 @@
   <div>{{ $row->id }}</div>
 </div>
 
-<div class="text-sm text-libryo-gray-500 mt-1">
+<div class="text-sm text-norma-gray-500 mt-1">
   {{ Carbon\Carbon::parse($row->created_at)->format('d M Y') }}
 </div>

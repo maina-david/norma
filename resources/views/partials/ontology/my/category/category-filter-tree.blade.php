@@ -16,7 +16,7 @@ $industry = $options->where('id', 111000)->first();
 @endphp
 
 <div
-  class="border-t border-libryo-gray-200 pt-4 category-tree"
+  class="border-t border-norma-gray-200 pt-4 category-tree"
   x-init="prepareTree"
   x-data="{
     openItems: {},

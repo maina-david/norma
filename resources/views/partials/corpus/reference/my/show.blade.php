@@ -1,8 +1,8 @@
 @php
   use App\Enums\Auth\UserActivityType;
-  use App\Enums\Corpus\ReferenceLinkType;use App\Services\Customer\ActiveLibryosManager;
+  use App\Enums\Corpus\ReferenceLinkType;use App\Services\Customer\ActiveNormasManager;
   $totalReadWith = $reference->raises_consequence_groups_count + $readWithsCount + $amendmentsCount;
-  $singleMode = app(ActiveLibryosManager::class)->isSingleMode();
+  $singleMode = app(ActiveNormasManager::class)->isSingleMode();
 
   $canUpdateMetaData = $canUpdateMetaData ?? false;
 @endphp
@@ -18,8 +18,8 @@
         </x-ui.tab-nav>
       </x-slot>
 
-      <x-ui.tab-content name="content" class="border-libryo-gray-200 lg:border-r lg:mr-4">
-        <div class="libryo-legislation p-3">
+      <x-ui.tab-content name="content" class="border-norma-gray-200 lg:border-r lg:mr-4">
+        <div class="norma-legislation p-3">
           {!! $reference->htmlContent?->cached_content !!}
           @if (!$reference->childReferences->isEmpty())
             @foreach ($reference->childReferences as $childRef)
@@ -29,7 +29,7 @@
         </div>
 
         @if ($reference->work->source)
-          <div class="italic text-libryo-gray-600 p-3 text-xs">
+          <div class="italic text-norma-gray-600 p-3 text-xs">
             {!! $reference->work->source->source_content !!}
           </div>
         @endif
@@ -72,7 +72,7 @@
 
       <x-ui.tab-content name="summary">
         @if(empty($reference->summary->summary_body ?? ''))
-          <div class="text-center text-libryo-gray-600 pt-8">
+          <div class="text-center text-norma-gray-600 pt-8">
             {{ __('requirements.no_notes') }}
           </div>
 
@@ -93,7 +93,7 @@
                 </div>
               </div>
             @endif
-            <div class="libryo-summary mt-5">
+            <div class="norma-summary mt-5">
               <turbo-frame id="summary-content-{{ $reference->summary->reference_id }}" target="_top">
                 {!! $reference->summary->summary_body !!}
               </turbo-frame>
@@ -106,7 +106,7 @@
       <x-ui.tab-content name="read-with">
         <div>
           @if($totalReadWith === 0)
-            <div class="text-center text-libryo-gray-600 pt-8">
+            <div class="text-center text-norma-gray-600 pt-8">
               {{ __('requirements.no_read_with') }}
             </div>
           @endif
@@ -114,7 +114,7 @@
           @if($amendmentsCount > 0)
             <x-ui.collapse title-size="text-base"
                            title="{{ ReferenceLinkType::AMENDMENT->label() }} ({{ $amendmentsCount }})" flat
-                           class="border-b border-libryo-gray-200">
+                           class="border-b border-norma-gray-200">
               <turbo-frame loading="lazy" id="amendments-for-reference-{{ $reference->id }}"
                            src="{{ route('my.amendments.for.reference', ['reference' => $reference->id]) }}">
                 <x-ui.skeleton/>
@@ -126,7 +126,7 @@
           @if($readWithsCount > 0)
             <x-ui.collapse title-size="text-base"
                            title="{{ ReferenceLinkType::READ_WITH->label() }} ({{ $readWithsCount }})" flat
-                           class="border-b border-libryo-gray-200">
+                           class="border-b border-norma-gray-200">
               <turbo-frame loading="lazy" id="read-withs-for-reference-{{ $reference->id }}"
                            src="{{ route('my.read-withs.for.reference', ['reference' => $reference->id]) }}">
                 <x-ui.skeleton/>
@@ -137,7 +137,7 @@
           @if($reference->raises_consequence_groups_count > 0)
             <x-ui.collapse title-size="text-base"
                            title="{{ ReferenceLinkType::CONSEQUENCE->label() }} ({{ $reference->raises_consequence_groups_count }})"
-                           flat class="border-b border-libryo-gray-200">
+                           flat class="border-b border-norma-gray-200">
               <div
                   x-intersect.once="window.axios.post('{{ route('my.user.activities.track') }}', {type: {{ UserActivityType::viewedTabConsequences()->value }}, details: {id: {{ $reference->id }}}})">
                 <turbo-frame loading="lazy" id="consequences-for-reference-{{ $reference->id }}"
@@ -165,7 +165,7 @@
 </div>
 
 
-<div class="grid lg:grid-cols-12 lg:gap-4 bg-libryo-gray-50 border-t border-libryo-gray-100 p-5">
+<div class="grid lg:grid-cols-12 lg:gap-4 bg-norma-gray-50 border-t border-norma-gray-100 p-5">
   {{-- LEFT SIDE --}}
   <div class="lg:col-span-8">
     <x-ui.tabs x-cloak>
@@ -191,7 +191,7 @@
           </x-ui.tab-nav>
         @endif
 
-      @if($libryo && $libryo->hasActionsModule())
+      @if($norma && $norma->hasActionsModule())
         @if($reference->actionAreas->isNotEmpty())
           <x-ui.tab-nav name="actions">
             <x-ui.icon name="clipboard-list" class="mr-2"/>
@@ -237,7 +237,7 @@
         </x-ui.tab-content>
       @endif
 
-      @if($libryo && $libryo->hasActionsModule())
+      @if($norma && $norma->hasActionsModule())
         @if($reference->actionAreas->isNotEmpty())
           <x-ui.tab-content name="actions">
               <div class="bg-white border border-gray-100 shadow">

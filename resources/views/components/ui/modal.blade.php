@@ -52,7 +52,7 @@
         >
           @if ($closable)
             <div @click="handleClose" class="absolute top-4 right-4 cursor-pointer">
-              <x-ui.icon name="times" siye="4" class="text-libryo-gray-600 hover:text-libryo-gray-900" />
+              <x-ui.icon name="times" siye="4" class="text-norma-gray-600 hover:text-norma-gray-900" />
             </div>
           @endif
           <div class="whitespace-normal">

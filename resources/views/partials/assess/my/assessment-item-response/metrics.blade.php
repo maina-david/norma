@@ -10,7 +10,7 @@ use App\Enums\Assess\ResponseStatus;
                                                         searchable
                                                         :fields="[
                                                           'risk_rating',
-                                                          'libryo_title',
+                                                          'norma_title',
                                                           'last_answered',
                                                           'total_count',
                                                           'total_' . ResponseStatus::yes()->value,

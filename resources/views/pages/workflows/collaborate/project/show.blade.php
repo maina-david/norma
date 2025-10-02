@@ -105,36 +105,36 @@
 @endif
 
 
-<table class="min-w-full divide-y divide-libryo-gray-300 mt-10">
-    <thead class="bg-libryo-gray-50">
+<table class="min-w-full divide-y divide-norma-gray-300 mt-10">
+    <thead class="bg-norma-gray-50">
         <tr>
-            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-libryo-gray-900 sm:pl-6">
+            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-norma-gray-900 sm:pl-6">
             </th>
-            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-libryo-gray-900 sm:pl-6">
+            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-norma-gray-900 sm:pl-6">
                 {{ __('workflows.project.tasks_pending_count') }}</th>
-            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-libryo-gray-900 sm:pl-6">
+            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-norma-gray-900 sm:pl-6">
                 {{ __('workflows.project.tasks_todo_count') }}</th>
-            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-libryo-gray-900 sm:pl-6">
+            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-norma-gray-900 sm:pl-6">
                 {{ __('workflows.project.tasks_in_progress_count') }}</th>
-            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-libryo-gray-900 sm:pl-6">
+            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-norma-gray-900 sm:pl-6">
                 {{ __('workflows.project.tasks_in_review_count') }}</th>
-            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-libryo-gray-900 sm:pl-6">
+            <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-norma-gray-900 sm:pl-6">
                 {{ __('workflows.project.tasks_done_count') }}</th>
         </tr>
     </thead>
-    <tbody class="divide-y divide-libryo-gray-200 bg-white">
+    <tbody class="divide-y divide-norma-gray-200 bg-white">
         @foreach ($taskTypes as $taskType)
             <tr>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-libryo-gray-500">{{ $taskType->name }}
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-norma-gray-500">{{ $taskType->name }}
                 </td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-libryo-gray-500">{{ $taskType->pending_count }}
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-norma-gray-500">{{ $taskType->pending_count }}
                 </td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-libryo-gray-500">{{ $taskType->todo_count }}</td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-libryo-gray-500">{{ $taskType->in_progress_count }}
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-norma-gray-500">{{ $taskType->todo_count }}</td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-norma-gray-500">{{ $taskType->in_progress_count }}
                 </td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-libryo-gray-500">{{ $taskType->in_review_count }}
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-norma-gray-500">{{ $taskType->in_review_count }}
                 </td>
-                <td class="whitespace-nowrap px-3 py-4 text-sm text-libryo-gray-500">{{ $taskType->done_count }}</td>
+                <td class="whitespace-nowrap px-3 py-4 text-sm text-norma-gray-500">{{ $taskType->done_count }}</td>
             </tr>
         @endforeach
 

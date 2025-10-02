@@ -5,7 +5,7 @@
     </div>
     <div class="flex-grow">
       <div class="text-primary font-semibold">{{ $row->title }}</div>
-      <div class="text-xs text-libryo-gray-500 mt-1">{{ $row->work_title ?? '-' }}</div>
+      <div class="text-xs text-norma-gray-500 mt-1">{{ $row->work_title ?? '-' }}</div>
     </div>
   </div>
 </td>

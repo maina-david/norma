@@ -1,7 +1,7 @@
 <dl class="grid grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
   <div
        class="relative bg-white py-5 px-4 sm:pt-6 sm:px-6 shadow rounded-lg overflow-hidden flex flex-col justify-between">
-    <p class="text-sm font-medium text-libryo-gray-500 mb-4 text-center">{{ __('auth.user.days_active') }}</p>
+    <p class="text-sm font-medium text-norma-gray-500 mb-4 text-center">{{ __('auth.user.days_active') }}</p>
 
     <div class="flex items-center justify-center">
       <dt>
@@ -10,7 +10,7 @@
         </div>
       </dt>
       <dd class="ml-4 flex">
-        <p class="text-2xl font-semibold text-libryo-gray-900">
+        <p class="text-2xl font-semibold text-norma-gray-900">
           {{ $daysActive }}
         </p>
       </dd>
@@ -19,7 +19,7 @@
 
   <div
        class="relative bg-white py-5 px-4 sm:pt-6 sm:px-6 shadow rounded-lg overflow-hidden flex flex-col justify-between">
-    <p class="text-sm font-medium text-libryo-gray-500 mb-4 text-center">
+    <p class="text-sm font-medium text-norma-gray-500 mb-4 text-center">
       {{ __('notify.legal_update.updates_received_this_month') }}
     </p>
 
@@ -30,7 +30,7 @@
         </div>
       </dt>
       <dd class="ml-4 flex items-center">
-        <p class="text-2xl font-semibold text-libryo-gray-900">
+        <p class="text-2xl font-semibold text-norma-gray-900">
           {{ $updatesCount }}
         </p>
       </dd>
@@ -39,7 +39,7 @@
 
   <div
        class="relative bg-white py-5 px-4 sm:pt-6 sm:px-6 shadow rounded-lg overflow-hidden flex flex-col justify-between">
-    <p class="text-sm font-medium text-libryo-gray-500 mb-4 text-center">{{ __('customer.libryo.libryo_streams') }}</p>
+    <p class="text-sm font-medium text-norma-gray-500 mb-4 text-center">{{ __('customer.norma.norma_streams') }}</p>
 
     <div class="flex items-center justify-center">
       <dt>
@@ -48,8 +48,8 @@
         </div>
       </dt>
       <dd class="ml-4 flex items-center">
-        <p class="text-2xl font-semibold text-libryo-gray-900">
-          {{ $libryoStreamsCount }}
+        <p class="text-2xl font-semibold text-norma-gray-900">
+          {{ $normaStreamsCount }}
         </p>
       </dd>
     </div>

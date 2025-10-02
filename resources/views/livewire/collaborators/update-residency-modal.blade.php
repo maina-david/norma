@@ -10,7 +10,7 @@
           {{ __('collaborators.collaborator.your_profile') }}
         </div>
 
-        <div class="text-libryo-gray-600 space-y-2">
+        <div class="text-norma-gray-600 space-y-2">
           <p>
             {!! __('collaborators.collaborator.confirm_residency') !!}
           </p>

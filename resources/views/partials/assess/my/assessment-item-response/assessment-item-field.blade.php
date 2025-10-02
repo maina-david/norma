@@ -38,7 +38,7 @@
             <div class="cursor-pointer hover:text-primary">
               <a data-turbo-frame="_top"
                  href="{{ $linkRoute }}"
-                 class="{{ $assessmentItem->deleted_at ? 'text-libryo-gray-500' : 'text-primary' }} hover:text-primary-darker flex-grow"
+                 class="{{ $assessmentItem->deleted_at ? 'text-norma-gray-500' : 'text-primary' }} hover:text-primary-darker flex-grow"
               >
                 @include(
                     'partials.assess.assessment-item.risk-rating-description',
@@ -53,15 +53,15 @@
               'partials.assess.assessment-item.domain-breadcrumbs',
               ['assessmentItem' => $assessmentItem]
           )
-          @if ($withLibryo)
+          @if ($withNorma)
             <div class="text-primary-darker text-sm">
-              {{ $assessmentItemResponse->libryo->title }}
+              {{ $assessmentItemResponse->norma->title }}
             </div>
           @else
           @endif
         </div>
         @if($assessmentItem->relationLoaded('author') && $assessmentItem->author)
-          <div class="shrink-0 text-libryo-gray-500 hover:text-libryo-gray-800 tippy" data-tippy-content="{{ __('tasks.created_by') }} {{ $assessmentItem->author->full_name }}">
+          <div class="shrink-0 text-norma-gray-500 hover:text-norma-gray-800 tippy" data-tippy-content="{{ __('tasks.created_by') }} {{ $assessmentItem->author->full_name }}">
             <x-ui.icon name="user" />
           </div>
         @endif

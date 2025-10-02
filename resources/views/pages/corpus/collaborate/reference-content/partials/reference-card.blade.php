@@ -15,7 +15,7 @@
 >
 
   <div
-      class="w-full rounded border shadow-sm bg-white {{ ReferenceStatus::pending()->is($reference->status) ? 'border-secondary' : 'border-libryo-gray-200' }}"
+      class="w-full rounded border shadow-sm bg-white {{ ReferenceStatus::pending()->is($reference->status) ? 'border-secondary' : 'border-norma-gray-200' }}"
   >
     <div class="rounded text-sm">
       <div class="flex items-center font-semibold group">
@@ -26,7 +26,7 @@
           @if ($reference->refRequirement || $reference->requirementDraft)
             <span class="mr-2 tippy" data-tippy-content="{{ __('corpus.reference.has_requirements') }}">
               <x-ui.icon name="octagon-exclamation" size="4"
-                         class="{{ $reference->requirementDraft ? 'text-negative' : ($reference->refRequirement ? 'text-primary' : 'text-libryo-gray-200') }}" />
+                         class="{{ $reference->requirementDraft ? 'text-negative' : ($reference->refRequirement ? 'text-primary' : 'text-norma-gray-200') }}" />
             </span>
           @endif
           <span class="flex-grow text-primary">
@@ -66,7 +66,7 @@
             x-bind:checked="selected.includes({{ $reference->id }})"
             @click.stop="toggleSelection({{ $reference->id }})"
             type="checkbox"
-            class="mr-2 h-4 w-4 text-primary focus:ring-primary border-libryo-gray-300 rounded"
+            class="mr-2 h-4 w-4 text-primary focus:ring-primary border-norma-gray-300 rounded"
           >
         </div>
       </div>

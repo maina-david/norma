@@ -4,7 +4,7 @@
       <x-ui.icon name="chevron-up" />
     </a>
     <span class="text-base font-bold">{{ $assessmentItem->toDescription() }}</span>
-    <span class="text-xs text-libryo-gray-500 italic ml-3">{{ $subTitle }}</span>
+    <span class="text-xs text-norma-gray-500 italic ml-3">{{ $subTitle }}</span>
   </x-slot>
 
   @if ($responsesCount === 0)

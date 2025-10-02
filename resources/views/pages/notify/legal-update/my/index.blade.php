@@ -1,17 +1,17 @@
 <x-layouts.app>
   <x-slot name="header">
     <div class="flex items-center">
-      <x-ui.icon name="bell" class="mr-3 text-libryo-gray-400" size="8" />
+      <x-ui.icon name="bell" class="mr-3 text-norma-gray-400" size="8" />
       <div>
         {{ __('my.nav.updates') }}
-        <span class="text-xs text-libryo-gray-500 italic ml-3">{{ $subTitle }}</span>
+        <span class="text-xs text-norma-gray-500 italic ml-3">{{ $subTitle }}</span>
       </div>
     </div>
   </x-slot>
   <x-slot name="actions">
     <div class="flex flex-row justify-between items-center">
       <a target="_blank"
-         href="https://success.libryo.com/en/knowledge/getting-started-with-libryo/notifications/navigating-your-notifications">
+         href="https://success.norma.com/en/knowledge/getting-started-with-norma/notifications/navigating-your-notifications">
         <x-ui.icon name="question-circle" />
       </a>
     </div>

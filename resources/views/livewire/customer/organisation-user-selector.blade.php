@@ -19,7 +19,7 @@ $selectionAction = function ($user) use ($multiple) {
       @foreach($users as $user)
         <div
           x-show="search.length < 2 || `{{ strtolower(str_replace(' ',  '', $user->full_name)) }}`.includes(search)"
-          class="flex items-center hover:bg-libryo-gray-100 px-3 py-1 rounded-lg cursor-pointer"
+          class="flex items-center hover:bg-norma-gray-100 px-3 py-1 rounded-lg cursor-pointer"
           @click.stop="$dispatch('selected', '{{ $user->hash_id }}');{{ $selectionAction($user) }}"
         >
           <x-ui.user-avatar class="flex-shrink-0" size="4" :user="$user" />

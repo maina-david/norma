@@ -19,7 +19,7 @@ $upload = $upload ?? false;
     </x-ui.form>
 
     <div class="relative pt-1">
-      <div class="overflow-hidden h-2 text-xs flex rounded bg-libryo-gray-200">
+      <div class="overflow-hidden h-2 text-xs flex rounded bg-norma-gray-200">
         <div
            x-ref="progressBar"
            style="width: {{ $percentage }}%;"

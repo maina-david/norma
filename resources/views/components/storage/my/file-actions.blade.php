@@ -7,7 +7,7 @@
                         :label="__('actions.delete')"
                         :confirmation="__('actions.delete_confirmation')">
       <div @click="open = true"
-           class="cursor-pointer text-libryo-gray-700 hover:bg-libryo-gray-100 group flex items-center px-4 py-2 text-sm"
+           class="cursor-pointer text-norma-gray-700 hover:bg-norma-gray-100 group flex items-center px-4 py-2 text-sm"
            role="menuitem"
            tabindex="-1">
         <x-ui.icon :name="$action['icon']" class="mr-4" />
@@ -17,7 +17,7 @@
     {{-- EDIT --}}
   @elseif ($action['action'] === 'edit')
     <a href="{{ route('my.drives.files.edit', ['file' => $file->id]) }}"
-       class="cursor-pointer text-libryo-gray-700 hover:bg-libryo-gray-100 group flex items-center px-4 py-2 text-sm"
+       class="cursor-pointer text-norma-gray-700 hover:bg-norma-gray-100 group flex items-center px-4 py-2 text-sm"
        role="menuitem"
        tabindex="-1">
       <x-ui.icon :name="$action['icon']" class="mr-4" />
@@ -29,7 +29,7 @@
     <x-ui.modal>
       <x-slot name="trigger">
         <a @click="open = true"
-           class="cursor-pointer text-libryo-gray-700 hover:bg-libryo-gray-100 group flex items-center px-4 py-2 text-sm"
+           class="cursor-pointer text-norma-gray-700 hover:bg-norma-gray-100 group flex items-center px-4 py-2 text-sm"
            role="menuitem"
            tabindex="-1">
           <x-ui.icon :name="$action['icon']" class="mr-4" />
@@ -58,7 +58,7 @@
     <x-ui.modal>
       <x-slot name="trigger">
         <a @click="open = true"
-           class="cursor-pointer text-libryo-gray-700 hover:bg-libryo-gray-100 group flex items-center px-4 py-2 text-sm"
+           class="cursor-pointer text-norma-gray-700 hover:bg-norma-gray-100 group flex items-center px-4 py-2 text-sm"
            role="menuitem"
            tabindex="-1">
           <x-ui.icon :name="$action['icon']" class="mr-4" />
@@ -72,7 +72,7 @@
 
       <x-ui.form class="text-center" method="PUT" :action="route('my.drives.files.replace', ['file' => $file->id])"
                  enctype="multipart/form-data">
-        <label class="p-96 w-full inline-block bg-libryo-gray-200 rounded-2xl cursor-pointer text-xl">
+        <label class="p-96 w-full inline-block bg-norma-gray-200 rounded-2xl cursor-pointer text-xl">
           {{ __('storage.select_files') }}
           <x-ui.input class="hidden" type="file" name="file"
                       accept="{{ implode(',', $acceptedUploads) }}"

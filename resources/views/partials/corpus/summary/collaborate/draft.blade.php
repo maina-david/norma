@@ -1,6 +1,6 @@
 <div x-data="{ editing: false }">
   <div x-show="!editing" >
-    <div class="libryo-legislation relative py-4 group">
+    <div class="norma-legislation relative py-4 group">
       <x-ui.collaborate.wysiwyg-content :content="$reference->summaryDraft?->summary_body ?? __('corpus.summary.no_summary')" />
 
       @if(!($previewing ?? false))

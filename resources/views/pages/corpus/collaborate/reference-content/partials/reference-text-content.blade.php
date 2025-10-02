@@ -1,4 +1,4 @@
-<div class="p-4 border-t border-libryo-gray-200 relative">
+<div class="p-4 border-t border-norma-gray-200 relative">
   @can('collaborate.corpus.reference.update')
     <x-ui.form method="put" :action="route('collaborate.work-expressions.creation.references.content.update', ['expression' => $expression->id, 'reference' => $reference->id])">
 
@@ -17,7 +17,7 @@
 
 
   @else
-    <div class="mt-2 libryo-legislation">
+    <div class="mt-2 norma-legislation">
       {!! $reference->htmlContent?->cached_content !!}
     </div>
   @endcan

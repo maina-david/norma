@@ -60,7 +60,7 @@
                             :route="route('my.drives.folders.show', ['folder' => $folder->id])">
       <div>{{ $folder->title }}</div>
       @if ($folder->originalTitle)
-        <div class="text-libryo-gray-400 italic text-xs">{{ __('storage.drives.original_name') }}:
+        <div class="text-norma-gray-400 italic text-xs">{{ __('storage.drives.original_name') }}:
           {{ $folder->originalTitle ?? '' }}
         </div>
       @endif
@@ -74,7 +74,7 @@
 
     <div x-data="{ showing: true }">
       <div @click="showing = !showing"
-           class="flex flex-row justify-between cursor-pointer py-5 px-3 mt-3 hover:bg-libryo-gray-100">
+           class="flex flex-row justify-between cursor-pointer py-5 px-3 mt-3 hover:bg-norma-gray-100">
         <div>{{ __('storage.drives.empty_folders') }}</div>
         <div>
           <x-ui.icon x-show="showing" name="chevron-up" />
@@ -89,7 +89,7 @@
                                   :route="route('my.drives.folders.show', ['folder' => $folder->id])">
             <div>{{ $folder->title }}</div>
             @if ($folder->originalTitle)
-              <div class="text-libryo-gray-400 italic text-xs">{{ __('storage.drives.original_name') }}:
+              <div class="text-norma-gray-400 italic text-xs">{{ __('storage.drives.original_name') }}:
                 {{ $folder->originalTitle ?? '' }}</div>
             @endif
           </x-storage.folder-panel>

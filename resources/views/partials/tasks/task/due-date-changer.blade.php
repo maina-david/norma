@@ -24,5 +24,5 @@
   </div>
 </x-ui.dropdown>
 @else
-<x-ui.timestamp class="text-libryo-gray-500" :timestamp="$task->due_on"/>
+<x-ui.timestamp class="text-norma-gray-500" :timestamp="$task->due_on"/>
 @endif

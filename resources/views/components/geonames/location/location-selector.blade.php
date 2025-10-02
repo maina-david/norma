@@ -28,5 +28,5 @@ $route = \App\Enums\Application\ApplicationType::collaborate()->is(\App\Managers
   @php
     $location->load(['ancestors.type']);
   @endphp
-  <div class="text-libryo-gray-500 italic">{{ $location->getBreadcrumbs() }}</div>
+  <div class="text-norma-gray-500 italic">{{ $location->getBreadcrumbs() }}</div>
 @endif

@@ -1,11 +1,11 @@
 @php
-  use App\Services\Customer\ActiveLibryosManager;
-  $singleMode = app(ActiveLibryosManager::class)->isSingleMode();
+  use App\Services\Customer\ActiveNormasManager;
+  $singleMode = app(ActiveNormasManager::class)->isSingleMode();
 @endphp
 <div></div>
 <div>
   <div>
-    <x-comments.post-comment :commentable-type="$commentableType" :commentable-id="$commentableId" :libryo-id="$libryo->id ?? null" :redirect="$redirect ?? null">
+    <x-comments.post-comment :commentable-type="$commentableType" :commentable-id="$commentableId" :norma-id="$norma->id ?? null" :redirect="$redirect ?? null">
       @if(!$singleMode)
         <x-slot:postText>
           <div class="flex-grow flex items-center justify-end">

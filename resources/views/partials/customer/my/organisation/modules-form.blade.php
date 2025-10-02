@@ -1,13 +1,13 @@
 @php
   use App\Enums\System\OrganisationModules;
-  $libryoModules = OrganisationModules::forSelector();
+  $normaModules = OrganisationModules::forSelector();
 @endphp
 <x-ui.form
   method="post"
   :action="route('my.settings.organisations.modules.update', ['organisation' => $organisation->id])"
 >
   <div class="my-8">
-    @foreach ($libryoModules as $item)
+    @foreach ($normaModules as $item)
       <div class="mt-3">
         <x-ui.input
           type="checkbox"

@@ -5,7 +5,7 @@
 
   <div class="grid grid-cols-5 gap-4 mt-4">
     @foreach($images as $image)
-      <div class="h-48 rounded-lg border-libryo-gray-100 bg-libryo-gray-100 relative group">
+      <div class="h-48 rounded-lg border-norma-gray-100 bg-norma-gray-100 relative group">
         <img src="{{ $image }}" alt="{{ Str::afterLast($image, '/') }}" class="h-full w-full object-contain">
 
         <div class="hidden group-hover:flex items-center justify-center h-full w-full absolute top-0 left-0 space-x-2 bg-gray-500 bg-opacity-25 rounded-lg">

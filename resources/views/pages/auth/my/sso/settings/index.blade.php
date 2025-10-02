@@ -4,7 +4,7 @@
     <x-ui.card>
       <div class="grid grid-cols-5 gap-8">
         <div class="col-span-5 lg:col-span-2">
-          <div class="text-xl font-semibold text-libryo-gray-900">{{ __('auth.saml_sso') }}</div>
+          <div class="text-xl font-semibold text-norma-gray-900">{{ __('auth.saml_sso') }}</div>
           <div class="mt-2">{{ __('auth.saml_sso_description') }}</div>
         </div>
 
@@ -22,7 +22,7 @@
 
 
             <div class="mt-8">
-              <div class="font-semibold text-lg border-b border-libryo-gray-200 pb-2 mb-8">
+              <div class="font-semibold text-lg border-b border-norma-gray-200 pb-2 mb-8">
                 {{  __('auth.saml.service_provider') }}
               </div>
 
@@ -66,7 +66,7 @@
                 @click="$event.target.setSelectionRange(0, $event.target.value.length)"
               />
 
-              <div class="mt-8 font-semibold text-lg border-b border-libryo-gray-200 pb-2 mb-8">
+              <div class="mt-8 font-semibold text-lg border-b border-norma-gray-200 pb-2 mb-8">
                 {{  __('auth.saml.identity_provider') }}
               </div>
 
@@ -103,7 +103,7 @@
 
 
             <div class="mt-8">
-              <div class="font-semibold text-lg border-b border-libryo-gray-200 pb-2 mb-8">
+              <div class="font-semibold text-lg border-b border-norma-gray-200 pb-2 mb-8">
                 {{  __('auth.saml.application_settings') }}
               </div>
 

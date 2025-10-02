@@ -9,7 +9,7 @@
     </x-ui.button>
   </x-slot>
 
-  <div class="flex justify-end items-center p-3 rounded-md bg-libryo-gray-50">
+  <div class="flex justify-end items-center p-3 rounded-md bg-norma-gray-50">
     <x-ui.form :action="$actionRoute" method="post">
       <div class="w-96">
         <x-ui.input name="{{ $itemsName }}[]"

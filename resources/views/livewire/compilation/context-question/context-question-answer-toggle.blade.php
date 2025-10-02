@@ -5,7 +5,7 @@
       @if($answer !== $yesValue)
         wire:click="changeAnswer({{ $yesValue }})"
       @endif
-      class="libryo-radio text-primary focus:ring-primary cursor-pointer"
+      class="norma-radio text-primary focus:ring-primary cursor-pointer"
       type="radio"
       name="answer"
       value="{{ $yesValue }}"
@@ -24,7 +24,7 @@
       @if($answer !== $noValue)
         wire:click="changeAnswer({{ $noValue }})"
       @endif
-      class="libryo-radio text-primary focus:ring-primary cursor-pointer"
+      class="norma-radio text-primary focus:ring-primary cursor-pointer"
       type="radio"
       name="answer"
       value="{{ $noValue }}"
@@ -43,7 +43,7 @@
       @if($answer !== $unansweredValue)
         wire:click="changeAnswer({{ $unansweredValue }})"
       @endif
-      class="libryo-radio text-primary focus:ring-primary cursor-pointer"
+      class="norma-radio text-primary focus:ring-primary cursor-pointer"
       type="radio"
       name="answer"
       value="{{ $unansweredValue }}"

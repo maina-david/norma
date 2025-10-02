@@ -1,6 +1,6 @@
 <div class="mb-5">
   <x-ui.form method="post" :action="route('my.settings.compilation.libraries.session.add', ['key' => $key])">
-    <div class="flex flex-col lg:flex-row border border-libryo-gray-200 p-4 rounded mt-4">
+    <div class="flex flex-col lg:flex-row border border-norma-gray-200 p-4 rounded mt-4">
       <div class="flex-grow">
         <x-compilation.library.library-selector label="" placeholder="{{ __('compilation.library.select_libraries') }}" />
       </div>

@@ -12,7 +12,7 @@ if (isset($url)) {
    x-init="tab === '{{ $name }}' ? {{ $turboRef }} : '';"
    {{ $attributes->merge(['class' => 'relative whitespace-nowrap py-4 px-2 border-b-2 font-medium text-sm transition-colors transition ease-in-out duration-200 cursor-pointer']) }}
    @click="{{ $clickJs }} tab = '{{ $name }}';"
-   x-bind:class="tab == '{{ $name }}' ? 'border-primary text-primary' : 'border-transparent text-libryo-gray-500 hover:border-primary hover:text-primary'">
+   x-bind:class="tab == '{{ $name }}' ? 'border-primary text-primary' : 'border-transparent text-norma-gray-500 hover:border-primary hover:text-primary'">
   {{ $slot }}
   @if (isset($url))
     <turbo-frame>

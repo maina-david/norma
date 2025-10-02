@@ -17,7 +17,7 @@
     @endif
 
     @foreach ($row->legalDomains as $domain)
-      <div class="bg-libryo-gray-500 whitespace-nowrap text-white rounded-md px-3 py-0.5 mr-2 inline-block text-xs">{{ $domain->title }}</div>
+      <div class="bg-norma-gray-500 whitespace-nowrap text-white rounded-md px-3 py-0.5 mr-2 inline-block text-xs">{{ $domain->title }}</div>
     @endforeach
   </div>
 </div>

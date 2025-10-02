@@ -17,7 +17,7 @@
         {{ __('compilation.context_question.pending_applicability_modal.title', ['number' => $pendingCount]) }}
       </div>
 
-      <div class="text-libryo-gray-600 space-y-2">
+      <div class="text-norma-gray-600 space-y-2">
         <p>
           {!! __('compilation.context_question.pending_applicability_modal.paragraph_1', ['number' => $pendingCount]) !!}
         </p>
@@ -29,7 +29,7 @@
         </p>
       </div>
 
-      <div class="mt-2 border-t border-libryo-gray-200 pt-4">
+      <div class="mt-2 border-t border-norma-gray-200 pt-4">
         <x-ui.input :label="__('actions.dont_show_again')" name="hide_forever" type="checkbox" wire:change="manageSetting($event.target.checked)" />
       </div>
       <div class="flex justify-end items-center mt-2 pt-4">

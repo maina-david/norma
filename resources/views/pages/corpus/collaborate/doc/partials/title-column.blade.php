@@ -16,12 +16,12 @@
     @endif
 
     @foreach ($row->legalDomains as $domain)
-      <div class="bg-libryo-gray-500 text-white rounded-md px-3 py-0.5 mr-2 inline-block text-xs">{{ $domain->title }}</div>
+      <div class="bg-norma-gray-500 text-white rounded-md px-3 py-0.5 mr-2 inline-block text-xs">{{ $domain->title }}</div>
     @endforeach
   </div>
 
   @if ($row->docMeta->summary)
-    <div class="italic text-sm text-libryo-gray-500">
+    <div class="italic text-sm text-norma-gray-500">
       {{ $row->docMeta->summary }}
     </div>
   @endif
@@ -30,12 +30,12 @@
     <div class="">
       @foreach ($row->categories as $category)
         <span
-              class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-libryo-gray-100 text-libryo-gray-800 mt-1">{{ $category->display_label }}</span>
+              class="inline-flex items-center px-2 py-0.5 rounded-md text-xs font-medium bg-norma-gray-100 text-norma-gray-800 mt-1">{{ $category->display_label }}</span>
       @endforeach
     </div>
   @endif
   @if ($row->keywords->isNotEmpty())
-    <div class="italic text-xs text-libryo-gray-700 mt-1">
+    <div class="italic text-xs text-norma-gray-700 mt-1">
       {{ __('corpus.keyword.keywords') }}: {{ $row->keywords->implode('label', ', ') }}
     </div>
   @endif

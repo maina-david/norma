@@ -4,7 +4,7 @@
       <x-ui.icon name="gavel" class="mr-3 ml-5" size="8" />
       <div>
         {{ __('my.nav.requirements') }}
-        <span class="text-xs text-libryo-gray-500 italic ml-3">{{ $libryo->title ?? ($organisation->title ?? '') }}</span>
+        <span class="text-xs text-norma-gray-500 italic ml-3">{{ $norma->title ?? ($organisation->title ?? '') }}</span>
       </div>
     </div>
   </x-slot>
@@ -12,7 +12,7 @@
   <x-slot name="actions">
     <div class="flex flex-row justify-between items-center">
       <a target="_blank"
-         href="https://success.libryo.com/en/knowledge/getting-started-with-libryo/your-legal-register/your-custom-legal-register"
+         href="https://success.norma.com/en/knowledge/getting-started-with-norma/your-legal-register/your-custom-legal-register"
          class="tippy" data-tippy-content="{{ __('help.suggested_article_help') }}">
         <x-ui.icon name="question-circle" />
       </a>
@@ -20,10 +20,10 @@
   </x-slot>
 
   {{-- only available in single stream mode --}}
-  @if ($libryo)
-    @if ($libryo->compilation_in_progress)
+  @if ($norma)
+    @if ($norma->compilation_in_progress)
       <div class="text-white bg-secondary p-5 my-10">
-        {{ __('customer.libryo.compilation_in_progress_info') }}
+        {{ __('customer.norma.compilation_in_progress_info') }}
       </div>
     @endif
     <div x-data="{ showingRerences: true }">
@@ -48,7 +48,7 @@
             <x-ui.icon x-show="showingRerences" @click="showingRerences = !showingRerences" name="toggle-on"
                        class="cursor-pointer text-primary " size="8" />
             <x-ui.icon x-show="!showingRerences" @click="showingRerences = !showingRerences" name="toggle-off"
-                       class="cursor-pointer text-libryo-gray-400" size="8" />
+                       class="cursor-pointer text-norma-gray-400" size="8" />
           </div>
         </x-slot> --}}
         <x-slot name="actionButton">

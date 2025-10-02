@@ -39,7 +39,7 @@
 
     <div class="mt-10 sm:mt-8 flex flex-col sm:flex-row sm:space-x-4 space-y-3 sm:space-y-0 justify-between">
       <button @click="open = false" type="button"
-              class="mt-3 w-full inline-flex justify-center rounded-md border border-libryo-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-libryo-gray-700 hover:bg-libryo-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:mt-0 sm:w-auto sm:text-sm">
+              class="mt-3 w-full inline-flex justify-center rounded-md border border-norma-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-norma-gray-700 hover:bg-norma-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary sm:mt-0 sm:w-auto sm:text-sm">
         {{ __('actions.cancel') }}
       </button>
       <button @click="open = false" type="submit"

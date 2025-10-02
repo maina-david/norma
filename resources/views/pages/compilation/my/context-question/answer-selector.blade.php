@@ -19,7 +19,7 @@
   @else
     <input
       {!! isset($checked) && $checked ? '@click="$event.preventDefault();"' : '@change="handleChange($event)"' !!}
-      class="libryo-radio text-primary focus:ring-primary cursor-pointer"
+      class="norma-radio text-primary focus:ring-primary cursor-pointer"
       type="radio"
       name="answer"
       id="answer_{{ $question->id }}_{{ $forAnswer }}"

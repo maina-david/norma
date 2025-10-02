@@ -23,7 +23,7 @@
             @endif
 
             @foreach ($work->parents as $parent)
-              <div class="text-libryo-gray-600 mt-1 text-xs">
+              <div class="text-norma-gray-600 mt-1 text-xs">
                 {{ $parent->title }}
                 @if($parent->title_translation)
                   [{{ $parent->title_translation }}]
@@ -41,7 +41,7 @@
             @endif
 
             @foreach ($work->parents as $parent)
-              <div class="text-libryo-gray-600 mt-1 text-xs">
+              <div class="text-norma-gray-600 mt-1 text-xs">
                 {{ $parent->title }}
                 @if($parent->title_translation)
                   [{{ $parent->title_translation }}]

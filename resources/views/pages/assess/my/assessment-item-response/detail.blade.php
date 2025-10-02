@@ -7,7 +7,7 @@
     route('my.assess.edit', ['assess' => $assessmentItem->hash_id], false),
   ];
 
-  $explanation = $assessmentItem->explanationForLibryo($libryo);
+  $explanation = $assessmentItem->explanationForNorma($norma);
 @endphp
 <x-layouts.app>
 
@@ -49,7 +49,7 @@
         @endif
       </div>
 
-      <a target="_blank" href="https://success.libryo.com/en/knowledge/libryo-assess">
+      <a target="_blank" href="https://success.norma.com/en/knowledge/norma-assess">
         <x-ui.icon name="question-circle"/>
       </a>
     </div>
@@ -62,7 +62,7 @@
   @endif
 
   <div class="mb-4">
-    <span class="text-sm text-libryo-gray-600 font-semibold">{!! __('assess.assessment_item_response.changes_only_for_stream') !!}</span>
+    <span class="text-sm text-norma-gray-600 font-semibold">{!! __('assess.assessment_item_response.changes_only_for_stream') !!}</span>
   </div>
 
 

@@ -7,7 +7,7 @@
 <div class="col-md-8 col-md-offset-2">
 <div class="panel panel-default">
 <div class="panel-block">
-<h1 style="color: #0b7e58">{{ __('mail.libryo_user_guide') }}</h1>
+<h1 style="color: #0b7e58">{{ __('mail.norma_user_guide') }}</h1>
 @component('mail::button', ['color' => 'green', 'url' => $userGuideUrl])
 {{ __('mail.download_user_guide') }}
 @endcomponent
@@ -30,11 +30,11 @@
 </div>
 <br>
 <p style="font-size: 15px; line-height: 26px; color: #1a2434">
-{!! __('mail.have_questions_email_us', ['anchor' => '<a href="mailto:info@libryo.com" class="clean">', 'anchor-close' => '</a>']) !!}
+{!! __('mail.have_questions_email_us', ['anchor' => '<a href="mailto:info@norma.com" class="clean">', 'anchor-close' => '</a>']) !!}
 </p>
 <br>
 <p style="font-size: 15px; line-height: 26px; color: #1a2434">{{ __('mail.best_regards') }}</p>
-<p class="accent">{{ __('mail.libryo') }}</p>
+<p class="accent">{{ __('mail.norma') }}</p>
 </div>
 </div>
 </div>

@@ -71,7 +71,7 @@
 
         <div x-show="current_units" class="grid grid-cols-2 flex-grow">
           <div class="flex items-center">
-            <div class="text-sm font-medium text-libryo-gray-700 block ml-1 mr-2"> {{ __('workflows.task.to') }}</div>
+            <div class="text-sm font-medium text-norma-gray-700 block ml-1 mr-2"> {{ __('workflows.task.to') }}</div>
             <div class="flex-grow">
               <x-workflows.tasks.dependent-units-selector
                 label=""
@@ -84,7 +84,7 @@
           </div>
 
           <div class="flex items-center">
-            <div class="text-sm font-medium text-libryo-gray-700 block mx-2"> {{ __('workflows.task.when_task_moves_to') }}</div>
+            <div class="text-sm font-medium text-norma-gray-700 block mx-2"> {{ __('workflows.task.when_task_moves_to') }}</div>
             <div class="flex-grow">
               <x-workflows.tasks.task-status-selector
                 name="{{ $prefix }}set_current_units_trigger"
@@ -103,14 +103,14 @@
 
       <div x-show="current_due" class="grid grid-cols-2 flex-grow">
         <div class="flex items-center">
-          <div class="text-sm font-medium text-libryo-gray-700 block ml-1 mr-2"> {{ __('workflows.task.to') }}</div>
+          <div class="text-sm font-medium text-norma-gray-700 block ml-1 mr-2"> {{ __('workflows.task.to') }}</div>
           <div class="flex-grow">
             <x-workflows.tasks.task-auto-due-date-selector name="{{ $prefix }}set_current_task_duration" :value="old($prefix . 'set_current_task_duration', $defaults->set_current_task_duration ?? null)"  />
           </div>
         </div>
 
         <div class="flex items-center">
-          <div class="text-sm font-medium text-libryo-gray-700 block mx-2"> {{ __('workflows.task.when_task_moves_to') }}</div>
+          <div class="text-sm font-medium text-norma-gray-700 block mx-2"> {{ __('workflows.task.when_task_moves_to') }}</div>
           <div class="flex-grow">
             <x-workflows.tasks.task-status-selector name="{{ $prefix }}set_current_due_date_trigger" :value="old($prefix . 'set_current_due_date_trigger', $defaults->set_current_due_date_trigger ?? null)"  />
           </div>
@@ -125,14 +125,14 @@
 
       <div x-show="due" class="grid grid-cols-2 flex-grow">
         <div class="flex items-center">
-          <div class="text-sm font-medium text-libryo-gray-700 block ml-1 mr-2"> {{ __('workflows.task.to') }}</div>
+          <div class="text-sm font-medium text-norma-gray-700 block ml-1 mr-2"> {{ __('workflows.task.to') }}</div>
           <div class="flex-grow">
             <x-workflows.tasks.task-auto-due-date-selector name="{{ $prefix }}set_dependent_task_duration" :value="old($prefix . 'set_dependent_task_duration', $defaults->set_dependent_task_duration ?? null)"  />
           </div>
         </div>
 
         <div class="flex items-center">
-          <div class="text-sm font-medium text-libryo-gray-700 block mx-2"> {{ __('workflows.task.when_task_moves_to') }}</div>
+          <div class="text-sm font-medium text-norma-gray-700 block mx-2"> {{ __('workflows.task.when_task_moves_to') }}</div>
           <div class="flex-grow">
             <x-workflows.tasks.task-status-selector name="{{ $prefix }}set_dependent_due_date_trigger" :value="old($prefix . 'set_dependent_due_date_trigger', $defaults->set_dependent_due_date_trigger ?? null)"  />
           </div>
@@ -148,14 +148,14 @@
 
       <div x-show="move" class="grid grid-cols-2 flex-grow">
         <div class="flex items-center">
-          <div class="text-sm font-medium text-libryo-gray-700 block ml-1 mr-2"> {{ __('workflows.task.to') }}</div>
+          <div class="text-sm font-medium text-norma-gray-700 block ml-1 mr-2"> {{ __('workflows.task.to') }}</div>
           <div class="flex-grow">
             <x-workflows.tasks.task-status-selector name="{{ $prefix }}move_dependent_task_status" :value="old($prefix . 'move_dependent_task_status', $defaults->move_dependent_task_status ?? null)"  />
           </div>
         </div>
 
         <div class="flex items-center">
-          <div class="text-sm font-medium text-libryo-gray-700 block mx-2"> {{ __('workflows.task.when_task_moves_to') }}</div>
+          <div class="text-sm font-medium text-norma-gray-700 block mx-2"> {{ __('workflows.task.when_task_moves_to') }}</div>
           <div class="flex-grow">
             <x-workflows.tasks.task-status-selector name="{{ $prefix }}move_dependent_task_trigger" :value="old($prefix . 'move_dependent_task_trigger', $defaults->move_dependent_task_trigger ?? null)"  />
           </div>
@@ -169,7 +169,7 @@
       </div>
 
       <div x-show="cache" class="flex items-center flex-grow">
-        <div class="text-sm font-medium text-libryo-gray-700 block ml-1 mr-2"> {{ __('workflows.task.when_task_moves_to') }}</div>
+        <div class="text-sm font-medium text-norma-gray-700 block ml-1 mr-2"> {{ __('workflows.task.when_task_moves_to') }}</div>
         <div class="flex-grow">
           <x-workflows.tasks.task-status-selector name="{{ $prefix }}cache_related_work_trigger" :value="old($prefix . 'cache_related_work_trigger', $defaults->cache_related_work_trigger ?? null)"  />
         </div>
@@ -182,7 +182,7 @@
       </div>
 
       <div x-show="publish" class="flex items-center flex-grow">
-        <div class="text-sm font-medium text-libryo-gray-700 block ml-1 mr-2"> {{ __('workflows.task.when_task_moves_to') }}</div>
+        <div class="text-sm font-medium text-norma-gray-700 block ml-1 mr-2"> {{ __('workflows.task.when_task_moves_to') }}</div>
         <div class="flex-grow">
           <x-workflows.tasks.task-status-selector name="{{ $prefix }}publish_related_work_trigger" :value="old($prefix . 'publish_related_work_trigger', $defaults->publish_related_work_trigger ?? null)"  />
         </div>
@@ -195,7 +195,7 @@
       </div>
 
       <div x-show="generate" class="flex items-center flex-grow">
-        <div class="text-sm font-medium text-libryo-gray-700 block ml-1 mr-2"> {{ __('workflows.task.when_task_moves_to') }}</div>
+        <div class="text-sm font-medium text-norma-gray-700 block ml-1 mr-2"> {{ __('workflows.task.when_task_moves_to') }}</div>
         <div class="flex-grow">
           <x-workflows.tasks.task-status-selector name="{{ $prefix }}generate_reference_extracts_trigger" :value="old($prefix . 'generate_reference_extracts_trigger', $defaults->generate_reference_extracts_trigger ?? null)"  />
         </div>
@@ -227,7 +227,7 @@
 
 @if($withValidation ?? false)
   <div class="grid grid-cols-2 gap-4">
-    <div class="md:col-span-2 font-semibold border-b border-libryo-gray-200 mt-6">
+    <div class="md:col-span-2 font-semibold border-b border-norma-gray-200 mt-6">
       {{ __('workflows.task_type.validations') }}
     </div>
 

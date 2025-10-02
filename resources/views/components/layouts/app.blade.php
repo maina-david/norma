@@ -1,5 +1,5 @@
 @php
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 @endphp
 <!doctype html>
 <html lang="{{ app()->getLocale() }}">
@@ -22,7 +22,7 @@ use App\Services\Customer\ActiveLibryosManager;
   @endif
 </head>
 
-<body class="bg-body font-sans text-libryo-gray-900 antialiased" {{ $attributes ?? '' }}>
+<body class="bg-body font-sans text-norma-gray-900 antialiased" {{ $attributes ?? '' }}>
 @env('production')
   @include('partials.ui.my.googletagmanager-body')
 @endenv
@@ -38,7 +38,7 @@ use App\Services\Customer\ActiveLibryosManager;
       @if (isset($header) || isset($actions))
         <header>
           <div class="py-4 px-4 sm:px-6 flex flex-col md:flex-row justify-between space-x-2 space-y-4">
-            <div class="font-light text-lg md:text-2xl text-libryo-gray-900 font-serif">{{ $header ?? '' }}</div>
+            <div class="font-light text-lg md:text-2xl text-norma-gray-900 font-serif">{{ $header ?? '' }}</div>
             <div>{{ $actions ?? '' }}</div>
           </div>
         </header>
@@ -61,13 +61,13 @@ use App\Services\Customer\ActiveLibryosManager;
 @endif
 <x-system.system-notification.my.popup/>
 
-@include("navs.{$libryoApp}")
+@include("navs.{$normaApp}")
 
 <turbo-frame data-turbo-cache="false" id="global-alert" class="hidden"></turbo-frame>
 @env('production')
   @include('partials.ui.my.hotjar')
   @include('partials.ui.my.hubspot')
-  @if (app(ActiveLibryosManager::class)->getActiveOrganisation()->hasLiveChat())
+  @if (app(ActiveNormasManager::class)->getActiveOrganisation()->hasLiveChat())
     @include('partials.ui.my.zopim')
   @endif
 @endenv

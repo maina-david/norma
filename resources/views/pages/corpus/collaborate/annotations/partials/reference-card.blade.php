@@ -17,7 +17,7 @@
      id="reference_{{ $reference->id }}">
 
   <div
-       class="w-full rounded border shadow-sm bg-white {{ ReferenceStatus::pending()->is($reference->status) ? 'border-secondary' : 'border-libryo-gray-200' }}">
+       class="w-full rounded border shadow-sm bg-white {{ ReferenceStatus::pending()->is($reference->status) ? 'border-secondary' : 'border-norma-gray-200' }}">
     <div class="rounded text-sm font-semibold pr-4">
       <div
            class="flex items-center"

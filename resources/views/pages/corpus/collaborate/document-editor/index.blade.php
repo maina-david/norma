@@ -39,7 +39,7 @@
       </div>
 
       <div class="flex-grow">
-        <textarea data-current="{{ $pagination->currentPage() }}" data-last="{{ $pagination->lastPage() }}" name="content" id="libryo-document-editor" class="hidden h-full w-full">{{ $pagination->first() }}</textarea>
+        <textarea data-current="{{ $pagination->currentPage() }}" data-last="{{ $pagination->lastPage() }}" name="content" id="norma-document-editor" class="hidden h-full w-full">{{ $pagination->first() }}</textarea>
       </div>
 
       <div class="flex-shrink-0 p-2">

@@ -15,15 +15,15 @@
     </a>
   </div>
   @if ($row->title_translation)
-    <div class="text-libryo-gray-400 text-xs">
+    <div class="text-norma-gray-400 text-xs">
       ({{ $row->title_translation }})
     </div>
   @endif
-  <div class="text-libryo-gray-400 text-xs">
+  <div class="text-norma-gray-400 text-xs">
     ({{ $row->source_unique_id }})
   </div>
   @if ($row->summary)
-    <div class="text-libryo-gray-600 text-xs italic">
+    <div class="text-norma-gray-600 text-xs italic">
       {{ $row->summary }}
     </div>
   @endif

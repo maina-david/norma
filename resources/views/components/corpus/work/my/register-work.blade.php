@@ -1,5 +1,5 @@
 @props(['work', 'isChild' => false, 'showFlag' => true])
-<div {{ $attributes->merge(['class' => 'border-b border-libryo-gray-100 pb-2 mb-5 print:mb-1']) }}>
+<div {{ $attributes->merge(['class' => 'border-b border-norma-gray-100 pb-2 mb-5 print:mb-1']) }}>
   <div>
     <div class="p-2 flex flex-row justify-between">
       <div>
@@ -9,7 +9,7 @@
            href="{{ route('my.corpus.works.show', ['work' => $work->id, 'view' => 'text']) }}">{{ $work->title }}</a>
         {{-- <span class="text-sm font-semibold">{{ $work->title }}</span> --}}
         @if ($work->title_translation)
-          <span class="text-libryo-gray-500 text-sm">[{{ $work->title_translation }}]</span>
+          <span class="text-norma-gray-500 text-sm">[{{ $work->title_translation }}]</span>
         @endif
 
       </div>
@@ -29,11 +29,11 @@
               <div class="pl-10 flex items-center">
                 @include('bookmarks.bookmark-icon', ['bookmarks' => $ref->bookmarks, 'turboKey' => "reference-{$ref->id}", 'routePrefix' => 'my.reference.bookmarks', 'routePayload' => ['reference' => $ref->id]])
 
-                <x-ui.icon name="arrow-turn-down-right" size="3" class="text-libryo-gray-400 mr-3" />
+                <x-ui.icon name="arrow-turn-down-right" size="3" class="text-norma-gray-400 mr-3" />
                 {{-- remove if not reverted after launch --}}
                 <a href="{{ route('my.corpus.references.show', ['reference' => $ref->id]) }}"
                    class="cursor-pointer text-primary hover:text-primary-darker text-xs">{{ $ref->refPlainText?->plain_text }}</a>
-                {{-- <span class="text-xs text-libryo-gray-600">{{ $ref->refPlainText?->plain_text }}</span> --}}
+                {{-- <span class="text-xs text-norma-gray-600">{{ $ref->refPlainText?->plain_text }}</span> --}}
               </div>
 
 

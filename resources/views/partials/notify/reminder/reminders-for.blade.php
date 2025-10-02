@@ -28,7 +28,7 @@
                            :title="__('notify.reminder.no_reminders_added')"
                            :subline="__('interface.when_something_happens')" />
   @else
-    <ul role="list" class="divide-y divide-libryo-gray-200">
+    <ul role="list" class="divide-y divide-norma-gray-200">
       @foreach ($reminders as $reminder)
         <li>
           <div class="block bg-white">
@@ -39,13 +39,13 @@
                     <p class="font-medium truncate">{{ $reminder->title }}</p>
                   </div>
                   <div class="mt-2 flex">
-                    <div class="flex items-center text-sm text-libryo-gray-500">
+                    <div class="flex items-center text-sm text-norma-gray-500">
                       {{ $reminder->description }}
                     </div>
                   </div>
                 </div> --}}
                 <div class="mt-4 shrink-0 sm:mt-0 sm:ml-5">
-                  <div class="text-libryo-gray-500">
+                  <div class="text-norma-gray-500">
                     <x-ui.timestamp :timestamp="$reminder->remind_on" />
                   </div>
                 </div>

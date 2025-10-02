@@ -8,12 +8,12 @@
     >
       <span>{{ $file->title }}</span>
       @if(!empty($file->description ?? ''))
-        <span class="text-libryo-gray-500 text-xs">{{ $file->description }}</span>
+        <span class="text-norma-gray-500 text-xs">{{ $file->description }}</span>
       @endif
     </a>
   </div>
-  @if ($file->isTypeLibryo())
-    <div class="text-libryo-gray-500 ">{{ $file->libryo?->title }}</div>
+  @if ($file->isTypeNorma())
+    <div class="text-norma-gray-500 ">{{ $file->norma?->title }}</div>
   @endif
 
 </div>

@@ -3,7 +3,7 @@
 
   <div class="space-y-4 pb-10">
     @foreach($notes as $note)
-      <div class="border border-libryo-gray-200 rounded-xl">
+      <div class="border border-norma-gray-200 rounded-xl">
         <div class="flex items-start">
           <div class="py-4 pl-4 flex-grow">
             <x-ui.collaborate.wysiwyg-content :content="$note->content" />
@@ -17,7 +17,7 @@
                 </button>
               </x-slot>
 
-              <div class="divide-y divide-libryo-gray-200 text-sm">
+              <div class="divide-y divide-norma-gray-200 text-sm">
                 @can('update', $note)
                   <a class="px-4 py-1 flex items-center" href="{{ route('collaborate.notes.edit', ['note' => $note->id]) }}">
                     <x-ui.icon name="pencil" size="4" />
@@ -37,7 +37,7 @@
         </div>
 
         <div class="flex justify-end items-center p-1 space-x-2">
-          <span class="text-xs text-libryo-gray-600">{{ $note->created_at->diffForHumans() }}</span>
+          <span class="text-xs text-norma-gray-600">{{ $note->created_at->diffForHumans() }}</span>
           @if($note->collaborator->full_name ?? false)
             <x-ui.badge small>
               <span class="px-2">{{ $note->collaborator->full_name }}</span>

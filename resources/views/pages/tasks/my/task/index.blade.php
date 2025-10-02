@@ -1,16 +1,16 @@
 <x-layouts.app>
   <x-slot name="header">
     <div class="flex items-center">
-      <x-ui.icon name="tasks" class="mr-3 ml-5  text-libryo-gray-400" size="8" />
+      <x-ui.icon name="tasks" class="mr-3 ml-5  text-norma-gray-400" size="8" />
       <div>
         {{ __('my.nav.tasks') }}
-        <span class="text-xs text-libryo-gray-500 ml-3 italic">{{ $subTitle }}</span>
+        <span class="text-xs text-norma-gray-500 ml-3 italic">{{ $subTitle }}</span>
       </div>
     </div>
   </x-slot>
   <x-slot name="actions">
     <div class="flex flex-row justify-between items-center">
-      <a target="_blank" href="https://success.libryo.com/en/knowledge/use-tasks">
+      <a target="_blank" href="https://success.norma.com/en/knowledge/use-tasks">
         <x-ui.icon name="question-circle" />
       </a>
       <x-ui.button styling="flat" type="link" theme="tertiary" :href="route('my.tasks.task-projects.index')">

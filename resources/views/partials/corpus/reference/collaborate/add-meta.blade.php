@@ -2,7 +2,7 @@
   $show = request('show')
 @endphp
 <div
-  class="relative bg-libryo-gray-100 rounded-lg pt-2 pb-1 px-4 reference-attach"
+  class="relative bg-norma-gray-100 rounded-lg pt-2 pb-1 px-4 reference-attach"
   x-data="{
     clearAndLoad: function (el) {
       el.tomselect.clear();el.tomselect.clearOptions();el.tomselect.load('')
@@ -10,7 +10,7 @@
   }"
 >
   @if(!($noClose ?? false))
-    <button class="p-1 rounded-full text-libryo-gray-700 absolute -right-4 -top-4 bg-white" @click="$event.target.closest('.reference-attach').remove()">
+    <button class="p-1 rounded-full text-norma-gray-700 absolute -right-4 -top-4 bg-white" @click="$event.target.closest('.reference-attach').remove()">
       <x-ui.icon name="times-circle" size="8" />
     </button>
   @endif

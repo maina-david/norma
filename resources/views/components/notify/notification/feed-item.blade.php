@@ -4,7 +4,7 @@ use App\Enums\Notifications\NotificationType;
 
 <li>
   <div class="relative pb-8">
-    <span class="absolute top-5 left-5 -ml-px h-full w-0.5 bg-libryo-gray-200" aria-hidden="true"></span>
+    <span class="absolute top-5 left-5 -ml-px h-full w-0.5 bg-norma-gray-200" aria-hidden="true"></span>
     <div class="relative flex items-start space-x-3">
       @if ($showAvatar($notification))
         <div class="relative">
@@ -17,7 +17,7 @@ use App\Enums\Notifications\NotificationType;
       @else
         <div>
           <div class="relative px-1">
-            <div class="h-8 w-8 bg-libryo-gray-100 rounded-full ring-8 ring-white flex items-center justify-center">
+            <div class="h-8 w-8 bg-norma-gray-100 rounded-full ring-8 ring-white flex items-center justify-center">
               <x-ui.icon :name="$getIcon($notification)" />
             </div>
           </div>
@@ -31,17 +31,17 @@ use App\Enums\Notifications\NotificationType;
                 {{ $getTitle($notification) }}
               </a>
             @else
-              <p class="font-medium text-libryo-gray-900">
+              <p class="font-medium text-norma-gray-900">
                 {{ $getTitle($notification) }}
               </p>
             @endif
 
           </div>
-          <p class="mt-0.5 text-xs text-libryo-gray-500">
+          <p class="mt-0.5 text-xs text-norma-gray-500">
             <x-ui.timestamp type="diff" :timestamp="$notification->created_at" />
           </p>
         </div>
-        <div class="mt-2 text-sm text-libryo-gray-700">
+        <div class="mt-2 text-sm text-norma-gray-700">
           @if ($notification->isForTask())
             <p class="italic">
               {{ $notification->presentViewData['body']['task']->title ?? __('notifications.deleted_task') }}

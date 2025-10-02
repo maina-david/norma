@@ -1,13 +1,13 @@
 
-<div class="border border-libryo-gray-200 -mt-px -ml-px h-40">
+<div class="border border-norma-gray-200 -mt-px -ml-px h-40">
   <div class="w-full h-full" id="calendar-{{ $day }}">
-    <div class="w-full h-full p-2 {{ $dayInMonth ? ($isToday ? 'bg-primary' : ' bg-white ') : 'bg-libryo-gray-100' }} flex flex-col">
+    <div class="w-full h-full p-2 {{ $dayInMonth ? ($isToday ? 'bg-primary' : ' bg-white ') : 'bg-norma-gray-100' }} flex flex-col">
 
       <div class="flex items-center">
         <p class="text-sm {{ $dayInMonth ? ' font-medium ' : '' }}">
           {{ $day->format('j') }}
         </p>
-        <p class="text-xs text-libryo-gray-600 ml-4">
+        <p class="text-xs text-norma-gray-600 ml-4">
           @if($events->isNotEmpty())
             {{ $events->count() }} {{ Str::plural($eventCountLabel, $events->count()) }}
           @endif

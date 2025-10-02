@@ -12,8 +12,8 @@
       <div>
         <div>
           {{ $file->title }}
-          @if ($file->libryo)
-            <span class="text-xs text-libryo-gray-500 italic ml-3">{{ $file->libryo->title }}</span>
+          @if ($file->norma)
+            <span class="text-xs text-norma-gray-500 italic ml-3">{{ $file->norma->title }}</span>
           @endif
         </div>
         <div class="text-xs">
@@ -117,32 +117,32 @@
         </x-slot>
 
         <x-ui.tab-content name="info">
-          <dl class="mt-2 divide-y divide-libryo-gray-200">
+          <dl class="mt-2 divide-y divide-norma-gray-200">
             <div class="py-3 flex justify-between text-sm font-medium">
-              <dt class="text-libryo-gray-500">{{ __('storage.drives.file_type') }}</dt>
-              <dd class="text-libryo-gray-900">{{ $file->mime_type }}</dd>
+              <dt class="text-norma-gray-500">{{ __('storage.drives.file_type') }}</dt>
+              <dd class="text-norma-gray-900">{{ $file->mime_type }}</dd>
             </div>
 
             <div class="py-3 flex justify-between text-sm font-medium">
-              <dt class="text-libryo-gray-500">{{ __('storage.drives.size') }}</dt>
-              <dd class="text-libryo-gray-900">{{ $file->getHumanReadableSize() }}</dd>
+              <dt class="text-norma-gray-500">{{ __('storage.drives.size') }}</dt>
+              <dd class="text-norma-gray-900">{{ $file->getHumanReadableSize() }}</dd>
             </div>
 
             <div class="py-3 flex justify-between text-sm font-medium">
-              <dt class="text-libryo-gray-500">{{ __('storage.drives.uploaded_by') }}</dt>
-              <dd class="text-libryo-gray-900">{{ $file->author?->fullName ?? '' }}</dd>
+              <dt class="text-norma-gray-500">{{ __('storage.drives.uploaded_by') }}</dt>
+              <dd class="text-norma-gray-900">{{ $file->author?->fullName ?? '' }}</dd>
             </div>
 
             <div class="py-3 flex justify-between text-sm font-medium">
-              <dt class="text-libryo-gray-500">{{ __('timestamps.created_at') }}</dt>
-              <dd class="text-libryo-gray-900">
+              <dt class="text-norma-gray-500">{{ __('timestamps.created_at') }}</dt>
+              <dd class="text-norma-gray-900">
                 <x-ui.timestamp :timestamp="$file->created_at" />
               </dd>
             </div>
             @if ($file->expires_at)
               <div class="py-3 flex justify-between text-sm font-medium">
-                <dt class="text-libryo-gray-500">{{ __('timestamps.expires_at') }}</dt>
-                <dd class="text-libryo-gray-900">
+                <dt class="text-norma-gray-500">{{ __('timestamps.expires_at') }}</dt>
+                <dd class="text-norma-gray-900">
                   <x-ui.timestamp :timestamp="$file->expires_at" />
                 </dd>
               </div>

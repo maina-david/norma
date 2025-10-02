@@ -1,4 +1,4 @@
-<!-- bg-libryo-gray-600 bg-positive bg-warning -->
+<!-- bg-norma-gray-600 bg-positive bg-warning -->
 <div class="h-full" x-data="{}">
   <div class="flex flex-col">
     <div class="flex-shrink-0 py-4 px-4 font-semibold text-2xl flex flex-col md:flex-row justify-between">
@@ -45,7 +45,7 @@
       <div class="inline-block min-w-full overflow-hidden">
         <div class="w-full grid grid-cols-7">
           @foreach($monthGrid->take(7) as $day)
-            <div class="text-sm font-semibold py-2 border -ml-px text-center bg-white text-libryo-gray-900">
+            <div class="text-sm font-semibold py-2 border -ml-px text-center bg-white text-norma-gray-900">
               {{ $day->format('l') }}
             </div>
           @endforeach

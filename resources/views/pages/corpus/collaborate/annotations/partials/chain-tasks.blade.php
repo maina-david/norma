@@ -25,7 +25,7 @@
     <x-ui.dropdown position="left">
       <x-slot name="trigger">
         <div class="flex items-center">
-          <button class="flex items-center border border-libryo-gray-200 rounded-r-full">
+          <button class="flex items-center border border-norma-gray-200 rounded-r-full">
             @if($task ?? false)
               @if($task->taskType ?? false)
                 <x-workflows.task-type.task-type-badge text-size="text-sm" class="rounded-l-none" :type="$task->taskType"/>
@@ -63,7 +63,7 @@
                 $route = $chainTask->taskType->taskRoute->generateRoute($chainTask, $route);
             }
           @endphp
-          <a target="_top" class="px-4 py-2 hover:bg-libryo-gray-100 flex items-center justify-between space-x-2" href="{{ $route  }}">
+          <a target="_top" class="px-4 py-2 hover:bg-norma-gray-100 flex items-center justify-between space-x-2" href="{{ $route  }}">
             <x-ui.badge small class="bg-black">#{{ $chainTask->id }}</x-ui.badge>
 
             <span class="pl-2 flex items-center flex-grow">

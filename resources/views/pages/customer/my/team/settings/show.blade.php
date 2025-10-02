@@ -1,7 +1,7 @@
 <x-layouts.settings :header="$team->title">
   <x-slot name="header">
     <span class="flex items-center">
-      <x-ui.icon name="users" size="10" class="mr-5 text-libryo-gray-600" type="duotone" />
+      <x-ui.icon name="users" size="10" class="mr-5 text-norma-gray-600" type="duotone" />
       <span>{{ $team->title }}</span>
     </span>
   </x-slot>
@@ -24,8 +24,8 @@
       <x-slot name="nav">
         <x-ui.tab-nav name="users" url="{{ route('my.settings.users.for.team.index', ['team' => $team->id]) }}">
           {{ __('settings.nav.users') }}</x-ui.tab-nav>
-        <x-ui.tab-nav name="libryos" url="{{ route('my.settings.libryos.for.team.index', ['team' => $team->id]) }}">
-          {{ __('settings.nav.libryo_streams') }}</x-ui.tab-nav>
+        <x-ui.tab-nav name="normas" url="{{ route('my.settings.normas.for.team.index', ['team' => $team->id]) }}">
+          {{ __('settings.nav.norma_streams') }}</x-ui.tab-nav>
       </x-slot>
 
       <x-ui.tab-content name="users">
@@ -34,8 +34,8 @@
           <x-ui.skeleton />
         </turbo-frame>
       </x-ui.tab-content>
-      <x-ui.tab-content name="libryos">
-        <turbo-frame id="settings-libryos-for-team-{{ $team->id }}">
+      <x-ui.tab-content name="normas">
+        <turbo-frame id="settings-normas-for-team-{{ $team->id }}">
           <x-ui.skeleton />
         </turbo-frame>
       </x-ui.tab-content>

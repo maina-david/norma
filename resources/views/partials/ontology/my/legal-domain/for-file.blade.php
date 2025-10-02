@@ -14,7 +14,7 @@
       :tooltip="__('ontology.legal_domain.add_legal_domains')"
       :actionRoute="route('my.legal-domains.for.file.add', ['file' => $file->id])"
       :route="route('my.settings.legal-domains.index')"
-      :placeholder="__('ontology.legal_domain.select_legal_domains_to_add', ['libryo' => $file->title])"
+      :placeholder="__('ontology.legal_domain.select_legal_domains_to_add', ['norma' => $file->title])"
     />
   </x-slot>
 </x-ontology.legal-domain.my.legal-domain-data-table>

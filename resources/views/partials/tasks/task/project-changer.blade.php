@@ -24,7 +24,7 @@
   </div>
 </x-ui.dropdown>
 @else
-<span class="text-libryo-gray-500">
+<span class="text-norma-gray-500">
   {{ $task->project->title ?? '-' }}
 </span>
 @endif
