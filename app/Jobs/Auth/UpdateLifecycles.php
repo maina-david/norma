@@ -43,7 +43,7 @@ class UpdateLifecycles implements ShouldQueue
     protected function updateDeclinedInvitations(UserLifecycleService $service): void
     {
         $lastInviteDate = now()
-            ->subDays(config('libryo.user.lifecycle.deactivate_when.invitations_days_reach'))
+            ->subDays(config('norma.user.lifecycle.deactivate_when.invitations_days_reach'))
             ->toDateString();
 
         User::where('user_type', '!=', UserType::collaborate()->value)
@@ -63,7 +63,7 @@ class UpdateLifecycles implements ShouldQueue
      */
     protected function deactivateUsers(UserLifecycleService $service): void
     {
-        $lastActivityDate = now()->subMonths(config('libryo.user.lifecycle.deactivate_when.inactivity_months_reach'));
+        $lastActivityDate = now()->subMonths(config('norma.user.lifecycle.deactivate_when.inactivity_months_reach'));
 
         User::where('lifecycle_stage', LifecycleStage::active()->value)
             ->whereNotIn('user_type', [UserType::collaborate()->value, UserType::partner()->value])

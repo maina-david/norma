@@ -14,7 +14,7 @@ class NotifyDueTasks extends Command
      *
      * @var string
      */
-    protected $signature = 'libryo:notify-due-tasks';
+    protected $signature = 'norma:notify-due-tasks';
 
     /**
      * The console command description.

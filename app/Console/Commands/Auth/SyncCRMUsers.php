@@ -15,7 +15,7 @@ class SyncCRMUsers extends Command
      *
      * @var string
      */
-    protected $signature = 'libryo:sync-crm-users';
+    protected $signature = 'norma:sync-crm-users';
 
     /**
      * The console command description.

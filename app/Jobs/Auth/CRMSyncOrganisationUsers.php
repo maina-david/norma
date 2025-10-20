@@ -27,7 +27,7 @@ class CRMSyncOrganisationUsers implements ShouldQueue
      */
     public function __construct(private Organisation $organisation)
     {
-        $this->onQueue('libryo-app');
+        $this->onQueue('norma-app');
     }
 
     /**

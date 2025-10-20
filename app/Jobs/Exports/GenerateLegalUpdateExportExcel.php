@@ -2,15 +2,15 @@
 
 namespace App\Jobs\Exports;
 
-use App\Contracts\Exports\LibryoOrganisationExport;
+use App\Contracts\Exports\NormaOrganisationExport;
 use App\Exports\Notify\LegalUpdateExcelExport;
 
-class GenerateLegalUpdateExportExcel extends LibryoAndOrganisationExport
+class GenerateLegalUpdateExportExcel extends NormaAndOrganisationExport
 {
     /**
      * {@inheritDoc}
      */
-    protected function getExporter(): LibryoOrganisationExport
+    protected function getExporter(): NormaOrganisationExport
     {
         return app(LegalUpdateExcelExport::class);
     }

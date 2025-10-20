@@ -12,7 +12,7 @@ class SendMonthlyNotificationEmails extends Command
      *
      * @var string
      */
-    protected $signature = 'libryo:monthly-notification-emails';
+    protected $signature = 'norma:monthly-notification-emails';
 
     /**
      * The console command description.

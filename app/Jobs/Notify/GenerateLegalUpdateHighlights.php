@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Notify;
 
-use App\Http\Services\LibryoAI\Client;
+use App\Http\Services\NormaAI\Client;
 use App\Models\Notify\LegalUpdate;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

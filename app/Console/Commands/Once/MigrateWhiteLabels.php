@@ -30,7 +30,7 @@ class MigrateWhiteLabels extends Command
     public function handle(): int
     {
         WhiteLabel::all()->each(function (WhiteLabel $label) {
-            $label->auth_provider = $label->auth_provider ?? 'libryo';
+            $label->auth_provider = $label->auth_provider ?? 'norma';
             $label->login_logo = "/img/whitelabels/elc-{$label->shortname}.png";
             $label->app_logo = "/img/whitelabels/small-{$label->shortname}.png";
             $label->theme = $this->getTheme($label->shortname);

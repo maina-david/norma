@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Corpus;
 
-use App\Http\Services\LibryoAI\Client;
+use App\Http\Services\NormaAI\Client;
 use App\Models\Corpus\TocItem;
 use App\Services\Corpus\TocItemContentExtractor;
 use Exception;
@@ -66,7 +66,7 @@ class SetRequirementScore implements ShouldQueue, ShouldBeUnique
      * Execute the job.
      *
      * @param \App\Services\Corpus\TocItemContentExtractor $extractor
-     * @param \App\Http\Services\LibryoAI\Client           $client
+     * @param \App\Http\Services\NormaAI\Client           $client
      *
      * @throws Exception
      *

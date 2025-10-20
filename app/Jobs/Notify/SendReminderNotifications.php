@@ -43,13 +43,13 @@ class SendReminderNotifications implements ShouldQueue
         /** @var Collection<int, User> $toNotify */
         $toNotify = collect();
 
-        $this->reminder->load(['author', 'libryo']);
+        $this->reminder->load(['author', 'norma']);
 
         if (!$this->notifyTaskUsers($toNotify) && $this->reminder->author) {
             $toNotify->put($this->reminder->author->id, $this->reminder->author);
         }
 
-        $this->notifyUsersInLibryo($toNotify);
+        $this->notifyUsersInNorma($toNotify);
 
         $toNotify->each(function ($user) {
             if ($user->active) {
@@ -103,18 +103,18 @@ class SendReminderNotifications implements ShouldQueue
     }
 
     /**
-     * Add the users in the libryo to the list of people to be notified.
+     * Add the users in the norma to the list of people to be notified.
      *
      * @param Collection<int, User> $toNotify
      *
      * @return void
      */
-    protected function notifyUsersInLibryo(Collection $toNotify): void
+    protected function notifyUsersInNorma(Collection $toNotify): void
     {
-        if ($this->reminder->place_id && $this->reminder->libryo) {
+        if ($this->reminder->place_id && $this->reminder->norma) {
             /** @var int $org */
-            $org = $this->reminder->libryo->organisation_id;
-            User::libryoAccess($this->reminder->libryo)
+            $org = $this->reminder->norma->organisation_id;
+            User::normaAccess($this->reminder->norma)
                 ->inOrganisation($org)
                 ->chunk(100, function ($users) use ($toNotify) {
                     $users->each(function ($user) use ($toNotify) {

@@ -9,21 +9,21 @@ use Illuminate\Console\Command;
 /**
  * @codeCoverageIgnore
  */
-class GenerateExtractsForLibryo extends Command
+class GenerateExtractsForNorma extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'corpus:generate-extracts-for-libryo {--libryos=}';
+    protected $signature = 'corpus:generate-extracts-for-norma {--normas=}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Generate Reference Extracts for the references in the Libryo';
+    protected $description = 'Generate Reference Extracts for the references in the Norma';
 
     /**
      * Execute the console command.
@@ -32,15 +32,15 @@ class GenerateExtractsForLibryo extends Command
      */
     public function handle(): int
     {
-        /** @var string $libryos */
-        $libryos = $this->option('libryos') ?? '';
-        $libryos = explode(',', $libryos);
+        /** @var string $normas */
+        $normas = $this->option('normas') ?? '';
+        $normas = explode(',', $normas);
 
-        Work::whereHas('libryos', fn ($query) => $query->whereKey($libryos))
+        Work::whereHas('normas', fn ($query) => $query->whereKey($normas))
             ->select(['id'])
-            ->chunk(200, function ($batch) use ($libryos) {
-                $batch->each(function ($work) use ($libryos) {
-                    GenerateReferenceContentExtracts::dispatch($work->id, $libryos);
+            ->chunk(200, function ($batch) use ($normas) {
+                $batch->each(function ($work) use ($normas) {
+                    GenerateReferenceContentExtracts::dispatch($work->id, $normas);
                     $this->info("Queued work {$work->id}");
                 });
             });

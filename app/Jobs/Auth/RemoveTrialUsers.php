@@ -24,7 +24,7 @@ class RemoveTrialUsers implements ShouldQueue
      */
     public function __construct()
     {
-        $this->onQueue('libryo-app');
+        $this->onQueue('norma-app');
     }
 
     /**

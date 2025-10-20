@@ -7,7 +7,7 @@ use App\Actions\Arachno\Doc\PopulateDocRequirementScores;
 use App\Actions\Assess\AssessmentItemResponse\CreateMissingResponses;
 use App\Actions\Assess\AssessmentItemResponse\DeleteResponsesWithoutReferences;
 use App\Actions\Assess\CreateMetricsSnapshots;
-use App\Actions\Auth\User\MigrateLibryoUserRoles;
+use App\Actions\Auth\User\MigrateNormaUserRoles;
 use App\Actions\Payments\CreatePaymentsForAllTeams;
 use App\Actions\Tasks\Task\MigrateTaskSettings;
 use App\Console\Commands\Auth\ReviewUserLifecycles;
@@ -46,7 +46,7 @@ class Kernel extends ConsoleKernel
         CreateMetricsSnapshots::class,
         CreateMissingResponses::class,
         MigrateTaskSettings::class,
-        MigrateLibryoUserRoles::class,
+        MigrateNormaUserRoles::class,
         PopulateDocRequirementScores::class,
     ];
 

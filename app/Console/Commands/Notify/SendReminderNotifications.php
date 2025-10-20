@@ -14,7 +14,7 @@ class SendReminderNotifications extends Command
      *
      * @var string
      */
-    protected $signature = 'libryo:send-reminders';
+    protected $signature = 'norma:send-reminders';
 
     /**
      * The console command description.

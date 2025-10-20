@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Compilation;
 
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -34,13 +34,13 @@ class RecompileAllStreams implements ShouldQueue
     {
         ini_set('memory_limit', '512M');
 
-        Libryo::active()->when($this->autoCompiledOnly, function ($q) {
+        Norma::active()->when($this->autoCompiledOnly, function ($q) {
             $q->where('auto_compiled', true);
         })
             ->chunk(10, function ($streams) {
-                foreach ($streams as $libryo) {
-                    HandleLibryoRecompilation::dispatch($libryo->id)->onQueue('compilation');
-                    $libryo->updateNeedsRecompilation(false);
+                foreach ($streams as $norma) {
+                    HandleNormaRecompilation::dispatch($norma->id)->onQueue('compilation');
+                    $norma->updateNeedsRecompilation(false);
                     // just slow it down slightly not to overwhelm redis, but the job can't timeout, so can't be too slow
                     usleep(5000);
                 }

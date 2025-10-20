@@ -6,7 +6,7 @@ use App\Contracts\System\TrackableJobInterface;
 use App\Jobs\Traits\Trackable;
 use App\Models\Auth\User;
 use App\Models\Corpus\Work;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Traits\Bookmarks\UsesBookmarksTableFilter;
 use Barryvdh\Snappy\Facades\SnappyPdf;
@@ -46,14 +46,14 @@ class GenerateLegalReportPDF implements ShouldQueue, TrackableJobInterface
     /**
      * @param string               $tempFileName
      * @param User                 $user
-     * @param Libryo|null          $libryo
+     * @param Norma|null          $norma
      * @param Organisation|null    $organisation
      * @param array<string, mixed> $filters
      */
     public function __construct(
         protected string $tempFileName,
         protected User $user,
-        protected ?Libryo $libryo = null,
+        protected ?Norma $norma = null,
         protected ?Organisation $organisation = null,
         protected array $filters = [],
     ) {
@@ -72,7 +72,7 @@ class GenerateLegalReportPDF implements ShouldQueue, TrackableJobInterface
         $query = Work::with([
             'references.bookmarks' => fn ($query) => $query->forUser($this->user)->select(['reference_id']),
             'children.references.bookmarks' => fn ($query) => $query->forUser($this->user)->select(['reference_id']),
-        ])->forRequirements($this->filters, '', $this->user, $this->libryo, $this->organisation);
+        ])->forRequirements($this->filters, '', $this->user, $this->norma, $this->organisation);
 
         $content = collect();
 
@@ -93,7 +93,7 @@ class GenerateLegalReportPDF implements ShouldQueue, TrackableJobInterface
 
         $pdf = SnappyPdf::loadView('pages.corpus.work.my.legal-register-pdf', [
             'content' => $content->join(''),
-            'libryo' => $this->libryo,
+            'norma' => $this->norma,
             'organisation' => $this->organisation,
         ]);
 

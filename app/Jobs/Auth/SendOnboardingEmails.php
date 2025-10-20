@@ -69,7 +69,7 @@ class SendOnboardingEmails implements ShouldQueue
         User::notIntegrationUser()
             ->where('lifecycle_stage', LifecycleStage::invitationSent()->value)
             ->where(function ($builder) {
-                collect(config('libryo.user.lifecycle.resend_invitation_after_days', []))
+                collect(config('norma.user.lifecycle.resend_invitation_after_days', []))
                     ->each(function ($days, $index) use ($builder) {
                         $method = $index === 0 ? 'where' : 'orWhere';
 
@@ -147,7 +147,7 @@ class SendOnboardingEmails implements ShouldQueue
                     '>=',
                     Carbon::now()
                         ->startOfDay()
-                        ->subMonths(config('libryo.user.lifecycle.notify_deactivation_when.inactivity_months_reach'))
+                        ->subMonths(config('norma.user.lifecycle.notify_deactivation_when.inactivity_months_reach'))
                 );
             })
             ->whereHas('activities', function ($builder) {
@@ -156,7 +156,7 @@ class SendOnboardingEmails implements ShouldQueue
                     '>=',
                     Carbon::now()
                         ->startOfDay()
-                        ->subMonths(config('libryo.user.lifecycle.deactivate_when.inactivity_months_reach'))
+                        ->subMonths(config('norma.user.lifecycle.deactivate_when.inactivity_months_reach'))
                 );
             })
             ->chunk(200, function ($users) use ($service) {

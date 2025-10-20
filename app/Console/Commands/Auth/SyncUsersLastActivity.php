@@ -17,7 +17,7 @@ class SyncUsersLastActivity extends Command
      *
      * @var string
      */
-    protected $signature = 'libryo:sync-activities';
+    protected $signature = 'norma:sync-activities';
 
     /**
      * The console command description.

@@ -6,7 +6,7 @@ use App\Contracts\System\TrackableJobInterface;
 use App\Exports\Assess\AssessMetricsExcelExport;
 use App\Jobs\Traits\Trackable;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -41,14 +41,14 @@ class GenerateAssessMetricsExportExcel implements ShouldQueue, TrackableJobInter
     /**
      * @param string               $tempFileName
      * @param Organisation         $organisation
-     * @param Libryo|null          $libryo       ,
+     * @param Norma|null          $norma       ,
      * @param User                 $user
      * @param array<string, mixed> $filters
      */
     public function __construct(
         protected string $tempFileName,
         protected Organisation $organisation,
-        protected ?Libryo $libryo,
+        protected ?Norma $norma,
         protected User $user,
         protected array $filters = [],
     ) {
@@ -72,7 +72,7 @@ class GenerateAssessMetricsExportExcel implements ShouldQueue, TrackableJobInter
 
         $excel = $exporter->forOrganisation(
             $this->organisation,
-            $this->libryo,
+            $this->norma,
             $this->user,
             $this->filters,
             $progressCallback

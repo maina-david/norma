@@ -40,10 +40,10 @@ class SoftDeleteOrganisation implements ShouldQueue
                 }
             });
 
-        $this->organisation->load(['libryos']);
+        $this->organisation->load(['normas']);
 
-        foreach ($this->organisation->libryos as $libryo) {
-            $libryo->delete();
+        foreach ($this->organisation->normas as $norma) {
+            $norma->delete();
         }
     }
 }

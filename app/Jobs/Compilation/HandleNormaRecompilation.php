@@ -2,8 +2,8 @@
 
 namespace App\Jobs\Compilation;
 
-use App\Models\Customer\Libryo;
-use App\Services\Compilation\LibryoCompilationCacheService;
+use App\Models\Customer\Norma;
+use App\Services\Compilation\NormaCompilationCacheService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -12,7 +12,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
 
-class HandleLibryoRecompilation implements ShouldQueue, ShouldBeUnique
+class HandleNormaRecompilation implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable;
     use InteractsWithQueue;
@@ -38,7 +38,7 @@ class HandleLibryoRecompilation implements ShouldQueue, ShouldBeUnique
      *
      * @return void
      */
-    public function __construct(protected int $libryoId)
+    public function __construct(protected int $normaId)
     {
         $this->onQueue('compilation');
     }
@@ -51,7 +51,7 @@ class HandleLibryoRecompilation implements ShouldQueue, ShouldBeUnique
     public function middleware()
     {
         return [
-            (new WithoutOverlapping((string) $this->libryoId))->dontRelease()->expireAfter($this->timeout),
+            (new WithoutOverlapping((string) $this->normaId))->dontRelease()->expireAfter($this->timeout),
         ];
     }
 
@@ -62,7 +62,7 @@ class HandleLibryoRecompilation implements ShouldQueue, ShouldBeUnique
      */
     public function uniqueId()
     {
-        return (string) $this->libryoId;
+        return (string) $this->normaId;
     }
 
     /**
@@ -70,11 +70,11 @@ class HandleLibryoRecompilation implements ShouldQueue, ShouldBeUnique
      *
      * @return void
      */
-    public function handle(LibryoCompilationCacheService $cacheService)
+    public function handle(NormaCompilationCacheService $cacheService)
     {
-        /** @var Libryo */
-        $libryo = Libryo::findOrFail($this->libryoId);
+        /** @var Norma */
+        $norma = Norma::findOrFail($this->normaId);
 
-        $cacheService->handleLibryoRecompilation($libryo);
+        $cacheService->handleNormaRecompilation($norma);
     }
 }

@@ -30,9 +30,9 @@ class GenerateReferenceContentExtracts implements ShouldQueue
      * Create a new job instance.
      *
      * @param int               $workId
-     * @param array<int, mixed> $libryos
+     * @param array<int, mixed> $normas
      */
-    public function __construct(protected int $workId, protected array $libryos = [])
+    public function __construct(protected int $workId, protected array $normas = [])
     {
         $this->onQueue('long-running');
     }
@@ -51,7 +51,7 @@ class GenerateReferenceContentExtracts implements ShouldQueue
             ->where(fn ($query) => $query->has('actionAreas')->orHas('actionAreaDrafts'))
             ->doesntHave('contentExtracts')
             ->where('work_id', $this->workId)
-            ->when(!empty($this->libryos), fn ($builder) => $builder->whereHas('libryos', fn ($query) => $query->whereKey($this->libryos)))
+            ->when(!empty($this->normas), fn ($builder) => $builder->whereHas('normas', fn ($query) => $query->whereKey($this->normas)))
             ->chunkById(200, function ($chunk) use ($generator) {
                 $chunk->each(function ($reference) use ($generator) {
                     /** @var Reference $reference */

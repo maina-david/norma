@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Exports;
 
-use App\Contracts\Exports\LibryoOrganisationExport;
+use App\Contracts\Exports\NormaOrganisationExport;
 use App\Exports\Notify\LegalUpdateExcelExport;
 use App\Mail\Notify\DailyNotification;
 use App\Models\Notify\LegalUpdate;
@@ -11,7 +11,7 @@ use Barryvdh\Snappy\Facades\SnappyPdf;
 use Illuminate\Support\Facades\Storage;
 use ReflectionException;
 
-class GenerateLegalUpdateExportPDF extends LibryoAndOrganisationExport
+class GenerateLegalUpdateExportPDF extends NormaAndOrganisationExport
 {
     use UsesBookmarksTableFilter;
 
@@ -19,7 +19,7 @@ class GenerateLegalUpdateExportPDF extends LibryoAndOrganisationExport
      * @codeCoverageIgnore
      * {@inheritDoc}
      */
-    protected function getExporter(): LibryoOrganisationExport
+    protected function getExporter(): NormaOrganisationExport
     {
         return app(LegalUpdateExcelExport::class);
     }
@@ -33,9 +33,9 @@ class GenerateLegalUpdateExportPDF extends LibryoAndOrganisationExport
     {
         $this->filters = $this->updateBookmarkFilters($this->filters, $this->user);
 
-        $query = is_null($this->libryo)
+        $query = is_null($this->norma)
             ? LegalUpdate::forOrganisationUserAccess($this->organisation, $this->user)
-            : LegalUpdate::forLibryo($this->libryo);
+            : LegalUpdate::forNorma($this->norma);
 
         if (isset($this->filters['status'])) {
             // @codeCoverageIgnoreStart

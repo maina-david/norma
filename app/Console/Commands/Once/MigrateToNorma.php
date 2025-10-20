@@ -10,14 +10,14 @@ use Illuminate\Support\Facades\DB;
 /**
  * @codeCoverageIgnore
  */
-class MigrateToLibryo extends Command
+class MigrateToNorma extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'once:migrate-to-libryo {--source=} {--target=libryo} {--prefix=}';
+    protected $signature = 'once:migrate-to-norma {--source=} {--target=norma} {--prefix=}';
 
     /**
      * The console command description.

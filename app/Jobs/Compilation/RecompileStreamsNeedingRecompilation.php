@@ -2,7 +2,7 @@
 
 namespace App\Jobs\Compilation;
 
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -25,14 +25,14 @@ class RecompileStreamsNeedingRecompilation implements ShouldQueue, ShouldBeUniqu
      */
     public function handle()
     {
-        /** @var Collection<Libryo> */
-        $streams = Libryo::where('needs_recompilation', true)
+        /** @var Collection<Norma> */
+        $streams = Norma::where('needs_recompilation', true)
             ->get(['id', 'needs_recompilation']);
 
-        foreach ($streams as $libryo) {
-            HandleLibryoRecompilation::dispatch($libryo->id)
+        foreach ($streams as $norma) {
+            HandleNormaRecompilation::dispatch($norma->id)
                 ->onQueue('compilation');
-            $libryo->updateNeedsRecompilation(false);
+            $norma->updateNeedsRecompilation(false);
         }
     }
 }

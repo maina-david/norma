@@ -14,7 +14,7 @@ class ReviewUserLifecycles extends Command
      *
      * @var string
      */
-    protected $signature = 'libryo:review-lifecycles';
+    protected $signature = 'norma:review-lifecycles';
 
     /**
      * The console command description.

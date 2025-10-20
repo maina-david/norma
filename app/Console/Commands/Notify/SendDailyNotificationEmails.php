@@ -12,7 +12,7 @@ class SendDailyNotificationEmails extends Command
      *
      * @var string
      */
-    protected $signature = 'libryo:daily-notification-emails';
+    protected $signature = 'norma:daily-notification-emails';
 
     /**
      * The console command description.

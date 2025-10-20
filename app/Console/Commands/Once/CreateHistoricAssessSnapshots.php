@@ -2,13 +2,13 @@
 
 namespace App\Console\Commands\Once;
 
-use App\Actions\Assess\CreateMetricsSnapshotForLibryo;
+use App\Actions\Assess\CreateMetricsSnapshotForNorma;
 use App\Enums\Assess\AssessActivityType;
 use App\Enums\Assess\ResponseStatus;
 use App\Enums\Assess\RiskRating;
 use App\Models\Assess\AssessmentActivity;
 use App\Models\Assess\AssessmentItemResponse;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Services\Assess\AssessStatsService;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\Collection;
@@ -38,11 +38,11 @@ class CreateHistoricAssessSnapshots extends Command
      */
     public function handle(): int
     {
-        Libryo::active()->has('assessmentItemResponses')
-            ->chunk(3, function ($libryos) {
-                foreach ($libryos as $libryo) {
-                    $this->info((string) $libryo->id);
-                    $this->createHistoricSnapshots($libryo);
+        Norma::active()->has('assessmentItemResponses')
+            ->chunk(3, function ($normas) {
+                foreach ($normas as $norma) {
+                    $this->info((string) $norma->id);
+                    $this->createHistoricSnapshots($norma);
                 }
             });
 
@@ -50,11 +50,11 @@ class CreateHistoricAssessSnapshots extends Command
     }
 
     /**
-     * @param Libryo $libryo
+     * @param Norma $norma
      *
      * @return void
      */
-    public function createHistoricSnapshots(Libryo $libryo): void
+    public function createHistoricSnapshots(Norma $norma): void
     {
         $startOfQuarter = Carbon::now()->startOfMonth()->subQuarter()->startOfQuarter();
         $endOfQuarter = Carbon::now()->startOfMonth()->subQuarter()->endOfQuarter();
@@ -62,7 +62,7 @@ class CreateHistoricAssessSnapshots extends Command
         $count = 1;
         while ($count <= 3) {
             /** @var Collection<AssessmentItemResponse> */
-            $responses = AssessmentItemResponse::forLibryo($libryo)->with([
+            $responses = AssessmentItemResponse::forNorma($norma)->with([
                 'assessmentItem' => fn ($q) => $q->select(['id', 'risk_rating']),
                 'activities' => function ($q) use ($endOfQuarter) {
                     $q->where('activity_type', AssessActivityType::answerChange()->value)
@@ -102,7 +102,7 @@ class CreateHistoricAssessSnapshots extends Command
                 }
             }
 
-            $lastActivity = $this->getLastActivityDateQuarterly($libryo, $endOfQuarter);
+            $lastActivity = $this->getLastActivityDateQuarterly($norma, $endOfQuarter);
             /** @var int $monthsSinceLastActivity */
             $monthsSinceLastActivity = $lastActivity ? (int) $lastActivity->created_at?->diffInMonths(Carbon::now(), true) : 240;
 
@@ -127,7 +127,7 @@ class CreateHistoricAssessSnapshots extends Command
                 'percentage_non_compliant_items' => $responsesCount > 0 ? round($noOrNotAssessedResponses->count() / $responsesCount * 100, 2) : 0.0,
             ];
 
-            CreateMetricsSnapshotForLibryo::run($libryo, $endOfQuarter, $data);
+            CreateMetricsSnapshotForNorma::run($norma, $endOfQuarter, $data);
 
             $startOfQuarter = $startOfQuarter->startOfMonth()->subQuarter()->startOfQuarter();
             $endOfQuarter = $endOfQuarter->startOfMonth()->subQuarter()->endOfQuarter();
@@ -136,16 +136,16 @@ class CreateHistoricAssessSnapshots extends Command
     }
 
     /**
-     * @param Libryo $libryo
+     * @param Norma $norma
      * @param Carbon $endOfQuarter
      *
      * @return AssessmentActivity|null
      */
-    public function getLastActivityDateQuarterly(Libryo $libryo, Carbon $endOfQuarter): ?AssessmentActivity
+    public function getLastActivityDateQuarterly(Norma $norma, Carbon $endOfQuarter): ?AssessmentActivity
     {
         /** @var AssessmentActivity|null */
-        return AssessmentActivity::whereHas('assessmentItemResponse', function ($q) use ($libryo) {
-            $q->forLibryo($libryo);
+        return AssessmentActivity::whereHas('assessmentItemResponse', function ($q) use ($norma) {
+            $q->forNorma($norma);
         })
             ->where('activity_type', AssessActivityType::answerChange()->value)
             ->where('created_at', '<=', $endOfQuarter)

@@ -12,7 +12,7 @@ class NotifyLibraries extends Command
      *
      * @var string
      */
-    protected $signature = 'libryo:notify-libraries';
+    protected $signature = 'norma:notify-libraries';
 
     /**
      * The console command description.

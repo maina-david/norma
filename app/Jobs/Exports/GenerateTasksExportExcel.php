@@ -2,18 +2,18 @@
 
 namespace App\Jobs\Exports;
 
-use App\Contracts\Exports\LibryoOrganisationExport;
+use App\Contracts\Exports\NormaOrganisationExport;
 use App\Exports\Tasks\TasksExcelExport;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 
-class GenerateTasksExportExcel extends LibryoAndOrganisationExport
+class GenerateTasksExportExcel extends NormaAndOrganisationExport
 {
     /**
      * @param string                            $tempFileName
      * @param User                              $user
-     * @param Libryo|null                       $libryo
+     * @param Norma|null                       $norma
      * @param \App\Models\Customer\Organisation $organisation
      * @param array<string, mixed>              $filters
      * @param string|null                       $domain
@@ -22,19 +22,19 @@ class GenerateTasksExportExcel extends LibryoAndOrganisationExport
     public function __construct(
         protected string $tempFileName,
         protected User $user,
-        protected ?Libryo $libryo,
+        protected ?Norma $norma,
         protected Organisation $organisation,
         protected array $filters = [],
         protected ?string $domain = null,
         protected string $module = 'tasks',
     ) {
-        parent::__construct($this->tempFileName, $this->user, $this->libryo, $this->organisation, $this->filters);
+        parent::__construct($this->tempFileName, $this->user, $this->norma, $this->organisation, $this->filters);
     }
 
     /**
      * {@inheritDoc}
      */
-    protected function getExporter(): LibryoOrganisationExport
+    protected function getExporter(): NormaOrganisationExport
     {
         return app(TasksExcelExport::class)->setDomain($this->domain)->setModule($this->module);
     }

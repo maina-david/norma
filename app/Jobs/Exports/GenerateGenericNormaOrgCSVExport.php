@@ -2,20 +2,20 @@
 
 namespace App\Jobs\Exports;
 
-use App\Contracts\Exports\LibryoOrganisationExport;
+use App\Contracts\Exports\NormaOrganisationExport;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\BaseWriter;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 
-class GenerateGenericLibryoOrgCSVExport extends LibryoAndOrganisationExport
+class GenerateGenericNormaOrgCSVExport extends NormaAndOrganisationExport
 {
     /**
      * @param string                            $tempFileName
      * @param \App\Models\Auth\User             $user
-     * @param \App\Models\Customer\Libryo|null  $libryo
+     * @param \App\Models\Customer\Norma|null  $norma
      * @param \App\Models\Customer\Organisation $organisation
      * @param string                            $exporterClass
      * @param array<string, mixed>              $filters
@@ -24,19 +24,19 @@ class GenerateGenericLibryoOrgCSVExport extends LibryoAndOrganisationExport
     public function __construct(
         string $tempFileName,
         User $user,
-        ?Libryo $libryo,
+        ?Norma $norma,
         Organisation $organisation,
         private string $exporterClass,
         array $filters = [],
         protected ?string $spreadsheetMapper = null
     ) {
-        parent::__construct($tempFileName, $user, $libryo, $organisation, $filters, $spreadsheetMapper);
+        parent::__construct($tempFileName, $user, $norma, $organisation, $filters, $spreadsheetMapper);
     }
 
     /**
      * {@inheritDoc}
      */
-    protected function getExporter(): LibryoOrganisationExport
+    protected function getExporter(): NormaOrganisationExport
     {
         return app($this->exporterClass);
     }
