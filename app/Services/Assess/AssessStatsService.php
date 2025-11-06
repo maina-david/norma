@@ -6,7 +6,7 @@ use App\Enums\Assess\ResponseStatus;
 use App\Enums\Assess\RiskRating;
 use App\Models\Assess\AssessmentActivity;
 use App\Models\Assess\AssessmentItemResponse;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 
@@ -114,14 +114,14 @@ class AssessStatsService
     }
 
     /**
-     * @param Builder $libryoQuery
+     * @param Builder $normaQuery
      *
      * @return Builder
      */
-    public function buildRiskRatingQuery(Builder $libryoQuery): Builder
+    public function buildRiskRatingQuery(Builder $normaQuery): Builder
     {
         $responsesTable = (new AssessmentItemResponse())->getTable();
-        $libryoTable = (new Libryo())->getTable();
+        $normaTable = (new Norma())->getTable();
         $yes = ResponseStatus::yes()->value;
         $no = ResponseStatus::no()->value;
         $notAssessed = ResponseStatus::notAssessed()->value;
@@ -131,12 +131,12 @@ class AssessStatsService
 
         $totalCount = 'select count(*)
             from `' . $responsesTable . '`
-            where `place_id` = `' . $libryoTable . '`.id
+            where `place_id` = `' . $normaTable . '`.id
                 and `deleted_at` is NULL';
 
-        $lastActivityDateQuery = AssessmentActivity::answerChange()->maxActivitySubquery($libryoTable . '.id');
+        $lastActivityDateQuery = AssessmentActivity::answerChange()->maxActivitySubquery($normaTable . '.id');
 
-        $baseQuery = AssessmentItemResponse::whereRaw('place_id = `' . $libryoTable . '`.id')
+        $baseQuery = AssessmentItemResponse::whereRaw('place_id = `' . $normaTable . '`.id')
             ->notDraft()
             ->selectRaw('count(*)');
         $answeredNoQuery = $baseQuery->clone()->answeredNo();
@@ -146,12 +146,12 @@ class AssessStatsService
 
         $noResponseHighQuery = AssessmentItemResponse::answeredNo()
             ->forHighRisk()
-            ->whereRaw('place_id = `' . $libryoTable . '`.id')
+            ->whereRaw('place_id = `' . $normaTable . '`.id')
             ->selectRaw('count(*)');
 
         $noResponseMediumQuery = AssessmentItemResponse::answeredNo()
             ->forMediumRisk()
-            ->whereRaw('place_id = `' . $libryoTable . '`.id')
+            ->whereRaw('place_id = `' . $normaTable . '`.id')
             ->selectRaw('count(*)');
 
         $case = 'CASE
@@ -173,9 +173,9 @@ class AssessStatsService
             ELSE ' . RiskRating::low()->value . '
             END';
 
-        $query = $libryoQuery
+        $query = $normaQuery
             ->leftJoinSub(
-                $libryoQuery->clone()
+                $normaQuery->clone()
                     ->selectSub($totalCount, 'total_count')
                     ->selectRaw('(' . $notAssessedQuery->toSql() . ') as count_by_status_' . $notAssessed, $notAssessedQuery->getBindings())
                     ->selectRaw('(' . $notApplicableQuery->toSql() . ') as count_by_status_' . $notApplicable, $notApplicableQuery->getBindings())
@@ -188,7 +188,7 @@ class AssessStatsService
                 'responsesCount',
                 'responsesCount.id',
                 '=',
-                $libryoTable . '.id'
+                $normaTable . '.id'
             )
             ->addSelect([
                 '*',
@@ -208,11 +208,11 @@ class AssessStatsService
         return $query;
     }
 
-    public function buildDetailedRiskRatingQuery(Builder $libryoQuery): Builder
+    public function buildDetailedRiskRatingQuery(Builder $normaQuery): Builder
     {
-        $clonedLibryoQuery = $libryoQuery->clone();
-        $query = $this->buildRiskRatingQuery($libryoQuery);
-        $libryoTable = (new Libryo())->getTable();
+        $clonedNormaQuery = $normaQuery->clone();
+        $query = $this->buildRiskRatingQuery($normaQuery);
+        $normaTable = (new Norma())->getTable();
         $yes = ResponseStatus::yes()->value;
         $no = ResponseStatus::no()->value;
         $notAssessed = ResponseStatus::notAssessed()->value;
@@ -222,7 +222,7 @@ class AssessStatsService
         $low = RiskRating::low()->value;
         $notRated = RiskRating::notRated()->value;
 
-        $baseQuery = AssessmentItemResponse::whereRaw('place_id = `' . $libryoTable . '`.id')
+        $baseQuery = AssessmentItemResponse::whereRaw('place_id = `' . $normaTable . '`.id')
             ->notDraft()
             ->selectRaw('count(*)');
         $answeredNoHiQuery = $baseQuery->clone()->answeredNo()->forHighRisk();
@@ -246,7 +246,7 @@ class AssessStatsService
         $notAssessedQueryNotRatedQuery = $baseQuery->clone()->notAssessed()->forNotRatedRisk();
 
         $query->leftJoinSub(
-            $clonedLibryoQuery
+            $clonedNormaQuery
                 ->selectRaw('(' . $answeredNoHiQuery->toSql() . ') as count_by_status_risk_' . $no . '_' . $high, $answeredNoHiQuery->getBindings())
                 ->selectRaw('(' . $answeredNoMedQuery->toSql() . ') as count_by_status_risk_' . $no . '_' . $medium, $answeredNoMedQuery->getBindings())
                 ->selectRaw('(' . $answeredNoLoQuery->toSql() . ') as count_by_status_risk_' . $no . '_' . $low, $answeredNoLoQuery->getBindings())
@@ -270,7 +270,7 @@ class AssessStatsService
             'responsesRiskCount',
             'responsesRiskCount.id',
             '=',
-            $libryoTable . '.id'
+            $normaTable . '.id'
         );
 
         /** @var Builder */

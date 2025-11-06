@@ -2,7 +2,7 @@
 
 namespace App\Services\Modules;
 
-use App\Enums\System\LibryoModule;
+use App\Enums\System\NormaModule;
 use Illuminate\Http\Request;
 
 /**
@@ -22,25 +22,25 @@ class CurrentModule
     public function get(): string
     {
         if ($this->request->routeIs('my.dashboard')) {
-            return LibryoModule::dashboard()->value;
+            return NormaModule::dashboard()->value;
         }
         if ($this->request->routeIs('my.assess.*')) {
-            return LibryoModule::comply()->value;
+            return NormaModule::comply()->value;
         }
         if ($this->request->routeIs('my.notify.*')) {
-            return LibryoModule::updates()->value;
+            return NormaModule::updates()->value;
         }
         if ($this->request->routeIs('my.corpus.*')) {
-            return LibryoModule::corpus()->value;
+            return NormaModule::corpus()->value;
         }
         if ($this->request->routeIs('my.tasks.*')) {
-            return LibryoModule::tasks()->value;
+            return NormaModule::tasks()->value;
         }
         if ($this->request->routeIs('my.drives.*')) {
-            return LibryoModule::drives()->value;
+            return NormaModule::drives()->value;
         }
         if ($this->request->routeIs('my.actions.*')) {
-            return LibryoModule::actions()->value;
+            return NormaModule::actions()->value;
         }
 
         // @codeCoverageIgnoreStart

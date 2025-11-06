@@ -2,25 +2,25 @@
 
 namespace App\Services\Customer;
 
-use App\Actions\Auth\User\SetActiveLibryoAfterLogin;
-use App\Enums\Customer\LibryoSwitcherMode;
-use App\Events\Auth\UserActivity\ActivatedLibryo;
+use App\Actions\Auth\User\SetActiveNormaAfterLogin;
+use App\Enums\Customer\NormaSwitcherMode;
+use App\Events\Auth\UserActivity\ActivatedNorma;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
-class ActiveLibryosManager
+class ActiveNormasManager
 {
     public const SESSION_ALL_ACTIVE = 'all';
 
     protected ?Organisation $activeOrganisation = null;
 
-    protected ?Libryo $activeCache = null;
+    protected ?Norma $activeCache = null;
 
-    protected ?LibryoSwitcherMode $modeCache = null;
+    protected ?NormaSwitcherMode $modeCache = null;
 
     public function __construct(protected ActiveOrganisationManager $activeOrganisationManager)
     {
@@ -32,51 +32,51 @@ class ActiveLibryosManager
      * @param User $user
      * @param int  $limit
      *
-     * @return Collection<Libryo>
+     * @return Collection<Norma>
      **/
     public function get(
         User $user,
         int $limit
     ): Collection {
-        // get last libryo activation activities
+        // get last norma activation activities
         $cursor = $user->activities()
-            ->typeLibryoActivate()
-            ->whereHas('libryo', fn ($q) => $q->userHasAccess($user)->whereNotNull('organisation_id')->active())
+            ->typeNormaActivate()
+            ->whereHas('norma', fn ($q) => $q->userHasAccess($user)->whereNotNull('organisation_id')->active())
             ->with([
-                'libryo' => fn ($q) => $q->active(),
+                'norma' => fn ($q) => $q->active(),
             ])
             ->cursor();
         $uniqueIds = [];
-        /** @var Collection<Libryo> */
-        $libryos = (new Libryo())->newCollection();
+        /** @var Collection<Norma> */
+        $normas = (new Norma())->newCollection();
         foreach ($cursor as $activity) {
-            if ($libryos->count() === $limit) {
+            if ($normas->count() === $limit) {
                 break;
             }
             if (isset($uniqueIds[$activity->place_id])) {
                 continue;
             }
-            /** @var Libryo $lib */
-            $lib = $activity->libryo;
-            $libryos->add($lib);
+            /** @var Norma $lib */
+            $lib = $activity->norma;
+            $normas->add($lib);
             $uniqueIds[$lib->id] = true;
         }
 
-        return $libryos;
+        return $normas;
     }
 
     /**
      * @param User   $user
-     * @param Libryo $libryo
+     * @param Norma $norma
      *
      * @return void
      */
-    public function activate(User $user, Libryo $libryo): void
+    public function activate(User $user, Norma $norma): void
     {
-        Session::put(config('session-keys.customer.active-libryo'), $libryo->id);
-        ActivatedLibryo::dispatch($user, $libryo);
-        $this->setMode(LibryoSwitcherMode::single());
-        $this->activeCache = $libryo;
+        Session::put(config('session-keys.customer.active-norma'), $norma->id);
+        ActivatedNorma::dispatch($user, $norma);
+        $this->setMode(NormaSwitcherMode::single());
+        $this->activeCache = $norma;
         $this->activeOrganisation = null;
     }
 
@@ -90,11 +90,11 @@ class ActiveLibryosManager
         /** @var User $user */
         $user = $user ?? Auth::user();
 
-        $this->setMode(LibryoSwitcherMode::all());
-        $libryo = $this->getActive($user);
+        $this->setMode(NormaSwitcherMode::all());
+        $norma = $this->getActive($user);
 
-        if ($libryo) {
-            $organisation = $libryo->organisation;
+        if ($norma) {
+            $organisation = $norma->organisation;
         } else {
             $organisation = $user->organisations()->first();
         }
@@ -106,39 +106,39 @@ class ActiveLibryosManager
         }
         $this->activeOrganisationManager->activate($organisation->id);
 
-        Session::remove(config('session-keys.customer.active-libryo'));
+        Session::remove(config('session-keys.customer.active-norma'));
 
         $this->flushCache();
     }
 
     /**
-     * Get the currently active libryo stream for the given user.
+     * Get the currently active norma stream for the given user.
      * If none available in the session.
      *
      * @param User|null $user
      *
-     * @return Libryo|null
+     * @return Norma|null
      */
-    public function getActive(?User $user = null): ?Libryo
+    public function getActive(?User $user = null): ?Norma
     {
         if (!is_null($this->activeCache)) {
             return $this->activeCache;
         }
         /** @var User $user */
         $user = $user ?? Auth::user();
-        $activeId = Session::get(config('session-keys.customer.active-libryo'));
+        $activeId = Session::get(config('session-keys.customer.active-norma'));
         if ($activeId) {
-            /** @var Libryo $libryo */
-            $libryo = Libryo::findOrFail($activeId);
-            $this->activeCache = $libryo;
+            /** @var Norma $norma */
+            $norma = Norma::findOrFail($activeId);
+            $this->activeCache = $norma;
 
-            return $libryo;
+            return $norma;
         }
 
         // from production bugs
         // if for some reason we still don't have an active user try run set active again
         if ($this->isSingleMode()) {
-            SetActiveLibryoAfterLogin::run($user);
+            SetActiveNormaAfterLogin::run($user);
 
             return $this->activeCache;
         }
@@ -152,19 +152,19 @@ class ActiveLibryosManager
      *
      * @param User $user
      *
-     * @return Libryo|null
+     * @return Norma|null
      */
-    // public function activateFirstAvailable(User $user): Libryo|null
+    // public function activateFirstAvailable(User $user): Norma|null
     // {
-    //     if (!$libryo = $this->get($user, 1)->first()) {
-    //         $libryo = Libryo::userHasAccess($user)->first();
+    //     if (!$norma = $this->get($user, 1)->first()) {
+    //         $norma = Norma::userHasAccess($user)->first();
     //     }
 
-    //     if ($libryo) {
-    //         $this->activate($user, $libryo);
+    //     if ($norma) {
+    //         $this->activate($user, $norma);
     //     }
 
-    //     return $libryo;
+    //     return $norma;
     // }
 
     /**
@@ -172,28 +172,28 @@ class ActiveLibryosManager
      *
      * @return void
      */
-    public function setMode(LibryoSwitcherMode $mode): void
+    public function setMode(NormaSwitcherMode $mode): void
     {
-        Session::put(config('session-keys.customer.active-libryo-mode'), $mode->value);
+        Session::put(config('session-keys.customer.active-norma-mode'), $mode->value);
         $this->modeCache = null;
     }
 
     /**
      * Get the currently organisation switcher mode, single or all.
      *
-     * @return LibryoSwitcherMode
+     * @return NormaSwitcherMode
      */
-    public function getMode(): LibryoSwitcherMode
+    public function getMode(): NormaSwitcherMode
     {
         if (!is_null($this->modeCache)) {
             return $this->modeCache;
         }
-        $mode = Session::get(config('session-keys.customer.active-libryo-mode'), LibryoSwitcherMode::single()->value);
+        $mode = Session::get(config('session-keys.customer.active-norma-mode'), NormaSwitcherMode::single()->value);
 
-        /** @var LibryoSwitcherMode */
-        $mode = LibryoSwitcherMode::fromValue($mode);
+        /** @var NormaSwitcherMode */
+        $mode = NormaSwitcherMode::fromValue($mode);
 
-        /** @var LibryoSwitcherMode */
+        /** @var NormaSwitcherMode */
         return $this->modeCache = $mode;
     }
 
@@ -204,12 +204,12 @@ class ActiveLibryosManager
      */
     public function isSingleMode(): bool
     {
-        return $this->getMode()->value === LibryoSwitcherMode::single()->value;
+        return $this->getMode()->value === NormaSwitcherMode::single()->value;
     }
 
     /**
-     * Get the currently active organisation by libryo switcher mode:
-     * when in single libryo mode, then it's the currently active libryo's org
+     * Get the currently active organisation by norma switcher mode:
+     * when in single norma mode, then it's the currently active norma's org
      * When in all streams mode, then get the active org from the session.
      *
      * @return Organisation
@@ -223,23 +223,23 @@ class ActiveLibryosManager
         }
 
         if ($this->isSingleMode()) {
-            /** @var Libryo|null */
-            $libryo = $this->getActive();
-            if (is_null($libryo)) {
+            /** @var Norma|null */
+            $norma = $this->getActive();
+            if (is_null($norma)) {
                 // @codeCoverageIgnoreStart
                 /** @var User $user */
                 $user = Auth::user();
-                /** @var Collection<Libryo> */
-                $lastActiveLibryos = $this->get($user, 1);
-                /** @var Libryo */
-                $libryo = $lastActiveLibryos->first();
+                /** @var Collection<Norma> */
+                $lastActiveNormas = $this->get($user, 1);
+                /** @var Norma */
+                $norma = $lastActiveNormas->first();
                 // @codeCoverageIgnoreEnd
             }
 
-            $this->activeOrganisation = $libryo->organisation;
+            $this->activeOrganisation = $norma->organisation;
 
             /** @var Organisation */
-            return $libryo->organisation;
+            return $norma->organisation;
         }
 
         $active = $this->activeOrganisation = $this->activeOrganisationManager->getActive();

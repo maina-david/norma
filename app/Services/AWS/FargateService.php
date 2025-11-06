@@ -27,7 +27,7 @@ class FargateService
             'networkConfiguration' => [
                 'awsvpcConfiguration' => [
                     'subnets' => config('services.aws.subnets'),
-                    'securityGroups' => [config('services.aws.libryo_app_security_group')],
+                    'securityGroups' => [config('services.aws.norma_app_security_group')],
                     'assignPublicIp' => 'ENABLED',
                 ],
             ],

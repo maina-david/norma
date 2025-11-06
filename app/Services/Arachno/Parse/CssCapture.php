@@ -45,7 +45,7 @@ class CssCapture
         $bodyNode = $domCrawler->filter('body')->getNode(0);
         $class = $bodyNode->getAttribute('class');
         $class = $class ? $class . ' ' : '';
-        $bodyNode->setAttribute('class', $class . CssProcessor::CSS_LIBRYO_FULL_TEXT_CLASS);
+        $bodyNode->setAttribute('class', $class . CssProcessor::CSS_NORMA_FULL_TEXT_CLASS);
 
         return $domCrawler;
     }

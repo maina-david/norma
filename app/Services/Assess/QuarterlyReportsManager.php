@@ -17,12 +17,12 @@ class QuarterlyReportsManager
     }
 
     /**
-     * @param Builder $libryosQuery
+     * @param Builder $normasQuery
      * @param Builder $responsesQuery
      *
      * @return array<string, mixed>
      */
-    public function getResponseData(Builder $libryosQuery, Builder $responsesQuery): array
+    public function getResponseData(Builder $normasQuery, Builder $responsesQuery): array
     {
         $chartData = [];
         $tableData = [];
@@ -34,7 +34,7 @@ class QuarterlyReportsManager
         $count = 2;
         while ($count <= 4) {
             /** @var Collection<AssessSnapshot> */
-            $snapshots = AssessSnapshot::whereHas('libryo', fn ($q) => $q->mergeConstraintsFrom($libryosQuery->clone()))
+            $snapshots = AssessSnapshot::whereHas('norma', fn ($q) => $q->mergeConstraintsFrom($normasQuery->clone()))
                 ->forMonth($endOfQuarter)
                 ->with([
                     'assessmentItemResponses' => fn ($q) => $q->select('id')->mergeConstraintsFrom($responsesQuery->clone()),

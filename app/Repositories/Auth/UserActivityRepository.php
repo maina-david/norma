@@ -7,7 +7,7 @@ use App\Events\Auth\UserActivity\UserAccessedPlatform;
 use App\Events\Auth\UserActivity\UserActivityEvent;
 use App\Models\Auth\User;
 use App\Models\Auth\UserActivity;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
@@ -18,7 +18,7 @@ class UserActivityRepository
      * @param User              $user
      * @param UserActivityType  $type
      * @param string|false      $details
-     * @param Libryo|null       $place
+     * @param Norma|null       $place
      * @param Organisation|null $organisation
      *
      * @return UserActivity
@@ -27,7 +27,7 @@ class UserActivityRepository
         User $user,
         UserActivityType $type,
         string|false $details,
-        ?Libryo $place = null,
+        ?Norma $place = null,
         ?Organisation $organisation = null
     ): UserActivity {
         return UserActivity::create([
@@ -52,7 +52,7 @@ class UserActivityRepository
             $event->getUser(),
             $event->getActivityType(),
             $event->toJson(),
-            $event->getLibryo(),
+            $event->getNorma(),
             $event->getOrganisation()
         );
 

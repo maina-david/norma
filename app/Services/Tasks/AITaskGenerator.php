@@ -2,7 +2,7 @@
 
 namespace App\Services\Tasks;
 
-use App\Http\Services\LibryoAI\Client;
+use App\Http\Services\NormaAI\Client;
 use App\Models\Corpus\ReferenceContent;
 
 class AITaskGenerator

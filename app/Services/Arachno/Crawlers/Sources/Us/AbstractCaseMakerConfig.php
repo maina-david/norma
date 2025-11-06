@@ -37,7 +37,7 @@ abstract class AbstractCaseMakerConfig extends AbstractCrawlerConfig
 
     protected string $jurisdictionCode = '';
 
-    public const URL_PREFIX = 'https://internal.libryo.com/casemaker/';
+    public const URL_PREFIX = 'https://internal.norma.com/casemaker/';
 
     /**
      * {@inheritDoc}
@@ -366,7 +366,7 @@ abstract class AbstractCaseMakerConfig extends AbstractCrawlerConfig
     protected function replaceImageAndFileLinks(string $html): string
     {
         // removes dates from image and file links
-        $regex = '/(https:\/\/img\.libryo\.com\/cmdata\/)((?:[a-z]+\/)+)(20[0-9]{2}\/)([^\'\"]+)/';
+        $regex = '/(https:\/\/img\.norma\.com\/cmdata\/)((?:[a-z]+\/)+)(20[0-9]{2}\/)([^\'\"]+)/';
 
         /** @var string */
         return preg_replace($regex, '$1$2$4', $html);

@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 /**
  * @codeCoverageIgnore
  */
-class LibryoDocument extends AbstractCrawlerConfig
+class NormaDocument extends AbstractCrawlerConfig
 {
     public function parsePage(PageCrawl $pageCrawl): void
     {
@@ -29,7 +29,7 @@ class LibryoDocument extends AbstractCrawlerConfig
             'start_urls' => [
                 'type_' . CrawlType::GENERAL->value => [
                     [
-                        'url' => 'https://sites.google.com/libryo.com/libryo-document-test/home',
+                        'url' => 'https://sites.google.com/norma.com/norma-document-test/home',
                     ],
                 ],
             ],
@@ -37,11 +37,11 @@ class LibryoDocument extends AbstractCrawlerConfig
             'is_meta_page_query' => [
                 'type' => DomQueryType::REGEX,
                 'source' => DomQuerySource::URL,
-                'query' => '/libryo\-document\-test\/home/',
+                'query' => '/norma\-document\-test\/home/',
             ],
             'meta_unique_id_query' => [
                 'type' => DomQueryType::FUNC,
-                'query' => fn () => 'libryo-test',
+                'query' => fn () => 'norma-test',
             ],
             'meta_title_query' => [
                 'type' => DomQueryType::CSS,
@@ -52,7 +52,7 @@ class LibryoDocument extends AbstractCrawlerConfig
                     'is_capture_page_query' => [
                         'type' => DomQueryType::REGEX,
                         'source' => DomQuerySource::URL,
-                        'query' => '/libryo\-document\-test\/home/',
+                        'query' => '/norma\-document\-test\/home/',
                     ],
                     'capture_body_queries' => [
                         [
@@ -89,7 +89,7 @@ class LibryoDocument extends AbstractCrawlerConfig
             'is_toc_page_query' => [
                 'type' => DomQueryType::REGEX,
                 'source' => DomQuerySource::URL,
-                'query' => '/libryo\-document\-test\/home/',
+                'query' => '/norma\-document\-test\/home/',
             ],
             'toc_query' => [
                 'type' => DomQueryType::XPATH,

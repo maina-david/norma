@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class CategoryGuesser
 {
-    public function __construct(protected LibryoAiClient $libryoAiClient)
+    public function __construct(protected NormaAiClient $normaAiClient)
     {
     }
 
@@ -18,7 +18,7 @@ class CategoryGuesser
      */
     public function guessCategoriesFromText(string $content): Collection
     {
-        $chunks = $this->libryoAiClient->analyse($content);
+        $chunks = $this->normaAiClient->analyse($content);
         if (!isset($chunks['chunks'])) {
             // @codeCoverageIgnoreStart
             /** @var Collection<Category> */

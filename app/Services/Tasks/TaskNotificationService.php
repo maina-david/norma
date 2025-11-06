@@ -108,7 +108,7 @@ class TaskNotificationService
      */
     public function getUserSettingForActivity(TaskActivity $activity, string $relationship): string
     {
-        $mappings = config('libryo.model_settings.' . User::class . '.notification_activity_mappings');
+        $mappings = config('norma.model_settings.' . User::class . '.notification_activity_mappings');
 
         return isset($mappings[$activity->activity_type]) ? $mappings[$activity->activity_type] . $relationship : '';
     }

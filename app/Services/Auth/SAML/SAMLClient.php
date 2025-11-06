@@ -38,9 +38,9 @@ class SAMLClient
             ],
             'organization' => [
                 'en-GB' => [
-                    'name' => 'Libryo LTD',
-                    'displayname' => 'Libryo LTD',
-                    'url' => 'https://libryo.com',
+                    'name' => 'Norma LTD',
+                    'displayname' => 'Norma LTD',
+                    'url' => 'https://norma.com',
                 ],
             ],
             'sp' => [
@@ -52,8 +52,8 @@ class SAMLClient
                     'url' => route('my.saml.logout', ['slug' => $organisation->slug]),
                 ],
                 'attributeConsumingService' => [
-                    'serviceName' => 'Libryo LTD',
-                    'serviceDescription' => 'Libryo LTD Single Sign-on Service',
+                    'serviceName' => 'Norma LTD',
+                    'serviceDescription' => 'Norma LTD Single Sign-on Service',
                     'requestedAttributes' => [
                         [
                             'name' => 'first_name',

@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Services\Search\LibryoAI;
+namespace App\Services\Search\NormaAI;
 
-use App\Http\Services\LibryoAI\Client;
+use App\Http\Services\NormaAI\Client;
 use App\Models\Corpus\CatalogueDoc;
 use Illuminate\Support\Collection;
 use Illuminate\Support\LazyCollection;
 use Laravel\Scout\Builder;
 use Laravel\Scout\Engines\Engine;
 
-class LibryoAISearchEngine extends Engine
+class NormaAISearchEngine extends Engine
 {
     /**
      * @param Client $client

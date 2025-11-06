@@ -12,8 +12,8 @@ use RuntimeException;
 
 class AutoCompilationExcelParser
 {
-    public const LIBRYO_COLS_START_COL = 'D';
-    public const LIBRYO_COLS_START_ROW = '1';
+    public const NORMA_COLS_START_COL = 'D';
+    public const NORMA_COLS_START_ROW = '1';
 
     /** @var string */
     protected $filePath;
@@ -28,7 +28,7 @@ class AutoCompilationExcelParser
     protected $rows = [];
 
     /** @var array<int> */
-    protected $libryos = [];
+    protected $normas = [];
 
     /** @var array<int, array<int, int>> */
     protected $answers = [];
@@ -60,7 +60,7 @@ class AutoCompilationExcelParser
             // @codeCoverageIgnoreEnd
         }
 
-        $this->extractLibryos();
+        $this->extractNormas();
 
         $this->extractRows();
 
@@ -115,22 +115,22 @@ class AutoCompilationExcelParser
     }
 
     /**
-     * Extract all the libryo's that are being compiled.
+     * Extract all the norma's that are being compiled.
      *
      * @return void
      */
-    private function extractLibryos(): void
+    private function extractNormas(): void
     {
-        $start = static::LIBRYO_COLS_START_COL . static::LIBRYO_COLS_START_ROW;
-        $range = $start . ':' . $this->getSheet()->getHighestColumn(static::LIBRYO_COLS_START_ROW) . static::LIBRYO_COLS_START_ROW;
+        $start = static::NORMA_COLS_START_COL . static::NORMA_COLS_START_ROW;
+        $range = $start . ':' . $this->getSheet()->getHighestColumn(static::NORMA_COLS_START_ROW) . static::NORMA_COLS_START_ROW;
         $cols = $this->getSheet()->rangeToArray($range)[0];
-        $this->libryos = [];
+        $this->normas = [];
         foreach ($cols as $col) {
             $id = explode(':', $col)[0] ?? null;
             if (!$id || !is_numeric($id)) {
                 continue;
             }
-            $this->libryos[] = (int) $id;
+            $this->normas[] = (int) $id;
         }
     }
 
@@ -164,9 +164,9 @@ class AutoCompilationExcelParser
     {
         foreach ($this->rows as $row) {
             $id = (int) $row[0];
-            foreach ($this->libryos as $key => $libryoId) {
-                if (!isset($this->answers[$libryoId])) {
-                    $this->answers[$libryoId] = [];
+            foreach ($this->normas as $key => $normaId) {
+                if (!isset($this->answers[$normaId])) {
+                    $this->answers[$normaId] = [];
                 }
 
                 $answer = $row[$key + 3];
@@ -186,7 +186,7 @@ class AutoCompilationExcelParser
                 }
 
                 if (is_numeric($answer)) {
-                    $this->answers[$libryoId][$id] = (int) $answer;
+                    $this->answers[$normaId][$id] = (int) $answer;
                 }
             }
         }

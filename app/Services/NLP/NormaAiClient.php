@@ -8,11 +8,11 @@ use Throwable;
 /**
  * @codeCoverageIgnore
  */
-class LibryoAiClient
+class NormaAiClient
 {
     protected function getBaseUrl(): string
     {
-        return config('services.libryo_ai.host');
+        return config('services.norma_ai.host');
     }
 
     /**
@@ -22,7 +22,7 @@ class LibryoAiClient
      */
     public function analyse(string $content): array
     {
-        if (!config('services.libryo_ai.enabled')) {
+        if (!config('services.norma_ai.enabled')) {
             return [];
         }
         $url = $this->getBaseUrl() . '/analyse/get';

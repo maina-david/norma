@@ -151,7 +151,7 @@ class UserLifecycleService
             // @codeCoverageIgnoreEnd
         }
 
-        if (in_array($user->lifecycle_stage, config('libryo.user.lifecycle.deactivated_stages'))) {
+        if (in_array($user->lifecycle_stage, config('norma.user.lifecycle.deactivated_stages'))) {
             $this->sendInvitation($user);
         }
 
@@ -198,7 +198,7 @@ class UserLifecycleService
     }
 
     /**
-     * Send the user the intro to libryo email.
+     * Send the user the intro to norma email.
      *
      * @param User $user
      *

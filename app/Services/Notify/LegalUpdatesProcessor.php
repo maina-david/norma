@@ -76,11 +76,11 @@ class LegalUpdatesProcessor
             ->chunkById(10, function ($chunk) use ($store) {
                 $chunk->each(function (LegalUpdate $update) use ($store) {
                     if ($update->notifyReference) {
-                        $update->notifyReference->libryos()->active()->chunkById(2, function ($libryos) use ($update, $store) {
-                            $store->attachLibryos($update, $libryos);
+                        $update->notifyReference->normas()->active()->chunkById(2, function ($normas) use ($update, $store) {
+                            $store->attachNormas($update, $normas);
                         });
                         // just to keep things backwards compatible we notify libraries as well
-                        // all associated libryos will already have been attached, so this is mainly just for
+                        // all associated normas will already have been attached, so this is mainly just for
                         // populating the register_notification_library table
                         // TODO: refactor to not use libraries anymore
                         $update->notifyReference?->libraries()->chunkById(2, function ($libraries) use ($update, $store) {

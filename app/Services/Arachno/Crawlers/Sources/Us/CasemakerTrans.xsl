@@ -161,7 +161,7 @@
         </a>
     </xsl:template>
     <xsl:template match="*[local-name()='filelink']">
-        <a href="https://img.libryo.com/cmdata/{@filename}" _target="blank" data-element="filelink">
+        <a href="https://img.norma.com/cmdata/{@filename}" _target="blank" data-element="filelink">
             <xsl:apply-templates select="node()|@*"/>
         </a>
     </xsl:template>

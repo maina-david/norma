@@ -5,7 +5,7 @@ namespace App\Services\Actions;
 use App\Enums\Tasks\TaskStatus;
 use App\Enums\Tasks\TaskType;
 use App\Models\Actions\ActionArea;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Ontology\Pivots\CategoryClosure;
 use App\Models\Tasks\Task;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,9 +26,9 @@ class DashboardStreamDataBuilder
      */
     public function buildQuery(int $organisationId, array $columns = [], array $filtered = []): Builder
     {
-        $libryoTable = (new Libryo())->getTable();
+        $normaTable = (new Norma())->getTable();
         $taskTable = (new Task())->getTable();
-        $selects = [$libryoTable . '.id', $libryoTable . '.title'];
+        $selects = [$normaTable . '.id', $normaTable . '.title'];
         $availableSelects = $this->getColumnSelects();
 
         // if columns is empty, just do all columns
@@ -39,16 +39,16 @@ class DashboardStreamDataBuilder
             }
         }
 
-        $query = Libryo::forOrganisation($organisationId)
-            ->leftJoin($taskTable, function ($join) use ($taskTable, $libryoTable, $filtered) {
-                $join->on($taskTable . '.place_id', $libryoTable . '.id');
+        $query = Norma::forOrganisation($organisationId)
+            ->leftJoin($taskTable, function ($join) use ($taskTable, $normaTable, $filtered) {
+                $join->on($taskTable . '.place_id', $normaTable . '.id');
 
                 if (!empty($filtered)) {
                     $this->filterTasks($join, $filtered);
                 }
             })
             ->select($selects)
-            ->groupBy((new Libryo())->getTable() . '.id');
+            ->groupBy((new Norma())->getTable() . '.id');
 
         if (!empty($filtered)) {
             $this->filterStreams($query, $filtered);

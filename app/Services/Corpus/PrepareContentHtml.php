@@ -43,6 +43,6 @@ class PrepareContentHtml
             }
         }
 
-        return '<div class="libryo-full-text">' . $innerHTML . '</div>';
+        return '<div class="norma-full-text">' . $innerHTML . '</div>';
     }
 }

@@ -6,7 +6,7 @@ use App\Contracts\Compilation\RecompilationEventInterface;
 use App\Enums\Compilation\RecompilationActivityType;
 use App\Models\Auth\User;
 use App\Models\Compilation\RecompilationActivity;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 
 class RecompilationActivityRepository
 {
@@ -15,7 +15,7 @@ class RecompilationActivityRepository
      *
      * @param User                      $user
      * @param RecompilationActivityType $type
-     * @param Libryo                    $libryo
+     * @param Norma                    $norma
      * @param array<string, mixed>      $details
      *
      * @return RecompilationActivity
@@ -23,12 +23,12 @@ class RecompilationActivityRepository
     protected function addActivity(
         User $user,
         RecompilationActivityType $type,
-        Libryo $libryo,
+        Norma $norma,
         array $details,
     ): RecompilationActivity {
         return RecompilationActivity::create([
             'user_id' => $user->id,
-            'place_id' => $libryo->id ?? null,
+            'place_id' => $norma->id ?? null,
             'activity_type' => $type->value,
             'details' => $details,
         ]);
@@ -44,7 +44,7 @@ class RecompilationActivityRepository
         return $this->addActivity(
             $event->getUser(),
             $event->getActivityType(),
-            $event->getLibryo(),
+            $event->getNorma(),
             $event->toArray()
         );
     }

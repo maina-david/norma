@@ -4,7 +4,7 @@ namespace App\Services\Compilation;
 
 use App\Models\Compilation\ContextQuestion;
 use App\Models\Compilation\ContextQuestionDescription;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
@@ -17,8 +17,8 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
 class AutoCompilationExcelExport
 {
-    public const LIBRYO_COLS_START_COL = 'D';
-    public const LIBRYO_COLS_START_NUM = 4;
+    public const NORMA_COLS_START_COL = 'D';
+    public const NORMA_COLS_START_NUM = 4;
 
     /** @var Spreadsheet */
     protected $spreadsheet;
@@ -44,13 +44,13 @@ class AutoCompilationExcelExport
     /** @var Organisation */
     protected $organisation;
 
-    /** @var Libryo|null */
-    protected $libryo = null;
+    /** @var Norma|null */
+    protected $norma = null;
 
     /** @var callable|null */
     protected $progressCallback;
 
-    public function __construct(protected LibryoCompilationCacheService $libryoCompilationCacheService)
+    public function __construct(protected NormaCompilationCacheService $normaCompilationCacheService)
     {
     }
 
@@ -58,17 +58,17 @@ class AutoCompilationExcelExport
      * Import the items in the uploaded excel file. Returns local file path for temporary stored file.
      *
      * @param Organisation                     $organisation
-     * @param \App\Models\Customer\Libryo|null $libryo
+     * @param \App\Models\Customer\Norma|null $norma
      * @param callable|null                    $progressCallback
      *
      * @return Spreadsheet
      */
-    public function build(Organisation $organisation, ?Libryo $libryo = null, ?callable $progressCallback = null): Spreadsheet
+    public function build(Organisation $organisation, ?Norma $norma = null, ?callable $progressCallback = null): Spreadsheet
     {
         $this->progress = 0;
 
         $this->organisation = $organisation;
-        $this->libryo = $libryo;
+        $this->norma = $norma;
         $this->progressCallback = $progressCallback;
 
         $this->execute();
@@ -96,17 +96,17 @@ class AutoCompilationExcelExport
     private function setupSpreadsheet(): void
     {
         $this->spreadsheet = new Spreadsheet();
-        $this->spreadsheet->getProperties()->setCreator('Libryo Ltd.');
+        $this->spreadsheet->getProperties()->setCreator('Norma Ltd.');
         $this->spreadsheet->getProperties()->setTitle('Applicability Questions for ' . $this->organisation->title);
         $this->sheet = $this->spreadsheet->getActiveSheet();
     }
 
-    public function getLibryosQuery(): Builder
+    public function getNormasQuery(): Builder
     {
         /** @var Builder */
-        return Libryo::autocompiled()
+        return Norma::autocompiled()
             ->active()
-            ->when($this->libryo, fn ($query) => $query->where('id', $this->libryo->id ?? null))
+            ->when($this->norma, fn ($query) => $query->where('id', $this->norma->id ?? null))
             ->forOrganisation($this->organisation->id);
     }
 
@@ -115,25 +115,25 @@ class AutoCompilationExcelExport
         $this->sheet->setCellValue('A1', __('compilation.context_brief.id'));
         $this->sheet->setCellValue('B1', __('compilation.context_brief.question'));
         $this->sheet->setCellValue('C1', __('compilation.context_brief.description'));
-        $count = $this->getLibryosQuery()->count();
+        $count = $this->getNormasQuery()->count();
         if ($count > 1000) {
             // @codeCoverageIgnoreStart
-            throw new Exception('This organisation has too many libryos to add to one spreadsheet');
+            throw new Exception('This organisation has too many normas to add to one spreadsheet');
             // @codeCoverageIgnoreEnd
         }
 
-        $libryos = $this->getLibryosQuery()
+        $normas = $this->getNormasQuery()
             ->with(['location'])
             ->cursor();
 
-        foreach ($libryos as $index => $libryo) {
-            /** @var Libryo $libryo */
-            $country = $libryo->location->location_country_id ?? false;
+        foreach ($normas as $index => $norma) {
+            /** @var Norma $norma */
+            $country = $norma->location->location_country_id ?? false;
             if ($country) {
                 $this->countryLocations[] = $country;
             }
-            $col = Coordinate::stringFromColumnIndex(((int) $index) + static::LIBRYO_COLS_START_NUM);
-            $this->sheet->setCellValue($col . '1', $libryo->id . ':' . $libryo->title);
+            $col = Coordinate::stringFromColumnIndex(((int) $index) + static::NORMA_COLS_START_NUM);
+            $this->sheet->setCellValue($col . '1', $norma->id . ':' . $norma->title);
         }
 
         $this->countryLocations = array_unique($this->countryLocations);
@@ -144,19 +144,19 @@ class AutoCompilationExcelExport
         /** @var Collection<ContextQuestion> */
         $qs = (new ContextQuestion())->newCollection();
         $this->questions = $qs;
-        /** @var Collection<Libryo> */
-        $libryos = $this->getLibryosQuery()->cursor();
+        /** @var Collection<Norma> */
+        $normas = $this->getNormasQuery()->cursor();
 
-        foreach ($libryos as $libryo) {
-            // we want to make sure the libryo is populated with all applicable questions
-            // this only runs at night, so something could have changed since then. e.g. new libryo added to org
-            $this->libryoCompilationCacheService->handleLibryoRecompilation($libryo);
+        foreach ($normas as $norma) {
+            // we want to make sure the norma is populated with all applicable questions
+            // this only runs at night, so something could have changed since then. e.g. new norma added to org
+            $this->normaCompilationCacheService->handleNormaRecompilation($norma);
 
             /** @var Collection<ContextQuestion> */
-            $questions = ContextQuestion::forLibryo($libryo)
+            $questions = ContextQuestion::forNorma($norma)
                 ->with('descriptions')
                 ->get();
-            $this->questionPlaceMap[$libryo->id] = $questions->pluck('id')->toArray();
+            $this->questionPlaceMap[$norma->id] = $questions->pluck('id')->toArray();
             /** @var Collection<ContextQuestion> */
             $qs = $this->questions->merge($questions);
             $this->questions = $qs;
@@ -198,13 +198,13 @@ class AutoCompilationExcelExport
 
     private function populateAnswers(): void
     {
-        $libryos = $this->getLibryosQuery()
+        $normas = $this->getNormasQuery()
             ->with(['contextQuestions'])
             ->cursor();
 
-        foreach ($libryos as $index => $libryo) {
-            /** @var Libryo $libryo */
-            $col = Coordinate::stringFromColumnIndex(((int) $index) + static::LIBRYO_COLS_START_NUM);
+        foreach ($normas as $index => $norma) {
+            /** @var Norma $norma */
+            $col = Coordinate::stringFromColumnIndex(((int) $index) + static::NORMA_COLS_START_NUM);
             foreach ($this->questions as $question) {
                 /** @var ContextQuestion $question */
                 if (!isset($this->questionRowMap[$question->id])) {
@@ -212,9 +212,9 @@ class AutoCompilationExcelExport
                     continue;
                     // @codeCoverageIgnoreEnd
                 }
-                if (isset($this->questionPlaceMap[$libryo->id]) && in_array($question->id, $this->questionPlaceMap[$libryo->id])) {
+                if (isset($this->questionPlaceMap[$norma->id]) && in_array($question->id, $this->questionPlaceMap[$norma->id])) {
                     /** @var ContextQuestion $qu */
-                    $qu = $libryo->contextQuestions->find($question->id);
+                    $qu = $norma->contextQuestions->find($question->id);
                     $answer = ['No', 'Yes', 'Unanswered'][$qu->pivot->answer] ?? ''; // @phpstan-ignore-line
                 } else {
                     $answer = 'N/A';
@@ -243,14 +243,14 @@ class AutoCompilationExcelExport
 
     private function setProtectedCells(): void
     {
-        $this->sheet->getProtection()->setPassword('libryo super secret password');
+        $this->sheet->getProtection()->setPassword('norma super secret password');
         $this->sheet->getProtection()->setSheet(true);
         $this->sheet->getStyle('1')->getProtection()->setLocked(Protection::PROTECTION_PROTECTED);
         $this->sheet->getStyle('A:C')->getProtection()->setLocked(Protection::PROTECTION_PROTECTED);
 
         $lastCol = $this->sheet->getHighestColumn('1');
         $lastRow = $this->sheet->getHighestRow('A');
-        $range = static::LIBRYO_COLS_START_COL . '2:' . $lastCol . $lastRow;
+        $range = static::NORMA_COLS_START_COL . '2:' . $lastCol . $lastRow;
         $this->sheet->getStyle($range)->getProtection()->setLocked(Protection::PROTECTION_UNPROTECTED);
     }
 

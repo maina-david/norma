@@ -14,7 +14,7 @@ use Sabberworm\CSS\RuleSet\RuleSet;
 
 class CssProcessor
 {
-    public const CSS_LIBRYO_FULL_TEXT_CLASS = 'libryo-full-text';
+    public const CSS_NORMA_FULL_TEXT_CLASS = 'norma-full-text';
     public const CSS_BORDER_COLOR = '#aaa';
 
     /**
@@ -122,8 +122,8 @@ class CssProcessor
      */
     public function replaceBody(Selector $selector): Selector
     {
-        $libryoClass = '.' . static::CSS_LIBRYO_FULL_TEXT_CLASS;
-        $selector->setSelector($libryoClass);
+        $normaClass = '.' . static::CSS_NORMA_FULL_TEXT_CLASS;
+        $selector->setSelector($normaClass);
 
         return $selector;
     }
@@ -135,8 +135,8 @@ class CssProcessor
      */
     public function prepend(Selector $selector): Selector
     {
-        $libryoClass = '.' . static::CSS_LIBRYO_FULL_TEXT_CLASS;
-        $selector->setSelector($libryoClass . ' ' . $selector->getSelector());
+        $normaClass = '.' . static::CSS_NORMA_FULL_TEXT_CLASS;
+        $selector->setSelector($normaClass . ' ' . $selector->getSelector());
 
         return $selector;
     }

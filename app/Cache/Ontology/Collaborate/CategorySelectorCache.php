@@ -4,7 +4,7 @@ namespace App\Cache\Ontology\Collaborate;
 
 use App\Cache\Abstracts\ModelCache;
 use App\Enums\Ontology\CategoryType;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Ontology\Category;
 use Illuminate\Database\Eloquent\Builder;
@@ -102,14 +102,14 @@ class CategorySelectorCache extends ModelCache
      * @codeCoverageIgnore
      *
      * @param \App\Models\Customer\Organisation $organisation
-     * @param \App\Models\Customer\Libryo|null  $libryo
+     * @param \App\Models\Customer\Norma|null  $norma
      *
      * @return array<int, array<string, mixed>>
      */
-    public static function treeViaContextQuestion(Organisation $organisation, ?Libryo $libryo): array
+    public static function treeViaContextQuestion(Organisation $organisation, ?Norma $norma): array
     {
-        return static::treeViaQuery(function ($query) use ($libryo, $organisation) {
-            $query->whereRelation('contextQuestions.libryos', $libryo ? 'id' : 'organisation_id', $libryo->id ?? $organisation->id);
+        return static::treeViaQuery(function ($query) use ($norma, $organisation) {
+            $query->whereRelation('contextQuestions.normas', $norma ? 'id' : 'organisation_id', $norma->id ?? $organisation->id);
         });
     }
 

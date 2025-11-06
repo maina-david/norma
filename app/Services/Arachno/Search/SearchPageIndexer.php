@@ -161,10 +161,10 @@ class SearchPageIndexer
     protected function indexDocumentWithMagi(array $document, bool $useChunker): ?Response
     {
         /** @var string $endpoint */
-        $endpoint = config('services.libryo_ai.host');
+        $endpoint = config('services.norma_ai.host');
 
         /** @var bool $enabled */
-        $enabled = config('services.libryo_ai.enabled');
+        $enabled = config('services.norma_ai.enabled');
         if (!$enabled) {
             return null;
         }
@@ -186,7 +186,7 @@ class SearchPageIndexer
             return Http::baseUrl($endpoint)
                 ->asJson()
                 ->acceptJson()
-                ->post('libryo-ai/pages', $data);
+                ->post('norma-ai/pages', $data);
         } catch (Throwable $th) {
         }
 
