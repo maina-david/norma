@@ -2,20 +2,20 @@
 
 namespace App\Exports\Actions;
 
-use App\Contracts\Exports\LibryoOrganisationExport;
+use App\Contracts\Exports\NormaOrganisationExport;
 use App\Enums\Tasks\TaskStatus;
-use App\Exports\Traits\SetsUpLibryoOrgExport;
+use App\Exports\Traits\SetsUpNormaOrgExport;
 use App\Models\Actions\ActionArea;
 use App\Models\Auth\User;
 use App\Models\Corpus\Reference;
 use App\Models\Corpus\ReferenceText;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Ontology\Category;
 use App\Models\Ontology\Pivots\CategoryClosure;
 use App\Models\Tasks\TaskActivity;
 use App\Traits\Comments\ExportsComments;
-use App\Traits\UsesReferencesForLibryo;
+use App\Traits\UsesReferencesForNorma;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -25,11 +25,11 @@ use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class ActionsPlannerExport implements LibryoOrganisationExport
+class ActionsPlannerExport implements NormaOrganisationExport
 {
-    use UsesReferencesForLibryo;
+    use UsesReferencesForNorma;
     use ExportsComments;
-    use SetsUpLibryoOrgExport;
+    use SetsUpNormaOrgExport;
 
     /** @var string */
     protected string $groupBy = 'subject';
@@ -66,9 +66,9 @@ class ActionsPlannerExport implements LibryoOrganisationExport
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    public function forLibryo(Libryo $libryo, Organisation $organisation, User $user, array $filters = [], ?callable $progressCallback = null): Spreadsheet
+    public function forNorma(Norma $norma, Organisation $organisation, User $user, array $filters = [], ?callable $progressCallback = null): Spreadsheet
     {
-        $this->setupExport($user, $organisation, $libryo, $progressCallback);
+        $this->setupExport($user, $organisation, $norma, $progressCallback);
 
         $this->build($filters);
 
@@ -166,8 +166,8 @@ class ActionsPlannerExport implements LibryoOrganisationExport
         $usableFilters = $filters;
         unset($usableFilters['included_tasks']);
 
-        $references = $this->getReferenceSubQuery($this->libryo, $this->organisation);
-        $orgSubQuery = Libryo::select(['id'])->where('organisation_id', $this->organisation->id);
+        $references = $this->getReferenceSubQuery($this->norma, $this->organisation);
+        $orgSubQuery = Norma::select(['id'])->where('organisation_id', $this->organisation->id);
 
         return ActionArea::join(get_table(CategoryClosure::class, 'subject_closure'), 'subject_category_id', 'subject_closure.descendant')
             ->join(get_table(CategoryClosure::class, 'control_closure'), 'control_category_id', 'control_closure.descendant')
@@ -182,12 +182,12 @@ class ActionsPlannerExport implements LibryoOrganisationExport
                 'subject.display_label as subject_label',
                 'control.display_label as control_label',
             ])
-            ->when(!empty($usableFilters), fn ($q) => $q->whereHas('tasks', fn ($query) => $query->forLibryoOrOrganisation($this->libryo, $this->organisation)->filter($usableFilters)))
+            ->when(!empty($usableFilters), fn ($q) => $q->whereHas('tasks', fn ($query) => $query->forNormaOrOrganisation($this->norma, $this->organisation)->filter($usableFilters)))
             ->when($this->includeTasks, function ($builder) use ($filters, $orgSubQuery) {
                 $builder->with([
                     'tasks' => fn ($query) => $query
-                        ->forLibryoOrOrganisation($this->libryo, $this->organisation)
-                        ->whereIn('place_id', $this->libryo ? [$this->libryo->id] : $orgSubQuery)
+                        ->forNormaOrOrganisation($this->norma, $this->organisation)
+                        ->whereIn('place_id', $this->norma ? [$this->norma->id] : $orgSubQuery)
                         ->when(($filters['included_tasks'] ?? '') === 'by_users', fn ($q) => $q->whereNull('reference_content_extract_id')),
                     'tasks.assignee' => fn ($query) => $query->select(['id', 'fname', 'sname']),
                     'tasks.watchers' => fn ($query) => $query->select(['id', 'fname', 'sname']),

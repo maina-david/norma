@@ -2,7 +2,7 @@
 
 namespace App\Exports\Actions;
 
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Services\Actions\DashboardStreamDataBuilder;
 use Illuminate\Database\Eloquent\Builder;
@@ -99,10 +99,10 @@ class DashboardStreamDataExport
         $this->progress = 0;
         $progressTotal = $query->count();
 
-        $query->chunk(100, function ($libryos) use ($progressCallback, $progressTotal, $columns) {
-            foreach ($libryos as $row => $libryo) {
-                /** @var Libryo $libryo */
-                $this->writeLibryoItem($libryo, $this->progress, $columns);
+        $query->chunk(100, function ($normas) use ($progressCallback, $progressTotal, $columns) {
+            foreach ($normas as $row => $norma) {
+                /** @var Norma $norma */
+                $this->writeNormaItem($norma, $this->progress, $columns);
                 $this->progress++;
                 $percentage = round(($this->progress / $progressTotal) * 100);
                 $percentage = $percentage > 99 ? 99 : $percentage;
@@ -123,20 +123,20 @@ class DashboardStreamDataExport
     }
 
     /**
-     * @param Libryo        $libryo
+     * @param Norma        $norma
      * @param int           $key
      * @param array<string> $columns
      *
      * @return void
      */
-    protected function writeLibryoItem(Libryo $libryo, int $key, array $columns): void
+    protected function writeNormaItem(Norma $norma, int $key, array $columns): void
     {
         $row = $key + 2; // Row to insert content at.
         $ws = $this->excel->getActiveSheet();
 
         foreach ($columns as $index => $column) {
             $columnLetter = chr($index + 65);
-            $ws->setCellValue($columnLetter . $row, $libryo->{$column});
+            $ws->setCellValue($columnLetter . $row, $norma->{$column});
         }
     }
 }

@@ -2,12 +2,12 @@
 
 namespace App\Exports\Tasks\Enablon;
 
-use App\Contracts\Exports\LibryoOrganisationExport;
-use App\Exports\Traits\SetsUpLibryoOrgExport;
+use App\Contracts\Exports\NormaOrganisationExport;
+use App\Exports\Traits\SetsUpNormaOrgExport;
 use App\Exports\Traits\UsesExportMapper;
 use App\Models\Auth\User;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Tasks\Task;
 use App\Traits\CleansWorksheetTitle;
@@ -15,10 +15,10 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-class TasksExport implements LibryoOrganisationExport
+class TasksExport implements NormaOrganisationExport
 {
     use CleansWorksheetTitle;
-    use SetsUpLibryoOrgExport;
+    use SetsUpNormaOrgExport;
     use UsesExportMapper;
 
     /**
@@ -86,14 +86,14 @@ class TasksExport implements LibryoOrganisationExport
     /**
      * {@inheritDoc}
      */
-    public function forLibryo(
-        Libryo $libryo,
+    public function forNorma(
+        Norma $norma,
         Organisation $organisation,
         User $user,
         array $filters = [],
         ?callable $progressCallback = null
     ): Spreadsheet {
-        $this->setupExport($user, $organisation, $libryo, $progressCallback);
+        $this->setupExport($user, $organisation, $norma, $progressCallback);
 
         return $this->build();
     }
@@ -148,9 +148,9 @@ class TasksExport implements LibryoOrganisationExport
      */
     protected function getTasksQuery(): Builder
     {
-        $places = Libryo::where('organisation_id', $this->organisation->id)
-            ->select([qualify_column(Libryo::class, 'id')]);
-        $places = $this->libryo ? [$this->libryo->id] : $places;
+        $places = Norma::where('organisation_id', $this->organisation->id)
+            ->select([qualify_column(Norma::class, 'id')]);
+        $places = $this->norma ? [$this->norma->id] : $places;
 
         $query = Task::whereIn('place_id', $places)
             ->select([

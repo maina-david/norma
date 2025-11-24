@@ -7,7 +7,7 @@ use App\Enums\Assess\RiskRating;
 use App\Exports\Traits\CleansHtmlForExcel;
 use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Services\Assess\AssessStatsService;
 use App\Services\Assess\QuarterlyReportsManager;
@@ -35,21 +35,21 @@ class AssessMetricsExcelExport
 
     /**
      * @param Organisation         $organisation
-     * @param Libryo|null          $libryo
+     * @param Norma|null          $norma
      * @param User                 $user
      * @param array<string, mixed> $filters
      * @param callable|null|null   $progressCallback
      *
      * @return Spreadsheet
      */
-    public function forOrganisation(Organisation $organisation, ?Libryo $libryo, User $user, array $filters = [], ?callable $progressCallback = null): Spreadsheet
+    public function forOrganisation(Organisation $organisation, ?Norma $norma, User $user, array $filters = [], ?callable $progressCallback = null): Spreadsheet
     {
         /** @var Builder */
-        $query = Libryo::forOrganisation($organisation->id)->active()->userHasAccess($user);
+        $query = Norma::forOrganisation($organisation->id)->active()->userHasAccess($user);
 
-        if ($libryo) {
+        if ($norma) {
             // @codeCoverageIgnoreStart
-            $query->whereKey($libryo);
+            $query->whereKey($norma);
             // @codeCoverageIgnoreEnd
         }
 
@@ -59,7 +59,7 @@ class AssessMetricsExcelExport
             $query->filter($filters);
         }
 
-        $query->orderBy((new Libryo())->qualifyColumn('id'))->orderBy('title');
+        $query->orderBy((new Norma())->qualifyColumn('id'))->orderBy('title');
 
         $this->quarterlyManager = app(QuarterlyReportsManager::class);
         $this->statsService = app(AssessStatsService::class);
@@ -84,11 +84,11 @@ class AssessMetricsExcelExport
         $this->progress = 0;
         $progressTotal = $query->count();
 
-        $query->chunk(50, function ($libryoMetrics) use ($filters, $progressCallback, $progressTotal) {
-            foreach ($libryoMetrics as $row => $libryo) {
-                /** @var Libryo $libryo */
-                $this->writeRow($libryo, $this->progress);
-                $this->writeQuarterRow($libryo, $filters, $this->progress);
+        $query->chunk(50, function ($normaMetrics) use ($filters, $progressCallback, $progressTotal) {
+            foreach ($normaMetrics as $row => $norma) {
+                /** @var Norma $norma */
+                $this->writeRow($norma, $this->progress);
+                $this->writeQuarterRow($norma, $filters, $this->progress);
                 $this->progress++;
                 $percentage = round(($this->progress / $progressTotal) * 100);
                 $percentage = $percentage > 99 ? 99 : $percentage;
@@ -100,7 +100,7 @@ class AssessMetricsExcelExport
 
         foreach ($this->excel->getAllSheets() as $ws) {
             $ws->setCellValue('A1', __('assess.risk_rating'));
-            $ws->setCellValue('B1', __('customer.libryo.libryo_stream'));
+            $ws->setCellValue('B1', __('customer.norma.norma_stream'));
             $ws->setCellValue('C1', __('assess.metrics.last_answered'));
             $ws->setCellValue('D1', __('assess.metrics.total_' . ResponseStatus::yes()->value));
             $ws->setCellValue('E1', __('assess.metrics.total_' . ResponseStatus::no()->value));
@@ -177,29 +177,29 @@ class AssessMetricsExcelExport
     /**
      * Writes the next row in the spreadsheet.
      *
-     * @param Libryo $libryo
+     * @param Norma $norma
      * @param int    $row
      *
      * @return void
      */
-    protected function writeRow(Libryo $libryo, int $row): void
+    protected function writeRow(Norma $norma, int $row): void
     {
         $row = $row + 2; // Row to insert content at.
         $ws = $this->excel->getActiveSheet();
 
-        $ws->setCellValue('A' . $row, RiskRating::lang()[$libryo['risk_rating']] ?? '');
-        $ws->setCellValue('B' . $row, $libryo->title ?? '');
-        $ws->setCellValue('C' . $row, $libryo['last_activity_date'] ?? '');
-        $ws->setCellValue('D' . $row, $libryo['count_by_status_' . ResponseStatus::yes()->value]);
-        $ws->setCellValue('E' . $row, $libryo['count_by_status_' . ResponseStatus::no()->value]);
-        $ws->setCellValue('F' . $row, $libryo['count_by_status_' . ResponseStatus::notApplicable()->value]);
-        $ws->setCellValue('G' . $row, $libryo['count_by_status_' . ResponseStatus::notAssessed()->value]);
-        $ws->setCellValue('H' . $row, $libryo['total_non_compliant_items_' . RiskRating::high()->value]);
-        $ws->setCellValue('I' . $row, ($libryo['percentage_non_compliant_items'] ?? '') . '%');
+        $ws->setCellValue('A' . $row, RiskRating::lang()[$norma['risk_rating']] ?? '');
+        $ws->setCellValue('B' . $row, $norma->title ?? '');
+        $ws->setCellValue('C' . $row, $norma['last_activity_date'] ?? '');
+        $ws->setCellValue('D' . $row, $norma['count_by_status_' . ResponseStatus::yes()->value]);
+        $ws->setCellValue('E' . $row, $norma['count_by_status_' . ResponseStatus::no()->value]);
+        $ws->setCellValue('F' . $row, $norma['count_by_status_' . ResponseStatus::notApplicable()->value]);
+        $ws->setCellValue('G' . $row, $norma['count_by_status_' . ResponseStatus::notAssessed()->value]);
+        $ws->setCellValue('H' . $row, $norma['total_non_compliant_items_' . RiskRating::high()->value]);
+        $ws->setCellValue('I' . $row, ($norma['percentage_non_compliant_items'] ?? '') . '%');
     }
 
     /**
-     * @param Libryo               $libryo
+     * @param Norma               $norma
      * @param array<string, mixed> $filters
      * @param int                  $row
      *
@@ -207,17 +207,17 @@ class AssessMetricsExcelExport
      *
      * @return void
      */
-    protected function writeQuarterRow(Libryo $libryo, array $filters, int $row): void
+    protected function writeQuarterRow(Norma $norma, array $filters, int $row): void
     {
         /** @var Builder $resQuery */
-        $resQuery = AssessmentItemResponse::forLibryo($libryo);
+        $resQuery = AssessmentItemResponse::forNorma($norma);
 
         if (!empty($filters)) {
             $resQuery->filter($filters);
         }
 
         /** @var Builder $query */
-        $query = Libryo::whereKey($libryo->id);
+        $query = Norma::whereKey($norma->id);
 
         $quarterly = array_values([
             ...$this->quarterlyManager->getResponseData($query, $resQuery)['raw'],
@@ -226,16 +226,16 @@ class AssessMetricsExcelExport
         foreach ($quarterly as $index => $quarter) {
             $this->excel->setActiveSheetIndex($index + 1);
 
-            $libryo->setAttribute('risk_rating', $quarter['risk_rating']->value);
+            $norma->setAttribute('risk_rating', $quarter['risk_rating']->value);
 
-            $libryo->setAttribute('count_by_status_' . ResponseStatus::yes()->value, $quarter[ResponseStatus::yes()->value]);
-            $libryo->setAttribute('count_by_status_' . ResponseStatus::no()->value, $quarter[ResponseStatus::no()->value]);
-            $libryo->setAttribute('count_by_status_' . ResponseStatus::notApplicable()->value, $quarter[ResponseStatus::notApplicable()->value]);
-            $libryo->setAttribute('count_by_status_' . ResponseStatus::notAssessed()->value, $quarter[ResponseStatus::notAssessed()->value]);
-            $libryo->setAttribute('total_non_compliant_items_' . RiskRating::high()->value, $quarter['total_non_compliant_items_' . RiskRating::high()->value]);
-            $libryo->setAttribute('percentage_non_compliant_items', $quarter[ResponseStatus::no()->value] !== 0 ? round(($quarter[ResponseStatus::no()->value] / $quarter['total']) * 100) : 0);
+            $norma->setAttribute('count_by_status_' . ResponseStatus::yes()->value, $quarter[ResponseStatus::yes()->value]);
+            $norma->setAttribute('count_by_status_' . ResponseStatus::no()->value, $quarter[ResponseStatus::no()->value]);
+            $norma->setAttribute('count_by_status_' . ResponseStatus::notApplicable()->value, $quarter[ResponseStatus::notApplicable()->value]);
+            $norma->setAttribute('count_by_status_' . ResponseStatus::notAssessed()->value, $quarter[ResponseStatus::notAssessed()->value]);
+            $norma->setAttribute('total_non_compliant_items_' . RiskRating::high()->value, $quarter['total_non_compliant_items_' . RiskRating::high()->value]);
+            $norma->setAttribute('percentage_non_compliant_items', $quarter[ResponseStatus::no()->value] !== 0 ? round(($quarter[ResponseStatus::no()->value] / $quarter['total']) * 100) : 0);
 
-            $this->writeRow($libryo, $row);
+            $this->writeRow($norma, $row);
         }
 
         $this->excel->setActiveSheetIndex(0);

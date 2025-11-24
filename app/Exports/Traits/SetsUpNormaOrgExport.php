@@ -3,13 +3,13 @@
 namespace App\Exports\Traits;
 
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-trait SetsUpLibryoOrgExport
+trait SetsUpNormaOrgExport
 {
     /** @var callable|null */
     protected $progressCallback = null;
@@ -26,8 +26,8 @@ trait SetsUpLibryoOrgExport
     /** @var Spreadsheet */
     protected Spreadsheet $excel;
 
-    /** @var Libryo|null */
-    protected ?Libryo $libryo = null;
+    /** @var Norma|null */
+    protected ?Norma $norma = null;
 
     /** @var Organisation */
     protected Organisation $organisation;
@@ -64,17 +64,17 @@ trait SetsUpLibryoOrgExport
      *
      * @param \App\Models\Auth\User             $user
      * @param \App\Models\Customer\Organisation $organisation
-     * @param \App\Models\Customer\Libryo|null  $libryo
+     * @param \App\Models\Customer\Norma|null  $norma
      * @param callable|null                     $progressCallback
      *
      * @return void
      */
-    protected function setupExport(User $user, Organisation $organisation, ?Libryo $libryo = null, ?callable $progressCallback = null): void
+    protected function setupExport(User $user, Organisation $organisation, ?Norma $norma = null, ?callable $progressCallback = null): void
     {
         $this->progress = 0;
         $this->rowNumber = 1;
         $this->organisation = $organisation;
-        $this->libryo = $libryo;
+        $this->norma = $norma;
         $this->user = $user;
         $this->progressCallback = $progressCallback;
         $this->setUpSpreadsheet();

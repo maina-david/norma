@@ -2,12 +2,12 @@
 
 namespace App\Exports\Tasks;
 
-use App\Contracts\Exports\LibryoOrganisationExport;
-use App\Enums\System\LibryoModule;
+use App\Contracts\Exports\NormaOrganisationExport;
+use App\Enums\System\NormaModule;
 use App\Exports\Traits\CleansHtmlForExcel;
 use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Tasks\Task;
 use App\Traits\Comments\ExportsComments;
@@ -16,7 +16,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class TasksExcelExport implements LibryoOrganisationExport
+class TasksExcelExport implements NormaOrganisationExport
 {
     use CleansHtmlForExcel;
     use ExportsComments;
@@ -31,7 +31,7 @@ class TasksExcelExport implements LibryoOrganisationExport
 
     protected ?string $domain = null;
 
-    protected ?Libryo $libryo = null;
+    protected ?Norma $norma = null;
     protected ?Organisation $organisation = null;
     protected ?User $user = null;
 
@@ -66,7 +66,7 @@ class TasksExcelExport implements LibryoOrganisationExport
     }
 
     /**
-     * @param Libryo                            $libryo
+     * @param Norma                            $norma
      * @param \App\Models\Customer\Organisation $organisation
      * @param User                              $user
      * @param array<string, mixed>              $filters
@@ -74,12 +74,12 @@ class TasksExcelExport implements LibryoOrganisationExport
      *
      * @return Spreadsheet
      */
-    public function forLibryo(Libryo $libryo, Organisation $organisation, User $user, array $filters = [], ?callable $progressCallback = null): Spreadsheet
+    public function forNorma(Norma $norma, Organisation $organisation, User $user, array $filters = [], ?callable $progressCallback = null): Spreadsheet
     {
-        $this->libryo = $libryo;
+        $this->norma = $norma;
         $this->organisation = $organisation;
         /** @var Builder */
-        $query = Task::forLibryo($libryo);
+        $query = Task::forNorma($norma);
         $this->buildQuery($query, $filters);
 
         return $this->build($query, $progressCallback);
@@ -242,7 +242,7 @@ class TasksExcelExport implements LibryoOrganisationExport
         $assignee = $task->assignee?->fname . ' ' . $task->assignee?->sname;
         $project = $task->project?->title ?? '';
 
-        $route = route($this->module === LibryoModule::tasks()->value ? 'my.tasks.tasks.show' : 'my.actions.tasks.show', ['task' => $task->hash_id], false);
+        $route = route($this->module === NormaModule::tasks()->value ? 'my.tasks.tasks.show' : 'my.actions.tasks.show', ['task' => $task->hash_id], false);
         $route = $this->domain . $route;
 
         $reminders = $task->reminders->sortByDesc('id')->first()?->remind_on?->format('Y-m-d') ?? '';
@@ -262,8 +262,8 @@ class TasksExcelExport implements LibryoOrganisationExport
         $ws->setCellValue('K' . $row, __('tasks.task.types.' . $task->taskable_type));
         $ws->setCellValue('L' . $row, $task->taskable->title ?? '');
 
-        if ($this->libryo) {
-            $task->load($this->eagerCommentsForLibryo($this->libryo));
+        if ($this->norma) {
+            $task->load($this->eagerCommentsForNorma($this->norma));
         }
 
         if ($this->organisation && $this->user) {

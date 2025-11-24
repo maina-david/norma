@@ -52,7 +52,7 @@ class PaymentMade extends Notification implements ShouldQueue
 
         return (new MailMessage())
             ->markdown('emails.payments.payment-made', ['user' => $notifiable])
-            ->subject('Libryo Collaborate Payment')
+            ->subject('Norma Collaborate Payment')
             ->cc(config('collaborate.emails.collaborator_invoice_cc'))
             ->bcc(config('collaborate.emails.collaborator_invoice_bcc'))
             ->attachData($invoicePDF->output(), $title . '.pdf', [

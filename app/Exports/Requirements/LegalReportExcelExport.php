@@ -3,12 +3,12 @@
 namespace App\Exports\Requirements;
 
 use App\Cache\Ontology\Collaborate\CategorySelectorCache;
-use App\Contracts\Exports\LibryoOrganisationExport;
+use App\Contracts\Exports\NormaOrganisationExport;
 use App\Exports\Traits\CleansHtmlForExcel;
 use App\Models\Auth\User;
 use App\Models\Corpus\Reference;
 use App\Models\Corpus\Work;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Ontology\Pivots\CategoryReference;
 use App\Models\Requirements\Summary;
@@ -23,7 +23,7 @@ use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Worksheet\Protection;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class LegalReportExcelExport implements LibryoOrganisationExport
+class LegalReportExcelExport implements NormaOrganisationExport
 {
     use CleansHtmlForExcel;
     use UsesBookmarksTableFilter;
@@ -42,8 +42,8 @@ class LegalReportExcelExport implements LibryoOrganisationExport
     /** @var Spreadsheet */
     protected $excel;
 
-    /** @var Libryo|null */
-    protected ?Libryo $libryo = null;
+    /** @var Norma|null */
+    protected ?Norma $norma = null;
 
     /** @var Organisation|null */
     protected ?Organisation $organisation = null;
@@ -68,17 +68,17 @@ class LegalReportExcelExport implements LibryoOrganisationExport
     }
 
     // /**
-    //  * @param Libryo               $libryo
+    //  * @param Norma               $norma
     //  * @param array<string, mixed> $filters
     //  * @param callable|null|null   $progressCallback
     //  *
     //  * @return Spreadsheet
     //  */
-    // public function forLibryo(Libryo $libryo, User $user, array $filters = [], callable|null $progressCallback = null): Spreadsheet
+    // public function forNorma(Norma $norma, User $user, array $filters = [], callable|null $progressCallback = null): Spreadsheet
     // {
     //     /** @var Builder */
-    //     $query = Work::primaryForLibryo($libryo, $filters);
-    //     $query->withRelationsForLibryo($libryo, true, $filters);
+    //     $query = Work::primaryForNorma($norma, $filters);
+    //     $query->withRelationsForNorma($norma, true, $filters);
 
     //     return $this->build($query, $progressCallback);
     // }
@@ -105,7 +105,7 @@ class LegalReportExcelExport implements LibryoOrganisationExport
      *
      * @codeCoverageIgnore
      *
-     * @param Libryo                            $libryo
+     * @param Norma                            $norma
      * @param \App\Models\Customer\Organisation $organisation
      * @param \App\Models\Auth\User             $user
      * @param array<string, mixed>              $filters
@@ -113,16 +113,16 @@ class LegalReportExcelExport implements LibryoOrganisationExport
      *
      * @return Spreadsheet
      */
-    public function forLibryo(Libryo $libryo, Organisation $organisation, User $user, array $filters = [], ?callable $progressCallback = null): Spreadsheet
+    public function forNorma(Norma $norma, Organisation $organisation, User $user, array $filters = [], ?callable $progressCallback = null): Spreadsheet
     {
-        $this->libryo = $libryo;
+        $this->norma = $norma;
         $this->organisation = $organisation;
         $this->user = $user;
         $filters = $this->updateBookmarkFilters($filters, $user);
         $search = $filters['search'] ?? '';
 
         /** @var Builder $query */
-        $query = Work::forRequirements(Arr::except($filters, ['search']), $search, $user, $libryo, null, true);
+        $query = Work::forRequirements(Arr::except($filters, ['search']), $search, $user, $norma, null, true);
 
         return $this->build($query, $progressCallback);
     }
@@ -336,9 +336,9 @@ class LegalReportExcelExport implements LibryoOrganisationExport
 
         $ws->setCellValue("E{$row}", $url);
 
-        if ($this->libryo) {
+        if ($this->norma) {
             // @codeCoverageIgnoreStart
-            $reference->load($this->eagerCommentsForLibryo($this->libryo));
+            $reference->load($this->eagerCommentsForNorma($this->norma));
             $this->writeComments($reference->comments, $ws, static::TITLE_COL . $row, "F{$row}");
             // @codeCoverageIgnoreEnd
         }

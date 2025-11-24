@@ -2,11 +2,11 @@
 
 namespace App\Exports\Notify;
 
-use App\Contracts\Exports\LibryoOrganisationExport;
+use App\Contracts\Exports\NormaOrganisationExport;
 use App\Exports\Traits\CleansHtmlForExcel;
-use App\Exports\Traits\SetsUpLibryoOrgExport;
+use App\Exports\Traits\SetsUpNormaOrgExport;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Notify\LegalUpdate;
 use App\Traits\Bookmarks\UsesBookmarksTableFilter;
@@ -16,12 +16,12 @@ use Illuminate\Support\Carbon;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 
-class LegalUpdateExcelExport implements LibryoOrganisationExport
+class LegalUpdateExcelExport implements NormaOrganisationExport
 {
     use CleansHtmlForExcel;
     use UsesBookmarksTableFilter;
     use ExportsComments;
-    use SetsUpLibryoOrgExport;
+    use SetsUpNormaOrgExport;
 
     public const TITLE_COL = 'A';
 
@@ -35,7 +35,7 @@ class LegalUpdateExcelExport implements LibryoOrganisationExport
     }
 
     /**
-     * @param Libryo                            $libryo
+     * @param Norma                            $norma
      * @param \App\Models\Customer\Organisation $organisation
      * @param User                              $user
      * @param array<string, mixed>              $filters
@@ -43,19 +43,19 @@ class LegalUpdateExcelExport implements LibryoOrganisationExport
      *
      * @return Spreadsheet
      */
-    public function forLibryo(Libryo $libryo, Organisation $organisation, User $user, array $filters = [], ?callable $progressCallback = null): Spreadsheet
+    public function forNorma(Norma $norma, Organisation $organisation, User $user, array $filters = [], ?callable $progressCallback = null): Spreadsheet
     {
-        $this->setupExport($user, $organisation, $libryo, $progressCallback);
+        $this->setupExport($user, $organisation, $norma, $progressCallback);
         $filters = $this->updateBookmarkFilters($filters, $user);
-        $libryo->setRelation('organisation', $organisation);
+        $norma->setRelation('organisation', $organisation);
 
-        $query = LegalUpdate::forLibryo($libryo);
+        $query = LegalUpdate::forNorma($norma);
         if (isset($filters['status'])) {
             $query->userStatusFromString($user, $filters['status']);
             unset($filters['status']);
         }
         $query->filter($filters)
-            ->with($this->eagerCommentsForLibryo($libryo))
+            ->with($this->eagerCommentsForNorma($norma))
             ->orderByRaw('COALESCE(release_at,created_at) DESC');
 
         return $this->build($query);

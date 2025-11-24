@@ -11,7 +11,7 @@ use App\Http\Controllers\Assess\My\Traits\ComposesResponsesQuery;
 use App\Models\Assess\AssessmentActivity;
 use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Traits\Bookmarks\UsesBookmarksTableFilter;
 use App\Traits\CleansWorksheetTitle;
@@ -40,7 +40,7 @@ class AssessResponsesExcelExport
 
     protected Organisation $organisation;
 
-    protected ?Libryo $libryo;
+    protected ?Norma $norma;
 
     /** @var array <string, string> */
     protected array $filters = [];
@@ -51,7 +51,7 @@ class AssessResponsesExcelExport
 
     protected int $currentRow = 0;
 
-    protected bool $forLibryo = true;
+    protected bool $forNorma = true;
 
     /**
      * Set up the pages for the PDF.
@@ -76,7 +76,7 @@ class AssessResponsesExcelExport
     /**
      * @param User                $user
      * @param Organisation        $organisation
-     * @param Libryo|null         $libryo
+     * @param Norma|null         $norma
      * @param array<string,mixed> $filters
      * @param callable|null       $progressCallback
      *
@@ -87,22 +87,22 @@ class AssessResponsesExcelExport
     public function export(
         User $user,
         Organisation $organisation,
-        ?Libryo $libryo,
+        ?Norma $norma,
         array $filters = [],
         ?callable $progressCallback = null
     ): Spreadsheet {
         $this->user = $user;
         $this->organisation = $organisation;
-        $this->libryo = $libryo;
+        $this->norma = $norma;
         $this->filters = $this->updateBookmarkFilters($filters, $user);
         $this->progressCallback = $progressCallback;
 
         $this->setUpPage();
 
-        $this->forLibryo = (bool) $libryo;
+        $this->forNorma = (bool) $norma;
 
-        $workbook = $libryo
-            ? $this->buildForLibryo()
+        $workbook = $norma
+            ? $this->buildForNorma()
             : $this->buildForOrganisation();
 
         $workbook->removeSheetByIndex(0);
@@ -119,15 +119,15 @@ class AssessResponsesExcelExport
      */
     protected function buildForOrganisation(): Spreadsheet
     {
-        $query = Libryo::forOrganisation($this->organisation->id)
+        $query = Norma::forOrganisation($this->organisation->id)
             ->whereHas('assessmentItemResponses', fn ($query) => $query->filter($this->filters))
             ->userHasAccess($this->user);
 
         $this->progressTotal = $query->clone()->count('id');
 
-        $query->cursor()->each(function ($libryo) {
-            $this->libryo = $libryo;
-            $this->buildForLibryo();
+        $query->cursor()->each(function ($norma) {
+            $this->norma = $norma;
+            $this->buildForNorma();
 
             if (!is_null($this->progressCallback)) {
                 $this->progress++;
@@ -142,15 +142,15 @@ class AssessResponsesExcelExport
     }
 
     /**
-     * Build the spreadsheet for the libryo.
+     * Build the spreadsheet for the norma.
      *
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      *
      * @return Spreadsheet
      */
-    protected function buildForLibryo(): Spreadsheet
+    protected function buildForNorma(): Spreadsheet
     {
-        if (!$this->libryo) {
+        if (!$this->norma) {
             // @codeCoverageIgnoreStart
             return $this->excel;
             // @codeCoverageIgnoreEnd
@@ -159,15 +159,15 @@ class AssessResponsesExcelExport
         $responseId = sprintf('%s.id', (new AssessmentItemResponse())->getTable());
 
         /** @var Builder $query */
-        $query = AssessmentItemResponse::forLibryo($this->libryo)->filter($this->filters);
+        $query = AssessmentItemResponse::forNorma($this->norma)->filter($this->filters);
 
-        $query = $this->composeResponsesQuery($query, $this->libryo, $this->organisation, $this->user)
+        $query = $this->composeResponsesQuery($query, $this->norma, $this->organisation, $this->user)
             ->with([
                 'assessmentItem.references' => function ($query) {
-                    $query->active()->forActiveWork()->forLibryo($this->libryo)->select(['id', 'work_id']);
+                    $query->active()->forActiveWork()->forNorma($this->norma)->select(['id', 'work_id']);
                 },
                 'assessmentItem.categories' => fn ($q) => $q->where('category_type_id', CategoryType::CONTROL->value),
-                ...$this->eagerCommentsForLibryo($this->libryo),
+                ...$this->eagerCommentsForNorma($this->norma),
             ])
             ->addSelect([
                 'justification' => AssessmentActivity::where('activity_type', AssessActivityType::answerChange()->value)
@@ -180,7 +180,7 @@ class AssessResponsesExcelExport
         $this->currentRow = 0;
         $sheet = $this->excel->createSheet();
 
-        $title = explode('-', $this->libryo->title);
+        $title = explode('-', $this->norma->title);
 
         if (count($title) > 1) {
             array_shift($title);
@@ -190,7 +190,7 @@ class AssessResponsesExcelExport
 
         $sheet->setTitle($this->prepareSheetTitle($title));
 
-        if ($this->forLibryo) {
+        if ($this->forNorma) {
             $this->progressTotal = $query->clone()->count();
         }
 
@@ -199,7 +199,7 @@ class AssessResponsesExcelExport
                 /** @var AssessmentItemResponse $response */
                 $this->writeRow($response, $sheet);
 
-                if ($this->forLibryo && !is_null($this->progressCallback)) {
+                if ($this->forNorma && !is_null($this->progressCallback)) {
                     $this->progress++;
 
                     $percentage = round(($this->progress / $this->progressTotal) * 100);

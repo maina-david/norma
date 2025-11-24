@@ -7,8 +7,8 @@ use App\Models\Corpus\Reference;
 use App\Models\Corpus\ReferenceContent;
 use App\Models\Corpus\Work;
 use App\Models\Corpus\WorkExpression;
-use App\Models\Customer\Libryo;
-use App\Models\Customer\Pivots\LibryoReference;
+use App\Models\Customer\Norma;
+use App\Models\Customer\Pivots\NormaReference;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -66,11 +66,11 @@ class RequirementContentExport extends RequirementsExport
      */
     protected function getRequirementsQuery(): Builder
     {
-        $places = Libryo::where('organisation_id', $this->organisation->id)
-            ->select([qualify_column(Libryo::class, 'id')]);
-        $places = $this->libryo ? [$this->libryo->id] : $places;
+        $places = Norma::where('organisation_id', $this->organisation->id)
+            ->select([qualify_column(Norma::class, 'id')]);
+        $places = $this->norma ? [$this->norma->id] : $places;
 
-        $query = LibryoReference::whereIn('place_id', $places)
+        $query = NormaReference::whereIn('place_id', $places)
             ->join(get_table(Reference::class), qualify_column(Reference::class, 'id'), 'reference_id')
             ->join(get_table(ReferenceContent::class), qualify_column(ReferenceContent::class, 'reference_id'), '=', qualify_column(Reference::class, 'id'), 'left')
             ->join(get_table(Work::class), qualify_column(Work::class, 'id'), 'work_id')
