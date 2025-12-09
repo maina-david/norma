@@ -18,7 +18,7 @@ class AssessmentItemResponsePolicy
      */
     public function view(User $user, AssessmentItemResponse $aiResponse): bool
     {
-        return $aiResponse->libryo ? $user->hasLibryoAccess($aiResponse->libryo) : false;
+        return $aiResponse->norma ? $user->hasNormaAccess($aiResponse->norma) : false;
     }
 
     /**

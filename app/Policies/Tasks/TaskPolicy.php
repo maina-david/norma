@@ -18,7 +18,7 @@ class TaskPolicy
      */
     public function view(User $user, Task $task): bool
     {
-        return $task->libryo && $user->hasLibryoAccess($task->libryo);
+        return $task->norma && $user->hasNormaAccess($task->norma);
     }
 
     /**
@@ -40,9 +40,9 @@ class TaskPolicy
      */
     public function delete(User $user, Task $task): bool
     {
-        $task->load('libryo.organisation');
+        $task->load('norma.organisation');
 
-        return $task->author?->is($user) || (isset($task->libryo->organisation) && $user->isOrganisationAdmin($task->libryo->organisation));
+        return $task->author?->is($user) || (isset($task->norma->organisation) && $user->isOrganisationAdmin($task->norma->organisation));
     }
 
     /**

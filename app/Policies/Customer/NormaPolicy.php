@@ -3,42 +3,42 @@
 namespace App\Policies\Customer;
 
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class LibryoPolicy
+class NormaPolicy
 {
     use HandlesAuthorization;
 
     /**
      * @param User   $user
-     * @param Libryo $libryo
+     * @param Norma $norma
      *
      * @return bool
      */
-    public function view(User $user, Libryo $libryo): bool
+    public function view(User $user, Norma $norma): bool
     {
-        return !(!$user->hasLibryoAccess($libryo));
+        return !(!$user->hasNormaAccess($norma));
     }
 
     /**
      * @codeCoverageIgnore
      *
      * @param User   $user
-     * @param Libryo $libryo
+     * @param Norma $norma
      *
      * @return bool
      */
-    public function manageInSettings(User $user, Libryo $libryo): bool
+    public function manageInSettings(User $user, Norma $norma): bool
     {
         if ($user->can('access.org.settings.all')) {
             return true;
         }
 
-        if (!$libryo->organisation) {
+        if (!$norma->organisation) {
             return false;
         }
 
-        return (bool) $user->isOrganisationAdmin($libryo->organisation);
+        return (bool) $user->isOrganisationAdmin($norma->organisation);
     }
 }

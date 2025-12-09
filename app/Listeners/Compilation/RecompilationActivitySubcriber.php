@@ -40,7 +40,7 @@ class RecompilationActivitySubcriber implements ShouldQueue
      */
     public function onActivity(RecompilationEventInterface $event): void
     {
-        $event->getLibryo()->forceFill(['needs_recompilation' => true])->save();
+        $event->getNorma()->forceFill(['needs_recompilation' => true])->save();
 
         (new RecompilationActivityRepository())->addRecompilationActivityEvent($event);
     }

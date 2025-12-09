@@ -2,11 +2,11 @@
 
 namespace App\Listeners\Auth;
 
-use App\Events\Auth\UserActivity\ActivatedLibryo;
+use App\Events\Auth\UserActivity\ActivatedNorma;
 use App\Events\Auth\UserActivity\UserActivityEvent;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Repositories\Auth\UserActivityRepository;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 
 class UserActivitySubscriber
 {
@@ -29,8 +29,8 @@ class UserActivitySubscriber
      */
     public function handle($event): void
     {
-        if ($event instanceof ActivatedLibryo) {
-            $this->onActivatedLibryo($event);
+        if ($event instanceof ActivatedNorma) {
+            $this->onActivatedNorma($event);
         } else {
             $this->onUserActivity($event);
         }
@@ -47,15 +47,15 @@ class UserActivitySubscriber
     /**
      * @param UserActivityEvent $event
      **/
-    public function onActivatedLibryo(UserActivityEvent $event): void
+    public function onActivatedNorma(UserActivityEvent $event): void
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
-        /** @var Libryo|null */
-        $libryo = $manager->get($event->getUser(), 1)->first();
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
+        /** @var Norma|null */
+        $norma = $manager->get($event->getUser(), 1)->first();
 
         // don't add a place activated event if the last active place was the same place
-        if (!$libryo || $libryo->id !== $event->getLibryo()?->id) {
+        if (!$norma || $norma->id !== $event->getNorma()?->id) {
             $this->activityRepo->addUserActivityEvent($event);
         }
     }

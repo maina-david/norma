@@ -3,7 +3,7 @@
 namespace App\Policies\Storage\My;
 
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Storage\My\File;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -45,9 +45,9 @@ class FilePolicy
             return false;
         }
 
-        if ($file->isLibryo()) {
-            if ($file->libryo) {
-                return Libryo::whereKey($file->libryo->id)
+        if ($file->isNorma()) {
+            if ($file->norma) {
+                return Norma::whereKey($file->norma->id)
                     ->userHasAccess($user)
                     ->exists();
             }
@@ -58,7 +58,7 @@ class FilePolicy
         if ($file->isOrganisation()) {
             if ($file->organisation) {
                 return $user->organisations()->whereKey($file->organisation_id)->exists()
-                    || $file->organisation->libryos()->userHasAccess($user)->exists();
+                    || $file->organisation->normas()->userHasAccess($user)->exists();
             }
 
             return true;
@@ -114,10 +114,10 @@ class FilePolicy
             return false;
         }
 
-        if ($file->isLibryo()) {
-            if ($file->libryo) {
+        if ($file->isNorma()) {
+            if ($file->norma) {
                 return $file->author_id === $user->id
-                    || Libryo::whereKey($file->libryo->id)
+                    || Norma::whereKey($file->norma->id)
                         ->userHasAccess($user)
                         ->whereHas('organisation', fn ($builder) => $builder->userIsOrganisationAdmin($user))
                         ->exists();

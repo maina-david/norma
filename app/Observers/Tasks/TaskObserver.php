@@ -102,7 +102,7 @@ class TaskObserver
     //     $statusFrom = $task->getOriginal('task_status');
     //     $statusTo = $task->task_status;
 
-    //     event(new StatusChanged($user, $task, $task->libryo, cast($statusFrom, 'int'), cast($statusTo, 'int')));
+    //     event(new StatusChanged($user, $task, $task->norma, cast($statusFrom, 'int'), cast($statusTo, 'int')));
 
     //     if ($statusTo === Task::STATUS_DONE) {
     //         HandleTaskCompleteNotification::dispatch($task, $user);
@@ -122,7 +122,7 @@ class TaskObserver
     //     $from = $task->getOriginal('priority');
     //     $to = $task->priority;
 
-    //     event(new PriorityChanged($user, $task, $task->libryo, $from, $to));
+    //     event(new PriorityChanged($user, $task, $task->norma, $from, $to));
     //     HandleTaskPriorityChangeNotification::dispatch($task, $user, cast($from, 'int'), cast($to, 'int'));
     // }
 
@@ -138,7 +138,7 @@ class TaskObserver
     //     $dueTo = Carbon::parse($task->due_on);
 
     //     if (!$dueFrom->equalTo($dueTo)) {
-    //         event(new DueDateChanged($user, $task, $task->libryo, $dueFrom, $dueTo));
+    //         event(new DueDateChanged($user, $task, $task->norma, $dueFrom, $dueTo));
     //         HandleTaskDueDateChangeNotification::dispatch($task, $user, $dueFrom, $dueTo);
     //     }
     // }
@@ -154,7 +154,7 @@ class TaskObserver
     //     $assignedFrom = $task->getOriginal('assigned_to_id');
     //     $assignedTo = $task->assigned_to_id;
 
-    //     event(new AssigneeChanged($user, $task, $task->libryo, $assignedFrom, $assignedTo));
+    //     event(new AssigneeChanged($user, $task, $task->norma, $assignedFrom, $assignedTo));
     //     HandleTaskAssigneeChangeNotification::dispatch($task, $user, cast($assignedFrom, 'int'), cast($assignedTo, 'int'));
     // }
 
@@ -169,7 +169,7 @@ class TaskObserver
     //     $titleFrom = $task->getOriginal('title');
     //     $titleTo = $task->title;
 
-    //     event(new TitleChanged($user, $task, $task->libryo, $titleFrom, $titleTo));
+    //     event(new TitleChanged($user, $task, $task->norma, $titleFrom, $titleTo));
     //     HandleTaskTitleChangeNotification::dispatch($task, $user, $titleFrom, $titleTo);
     // }
 }

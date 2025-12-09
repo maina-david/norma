@@ -2,12 +2,12 @@
 
 namespace App\Listeners\Customer;
 
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 
 /**
  * @codeCoverageIgnore
  */
-class FlushActiveLibryosCache
+class FlushActiveNormasCache
 {
     /**
      * Handle the event.
@@ -18,12 +18,12 @@ class FlushActiveLibryosCache
      */
     public function handle($event)
     {
-        if (!$event->sandbox->resolved(ActiveLibryosManager::class)) {
+        if (!$event->sandbox->resolved(ActiveNormasManager::class)) {
             return;
         }
 
-        /** @var ActiveLibryosManager */
-        $manager = $event->sandbox->make(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = $event->sandbox->make(ActiveNormasManager::class);
 
         if (method_exists($manager, 'flushCache')) {
             $manager->flushCache();

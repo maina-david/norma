@@ -40,8 +40,8 @@ class AssessmentItemObserver
         ];
 
         $item->assessmentResponses()
-            ->with(['libryo'])
-            ->whereHas('libryo')
+            ->with(['norma'])
+            ->whereHas('norma')
             ->chunkById(1000, function ($chunk) use ($item, $payload) {
                 $chunk->each(function (AssessmentItemResponse $response) use ($item, $payload) {
                     $response->setRelation('assessmentItem', $item);

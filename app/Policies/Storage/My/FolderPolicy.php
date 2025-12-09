@@ -3,7 +3,7 @@
 namespace App\Policies\Storage\My;
 
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Storage\My\Folder;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -102,23 +102,23 @@ class FolderPolicy
     // }
 
     /**
-     * Determines whether a user can upload a file to a libryo folder.
+     * Determines whether a user can upload a file to a norma folder.
      *
      * @param User   $user
      * @param Folder $folder
-     * @param Libryo $libryo
+     * @param Norma $norma
      *
      * @return bool
      */
-    public function uploadFileForLibryo(User $user, Folder $folder, Libryo $libryo)
+    public function uploadFileForNorma(User $user, Folder $folder, Norma $norma)
     {
-        if (!$folder->isLibryo()) {
+        if (!$folder->isNorma()) {
             // @codeCoverageIgnoreStart
             return false;
             // @codeCoverageIgnoreEnd
         }
 
-        return (bool) $user->hasLibryoAccess($libryo);
+        return (bool) $user->hasNormaAccess($norma);
     }
 
     /**
@@ -151,7 +151,7 @@ class FolderPolicy
      */
     public function hideOrShowInOrgSettings(User $user, Folder $folder)
     {
-        if (!$folder->isOrganisation() && !$folder->isLibryo()) {
+        if (!$folder->isOrganisation() && !$folder->isNorma()) {
             // @codeCoverageIgnoreStart
             return false;
             // @codeCoverageIgnoreEnd

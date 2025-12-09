@@ -5,19 +5,19 @@ namespace App\Observers\Compilation;
 use App\Enums\Compilation\ApplicabilityActivityType;
 use App\Models\Auth\User;
 use App\Models\Compilation\ApplicabilityActivity;
-use App\Models\Customer\Pivots\ContextQuestionLibryo;
+use App\Models\Customer\Pivots\ContextQuestionNorma;
 use Illuminate\Support\Facades\Auth;
 
-class ContextQuestionLibryoObserver
+class ContextQuestionNormaObserver
 {
     /**
      * Listen to the updated event.
      *
-     * @param \App\Models\Customer\Pivots\ContextQuestionLibryo $answer
+     * @param \App\Models\Customer\Pivots\ContextQuestionNorma $answer
      *
      * @return void
      */
-    public function saved(ContextQuestionLibryo $answer): void
+    public function saved(ContextQuestionNorma $answer): void
     {
         /** @var User|null $user */
         $user = Auth::user();

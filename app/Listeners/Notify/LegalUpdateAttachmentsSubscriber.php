@@ -2,11 +2,11 @@
 
 namespace App\Listeners\Notify;
 
-use App\Events\Compilation\LibraryAttachedToLibryo;
+use App\Events\Compilation\LibraryAttachedToNorma;
 use App\Events\Notify\LibraryAttachedToLegalUpdate;
-use App\Events\Notify\LibryoAttachedToLegalUpdate;
+use App\Events\Notify\NormaAttachedToLegalUpdate;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Stores\Notify\LegalUpdateStore;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Collection;
@@ -41,8 +41,8 @@ class LegalUpdateAttachmentsSubscriber implements ShouldQueue
     {
         return [
             LibraryAttachedToLegalUpdate::class => 'onLibraryAttached',
-            LibryoAttachedToLegalUpdate::class => 'onLibryoAttached',
-            LibraryAttachedToLibryo::class => 'onLibraryAttachedToLibryo',
+            NormaAttachedToLegalUpdate::class => 'onNormaAttached',
+            LibraryAttachedToNorma::class => 'onLibraryAttachedToNorma',
         ];
     }
 
@@ -55,23 +55,23 @@ class LegalUpdateAttachmentsSubscriber implements ShouldQueue
      */
     public function onLibraryAttached(LibraryAttachedToLegalUpdate $event): void
     {
-        $libryos = $event->library->applicableLibryos();
-        $libryos = $libryos->filter(fn ($l) => $l->isActive());
-        $this->store->attachLibryos($event->update, $libryos);
+        $normas = $event->library->applicableNormas();
+        $normas = $normas->filter(fn ($l) => $l->isActive());
+        $this->store->attachNormas($event->update, $normas);
     }
 
     /**
      * Handle the event of user attachment.
      *
-     * @param LibryoAttachedToLegalUpdate $event
+     * @param NormaAttachedToLegalUpdate $event
      *
      * @return void
      */
-    public function onLibryoAttached(LibryoAttachedToLegalUpdate $event): void
+    public function onNormaAttached(NormaAttachedToLegalUpdate $event): void
     {
         $event->update->load(['legalDomains']);
 
-        $users = User::libryoAccess($event->libryo)
+        $users = User::normaAccess($event->norma)
             ->whereNotNull('email')
             ->where('active', true)
             ->get()
@@ -85,25 +85,25 @@ class LegalUpdateAttachmentsSubscriber implements ShouldQueue
     /**
      * Listen to the attachment event.
      *
-     * @param LibraryAttachedToLibryo $event
+     * @param LibraryAttachedToNorma $event
      *
      * @return void
      */
-    public function onLibraryAttachedToLibryo(LibraryAttachedToLibryo $event): void
+    public function onLibraryAttachedToNorma(LibraryAttachedToNorma $event): void
     {
-        $event->libryo->legalUpdates()->detach();
+        $event->norma->legalUpdates()->detach();
 
-        $libryos = $event->libryo->newCollection();
-        $libryos->add($event->libryo);
+        $normas = $event->norma->newCollection();
+        $normas->add($event->norma);
 
-        /** @var Collection<Libryo> $currentLibryo */
-        $currentLibryo = $event->libryo->newCollection()->toBase();
-        $currentLibryo->push($event->libryo);
+        /** @var Collection<Norma> $currentNorma */
+        $currentNorma = $event->norma->newCollection()->toBase();
+        $currentNorma->push($event->norma);
 
-        foreach ($event->libryo->getLibraryAncestors() as $library) {
-            $library->legalUpdates()->chunk(200, function ($updates) use ($currentLibryo) {
-                $updates->each(function ($update) use ($currentLibryo) {
-                    $this->store->attachLibryos($update, $currentLibryo);
+        foreach ($event->norma->getLibraryAncestors() as $library) {
+            $library->legalUpdates()->chunk(200, function ($updates) use ($currentNorma) {
+                $updates->each(function ($update) use ($currentNorma) {
+                    $this->store->attachNormas($update, $currentNorma);
                 });
             });
         }
