@@ -16,10 +16,10 @@ class ReminderStreamControllerTest extends MyTestCase
 
     public function testIndexForRelatedReference(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $work = Work::factory()->hasReferences(2)->create();
         $reference = $work->references->first();
-        $reference->libryos()->attach($libryo);
+        $reference->normas()->attach($norma);
         $reminder = Reminder::factory()->create([
             'author_id' => $user->id,
             'remindable_type' => 'register_item',
@@ -33,7 +33,7 @@ class ReminderStreamControllerTest extends MyTestCase
 
     public function testCreateForRelated(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $file = File::factory()->create();
         $routeName = 'my.notify.reminders.for.related.create';
 
@@ -46,21 +46,21 @@ class ReminderStreamControllerTest extends MyTestCase
 
     public function testStore(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        $task = Task::factory()->for($libryo)->create();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        $task = Task::factory()->for($norma)->create();
         $reminder = Reminder::factory()->make([
             'remindable_type' => 'task',
             'remindable_id' => $task->id,
         ]);
         $data = $reminder->toArray();
-        $data['remind_whom'] = 'libryo';
+        $data['remind_whom'] = 'norma';
         $data['remind_on_date'] = Carbon::now()->addDays(3)->format('Y-m-d');
         $data['remind_on_time'] = '23:00';
         $routeName = 'my.notify.reminders.store';
         $response = $this->post(route($routeName), $data)->assertSuccessful();
         $response->assertSee('data-timestamp');
         $reminder = Reminder::all()->last();
-        $this->assertTrue($reminder->place_id === $libryo->id);
+        $this->assertTrue($reminder->place_id === $norma->id);
 
         $this->activateAllStreams($user);
 
@@ -73,7 +73,7 @@ class ReminderStreamControllerTest extends MyTestCase
 
     public function testDestroy(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.notify.reminders.destroy';
         $file = File::factory()->create();
         $reminder = Reminder::factory()->create(['remindable_type' => 'file', 'remindable_id' => $file->id]);

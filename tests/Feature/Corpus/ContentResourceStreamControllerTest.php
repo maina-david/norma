@@ -11,7 +11,7 @@ class ContentResourceStreamControllerTest extends MyTestCase
 {
     public function testShow(): void
     {
-        $this->initUserLibryoOrg();
+        $this->initUserNormaOrg();
 
         $content = '<div>Test</div>';
         $this->mock(ContentResourceStore::class, function (MockInterface $mock) use ($content) {

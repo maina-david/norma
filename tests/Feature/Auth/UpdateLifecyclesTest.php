@@ -15,7 +15,7 @@ class UpdateLifecyclesTest extends TestCase
      */
     public function testItUpdatesDeactivatedUsers(): void
     {
-        $deactivationDays = config('libryo.user.lifecycle.deactivate_when.invitations_days_reach');
+        $deactivationDays = config('norma.user.lifecycle.deactivate_when.invitations_days_reach');
 
         $this->travelTo(now()->subDays($deactivationDays + 3));
 
@@ -37,7 +37,7 @@ class UpdateLifecyclesTest extends TestCase
 
         $this->assertSame($user->lifecycle_stage, LifecycleStage::invitationSent()->value);
 
-        Artisan::call('libryo:review-lifecycles');
+        Artisan::call('norma:review-lifecycles');
 
         $this->assertSame($user->refresh()->lifecycle_stage, LifecycleStage::invitationDeclined()->value);
     }
@@ -47,7 +47,7 @@ class UpdateLifecyclesTest extends TestCase
      */
     public function testItDeactivatesUsers(): void
     {
-        $deactivationDays = config('libryo.user.lifecycle.deactivate_when.inactivity_months_reach');
+        $deactivationDays = config('norma.user.lifecycle.deactivate_when.inactivity_months_reach');
 
         $this->travelTo(now()->subMonths($deactivationDays + 1));
 
@@ -60,7 +60,7 @@ class UpdateLifecyclesTest extends TestCase
 
         $this->assertSame($user->lifecycle_stage, LifecycleStage::active()->value);
 
-        Artisan::call('libryo:review-lifecycles');
+        Artisan::call('norma:review-lifecycles');
 
         $this->assertSame($user->refresh()->lifecycle_stage, LifecycleStage::deactivatedInactivity()->value);
     }

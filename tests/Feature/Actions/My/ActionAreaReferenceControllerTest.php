@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Actions\My;
 
-use App\Enums\System\LibryoModule;
+use App\Enums\System\NormaModule;
 use App\Enums\Tasks\TaskStatus;
 use App\Models\Actions\ActionArea;
 use App\Models\Corpus\Reference;
@@ -13,31 +13,31 @@ class ActionAreaReferenceControllerTest extends MyTestCase
 {
     public function testListingAndViewing(): void
     {
-        /** @var \App\Models\Customer\Libryo $libryo */
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        /** @var \App\Models\Customer\Norma $norma */
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $reference = Reference::factory()->create();
         $reference->load(['work']);
-        $libryo->references()->attach($reference->id);
+        $norma->references()->attach($reference->id);
         $action = ActionArea::factory()->create();
         $action->references()->attach($reference->id);
 
-        $libryo->updateSetting('modules.' . LibryoModule::actions()->value, false);
-        $libryo->refresh();
+        $norma->updateSetting('modules.' . NormaModule::actions()->value, false);
+        $norma->refresh();
 
         $this->get(route('my.actions.action-areas.requirements.index'))
             ->assertSessionHas('flash.type', 'error')
             ->assertSessionHas('flash.message', 'Actions has not been enabled.')
             ->assertRedirect(route('my.dashboard'));
 
-        $libryo->enableModule(LibryoModule::actions());
+        $norma->enableModule(NormaModule::actions());
 
-        $libryo->refresh();
+        $norma->refresh();
 
         Task::factory()->create([
             'taskable_id' => $reference->id,
             'taskable_type' => $reference->getMorphClass(),
             'assigned_to_id' => $user->id,
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
             'task_status' => TaskStatus::inProgress()->value,
         ]);
 
@@ -45,12 +45,12 @@ class ActionAreaReferenceControllerTest extends MyTestCase
             'taskable_id' => $reference->id,
             'taskable_type' => $reference->getMorphClass(),
             'assigned_to_id' => $user->id,
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
             'task_status' => TaskStatus::done()->value,
         ]);
 
         $this->get(route('my.actions.action-areas.requirements.show', ['reference' => $reference->id]))
             ->assertSuccessful()
-            ->assertSee('my-libryo');
+            ->assertSee('my-norma');
     }
 }

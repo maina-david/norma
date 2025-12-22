@@ -6,7 +6,7 @@ use App\Models\Corpus\Reference;
 use App\Models\Corpus\ReferenceContent;
 use App\Models\Notify\LegalUpdate;
 use App\Models\Requirements\Summary;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Tests\Feature\My\MyTestCase;
 use Tests\Traits\MocksTranslatorService;
 
@@ -16,7 +16,7 @@ class TranslationStreamControllerTest extends MyTestCase
 
     public function testTranslateLegalUpdate(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.lookups.translations.translate.legal-update';
 
         $update = LegalUpdate::factory()->create();
@@ -27,7 +27,7 @@ class TranslationStreamControllerTest extends MyTestCase
             ->assertForbidden();
 
         $org->update(['translation_enabled' => true]);
-        app(ActiveLibryosManager::class)->flushCache();
+        app(ActiveNormasManager::class)->flushCache();
 
         $response = $this->post(route($routeName, ['update' => $update->id]), ['language' => 'fr'])
             ->assertSuccessful();
@@ -43,7 +43,7 @@ class TranslationStreamControllerTest extends MyTestCase
 
     public function testTranslateSummary(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.lookups.translations.translate.summary';
 
         $reference = Reference::factory()->create();
@@ -55,7 +55,7 @@ class TranslationStreamControllerTest extends MyTestCase
             ->assertForbidden();
 
         $org->update(['translation_enabled' => true]);
-        app(ActiveLibryosManager::class)->flushCache();
+        app(ActiveNormasManager::class)->flushCache();
 
         $response = $this->post(route($routeName, ['summary' => $summary->reference_id]), ['language' => 'fr'])
             ->assertSuccessful();
@@ -70,7 +70,7 @@ class TranslationStreamControllerTest extends MyTestCase
 
     public function testTranslateReference(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.lookups.translations.translate.reference';
 
         $html = '<p>Deutscher text</p>';
@@ -84,7 +84,7 @@ class TranslationStreamControllerTest extends MyTestCase
         $reference->work->update(['language_code' => 'deu']);
 
         $org->update(['translation_enabled' => true]);
-        app(ActiveLibryosManager::class)->flushCache();
+        app(ActiveNormasManager::class)->flushCache();
 
         $response = $this->withExceptionHandling()
             ->get(route($routeName, ['reference' => $reference->id]))

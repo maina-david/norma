@@ -24,7 +24,7 @@ class SAMLAuthUserControllerTest extends MyTestCase
             ->assertSee('Enable SSO');
 
         $saml = [
-            'libryo_user_id' => $user->id,
+            'norma_user_id' => $user->id,
             'first_name' => $this->faker->firstName,
             'last_name' => $this->faker->lastName,
             'email' => $user->email,

@@ -41,7 +41,7 @@ class ForOrganisationUserControllerTest extends SettingsTestCase
     {
         $org = Organisation::factory()->create();
         $user1 = User::factory()->create(); // user associated via team
-        $user2 = User::factory()->create(); // user associated via Libryo directly
+        $user2 = User::factory()->create(); // user associated via Norma directly
         $user3 = User::factory()->create(); // user associated via team, but not part of org
         $org->users()->attach([$user1->id, $user2->id]);
 

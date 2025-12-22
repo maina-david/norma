@@ -4,7 +4,7 @@ namespace Tests\Unit\Stores\Assess;
 
 use App\Models\Assess\AssessmentItem;
 use App\Models\Assess\AssessmentItemResponse;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Stores\Assess\AssessmentItemResponseStore;
 use Tests\TestCase;
 
@@ -12,12 +12,12 @@ class AssessmentItemResponseStoreTest extends TestCase
 {
     public function testCreateResponsesForItems(): void
     {
-        $libryo = Libryo::factory()->create();
+        $norma = Norma::factory()->create();
         $ai = AssessmentItem::factory()->create();
         $items = (new AssessmentItem())->newCollection()->add($ai);
 
         $count = AssessmentItemResponse::count();
-        app(AssessmentItemResponseStore::class)->createResponsesForItems($items, $libryo);
+        app(AssessmentItemResponseStore::class)->createResponsesForItems($items, $norma);
         $this->assertGreaterThan($count, AssessmentItemResponse::count());
         $aiResponse = AssessmentItemResponse::first();
         $this->assertNotNull($aiResponse->next_due_at);
@@ -25,11 +25,11 @@ class AssessmentItemResponseStoreTest extends TestCase
 
     public function testRemoveResponses(): void
     {
-        $libryo = Libryo::factory()->create();
-        $aiResponses = AssessmentItemResponse::factory(3)->for($libryo)->create();
+        $norma = Norma::factory()->create();
+        $aiResponses = AssessmentItemResponse::factory(3)->for($norma)->create();
 
         $count = AssessmentItemResponse::count();
-        app(AssessmentItemResponseStore::class)->removeResponses($aiResponses, $libryo);
+        app(AssessmentItemResponseStore::class)->removeResponses($aiResponses, $norma);
         $this->assertLessThan($count, AssessmentItemResponse::count());
     }
 }

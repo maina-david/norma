@@ -3,7 +3,7 @@
 namespace Tests\Feature\Compilation\Settings;
 
 use App\Models\Compilation\Library;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use Tests\Feature\Settings\SettingsTestCase;
 
@@ -17,7 +17,7 @@ class ForLibraryLibraryControllerTest extends SettingsTestCase
         $user = $this->signIn();
         $library = Library::factory()->create();
         $org = Organisation::factory()->create();
-        Libryo::factory()->for($library)->for($org)->create();
+        Norma::factory()->for($library)->for($org)->create();
         $route = route('my.settings.children-parents.for.library.index', ['library' => $library->id, 'relation' => 'children']);
         $user = $this->assertForbiddenForNonAdmin($route, 'get');
 
@@ -26,14 +26,14 @@ class ForLibraryLibraryControllerTest extends SettingsTestCase
         $library1 = Library::factory()->create();
         $library2 = Library::factory()->create();
         $library3 = Library::factory()->create();
-        $libryo = Libryo::factory()->for($library1)->for($org)->create();
+        $norma = Norma::factory()->for($library1)->for($org)->create();
 
         $library->children()->attach($library1);
         $library->children()->attach($library3);
 
         $response = $this->assertCanAccessAfterOrgActivate(route('my.settings.children-parents.for.library.index', ['library' => $library->id, 'activateOrgId' => $org->id, 'relation' => 'children']), 'get');
 
-        // when viewing in single organisations mode, you should only see the teams the libryo is part of that are in this org
+        // when viewing in single organisations mode, you should only see the teams the norma is part of that are in this org
         $response->assertSee($library1->title);
         $response->assertDontSee($library2->title);
         $response->assertDontSee($library3->title);
@@ -82,8 +82,8 @@ class ForLibraryLibraryControllerTest extends SettingsTestCase
         $library3 = Library::factory()->create();
         $testLibrary->children()->attach($library3);
 
-        Libryo::factory()->for($library1)->for($org)->create();
-        Libryo::factory()->for($library2)->for($org)->create();
+        Norma::factory()->for($library1)->for($org)->create();
+        Norma::factory()->for($library2)->for($org)->create();
 
         $user->organisations()->attach($org, ['is_admin' => true]);
 
@@ -162,7 +162,7 @@ class ForLibraryLibraryControllerTest extends SettingsTestCase
 
         $library1 = Library::factory()->create();
         $library2 = Library::factory()->create();
-        Libryo::factory()->for($library1)->for($org)->create();
+        Norma::factory()->for($library1)->for($org)->create();
 
         $response = $this->withActivatedOrg($org)
             ->post($route, [

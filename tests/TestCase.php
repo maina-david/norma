@@ -10,7 +10,7 @@ use App\Models\Collaborators\Collaborator;
 use App\Models\Corpus\WorkExpression;
 use App\Models\Workflows\Task;
 use App\Models\Workflows\TaskType;
-use App\Services\Search\LibryoAI\LibryoAISearchEngine;
+use App\Services\Search\NormaAI\NormaAISearchEngine;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -285,7 +285,7 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * Get a super user for my.libryo.
+     * Get a super user for my.norma.
      *
      * @param User|null|null $user
      *
@@ -331,7 +331,7 @@ abstract class TestCase extends BaseTestCase
     }
 
     /**
-     * Get a super user for my.libryo.
+     * Get a super user for my.norma.
      *
      * @param array<string>  $permissions
      * @param User|null|null $user
@@ -486,8 +486,8 @@ abstract class TestCase extends BaseTestCase
             $mock->shouldReceive('createMeilisearchDriver')->andReturn(new MeilisearchEngine($search, false));
         });
 
-        $mock->extend('libryo-ai', function () {
-            return new LibryoAISearchEngine(app(\App\Http\Services\LibryoAI\Client::class));
+        $mock->extend('norma-ai', function () {
+            return new NormaAISearchEngine(app(\App\Http\Services\NormaAI\Client::class));
         });
     }
 

@@ -3,12 +3,12 @@
 namespace Tests\Feature\Auth\Settings;
 
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Customer\Team;
 use Tests\Feature\Settings\SettingsTestCase;
 
-class ForLibryoUserControllerTest extends SettingsTestCase
+class ForNormaUserControllerTest extends SettingsTestCase
 {
     /**
      * @return void
@@ -16,15 +16,15 @@ class ForLibryoUserControllerTest extends SettingsTestCase
     public function testIndex(): void
     {
         $user = $this->signIn();
-        $libryo = Libryo::factory()->create();
-        $route = route('my.settings.users.for.libryo.index', ['libryo' => $libryo->id]);
+        $norma = Norma::factory()->create();
+        $route = route('my.settings.users.for.norma.index', ['norma' => $norma->id]);
         $user = $this->assertForbiddenForNonAdmin($route, 'get');
 
-        [$org, $team, $libryo, $user1, $user2, $user3] = $this->prepIndexData($libryo);
+        [$org, $team, $norma, $user1, $user2, $user3] = $this->prepIndexData($norma);
         $user->organisations()->attach($org, ['is_admin' => true]);
-        $libryo->update(['organisation_id' => $org->id]);
+        $norma->update(['organisation_id' => $org->id]);
 
-        $response = $this->assertCanAccessAfterOrgActivate(route('my.settings.users.for.libryo.index', ['libryo' => $libryo->id, 'activateOrgId' => $org->id]), 'get');
+        $response = $this->assertCanAccessAfterOrgActivate(route('my.settings.users.for.norma.index', ['norma' => $norma->id, 'activateOrgId' => $org->id]), 'get');
 
         // when viewing in single organisations mode, you should only see the teams the user is part of that are in this org
         $response->assertSee($user1->fullName);
@@ -34,11 +34,11 @@ class ForLibryoUserControllerTest extends SettingsTestCase
 
     public function testIndexAllOrgs(): void
     {
-        $libryo = Libryo::factory()->create();
-        $route = route('my.settings.users.for.libryo.index', ['libryo' => $libryo->id]);
+        $norma = Norma::factory()->create();
+        $route = route('my.settings.users.for.norma.index', ['norma' => $norma->id]);
         $org = Organisation::factory()->create();
 
-        [$org, $team, $libryo, $user1, $user2, $user3] = $this->prepIndexData($libryo);
+        [$org, $team, $norma, $user1, $user2, $user3] = $this->prepIndexData($norma);
 
         $this->signIn($this->mySuperUser());
         $this->withAllOrgMode();
@@ -48,19 +48,19 @@ class ForLibryoUserControllerTest extends SettingsTestCase
         $response->assertSee($user3->fullName);
     }
 
-    private function prepIndexData($libryo): array
+    private function prepIndexData($norma): array
     {
         $org = Organisation::factory()->create();
         $team = Team::factory()->for($org)->create();
-        $libryo->teams()->attach($team->id);
+        $norma->teams()->attach($team->id);
         $user1 = User::factory()->create(); // user associated via team
         $team->users()->attach($user1->id);
-        $user2 = User::factory()->create(); // user associated via Libryo directly
-        $libryo->users()->attach($user2->id);
+        $user2 = User::factory()->create(); // user associated via Norma directly
+        $norma->users()->attach($user2->id);
         $user3 = User::factory()->create(); // user associated via team, but not part of org
         $team->users()->attach($user3->id);
         $org->users()->attach([$user1->id, $user2->id]);
 
-        return [$org, $team, $libryo, $user1, $user2, $user3];
+        return [$org, $team, $norma, $user1, $user2, $user3];
     }
 }

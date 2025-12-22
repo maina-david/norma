@@ -17,7 +17,7 @@ class MailSendgridWebhookControllerTest extends ApiTestCase
                 'response' => '250 OK ae45csa1daio9rea71ngpbfapcl6jcn03v050rg1',
                 'sg_event_id' => 'ZGVsaXZlcmVkLTAtMTQ4MzAxNC1CWTN5a1VERFF5eW5IVi1HWkFjNnVnLTA',
                 'sg_message_id' => 'BY3ykUDDQyynHV-GZAc6ug.filterdrecv-55446c4d49-h2ncd-1-6221F227-C2.0',
-                'smtp-id' => '<6b43d3af1f3fe060bf30536449133878@libryo.com>',
+                'smtp-id' => '<6b43d3af1f3fe060bf30536449133878@norma.com>',
                 'timestamp' => 1646391849,
                 'tls' => 1,
             ],

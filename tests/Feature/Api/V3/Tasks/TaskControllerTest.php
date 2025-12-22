@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Api\V3\Tasks;
 
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Tasks\Task;
 use Tests\Feature\Api\V3\ApiV3TestCase;
 
@@ -10,52 +10,52 @@ class TaskControllerTest extends ApiV3TestCase
 {
     public function testTasksForOrganisation(): void
     {
-        /** @var Libryo $libryo */
-        [$libryo, $organisation, $work, $updatesCollection, $domain, $tag, $childWork] = $this->initCompiledStream();
+        /** @var Norma $norma */
+        [$norma, $organisation, $work, $updatesCollection, $domain, $tag, $childWork] = $this->initCompiledStream();
 
-        $otherLibryo = Libryo::factory()->create(['organisation_id' => $organisation->id]);
-        $forLibryo = Task::factory()->create([
-            'place_id' => $libryo->id,
+        $otherNorma = Norma::factory()->create(['organisation_id' => $organisation->id]);
+        $forNorma = Task::factory()->create([
+            'place_id' => $norma->id,
             'taskable_type' => 'place',
-            'taskable_id' => $libryo->id,
+            'taskable_id' => $norma->id,
         ])->refresh();
-        $forOtherLibryo = Task::factory()->create([
-            'place_id' => $otherLibryo->id,
+        $forOtherNorma = Task::factory()->create([
+            'place_id' => $otherNorma->id,
             'taskable_type' => 'place',
-            'taskable_id' => $otherLibryo->id,
+            'taskable_id' => $otherNorma->id,
         ])->refresh();
 
-        $responseLibryo = [
-            'id' => $forLibryo->id,
-            'title' => $forLibryo->title,
-            'due_at' => $forLibryo->due_on?->toDateString(),
-            'priority' => $forLibryo->priority,
-            'task_status' => $forLibryo->task_status,
-            'frequency' => $forLibryo->frequency,
-            'frequency_interval' => $forLibryo->frequency_interval->value,
-            'taskable_type' => $forLibryo->taskable_type,
-            'taskable_id' => $forLibryo->taskable_id,
-            'link' => route('my.tasks.tasks.show', ['task' => $forLibryo->hash_id], false),
+        $responseNorma = [
+            'id' => $forNorma->id,
+            'title' => $forNorma->title,
+            'due_at' => $forNorma->due_on?->toDateString(),
+            'priority' => $forNorma->priority,
+            'task_status' => $forNorma->task_status,
+            'frequency' => $forNorma->frequency,
+            'frequency_interval' => $forNorma->frequency_interval->value,
+            'taskable_type' => $forNorma->taskable_type,
+            'taskable_id' => $forNorma->taskable_id,
+            'link' => route('my.tasks.tasks.show', ['task' => $forNorma->hash_id], false),
         ];
-        $responseOtherLibryo = [
-            'id' => $forOtherLibryo->id,
-            'title' => $forOtherLibryo->title,
-            'due_at' => $forOtherLibryo->due_on?->toDateString(),
-            'priority' => $forOtherLibryo->priority,
-            'task_status' => $forOtherLibryo->task_status,
-            'frequency' => $forOtherLibryo->frequency,
-            'frequency_interval' => $forOtherLibryo->frequency_interval->value,
-            'taskable_type' => $forOtherLibryo->taskable_type,
-            'taskable_id' => $forOtherLibryo->taskable_id,
-            'link' => route('my.tasks.tasks.show', ['task' => $forOtherLibryo->hash_id], false),
+        $responseOtherNorma = [
+            'id' => $forOtherNorma->id,
+            'title' => $forOtherNorma->title,
+            'due_at' => $forOtherNorma->due_on?->toDateString(),
+            'priority' => $forOtherNorma->priority,
+            'task_status' => $forOtherNorma->task_status,
+            'frequency' => $forOtherNorma->frequency,
+            'frequency_interval' => $forOtherNorma->frequency_interval->value,
+            'taskable_type' => $forOtherNorma->taskable_type,
+            'taskable_id' => $forOtherNorma->taskable_id,
+            'link' => route('my.tasks.tasks.show', ['task' => $forOtherNorma->hash_id], false),
         ];
 
         $this->assertUnauthorizedThenRun($organisation, 'get', route('api.v3.tasks.index', ['organisation' => $organisation->id]))
             ->assertJsonCount(2, 'data')
             ->assertExactJson([
                 'data' => [
-                    $responseLibryo,
-                    $responseOtherLibryo,
+                    $responseNorma,
+                    $responseOtherNorma,
                 ],
                 'links' => [
                     'first' => route('api.v3.tasks.index', ['organisation' => $organisation->id, 'page' => 1]),
@@ -74,7 +74,7 @@ class TaskControllerTest extends ApiV3TestCase
                 ],
             ]);
 
-        $streams = $libryo->id;
+        $streams = $norma->id;
 
         $route = route('api.v3.tasks.index', ['organisation' => $organisation->id, 'streams' => $streams]);
 
@@ -82,7 +82,7 @@ class TaskControllerTest extends ApiV3TestCase
             ->assertJsonCount(1, 'data')
             ->assertExactJson([
                 'data' => [
-                    $responseLibryo,
+                    $responseNorma,
                 ],
                 'links' => [
                     'first' => route('api.v3.tasks.index', ['organisation' => $organisation->id, 'streams' => $streams, 'page' => 1]),
@@ -103,12 +103,12 @@ class TaskControllerTest extends ApiV3TestCase
 
         $route = route('api.v3.tasks.show', [
             'organisation' => $organisation->id,
-            'task' => $forOtherLibryo->id,
+            'task' => $forOtherNorma->id,
         ]);
 
         $this->getJson($route)
             ->assertExactJson([
-                'data' => $responseOtherLibryo,
+                'data' => $responseOtherNorma,
             ]);
     }
 }

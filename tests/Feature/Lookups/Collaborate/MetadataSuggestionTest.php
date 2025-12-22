@@ -36,7 +36,7 @@ class MetadataSuggestionTest extends TestCase
         $content = ReferenceContent::factory()->create(['reference_id' => $ref->id]);
 
         Http::fake([
-            'libryo-ai.libryo.rocks:7000/*' => Http::response([
+            'norma-ai.norma.rocks:7000/*' => Http::response([
                 'query' => $content->cached_content,
                 'results' => $items,
             ], 200, ['content-type' => 'application/json']),
@@ -46,8 +46,8 @@ class MetadataSuggestionTest extends TestCase
             ->assertSuccessful()
             ->assertJsonCount(0, 'data');
 
-        Config::set('services.libryo_ai.enabled', true);
-        Config::set('services.libryo_ai.host', 'http://libryo-ai.libryo.rocks:7000');
+        Config::set('services.norma_ai.enabled', true);
+        Config::set('services.norma_ai.host', 'http://norma-ai.norma.rocks:7000');
 
         $sorted = $items->sortByDesc('relevance')->map(fn ($item) => ['id' => $item['document']['id']])->values()->all();
 

@@ -289,7 +289,7 @@ class UserControllerTest extends SettingsTestCase
 
         $response->assertSee($user->fullName);
         $response->assertSee('Teams');
-        $response->assertSee('Libryo Streams');
+        $response->assertSee('Norma Streams');
     }
 
     /**
@@ -473,6 +473,6 @@ class UserControllerTest extends SettingsTestCase
         $this->assertNotNull($user->deleted_at);
         $this->assertEquals('Deleted', $user->fname);
         $this->assertEquals('User', $user->sname);
-        $this->assertEquals('deleted' . $user->id . '@libryo.com', $user->email);
+        $this->assertEquals('deleted' . $user->id . '@norma.com', $user->email);
     }
 }

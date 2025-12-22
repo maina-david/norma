@@ -130,8 +130,8 @@ class TaskNotificationEmailsTest extends TestCase
         $this->assertSeeInHtmlAndText($mailable, $user->formatDate($from));
         $this->assertSeeInHtmlAndText($mailable, $user->formatDate($to));
 
-        // test link to the libryo
-        $this->assertSeeInHtmlAndText($mailable, $task->libryo->id);
+        // test link to the norma
+        $this->assertSeeInHtmlAndText($mailable, $task->norma->id);
     }
 
     public function testTaskDueEmailContents(): void

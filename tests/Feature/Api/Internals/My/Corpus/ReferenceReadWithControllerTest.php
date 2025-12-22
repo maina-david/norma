@@ -10,9 +10,9 @@ class ReferenceReadWithControllerTest extends MyTestCase
 {
     public function testGettingCountsAndDetails(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $reference = Reference::factory()->create();
-        $reference->libryos()->attach($libryo->id);
+        $reference->normas()->attach($norma->id);
 
         $read = Reference::factory()->create();
         $amend = Reference::factory()->create();

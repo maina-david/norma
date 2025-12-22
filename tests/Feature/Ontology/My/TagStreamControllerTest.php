@@ -8,8 +8,8 @@ class TagStreamControllerTest extends MyTestCase
 {
     public function testSearchSuggest(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream($libryo);
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream($norma);
 
         $routeName = 'my.ontology.tags.search-suggest';
         // test without a search query

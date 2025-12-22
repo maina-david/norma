@@ -127,6 +127,6 @@ class ForOrganisationUserControllerTest extends SettingsTestCase
         $this->assertNotNull($user->deleted_at);
         $this->assertEquals('Deleted', $user->fname);
         $this->assertEquals('User', $user->sname);
-        $this->assertEquals('deleted' . $user->id . '@libryo.com', $user->email);
+        $this->assertEquals('deleted' . $user->id . '@norma.com', $user->email);
     }
 }

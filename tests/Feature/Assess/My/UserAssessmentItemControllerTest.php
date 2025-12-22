@@ -4,30 +4,30 @@ namespace Tests\Feature\Assess\My;
 
 use App\Enums\Assess\ReassessInterval;
 use App\Enums\Assess\RiskRating;
-use App\Enums\System\LibryoModule;
+use App\Enums\System\NormaModule;
 use App\Models\Assess\AssessmentItem;
 use App\Models\Assess\AssessmentItemResponse;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Ontology\LegalDomain;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Tests\Feature\My\MyTestCase;
 
 class UserAssessmentItemControllerTest extends MyTestCase
 {
     public function testManagement(): void
     {
-        /** @var Libryo $libryo */
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        $libryo->enableModule(LibryoModule::comply());
-        $libryo2 = Libryo::factory()->for($org)->create();
+        /** @var Norma $norma */
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        $norma->enableModule(NormaModule::comply());
+        $norma2 = Norma::factory()->for($org)->create();
         $org2 = Organisation::factory()->create();
-        $nonOrg = Libryo::factory()->for($org2)->create();
+        $nonOrg = Norma::factory()->for($org2)->create();
 
         $domain = LegalDomain::factory()->create();
         LegalDomain::factory()->create(['parent_id' => $domain->id]);
 
-        $libryo->legalDomains()->attach($domain->id);
+        $norma->legalDomains()->attach($domain->id);
 
         $this->get(route('my.assess.create'))
             ->assertSuccessful()
@@ -48,12 +48,12 @@ class UserAssessmentItemControllerTest extends MyTestCase
 
         $this->assertDatabaseHas(AssessmentItemResponse::class, [
             'assessment_item_id' => $item->id,
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
         ]);
 
         $this->assertDatabaseHas(AssessmentItemResponse::class, [
             'assessment_item_id' => $item->id,
-            'place_id' => $libryo2->id,
+            'place_id' => $norma2->id,
         ]);
 
         $this->assertDatabaseMissing(AssessmentItemResponse::class, [
@@ -65,7 +65,7 @@ class UserAssessmentItemControllerTest extends MyTestCase
             ->assertSuccessful()
             ->assertSee('This is an awesome test');
 
-        app(ActiveLibryosManager::class)->activateAll($user);
+        app(ActiveNormasManager::class)->activateAll($user);
 
         $payload = [
             'title' => 'This is another awesome test',
@@ -89,7 +89,7 @@ class UserAssessmentItemControllerTest extends MyTestCase
             ->assertSuccessful()
             ->assertSee('Updated title over here');
 
-        app(ActiveLibryosManager::class)->activate($user, $libryo);
+        app(ActiveNormasManager::class)->activate($user, $norma);
 
         $payload['title'] = 'Updated again and again title over here';
 

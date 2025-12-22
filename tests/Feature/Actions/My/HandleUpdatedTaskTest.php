@@ -11,7 +11,7 @@ class HandleUpdatedTaskTest extends MyTestCase
 {
     public function testHandleTaskRecurrence()
     {
-        [$user, $libryo] = $this->initUserLibryoOrg();
+        [$user, $norma] = $this->initUserNormaOrg();
 
         $rrule = new RRule([
             'FREQ' => 'DAILY',
@@ -20,7 +20,7 @@ class HandleUpdatedTaskTest extends MyTestCase
 
         // When $task->next->doesntExist is true and $task->rrule is not empty
         $task1 = Task::factory()->create([
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
             'assigned_to_id' => $user->id,
             'rrule' => $rrule->rfcString(),
         ]);
@@ -30,7 +30,7 @@ class HandleUpdatedTaskTest extends MyTestCase
 
         // When Recurrence Start Date is already passed
         $task2 = Task::factory()->create([
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
             'assigned_to_id' => $user->id,
             'rrule' => $rrule->rfcString(),
             'recurrence_start_date' => now()->subDays(10)->format('Y-m-d'),
@@ -41,7 +41,7 @@ class HandleUpdatedTaskTest extends MyTestCase
 
         // When $rruleCount is reached
         $task3 = Task::factory()->create([
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
             'assigned_to_id' => $user->id,
             'recurrence_start_date' => now()->subDays(3)->format('Y-m-d'),
             'task_status' => TaskStatus::done()->value,
@@ -50,7 +50,7 @@ class HandleUpdatedTaskTest extends MyTestCase
         ]);
 
         $task4 = Task::factory()->create([
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
             'assigned_to_id' => $user->id,
             'series_task_id' => $task3->id,
             'recurrence_start_date' => now()->subDays(3)->format('Y-m-d'),
@@ -62,7 +62,7 @@ class HandleUpdatedTaskTest extends MyTestCase
         ]);
 
         $task5 = Task::factory()->create([
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
             'assigned_to_id' => $user->id,
             'series_task_id' => $task3->id,
             'recurrence_start_date' => now()->subDays(3)->format('Y-m-d'),
@@ -74,7 +74,7 @@ class HandleUpdatedTaskTest extends MyTestCase
         ]);
 
         $task6 = Task::factory()->create([
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
             'assigned_to_id' => $user->id,
             'series_task_id' => $task3->id,
             'recurrence_start_date' => now()->subDays(3)->format('Y-m-d'),

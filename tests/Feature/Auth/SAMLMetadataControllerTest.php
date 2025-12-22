@@ -17,6 +17,6 @@ class SAMLMetadataControllerTest extends MyTestCase
         $this->withoutExceptionHandling()
             ->get(route('my.saml.metadata.index', ['slug' => $provider->organisation->slug]))
             ->assertSuccessful()
-            ->assertSee('Libryo LTD');
+            ->assertSee('Norma LTD');
     }
 }

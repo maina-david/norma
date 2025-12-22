@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Actions\My;
 
-use App\Enums\System\LibryoModule;
+use App\Enums\System\NormaModule;
 use App\Models\Actions\ActionArea;
 use App\Models\Corpus\Reference;
 use App\Models\Tasks\Task;
@@ -12,11 +12,11 @@ class ActionAreaPlannerControllerTest extends MyTestCase
 {
     public function testListingAndViewing(): void
     {
-        /** @var \App\Models\Customer\Libryo $libryo */
+        /** @var \App\Models\Customer\Norma $norma */
         /** @var \App\Models\Customer\Organisation $org */
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $reference = Reference::factory()->create();
-        $libryo->references()->attach($reference->id);
+        $norma->references()->attach($reference->id);
         $action = ActionArea::factory()->create();
         $action->references()->attach($reference->id);
 
@@ -25,37 +25,37 @@ class ActionAreaPlannerControllerTest extends MyTestCase
             ->assertSessionHas('flash.message', 'Actions has not been enabled.')
             ->assertRedirect(route('my.dashboard'));
 
-        $libryo->enableModule(LibryoModule::actions());
+        $norma->enableModule(NormaModule::actions());
 
         $org->refresh();
-        $libryo->refresh();
+        $norma->refresh();
 
         Task::factory()->create([
             'taskable_id' => $reference->id,
             'taskable_type' => $reference->getMorphClass(),
             'assigned_to_id' => $user->id,
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
             'action_area_id' => $action->id,
         ]);
 
         $this->get(route('my.actions.action-areas.controls.index'))
             ->assertSuccessful()
-            ->assertSee('my-libryo');
+            ->assertSee('my-norma');
 
         $this->get(route('my.actions.action-areas.subject.index'))
             ->assertSuccessful()
-            ->assertSee('my-libryo');
+            ->assertSee('my-norma');
 
         $this->get(route('my.actions.action-areas.requirements.index'))
             ->assertSuccessful()
-            ->assertSee('my-libryo');
+            ->assertSee('my-norma');
 
         $this->get(route('my.actions.action-areas.subject.index', ['statuses' => [1]]))
             ->assertSuccessful()
-            ->assertSee('my-libryo');
+            ->assertSee('my-norma');
 
         $this->get(route('my.actions.action-areas.show', ['action' => $action->id]))
             ->assertSuccessful()
-            ->assertSee('my-libryo');
+            ->assertSee('my-norma');
     }
 }

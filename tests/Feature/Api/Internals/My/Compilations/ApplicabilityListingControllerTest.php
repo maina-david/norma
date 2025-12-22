@@ -4,7 +4,7 @@ namespace Tests\Feature\Api\Internals\My\Compilations;
 
 use App\Enums\Compilation\ContextQuestionAnswer;
 use App\Models\Compilation\ContextQuestion;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\My\MyTestCase;
 use Tests\Traits\CompilesStream;
@@ -23,15 +23,15 @@ class ApplicabilityListingControllerTest extends MyTestCase
     {
         $user = $this->signIn();
 
-        [$libryo,$org,$work,$location,$category,$tag,$childWork] = $this->initCompiledStream();
+        [$norma,$org,$work,$location,$category,$tag,$childWork] = $this->initCompiledStream();
         $reference = $work->references()->first();
         $question = ContextQuestion::factory()->create();
 
-        $question->libryos()->attach($libryo->id, ['answer' => ContextQuestionAnswer::yes()->value]);
+        $question->normas()->attach($norma->id, ['answer' => ContextQuestionAnswer::yes()->value]);
         $question->references()->attach([$reference->id]);
 
         $this->activateAllStreams($user);
-        app(ActiveLibryosManager::class)->activate($user, $libryo);
+        app(ActiveNormasManager::class)->activate($user, $norma);
 
         $this->getJson(route('api.my.references.applicability.index', ['reference' => $reference->id]))
             ->assertSuccessful()
@@ -47,10 +47,10 @@ class ApplicabilityListingControllerTest extends MyTestCase
                             'hash_id' => $question->hash_id,
                         ],
                     ],
-                    'libryo' => [
-                        'id' => $libryo->id,
-                        'hash_id' => $libryo->hash_id,
-                        'title' => $libryo->title,
+                    'norma' => [
+                        'id' => $norma->id,
+                        'hash_id' => $norma->hash_id,
+                        'title' => $norma->title,
                     ],
                     'categories' => [
                         [

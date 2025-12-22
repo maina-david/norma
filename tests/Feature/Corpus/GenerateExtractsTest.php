@@ -10,16 +10,16 @@ use App\Models\Corpus\ReferenceContentExtract;
 use App\Models\Requirements\ReferenceRequirement;
 use Illuminate\Support\Facades\Config;
 use Tests\TestCase;
-use Tests\Traits\UsesLibryoAI;
+use Tests\Traits\UsesNormaAI;
 
 class GenerateExtractsTest extends TestCase
 {
-    use UsesLibryoAI;
+    use UsesNormaAI;
 
     public function testGenerationOfExtract(): void
     {
-        Config::set('services.libryo_ai.enabled', true);
-        Config::set('services.libryo_ai.host', 'http://libryo-ai.test');
+        Config::set('services.norma_ai.enabled', true);
+        Config::set('services.norma_ai.host', 'http://norma-ai.test');
         /** @var Reference $reference */
         $otherReference = Reference::factory()->create();
         $reference = Reference::factory()->create();
@@ -35,7 +35,7 @@ class GenerateExtractsTest extends TestCase
         $reference->refRequirement()->delete();
 
         $expected = $this->getExpectations();
-        $this->mockLibryoAIGenerateTaskRequest();
+        $this->mockNormaAIGenerateTaskRequest();
 
         $this->assertSame(0, $reference->contentExtracts()->count());
 

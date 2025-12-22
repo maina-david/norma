@@ -14,7 +14,7 @@ use Tests\Feature\Settings\SettingsTestCase;
 
 class FolderStreamControllerTest extends SettingsTestCase
 {
-    public function testHideOrShowLibryoCreatedFolders(): void
+    public function testHideOrShowNormaCreatedFolders(): void
     {
         $org = Organisation::factory()->create();
         $routeName = 'my.settings.drives.setup.hide-or-show.folder';
@@ -60,7 +60,7 @@ class FolderStreamControllerTest extends SettingsTestCase
 
         $title = 'New Folder';
         $response = $this->withActivatedOrg($org)
-            ->post(route($routeName), ['title' => $title, 'folder_type' => FolderType::libryo()->value]);
+            ->post(route($routeName), ['title' => $title, 'folder_type' => FolderType::norma()->value]);
         $response->assertSee($title);
     }
 
@@ -76,7 +76,7 @@ class FolderStreamControllerTest extends SettingsTestCase
 
         $title = 'New Folder';
         $response = $this->withActivatedOrg($org)
-            ->put(route($routeName, ['folder' => $folder, 'parentFolder' => $parent]), ['title' => $title, 'folder_type' => FolderType::libryo()->value]);
+            ->put(route($routeName, ['folder' => $folder, 'parentFolder' => $parent]), ['title' => $title, 'folder_type' => FolderType::norma()->value]);
         $response->assertSee($title);
         $response->assertDontSee($folder->title);
     }
@@ -202,7 +202,7 @@ class FolderStreamControllerTest extends SettingsTestCase
         $user = $this->assertForbiddenForNonAdmin($routeName, 'post');
         $this->mySuperUser($user);
 
-        $file = UploadedFile::fake()->image('A Libryo Image.jpg', 200, 100);
+        $file = UploadedFile::fake()->image('A Norma Image.jpg', 200, 100);
 
         $payload = [
             'files' => [$file],
@@ -211,7 +211,7 @@ class FolderStreamControllerTest extends SettingsTestCase
         ];
 
         $this->post($routeName, $payload)
-            ->assertSee('A Libryo Image')
+            ->assertSee('A Norma Image')
             ->assertSee($domain->title)
             ->assertSee($location->title);
 
@@ -224,7 +224,7 @@ class FolderStreamControllerTest extends SettingsTestCase
 
         $this->get(route('my.settings.drives.setup', $payload))
             ->assertSuccessful()
-            ->assertSee('A Libryo Image');
+            ->assertSee('A Norma Image');
     }
 
     public function testDestroyGlobalFile(): void

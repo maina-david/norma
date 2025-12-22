@@ -9,7 +9,7 @@ use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Auth\User;
 use App\Models\Comments\Comment;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Notify\LegalUpdate;
 use App\Models\Notify\Notification;
@@ -152,21 +152,21 @@ class NotificationPresenterTest extends TestCase
 
         $update = LegalUpdate::factory()->create();
         $user = User::factory()->create();
-        $libryo = Libryo::factory()->create();
-        $commentUpdate = Comment::factory()->for($libryo)->create(['commentable_type' => 'register_notification', 'commentable_id' => $update->id]);
+        $norma = Norma::factory()->create();
+        $commentUpdate = Comment::factory()->for($norma)->create(['commentable_type' => 'register_notification', 'commentable_id' => $update->id]);
         $notification = Notification::factory()->create(['data' => ['body' => ['type' => NotificationType::mention()->value]]]);
         $notification->presentViewData = $notification->data;
         $notification->presentViewData['body']['comment'] = $commentUpdate;
         $link = $service->getLink($notification);
-        $this->assertStringContainsString('/libryos/activate/' . $libryo->id, $link);
+        $this->assertStringContainsString('/normas/activate/' . $norma->id, $link);
         $this->assertStringContainsString('legal-updates' . urlencode('/') . $update->id, $link);
 
-        $notification->presentViewData['body']['comment'] = Comment::factory()->for($libryo)->create(['commentable_type' => 'task', 'commentable_id' => $task->id]);
+        $notification->presentViewData['body']['comment'] = Comment::factory()->for($norma)->create(['commentable_type' => 'task', 'commentable_id' => $task->id]);
         $link = $service->getLink($notification);
         $this->assertStringContainsString(urlencode('/') . 'tasks' . urlencode('/') . $task->hash_id, $link);
 
         $reference = Reference::factory()->create();
-        $commentReference = Comment::factory()->for($libryo)->create(['commentable_type' => 'register_item', 'commentable_id' => $reference->id]);
+        $commentReference = Comment::factory()->for($norma)->create(['commentable_type' => 'register_item', 'commentable_id' => $reference->id]);
         $notification->presentViewData['body']['comment'] = $commentReference;
         $this->assertStringContainsString('citations' . urlencode('/') . $reference->id, $service->getLink($notification));
 
@@ -176,31 +176,31 @@ class NotificationPresenterTest extends TestCase
         $comment = Comment::factory()->for($organisation)->create(['commentable_type' => 'assessment_item_response', 'commentable_id' => $aiResponse->id]);
         $notification->presentViewData['body']['comment'] = $comment;
         $link = $service->getLink($notification);
-        $this->assertStringContainsString('/libryos/activate/all/' . $organisation->id, $link);
+        $this->assertStringContainsString('/normas/activate/all/' . $organisation->id, $link);
         $this->assertStringContainsString('assess' . urlencode('/') . 'item' . urlencode('/') . $aiResponse->assessment_item_id, $service->getLink($notification));
 
         $file = File::factory()->create();
-        $comment = Comment::factory()->for($libryo)->create(['commentable_type' => 'file', 'commentable_id' => $file->id]);
+        $comment = Comment::factory()->for($norma)->create(['commentable_type' => 'file', 'commentable_id' => $file->id]);
         $notification->presentViewData['body']['comment'] = $comment;
         $this->assertStringContainsString('files' . urlencode('/') . $file->id, $service->getLink($notification));
 
-        $libryo2 = Libryo::factory()->create();
-        $comment = Comment::factory()->for($libryo)->create(['commentable_type' => 'place', 'commentable_id' => $libryo2->id]);
+        $norma2 = Norma::factory()->create();
+        $comment = Comment::factory()->for($norma)->create(['commentable_type' => 'place', 'commentable_id' => $norma2->id]);
         $notification->presentViewData['body']['comment'] = $comment;
         $this->assertStringContainsString('redirect=' . urlencode('/'), $service->getLink($notification));
 
         $notification->presentViewData['body']['comment'] = null;
         $this->assertTrue($service->getLink($notification) === '');
 
-        $comment = Comment::factory()->for($libryo)->create(['commentable_type' => 'place', 'commentable_id' => 0]);
+        $comment = Comment::factory()->for($norma)->create(['commentable_type' => 'place', 'commentable_id' => 0]);
         $notification->presentViewData['body']['comment'] = $comment;
         $this->assertTrue($service->getLink($notification) === '');
 
         $notification = Notification::factory()->create(['data' => ['body' => ['type' => 0]]]);
         $this->assertTrue($service->getLink($notification) === '');
 
-        $commentParent = Comment::factory()->for($libryo)->create(['commentable_type' => 'file', 'commentable_id' => $file->id]);
-        $comment = Comment::factory()->for($libryo)->create(['commentable_type' => 'comment', 'commentable_id' => $commentParent->id]);
+        $commentParent = Comment::factory()->for($norma)->create(['commentable_type' => 'file', 'commentable_id' => $file->id]);
+        $comment = Comment::factory()->for($norma)->create(['commentable_type' => 'comment', 'commentable_id' => $commentParent->id]);
         $notification = Notification::factory()->create(['data' => ['body' => ['type' => NotificationType::reply()->value]]]);
         $notification->presentViewData['body']['comment'] = $comment;
         $this->assertStringContainsString('files' . urlencode('/') . $file->id, $service->getLink($notification));

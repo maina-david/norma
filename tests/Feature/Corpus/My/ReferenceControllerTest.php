@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Corpus\My;
 
-use App\Enums\System\LibryoModule;
+use App\Enums\System\NormaModule;
 use App\Models\Corpus\Reference;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Services\Search\Elastic\Client;
 use Illuminate\Support\Str;
 use Mockery\MockInterface;
@@ -40,8 +40,8 @@ class ReferenceControllerTest extends MyTestCase
 
     public function testIndexDetailedRequirements(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        [,, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream($libryo);
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        [,, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream($norma);
         $reference = $work->references->load(['citation', 'refSelector', 'refPlainText'])->first();
         $this->mockEsClient($reference, 32.5);
 
@@ -49,7 +49,7 @@ class ReferenceControllerTest extends MyTestCase
         $response = $this->get(route($routeName))->assertSuccessful();
         $response->assertSee($reference->refPlainText?->plain_text);
 
-        app(ActiveLibryosManager::class)->activateAll($user);
+        app(ActiveNormasManager::class)->activateAll($user);
 
         $response = $this->get(route($routeName))->assertSuccessful();
         $response->assertSee($work->title);
@@ -75,8 +75,8 @@ class ReferenceControllerTest extends MyTestCase
 
     public function testIndexDetailedRequirementsEmptySearch(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        [,, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream($libryo);
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        [,, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream($norma);
         $reference = $work->references->load(['citation', 'refPlainText'])->first();
         $this->mockEsClientEmptyResponse();
 
@@ -88,12 +88,12 @@ class ReferenceControllerTest extends MyTestCase
 
     public function testShow(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        [,, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream($libryo);
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        [,, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream($norma);
         $reference = $work->references->load(['citation', 'refPlainText'])->first();
 
-        /** @var \App\Models\Customer\Libryo $libryo */
-        $libryo->enableModule(LibryoModule::actions());
+        /** @var \App\Models\Customer\Norma $norma */
+        $norma->enableModule(NormaModule::actions());
 
         $routeName = 'my.corpus.references.show';
         $response = $this->get(route($routeName, ['reference' => $reference]))->assertSuccessful();

@@ -17,7 +17,7 @@ class LoginTest extends DuskTestCase
      */
     public function testLogin()
     {
-        [$user, $libryo, $org] = $this->initLibryoOrg();
+        [$user, $norma, $org] = $this->initNormaOrg();
 
         $this->browse(function (Browser $browser) use ($user) {
             $browser->visit('/')

@@ -10,16 +10,16 @@ class LegalReportControllerTest extends ApiTestCase
 {
     public function testLegalReport(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
 
         $country = Location::factory()->create();
         $requirementsCollection->update(['location_country_id' => $country->id]);
         $user = User::factory()->create();
 
-        $user->libryos()->attach($libryo);
+        $user->normas()->attach($norma);
 
         $routeName = 'api.v2.legislation.report';
-        $route = route($routeName, ['libryo' => $libryo]);
+        $route = route($routeName, ['norma' => $norma]);
         $response = $this->assertApiUnauthorizedThenRun($user, 'get', $route);
         $items = [];
 
@@ -27,7 +27,7 @@ class LegalReportControllerTest extends ApiTestCase
         $reference = $work->references->first();
         $reference2 = $work->references[1];
         $lastReference = $work->references->last();
-        $libryo->references()->detach($lastReference);
+        $norma->references()->detach($lastReference);
 
         $childWork = $work->children->first();
         $items[] = [
@@ -160,18 +160,18 @@ class LegalReportControllerTest extends ApiTestCase
             'current_page' => 1,
             'from' => 1,
             'last_page' => 1,
-            'path' => route($routeName, ['libryo' => $libryo]),
+            'path' => route($routeName, ['norma' => $norma]),
             'per_page' => 1,
             'to' => 1,
             'total' => 1,
         ];
         $links = [
-            'first' => route($routeName, ['libryo' => $libryo, 'perPage' => 1, 'page' => 1]),
-            'last' => route($routeName, ['libryo' => $libryo, 'perPage' => 1, 'page' => 1]),
+            'first' => route($routeName, ['norma' => $norma, 'perPage' => 1, 'page' => 1]),
+            'last' => route($routeName, ['norma' => $norma, 'perPage' => 1, 'page' => 1]),
             'prev' => null,
             'next' => null,
         ];
-        $route = route($routeName, ['libryo' => $libryo, 'perPage' => 1, 'page' => 1]);
+        $route = route($routeName, ['norma' => $norma, 'perPage' => 1, 'page' => 1]);
         $response = $this->json('get', $route)->assertSuccessful();
         $response->assertJson(['data' => [$items[0]], 'meta' => $pagination, 'links' => $links]);
         $this->deleteCompiledStream();

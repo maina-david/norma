@@ -18,27 +18,27 @@ class AssessMetricsExcelExportTest extends TestCase
 
     public function testBuild(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
 
         $this->travelTo(now()->subQuarter());
 
         $user = User::factory()->create();
-        $user->libryos()->attach($libryo);
+        $user->normas()->attach($norma);
 
         $items = AssessmentItem::factory(5)->create(['risk_rating' => RiskRating::high()->value]);
         $items->push(AssessmentItem::factory()->create(['risk_rating' => RiskRating::medium()->value]));
         $items->push(AssessmentItem::factory()->create(['risk_rating' => RiskRating::low()->value]));
         $items->push(AssessmentItem::factory()->create(['risk_rating' => RiskRating::notRated()->value]));
-        AssessmentItemResponse::factory()->for($libryo)->for($items[0])->create(['answer' => ResponseStatus::no()->value]);
-        AssessmentItemResponse::factory()->for($libryo)->for($items[1])->create(['answer' => ResponseStatus::notApplicable()->value]);
-        AssessmentItemResponse::factory()->for($libryo)->for($items[2])->create(['answer' => ResponseStatus::notAssessed()->value]);
-        AssessmentItemResponse::factory()->for($libryo)->for($items[3])->create(['answer' => ResponseStatus::no()->value]);
-        AssessmentItemResponse::factory()->for($libryo)->for($items[3])->create(['answer' => ResponseStatus::yes()->value]);
+        AssessmentItemResponse::factory()->for($norma)->for($items[0])->create(['answer' => ResponseStatus::no()->value]);
+        AssessmentItemResponse::factory()->for($norma)->for($items[1])->create(['answer' => ResponseStatus::notApplicable()->value]);
+        AssessmentItemResponse::factory()->for($norma)->for($items[2])->create(['answer' => ResponseStatus::notAssessed()->value]);
+        AssessmentItemResponse::factory()->for($norma)->for($items[3])->create(['answer' => ResponseStatus::no()->value]);
+        AssessmentItemResponse::factory()->for($norma)->for($items[3])->create(['answer' => ResponseStatus::yes()->value]);
 
-        AssessmentItemResponse::factory()->for($libryo)->for($items[4])->create(['answer' => ResponseStatus::no()->value]);
-        AssessmentItemResponse::factory()->for($libryo)->for($items[5])->create(['answer' => ResponseStatus::no()->value]);
-        AssessmentItemResponse::factory()->for($libryo)->for($items[6])->create(['answer' => ResponseStatus::no()->value]);
-        AssessmentItemResponse::factory()->for($libryo)->for($items[7])->create(['answer' => ResponseStatus::no()->value]);
+        AssessmentItemResponse::factory()->for($norma)->for($items[4])->create(['answer' => ResponseStatus::no()->value]);
+        AssessmentItemResponse::factory()->for($norma)->for($items[5])->create(['answer' => ResponseStatus::no()->value]);
+        AssessmentItemResponse::factory()->for($norma)->for($items[6])->create(['answer' => ResponseStatus::no()->value]);
+        AssessmentItemResponse::factory()->for($norma)->for($items[7])->create(['answer' => ResponseStatus::no()->value]);
 
         $this->travelBack();
 
@@ -53,7 +53,7 @@ class AssessMetricsExcelExportTest extends TestCase
         $ws = $excel->getActiveSheet();
         $this->assertSame('Risk Rating', $ws->getCell('A1')->getValue());
         $this->assertSame('High', $ws->getCell('A2')->getValue());
-        $this->assertSame($libryo->title, $ws->getCell('B2')->getValue());
+        $this->assertSame($norma->title, $ws->getCell('B2')->getValue());
         $this->assertSame(1, $ws->getCell('D2')->getValue()); // yes
         $this->assertSame(6, $ws->getCell('E2')->getValue()); // no
         $this->assertSame(1, $ws->getCell('F2')->getValue()); // not applicable
@@ -61,8 +61,8 @@ class AssessMetricsExcelExportTest extends TestCase
         $this->assertSame(3, $ws->getCell('H2')->getValue()); // high non-compliant
         $this->assertSame('67%', $ws->getCell('I2')->getValue()); // non-compliant items
 
-        $excel = app(AssessMetricsExcelExport::class)->forOrganisation($organisation, null, $user, ['search' => $libryo->title], $progressCallback);
+        $excel = app(AssessMetricsExcelExport::class)->forOrganisation($organisation, null, $user, ['search' => $norma->title], $progressCallback);
         $ws = $excel->getActiveSheet();
-        $this->assertSame($libryo->title, $ws->getCell('B2')->getValue());
+        $this->assertSame($norma->title, $ws->getCell('B2')->getValue());
     }
 }

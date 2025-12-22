@@ -11,14 +11,14 @@ use App\Livewire\Compilation\ContextQuestion\RequirementsSetup;
 use App\Livewire\Ontology\Category\CategoryTree;
 use App\Models\Auth\User;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
-use App\Models\Customer\Pivots\LibryoReference;
-use App\Models\Customer\Pivots\LibryoWork;
+use App\Models\Customer\Pivots\NormaReference;
+use App\Models\Customer\Pivots\NormaWork;
 use App\Models\Geonames\Location;
 use App\Models\Ontology\Category;
 use App\Models\Ontology\LegalDomain;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Support\Str;
 use Livewire\Livewire;
 use Tests\Feature\My\MyTestCase;
@@ -31,8 +31,8 @@ class ApplicabilityRequirementsControllerTest extends MyTestCase
         $location = Location::factory()->create();
         /** @var Organisation $organisation */
         $organisation = Organisation::factory()->create();
-        /** @var Libryo $libryo */
-        $libryo = Libryo::factory()->for($organisation)->create([
+        /** @var Norma $norma */
+        $norma = Norma::factory()->for($organisation)->create([
             'location_id' => $location->id,
             'auto_compiled' => true,
         ]);
@@ -59,22 +59,22 @@ class ApplicabilityRequirementsControllerTest extends MyTestCase
         $reference->locations()->attach($location->id);
         $reference->categories()->attach([$category->id, $industry->id]);
         $reference->legalDomains()->attach($legalDomain->id);
-        $libryo->legalDomains()->attach($legalDomain->id);
+        $norma->legalDomains()->attach($legalDomain->id);
 
         $user = $this->signIn($this->myNormalUser());
-        $user->libryos()->attach($libryo);
+        $user->normas()->attach($norma);
         $user->organisations()->attach($organisation);
 
-        $this->validateRequirementsPageLoads($libryo, $organisation, $user);
+        $this->validateRequirementsPageLoads($norma, $organisation, $user);
         $this->validateRequirementsSetupRenders($legalDomain, $location);
         $this->validateCategoryTreeLoads($industry, $category);
-        $this->validateApplicabilityRequirementChangerWorks($libryo, $reference);
-        $this->validateApplicabilityRequirementsListingLoads($libryo, $reference, $category, $user);
+        $this->validateApplicabilityRequirementChangerWorks($norma, $reference);
+        $this->validateApplicabilityRequirementsListingLoads($norma, $reference, $category, $user);
     }
 
-    public function validateRequirementsPageLoads(Libryo $libryo, Organisation $organisation, User $user): void
+    public function validateRequirementsPageLoads(Norma $norma, Organisation $organisation, User $user): void
     {
-        app(ActiveLibryosManager::class)->activate($user, $libryo);
+        app(ActiveNormasManager::class)->activate($user, $norma);
 
         $route = route('my.applicability.requirements-setup.index');
         $this->withExceptionHandling()->get($route)->assertForbidden();
@@ -92,9 +92,9 @@ class ApplicabilityRequirementsControllerTest extends MyTestCase
             ->assertSee('Recommended')
             ->assertSee($domain->title)
             ->assertSee($location->title)
-            ->assertSee('Recommended by Libryo')
-            ->assertSee('Included in Libryo Stream')
-            ->assertSee('Not Included in Libryo Stream')
+            ->assertSee('Recommended by Norma')
+            ->assertSee('Included in Norma Stream')
+            ->assertSee('Not Included in Norma Stream')
             ->call('handleFilter', []);
     }
 
@@ -105,89 +105,89 @@ class ApplicabilityRequirementsControllerTest extends MyTestCase
             ->assertSee($category->display_label);
     }
 
-    public function validateApplicabilityRequirementChangerWorks(Libryo $libryo, Reference $reference): void
+    public function validateApplicabilityRequirementChangerWorks(Norma $norma, Reference $reference): void
     {
         $otherReference = Reference::factory()->create();
 
-        $this->assertDatabaseMissing(LibryoReference::class, [
-            'place_id' => $libryo->id,
+        $this->assertDatabaseMissing(NormaReference::class, [
+            'place_id' => $norma->id,
             'reference_id' => $reference->id,
         ]);
 
-        $this->assertDatabaseMissing(LibryoWork::class, [
-            'place_id' => $libryo->id,
+        $this->assertDatabaseMissing(NormaWork::class, [
+            'place_id' => $norma->id,
             'work_id' => $reference->work_id,
         ]);
 
-        $this->assertDatabaseMissing(LibryoReference::class, [
-            'place_id' => $libryo->id,
+        $this->assertDatabaseMissing(NormaReference::class, [
+            'place_id' => $norma->id,
             'reference_id' => $otherReference->id,
         ]);
 
-        $this->assertDatabaseMissing(LibryoWork::class, [
-            'place_id' => $libryo->id,
+        $this->assertDatabaseMissing(NormaWork::class, [
+            'place_id' => $norma->id,
             'work_id' => $otherReference->work_id,
         ]);
 
         $instance = Livewire::test(ApplicabilityRequirementChanger::class, [
-            'inLibryo' => false,
+            'inNorma' => false,
             'referenceIds' => [$reference->id, $otherReference->id],
-            'libryoIds' => [$libryo->id],
+            'normaIds' => [$norma->id],
         ])
             ->set('comment', 'testing comments')
             ->set('type', ApplicabilityNoteType::SEE_FOR_INTEREST->value)
             ->call('toggleState')
-            ->assertSet('inLibryo', true)
+            ->assertSet('inNorma', true)
             ->assertSet('comment', '');
 
-        $this->assertDatabaseHas(LibryoReference::class, [
-            'place_id' => $libryo->id,
+        $this->assertDatabaseHas(NormaReference::class, [
+            'place_id' => $norma->id,
             'reference_id' => $reference->id,
         ]);
 
-        $this->assertDatabaseHas(LibryoWork::class, [
-            'place_id' => $libryo->id,
+        $this->assertDatabaseHas(NormaWork::class, [
+            'place_id' => $norma->id,
             'work_id' => $reference->work_id,
         ]);
 
-        $this->assertDatabaseHas(LibryoReference::class, [
-            'place_id' => $libryo->id,
+        $this->assertDatabaseHas(NormaReference::class, [
+            'place_id' => $norma->id,
             'reference_id' => $otherReference->id,
         ]);
 
-        $this->assertDatabaseHas(LibryoWork::class, [
-            'place_id' => $libryo->id,
+        $this->assertDatabaseHas(NormaWork::class, [
+            'place_id' => $norma->id,
             'work_id' => $otherReference->work_id,
         ]);
 
         $instance->set('comment', 'testing comments again')
             ->set('type', ApplicabilityNoteType::NOT_SUBSCRIBED_TO_CATEGORY->value)
             ->call('toggleState')
-            ->assertSet('inLibryo', false)
+            ->assertSet('inNorma', false)
             ->assertSet('comment', '');
 
-        $this->assertDatabaseMissing(LibryoReference::class, [
-            'place_id' => $libryo->id,
+        $this->assertDatabaseMissing(NormaReference::class, [
+            'place_id' => $norma->id,
             'reference_id' => $reference->id,
         ]);
 
-        $this->assertDatabaseMissing(LibryoWork::class, [
-            'place_id' => $libryo->id,
+        $this->assertDatabaseMissing(NormaWork::class, [
+            'place_id' => $norma->id,
             'work_id' => $reference->work_id,
         ]);
 
-        $this->assertDatabaseMissing(LibryoReference::class, [
-            'place_id' => $libryo->id,
+        $this->assertDatabaseMissing(NormaReference::class, [
+            'place_id' => $norma->id,
             'reference_id' => $otherReference->id,
         ]);
 
-        $this->assertDatabaseMissing(LibryoWork::class, [
-            'place_id' => $libryo->id,
+        $this->assertDatabaseMissing(NormaWork::class, [
+            'place_id' => $norma->id,
             'work_id' => $otherReference->work_id,
         ]);
     }
 
-    public function validateApplicabilityRequirementsListingLoads(Libryo $libryo, Reference $reference, Category $category, User $user): void
+    public function validateApplicabilityRequirementsListingLoads(Norma $norma, Reference $reference, Category $category, User $user): void
     {
         $reference->load(['work']);
 
@@ -205,13 +205,13 @@ class ApplicabilityRequirementsControllerTest extends MyTestCase
             ->assertSee($workTitle)
             ->assertSee($reference->work->title);
 
-        $this->assertDatabaseMissing(LibryoReference::class, [
-            'place_id' => $libryo->id,
+        $this->assertDatabaseMissing(NormaReference::class, [
+            'place_id' => $norma->id,
             'reference_id' => $reference->id,
         ]);
 
-        $this->assertDatabaseMissing(LibryoWork::class, [
-            'place_id' => $libryo->id,
+        $this->assertDatabaseMissing(NormaWork::class, [
+            'place_id' => $norma->id,
             'work_id' => $reference->work_id,
         ]);
 
@@ -224,13 +224,13 @@ class ApplicabilityRequirementsControllerTest extends MyTestCase
 
         $instance->call('handleActions', $payload);
 
-        $this->assertDatabaseHas(LibryoReference::class, [
-            'place_id' => $libryo->id,
+        $this->assertDatabaseHas(NormaReference::class, [
+            'place_id' => $norma->id,
             'reference_id' => $reference->id,
         ]);
 
-        $this->assertDatabaseHas(LibryoWork::class, [
-            'place_id' => $libryo->id,
+        $this->assertDatabaseHas(NormaWork::class, [
+            'place_id' => $norma->id,
             'work_id' => $reference->work_id,
         ]);
 

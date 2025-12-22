@@ -7,23 +7,23 @@ use App\Enums\Assess\ResponseStatus;
 use App\Models\Assess\AssessmentItem;
 use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Tests\TestCase;
 
 class DeleteResponsesWithoutReferencesTest extends TestCase
 {
     public function testHandle(): void
     {
-        $libryo = Libryo::factory()->create();
+        $norma = Norma::factory()->create();
         $ref = Reference::factory()->create();
-        $ref->libryos()->attach($libryo->id);
+        $ref->normas()->attach($norma->id);
 
         $ai = AssessmentItem::factory()->create();
-        $aiResponse = AssessmentItemResponse::factory()->for($libryo)->for($ai)->create(['answer' => ResponseStatus::notAssessed()->value]);
-        $aiResponseYes = AssessmentItemResponse::factory()->for($libryo)->for($ai)->create(['answer' => ResponseStatus::yes()->value]);
+        $aiResponse = AssessmentItemResponse::factory()->for($norma)->for($ai)->create(['answer' => ResponseStatus::notAssessed()->value]);
+        $aiResponseYes = AssessmentItemResponse::factory()->for($norma)->for($ai)->create(['answer' => ResponseStatus::yes()->value]);
         $ai2 = AssessmentItem::factory()->create();
         $ref->assessmentItems()->attach($ai2);
-        $aiResponseWithReference = AssessmentItemResponse::factory()->for($libryo)->for($ai2)->create(['answer' => ResponseStatus::notAssessed()->value]);
+        $aiResponseWithReference = AssessmentItemResponse::factory()->for($norma)->for($ai2)->create(['answer' => ResponseStatus::notAssessed()->value]);
 
         $this->assertNotNull(AssessmentItemResponse::find($aiResponse->id));
         app(DeleteResponsesWithoutReferences::class)->handle();

@@ -9,19 +9,19 @@ use App\Models\Corpus\ReferenceContentExtract;
 use App\Models\Tasks\Task;
 use Config;
 use Tests\Feature\My\MyTestCase;
-use Tests\Traits\UsesLibryoAI;
+use Tests\Traits\UsesNormaAI;
 
 class ReferenceExtractControllerTest extends MyTestCase
 {
-    use UsesLibryoAI;
+    use UsesNormaAI;
 
     public function testGettingExtracts(): void
     {
-        Config::set('services.libryo_ai.enabled', true);
+        Config::set('services.norma_ai.enabled', true);
         $expected = $this->getExpectations();
-        $this->mockLibryoAIGenerateTaskRequest();
+        $this->mockNormaAIGenerateTaskRequest();
 
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $action = ActionArea::factory()->create();
         $reference = Reference::factory()->create();
 
@@ -32,7 +32,7 @@ class ReferenceExtractControllerTest extends MyTestCase
             ->assertJsonCount(count($expected), 'data');
 
         $extracts = ReferenceContentExtract::where('reference_id', $reference->id)->get();
-        Task::factory()->create(['place_id' => $libryo->id, 'action_area_id' => $action->id, 'reference_content_extract_id' => $extracts[0]->id]);
+        Task::factory()->create(['place_id' => $norma->id, 'action_area_id' => $action->id, 'reference_content_extract_id' => $extracts[0]->id]);
 
         $this->getJson(route('api.my.references.extracts.index', ['reference' => $reference->id]))
             ->assertSuccessful()

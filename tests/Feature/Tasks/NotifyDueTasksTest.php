@@ -90,7 +90,7 @@ class NotifyDueTasksTest extends TestCase
 
         $this->travelTo(now()->setTime(8, 0));
 
-        Artisan::call('libryo:notify-due-tasks');
+        Artisan::call('norma:notify-due-tasks');
 
         Notification::assertSentTo([$user], TaskDueNotification::class);
         Notification::assertSentTo([$watcher], TaskDueNotification::class);

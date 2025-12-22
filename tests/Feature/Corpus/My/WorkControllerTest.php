@@ -14,7 +14,7 @@ use App\Models\Ontology\Category;
 use App\Models\Ontology\LegalDomain;
 use App\Models\Ontology\Tag;
 use App\Services\Corpus\VolumeHighlighter;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Services\Search\Elastic\DocumentSearch;
 use App\Services\Storage\WorkStorageProcessor;
 use App\Stores\Corpus\ContentResourceStore;
@@ -32,7 +32,7 @@ class WorkControllerTest extends MyTestCase
     //  */
     // public function testRequirements(): void
     // {
-    //     [$user, $libryo, $org] = $this->initUserLibryoOrg();
+    //     [$user, $norma, $org] = $this->initUserNormaOrg();
     //     $routeName = 'my.corpus.requirements.index';
     //     $route = route($routeName);
 
@@ -42,12 +42,12 @@ class WorkControllerTest extends MyTestCase
     //     $referenc2 = Reference::factory()->for($work2)->create();
     //     $work3 = Work::factory()->create();
     //     $reference3 = Reference::factory()->for($work3)->create();
-    //     $reference->libryos()->attach($libryo);
-    //     $referenc2->libryos()->attach($libryo);
+    //     $reference->normas()->attach($norma);
+    //     $referenc2->normas()->attach($norma);
 
     //     $location = Location::factory()->create();
     //     $location->references()->attach([$reference->id]);
-    //     $libryo->update(['location_id' => $location->id]);
+    //     $norma->update(['location_id' => $location->id]);
 
     //     $location2 = Location::factory()->create();
     //     $location2->references()->attach([$referenc2->id]);
@@ -79,18 +79,18 @@ class WorkControllerTest extends MyTestCase
 
     // public function testRequirementsForOrg(): void
     // {
-    //     [$user, $libryo, $org] = $this->initUserLibryoOrg();
-    //     $libryo2 = Libryo::factory()->for($org)->create();
+    //     [$user, $norma, $org] = $this->initUserNormaOrg();
+    //     $norma2 = Norma::factory()->for($org)->create();
     //     $route = route('my.corpus.requirements.index');
 
-    //     app(ActiveLibryosManager::class)->activateAll($user);
+    //     app(ActiveNormasManager::class)->activateAll($user);
 
     //     $work = Work::factory()->create();
     //     $reference = Reference::factory()->for($work)->create();
     //     $work2 = Work::factory()->create();
     //     $reference2 = Reference::factory()->for($work2)->create();
-    //     $reference->libryos()->attach($libryo);
-    //     $reference2->libryos()->attach($libryo2);
+    //     $reference->normas()->attach($norma);
+    //     $reference2->normas()->attach($norma2);
 
     //     $response = $this->get($route)->assertSuccessful();
     //     $response->assertSee($work->title);
@@ -109,7 +109,7 @@ class WorkControllerTest extends MyTestCase
     //  */
     // public function testLegalReport(): void
     // {
-    //     [$user, $libryo, $org] = $this->initUserLibryoOrg();
+    //     [$user, $norma, $org] = $this->initUserNormaOrg();
     //     $routeName = 'my.corpus.requirements.legal-report';
     //     $route = route($routeName);
 
@@ -119,8 +119,8 @@ class WorkControllerTest extends MyTestCase
     //     $referenc2 = Reference::factory()->for($work2)->create();
     //     $work3 = Work::factory()->create();
     //     $reference3 = Reference::factory()->for($work3)->create();
-    //     $reference->libryos()->attach($libryo);
-    //     $referenc2->libryos()->attach($libryo);
+    //     $reference->normas()->attach($norma);
+    //     $referenc2->normas()->attach($norma);
 
     //     $response = $this->get($route)->assertSuccessful();
     //     $response->assertSee($work->title);
@@ -139,18 +139,18 @@ class WorkControllerTest extends MyTestCase
 
     // public function testLegalReportForOrg(): void
     // {
-    //     [$user, $libryo, $org] = $this->initUserLibryoOrg();
-    //     $libryo2 = Libryo::factory()->for($org)->create();
+    //     [$user, $norma, $org] = $this->initUserNormaOrg();
+    //     $norma2 = Norma::factory()->for($org)->create();
     //     $route = route('my.corpus.requirements.legal-report');
 
-    //     app(ActiveLibryosManager::class)->activateAll($user);
+    //     app(ActiveNormasManager::class)->activateAll($user);
 
     //     $work = Work::factory()->create();
     //     $reference = Reference::factory()->for($work)->create();
     //     $work2 = Work::factory()->create();
     //     $reference2 = Reference::factory()->for($work2)->create();
-    //     $reference->libryos()->attach($libryo);
-    //     $reference2->libryos()->attach($libryo2);
+    //     $reference->normas()->attach($norma);
+    //     $reference2->normas()->attach($norma2);
 
     //     $response = $this->get($route)->assertSuccessful();
     //     $response->assertSee($work->title);
@@ -169,7 +169,7 @@ class WorkControllerTest extends MyTestCase
      */
     public function testLegalRegister(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.corpus.requirements.legal-register';
         $route = route($routeName);
 
@@ -180,8 +180,8 @@ class WorkControllerTest extends MyTestCase
         $referenc2 = Reference::factory()->for($work2)->create();
         $work3 = Work::factory()->create();
         $reference3 = Reference::factory()->for($work3)->create();
-        $reference->libryos()->attach($libryo);
-        $referenc2->libryos()->attach($libryo);
+        $reference->normas()->attach($norma);
+        $referenc2->normas()->attach($norma);
         $domain = LegalDomain::factory()->create();
         $reference->legalDomains()->attach($domain);
 
@@ -197,19 +197,19 @@ class WorkControllerTest extends MyTestCase
         $activities = UserActivity::all();
         $this->assertTrue($activities->where('activity_type', UserActivityType::viewedRequirements()->value)->isNotEmpty());
 
-        app(ActiveLibryosManager::class)->activateAll($user);
+        app(ActiveNormasManager::class)->activateAll($user);
         $response = $this->get($route)->assertSuccessful();
-        $response->assertSee('Switch to single stream mode to see a legal register for a specific Libryo Stream');
+        $response->assertSee('Switch to single stream mode to see a legal register for a specific Norma Stream');
         $response->assertDontSee($work->title);
     }
 
     public function testIndex(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.corpus.requirements.index';
         $route = route($routeName);
 
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream($libryo);
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream($norma);
 
         $this->partialMock(DocumentSearch::class, function (MockInterface $mock) use ($work) {
             $work->load([
@@ -263,7 +263,7 @@ class WorkControllerTest extends MyTestCase
 
         $response = $this->get(route($routeName, ['search' => $reference->refPlainText?->plain_text]))->assertSuccessful();
 
-        [,, $work2, $requirementsCollection3, $domain3, $tag3] = $this->initCompiledStream($libryo);
+        [,, $work2, $requirementsCollection3, $domain3, $tag3] = $this->initCompiledStream($norma);
 
         $response = $this->get(route($routeName, ['works' => [$work2->id]]))->assertSuccessful();
         $response->assertSee($work2->title);
@@ -286,7 +286,7 @@ class WorkControllerTest extends MyTestCase
             ->assertSuccessful()
             ->assertSee($control->display_label);
 
-        app(ActiveLibryosManager::class)->activateAll($user);
+        app(ActiveNormasManager::class)->activateAll($user);
         $response = $this->get($route)->assertSuccessful();
         $response->assertSee('Switch to single stream mode');
 
@@ -297,7 +297,7 @@ class WorkControllerTest extends MyTestCase
 
     public function testShow(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         /** @var Work $work */
         $work = Work::factory()->hasExpressions(1)->create();
         $routeName = 'my.corpus.works.show';
@@ -319,7 +319,7 @@ class WorkControllerTest extends MyTestCase
 
     public function testPreviewSource(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         /** @var Work */
         $work = Work::factory()->hasExpressions(1)->create();
         $work2 = Work::factory()->create();
@@ -363,7 +363,7 @@ class WorkControllerTest extends MyTestCase
 
     public function testExportAsExcel(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.corpus.requirements.index.export.excel';
         Storage::fake();
 
@@ -371,8 +371,8 @@ class WorkControllerTest extends MyTestCase
         $work2 = Work::factory()->create();
         $reference = Reference::factory()->for($work)->create();
         $referenc2 = Reference::factory()->for($work2)->create();
-        $reference->libryos()->attach($libryo);
-        $referenc2->libryos()->attach($libryo);
+        $reference->normas()->attach($norma);
+        $referenc2->normas()->attach($norma);
 
         $response = $this->get(route($routeName))->assertSuccessful();
 
@@ -392,7 +392,7 @@ class WorkControllerTest extends MyTestCase
     public function testExportAsPDF(): void
     {
         PDF::fake();
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.corpus.requirements.index.export.pdf';
         Storage::fake();
 
@@ -400,8 +400,8 @@ class WorkControllerTest extends MyTestCase
         $work2 = Work::factory()->create();
         $reference = Reference::factory()->for($work)->create();
         $referenc2 = Reference::factory()->for($work2)->create();
-        $reference->libryos()->attach($libryo);
-        $referenc2->libryos()->attach($libryo);
+        $reference->normas()->attach($norma);
+        $referenc2->normas()->attach($norma);
 
         $response = $this->get(route($routeName))->assertSuccessful();
 
@@ -420,7 +420,7 @@ class WorkControllerTest extends MyTestCase
 
     public function testPrintPreview(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $works = Work::factory(2)->hasReferences(2)->hasExpressions(1)->create();
         $works[0]->update(['active_work_expression_id' => $works[0]->expressions->first()->id]);
 

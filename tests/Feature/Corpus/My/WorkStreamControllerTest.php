@@ -6,7 +6,7 @@ use App\Models\Corpus\Doc;
 use App\Models\Corpus\ReferenceContent;
 use App\Models\Corpus\Work;
 use App\Services\Corpus\VolumeHighlighter;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Support\Str;
 use Mockery\MockInterface;
 use Tests\Feature\My\MyTestCase;
@@ -15,11 +15,11 @@ class WorkStreamControllerTest extends MyTestCase
 {
     public function testShowWithRelations(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $works = Work::factory(2)->hasReferences(2)->create();
-        $works[0]->references->first()->libryos()->attach($libryo);
-        $works[1]->references->first()->libryos()->attach($libryo);
+        $works[0]->references->first()->normas()->attach($norma);
+        $works[1]->references->first()->normas()->attach($norma);
         $works[1]->parents()->attach($works[0]);
         $route = route('my.requirements.with.relation.show', ['work' => $works[0]->id]);
 
@@ -27,14 +27,14 @@ class WorkStreamControllerTest extends MyTestCase
         $response->assertSee($works[1]->title);
         $response->assertSee('Subsidiary Documents');
 
-        app(ActiveLibryosManager::class)->activateAll($user);
+        app(ActiveNormasManager::class)->activateAll($user);
         $response = $this->get($route)->assertSuccessful();
         $response->assertSee($works[1]->title);
     }
 
     public function testFullText(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $works = Work::factory(2)->hasReferences(2)->hasExpressions(1)->create();
         $works[0]->update(['active_work_expression_id' => $works[0]->expressions->first()->id]);
 
@@ -70,8 +70,8 @@ class WorkStreamControllerTest extends MyTestCase
 
     public function testSearchSuggest(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream($libryo);
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream($norma);
 
         $routeName = 'my.corpus.works.search-suggest';
         // test without a search query
@@ -90,7 +90,7 @@ class WorkStreamControllerTest extends MyTestCase
 
     public function testSearchSuggestAll(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $route = route('my.corpus.works.search-suggest-all', ['key' => 'requirements-page']);
 
@@ -100,7 +100,7 @@ class WorkStreamControllerTest extends MyTestCase
             ->assertSuccessful()
             ->assertSee($searchTerm);
 
-        app(ActiveLibryosManager::class)->activateAll($user);
+        app(ActiveNormasManager::class)->activateAll($user);
 
         $route = route('my.corpus.works.search-suggest-all', ['key' => 'requirements-search', 'search' => $searchTerm]);
         $response = $this->get($route)->assertSuccessful()

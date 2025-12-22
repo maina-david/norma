@@ -29,7 +29,7 @@ class DocumentSearchIndexerTest extends TestCase
 
     public function testAddReferences(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
         $this->mockEsClient();
         $work->references->load(['htmlContent', 'refPlainText']);
         $indexer = app(DocumentSearchIndexer::class);
@@ -39,7 +39,7 @@ class DocumentSearchIndexerTest extends TestCase
 
     public function testAddReferencesException(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
         $this->mock(Client::class, function (MockInterface $mock) {
             $mock->shouldReceive('bulk')->andThrow(new Exception());
         });
@@ -50,7 +50,7 @@ class DocumentSearchIndexerTest extends TestCase
 
     public function testAddByWork(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
         $work->references[0]->htmlContent()->save(new ReferenceContent(['reference_id' => $work->references[0]->id, 'cached_content' => 'Test content']));
 
         $this->mockEsClient();
@@ -81,7 +81,7 @@ class DocumentSearchIndexerTest extends TestCase
 
     public function testFullIndex(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
         $ref = $work->references[0];
         $ref->htmlContent()->save(new ReferenceContent([
             'reference_id' => $ref->id,

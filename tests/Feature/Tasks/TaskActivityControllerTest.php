@@ -15,10 +15,10 @@ class TaskActivityControllerTest extends MyTestCase
 {
     public function testIndexForTask(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.tasks.task-activities.index';
 
-        $task = Task::factory()->for($libryo)->create(['assigned_to_id' => $user->id]);
+        $task = Task::factory()->for($norma)->create(['assigned_to_id' => $user->id]);
 
         $newTitle = 'New Title';
         $newStatus = TaskStatus::inProgress()->value;
@@ -34,7 +34,7 @@ class TaskActivityControllerTest extends MyTestCase
         ])->assertSessionDoesntHaveErrors();
 
         $file = File::factory()->create();
-        $this->createActivities($user, $libryo, $task, $file, $newDue);
+        $this->createActivities($user, $norma, $task, $file, $newDue);
 
         $response = $this->get(route($routeName, ['task' => $task]))->assertSuccessful();
 
@@ -55,58 +55,58 @@ class TaskActivityControllerTest extends MyTestCase
         $response->assertSeeSelector('//p[text()[contains(.,"' . $user->fullName . ' changed the task due date from ' . $newDue->toFormattedDateString() . ' to No due date")]]');
     }
 
-    private function createActivities($user, $libryo, $task, $file, $newDue): void
+    private function createActivities($user, $norma, $task, $file, $newDue): void
     {
-        TaskActivity::factory()->for($libryo)->for($user)->for($task)->create([
+        TaskActivity::factory()->for($norma)->for($user)->for($task)->create([
             'activity_type' => TaskActivityType::setReminder()->value,
         ]);
-        TaskActivity::factory()->for($libryo)->for($user)->for($task)->create([
+        TaskActivity::factory()->for($norma)->for($user)->for($task)->create([
             'activity_type' => TaskActivityType::madeComment()->value,
         ]);
-        TaskActivity::factory()->for($libryo)->for($user)->for($task)->create([
+        TaskActivity::factory()->for($norma)->for($user)->for($task)->create([
             'activity_type' => TaskActivityType::documentUpload()->value,
             'details' => ['file_id' => $file->id],
         ]);
         // unknown file
-        TaskActivity::factory()->for($libryo)->for($user)->for($task)->create([
+        TaskActivity::factory()->for($norma)->for($user)->for($task)->create([
             'activity_type' => TaskActivityType::documentUpload()->value,
         ]);
-        TaskActivity::factory()->for($libryo)->for($user)->for($task)->create([
+        TaskActivity::factory()->for($norma)->for($user)->for($task)->create([
             'activity_type' => TaskActivityType::watchTask()->value,
             'details' => ['watching' => true],
         ]);
-        TaskActivity::factory()->for($libryo)->for($user)->for($task)->create([
+        TaskActivity::factory()->for($norma)->for($user)->for($task)->create([
             'activity_type' => TaskActivityType::watchTask()->value,
         ]);
-        TaskActivity::factory()->for($libryo)->for($user)->for($task)->create([
+        TaskActivity::factory()->for($norma)->for($user)->for($task)->create([
             'activity_type' => TaskActivityType::priorityChanged()->value,
             'details' => [
                 'from_priority' => null,
                 'to_priority' => TaskPriority::medium()->value,
             ],
         ]);
-        TaskActivity::factory()->for($libryo)->for($user)->for($task)->create([
+        TaskActivity::factory()->for($norma)->for($user)->for($task)->create([
             'activity_type' => TaskActivityType::priorityChanged()->value,
             'details' => [
                 'from_priority' => TaskPriority::medium()->value,
                 'to_priority' => null,
             ],
         ]);
-        TaskActivity::factory()->for($libryo)->for($user)->for($task)->create([
+        TaskActivity::factory()->for($norma)->for($user)->for($task)->create([
             'activity_type' => TaskActivityType::dueDateChanged()->value,
             'details' => [
                 'from_due_on' => (string) $newDue,
                 'to_due_on' => (string) $newDue,
             ],
         ]);
-        TaskActivity::factory()->for($libryo)->for($user)->for($task)->create([
+        TaskActivity::factory()->for($norma)->for($user)->for($task)->create([
             'activity_type' => TaskActivityType::dueDateChanged()->value,
             'details' => [
                 'from_due_on' => (string) $newDue,
                 'to_due_on' => null,
             ],
         ]);
-        TaskActivity::factory()->for($libryo)->for($user)->for($task)->create([
+        TaskActivity::factory()->for($norma)->for($user)->for($task)->create([
             'activity_type' => TaskActivityType::assigneeChange()->value,
             'details' => [
                 'from' => $user->id,

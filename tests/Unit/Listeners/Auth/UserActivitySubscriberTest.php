@@ -2,10 +2,10 @@
 
 namespace Tests\Unit\Listeners\Auth;
 
-use App\Events\Auth\UserActivity\ActivatedLibryo;
+use App\Events\Auth\UserActivity\ActivatedNorma;
 use App\Events\Auth\UserActivity\UserAccessedPlatform;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Tests\TestCase;
 
 class UserActivitySubscriberTest extends TestCase
@@ -13,14 +13,14 @@ class UserActivitySubscriberTest extends TestCase
     /**
      * @return void
      */
-    public function testActivateLibryoEvent(): void
+    public function testActivateNormaEvent(): void
     {
         $user = User::factory()->create();
-        $libryo = Libryo::factory()->create();
+        $norma = Norma::factory()->create();
 
         $this->assertTrue($user->activities()->count() === 0);
 
-        ActivatedLibryo::dispatch($user, $libryo);
+        ActivatedNorma::dispatch($user, $norma);
 
         $this->assertTrue($user->activities()->count() > 0);
     }

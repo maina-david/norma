@@ -15,13 +15,13 @@ class DashboardControllerTest extends MyTestCase
     public function testDashboard(): void
     {
         /** @var \App\Models\Auth\User $user */
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.dashboard';
 
         $work = Work::factory()->create();
         $update = LegalUpdate::factory()->for($work)->create();
         $context = ContextQuestion::factory()->create();
-        $context->libryos()->attach($libryo->id, ['answer' => ContextQuestionAnswer::maybe()->value]);
+        $context->normas()->attach($norma->id, ['answer' => ContextQuestionAnswer::maybe()->value]);
         $user->legalUpdates()->attach($update->id, ['read_status' => 0, 'understood_status' => 0]);
 
         $response = $this->get(route($routeName));
@@ -30,7 +30,7 @@ class DashboardControllerTest extends MyTestCase
         $response->assertSee('Hello, ' . $user->fname);
         $response->assertSee('Days Active in the last 30 days');
         $response->assertSee('Updates Received This Month');
-        $response->assertSee('Libryo Streams');
+        $response->assertSee('Norma Streams');
         $response->assertSee('Unread updates');
         $response->assertSeeLivewire(UnansweredApplicabilityModal::class);
 

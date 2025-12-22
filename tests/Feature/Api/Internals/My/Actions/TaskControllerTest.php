@@ -15,7 +15,7 @@ use App\Models\Compilation\ContextQuestion;
 use App\Models\Corpus\Reference;
 use App\Models\Ontology\Category;
 use App\Models\Tasks\Task;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Tests\Feature\My\MyTestCase;
@@ -24,9 +24,9 @@ class TaskControllerTest extends MyTestCase
 {
     public function testListingAndUpdatingTasks(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
-        $task = Task::factory()->create(['place_id' => $libryo->id, 'assigned_to_id' => $user->id]);
+        $task = Task::factory()->create(['place_id' => $norma->id, 'assigned_to_id' => $user->id]);
 
         $this->getJson(route('api.my.actions.tasks.index', ['sort' => 'title']))
             ->assertSuccessful()
@@ -67,7 +67,7 @@ class TaskControllerTest extends MyTestCase
         $this->activateAllStreams($user);
 
         $payload['title'] = $this->faker->sentence();
-        $payload['libryo_id'] = $libryo->id;
+        $payload['norma_id'] = $norma->id;
         $payload['copy'] = true;
 
         $this->postJson(route('api.my.actions.tasks.store'), $payload)
@@ -78,7 +78,7 @@ class TaskControllerTest extends MyTestCase
                 ],
             ]);
 
-        app(ActiveLibryosManager::class)->activate($user, $libryo);
+        app(ActiveNormasManager::class)->activate($user, $norma);
 
         $context = ContextQuestion::factory()->create();
 
@@ -111,18 +111,18 @@ class TaskControllerTest extends MyTestCase
 
     public function testActions(): void
     {
-        /** @var \App\Models\Customer\Libryo $libryo */
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        /** @var \App\Models\Customer\Norma $norma */
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $reference = Reference::factory()->create();
         $reference->load(['work', 'refPlainText']);
-        $libryo->references()->attach($reference->id);
+        $norma->references()->attach($reference->id);
         $action = ActionArea::factory()->create();
         $action->references()->attach($reference->id);
 
         $task = Task::factory()->create([
             'taskable_id' => $reference->id,
             'taskable_type' => $reference->getMorphClass(),
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
             'task_status' => TaskStatus::inProgress()->value,
             'action_area_id' => $action->id,
             'assigned_to_id' => null,
@@ -170,13 +170,13 @@ class TaskControllerTest extends MyTestCase
 
     public function testFetchingGroups(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $otherUser = User::factory()->create();
-        $otherUser->libryos()->attach($libryo->id);
+        $otherUser->normas()->attach($norma->id);
         $otherUser->organisations()->attach($org->id);
 
-        $taskOne = Task::factory()->create(['place_id' => $libryo->id, 'assigned_to_id' => $user->id]);
-        $taskTwo = Task::factory()->create(['place_id' => $libryo->id, 'assigned_to_id' => $otherUser->id]);
+        $taskOne = Task::factory()->create(['place_id' => $norma->id, 'assigned_to_id' => $user->id]);
+        $taskTwo = Task::factory()->create(['place_id' => $norma->id, 'assigned_to_id' => $otherUser->id]);
 
         $options = User::whereKey([$user->id, $otherUser->id])
             ->orderBy('fname')
@@ -240,10 +240,10 @@ class TaskControllerTest extends MyTestCase
 
     public function testGeneratingExcel(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         Storage::fake();
 
-        Task::factory(5)->for($libryo)->create();
+        Task::factory(5)->for($norma)->create();
 
         $response = $this->getJson(route('api.my.actions.tasks.export', ['type' => 'excel']))
             ->assertSuccessful()
@@ -276,9 +276,9 @@ class TaskControllerTest extends MyTestCase
 
     public function testCopyTask(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
-        $task = Task::factory()->create(['place_id' => $libryo->id, 'assigned_to_id' => $user->id]);
+        $task = Task::factory()->create(['place_id' => $norma->id, 'assigned_to_id' => $user->id]);
 
         $payload = ['source_task_id' => $task->id];
 

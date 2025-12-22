@@ -2,22 +2,22 @@
 
 namespace Tests\Feature\Ontology\My\Settings;
 
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Ontology\LegalDomain;
 use Tests\Feature\Settings\SettingsTestCase;
 
-class ForLibryoLegalDomainControllerTest extends SettingsTestCase
+class ForNormaLegalDomainControllerTest extends SettingsTestCase
 {
     /**
      * @return void
      */
     public function testItRendersTheIndexCorrecly(): void
     {
-        $libryo = Libryo::factory()->create();
+        $norma = Norma::factory()->create();
         $domains = LegalDomain::factory()->count(4)->create();
-        $libryo->legalDomains()->attach($domains->pluck('id')->toArray());
+        $norma->legalDomains()->attach($domains->pluck('id')->toArray());
 
-        $route = route('my.settings.libryos.compilation.legal-domains.index', ['libryo' => $libryo]);
+        $route = route('my.settings.normas.compilation.legal-domains.index', ['norma' => $norma]);
 
         $this->assertForbiddenForNonAdmin($route, 'get');
 
@@ -33,10 +33,10 @@ class ForLibryoLegalDomainControllerTest extends SettingsTestCase
      */
     public function testItAttachesCorrecly(): void
     {
-        $libryo = Libryo::factory()->create();
+        $norma = Norma::factory()->create();
         $domains = LegalDomain::factory()->count(4)->create();
 
-        $route = route('my.settings.legal-domains.for.libryo.add', ['libryo' => $libryo]);
+        $route = route('my.settings.legal-domains.for.norma.add', ['norma' => $norma]);
 
         $this->assertForbiddenForNonAdmin($route, 'post');
 
@@ -54,15 +54,15 @@ class ForLibryoLegalDomainControllerTest extends SettingsTestCase
      */
     public function testItDetachesCorrecly(): void
     {
-        $libryo = Libryo::factory()->create();
+        $norma = Norma::factory()->create();
         $domains = LegalDomain::factory()->count(4)->create();
-        $libryo->legalDomains()->attach($domains->pluck('id')->toArray());
+        $norma->legalDomains()->attach($domains->pluck('id')->toArray());
 
-        $route = route('my.settings.legal-domains.for.libryo.actions', ['libryo' => $libryo]);
+        $route = route('my.settings.legal-domains.for.norma.actions', ['norma' => $norma]);
 
         $remove = $domains->splice(0, 2);
         $payload = $remove->mapWithKeys(fn ($domain) => ["actions-checkbox-{$domain->id}" => true])->toArray();
-        $payload['action'] = 'remove_from_libryo';
+        $payload['action'] = 'remove_from_norma';
 
         $this->assertForbiddenForNonAdmin($route, 'post');
 

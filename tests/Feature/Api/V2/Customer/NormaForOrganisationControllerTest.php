@@ -4,16 +4,16 @@ namespace Tests\Feature\Api\V2\Customer;
 
 use App\Models\Auth\Role;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
-use App\Models\Customer\Pivots\LegalDomainLibryo;
+use App\Models\Customer\Pivots\LegalDomainNorma;
 use App\Models\Geonames\Location;
 use App\Models\Ontology\LegalDomain;
 use App\Models\Partners\Partner;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
-class LibryoForOrganisationControllerTest extends TestCase
+class NormaForOrganisationControllerTest extends TestCase
 {
     /**
      * @return void
@@ -23,7 +23,7 @@ class LibryoForOrganisationControllerTest extends TestCase
         $organisation = Organisation::factory()->create();
 
         $this->withExceptionHandling()
-            ->json('POST', route('api.v2.hq.organisations.libryos.store', ['organisation' => $organisation]))
+            ->json('POST', route('api.v2.hq.organisations.normas.store', ['organisation' => $organisation]))
             ->assertUnauthorized();
 
         $user = User::factory()->create();
@@ -33,26 +33,26 @@ class LibryoForOrganisationControllerTest extends TestCase
         Passport::actingAs($user);
 
         $this->withExceptionHandling()
-            ->json('POST', route('api.v2.hq.organisations.libryos.store', ['organisation' => $organisation]))
+            ->json('POST', route('api.v2.hq.organisations.normas.store', ['organisation' => $organisation]))
             ->assertForbidden();
 
         $user->organisations()->attach($organisation);
 
         $this->withExceptionHandling()
-            ->json('POST', route('api.v2.hq.organisations.libryos.store', ['organisation' => $organisation]))
+            ->json('POST', route('api.v2.hq.organisations.normas.store', ['organisation' => $organisation]))
             ->assertForbidden();
 
         $user->organisations()->updateExistingPivot($organisation, ['is_admin' => true]);
 
         $this->withExceptionHandling()
-            ->json('POST', route('api.v2.hq.organisations.libryos.store', ['organisation' => $organisation]))
+            ->json('POST', route('api.v2.hq.organisations.normas.store', ['organisation' => $organisation]))
             ->assertUnprocessable();
     }
 
     /**
      * @return void
      */
-    public function testItCreatesAndUpdatesTheLibryo(): void
+    public function testItCreatesAndUpdatesTheNorma(): void
     {
         $partner = Partner::factory()->create();
         $organisation = Organisation::factory()->create(['partner_id' => $partner->id]);
@@ -76,7 +76,7 @@ class LibryoForOrganisationControllerTest extends TestCase
         Passport::actingAs($user);
 
         $this->withoutExceptionHandling()
-            ->json('POST', route('api.v2.hq.organisations.libryos.store', ['organisation' => $organisation]), $data)
+            ->json('POST', route('api.v2.hq.organisations.normas.store', ['organisation' => $organisation]), $data)
             ->assertSuccessful()
             ->assertJson([
                 'data' => [
@@ -97,29 +97,29 @@ class LibryoForOrganisationControllerTest extends TestCase
 
         unset($data['legalDomains']);
 
-        $this->assertDatabaseHas((new Libryo())->getTable(), $data);
+        $this->assertDatabaseHas((new Norma())->getTable(), $data);
 
-        $libryo = Libryo::where($data)->firstOrFail();
+        $norma = Norma::where($data)->firstOrFail();
 
-        $table = (new LegalDomainLibryo())->getTable();
+        $table = (new LegalDomainNorma())->getTable();
 
         $domains->each(fn ($dom) => $this->assertDatabaseHas($table, [
             'legal_domain_id' => $dom->id,
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
         ]));
 
-        $this->assertNotNull($libryo->library_id);
+        $this->assertNotNull($norma->library_id);
 
-        $unassigned = Libryo::factory()->create();
+        $unassigned = Norma::factory()->create();
 
         $this->withExceptionHandling()
-            ->json('PUT', route('api.v2.hq.organisations.libryos.update', ['organisation' => $organisation, 'libryo' => $unassigned]), [])
+            ->json('PUT', route('api.v2.hq.organisations.normas.update', ['organisation' => $organisation, 'norma' => $unassigned]), [])
             ->assertNotFound();
 
         $update = ['title' => $this->faker->words(4, true)];
 
         $this->withoutExceptionHandling()
-            ->json('PUT', route('api.v2.hq.organisations.libryos.update', ['organisation' => $organisation, 'libryo' => $libryo]), $update)
+            ->json('PUT', route('api.v2.hq.organisations.normas.update', ['organisation' => $organisation, 'norma' => $norma]), $update)
             ->assertSuccessful()
             ->assertJson([
                 'data' => [

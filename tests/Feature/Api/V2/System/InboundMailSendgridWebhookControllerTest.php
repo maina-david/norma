@@ -20,7 +20,7 @@ class InboundMailSendgridWebhookControllerTest extends ApiTestCase
         );
         $sender = UpdateEmailSender::factory()->create(['slug' => 'testing', 'title' => 'testing']);
 
-        $to = $sender->slug . '@updates.libryo.com';
+        $to = $sender->slug . '@updates.norma.com';
         $from = 'test@example.com';
         $subject = 'Test subject';
         $html = '<p>Email body</p>';

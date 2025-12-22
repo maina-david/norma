@@ -13,7 +13,7 @@ class CategoryControllerTest extends MyTestCase
 {
     public function testListingControlsAndSubjects(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         CategoryType::factory()->create(['id' => \App\Enums\Ontology\CategoryType::CONTROL->value]);
         CategoryType::factory()->create(['id' => \App\Enums\Ontology\CategoryType::SUBJECT->value]);
 
@@ -22,10 +22,10 @@ class CategoryControllerTest extends MyTestCase
         $subject = Category::factory()->create(['category_type_id' => \App\Enums\Ontology\CategoryType::SUBJECT->value]);
 
         $action = ActionArea::factory()->create(['control_category_id' => $control->id, 'subject_category_id' => $subject->id]);
-        Task::factory()->create(['action_area_id' => $action->id, 'place_id' => $libryo->id]);
+        Task::factory()->create(['action_area_id' => $action->id, 'place_id' => $norma->id]);
 
         $reference = Reference::factory()->create();
-        $reference->libryos()->attach($libryo->id);
+        $reference->normas()->attach($norma->id);
         $reference->categories()->attach([$control->id, $subject->id]);
 
         $this->getJson(route('api.my.categories.controls.index'))

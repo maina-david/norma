@@ -20,7 +20,7 @@ class WhiteLabelManagerTest extends TestCase
         Config::set('app.url', 'https://cool-app.test');
 
         $this->call('GET', 'https://zebracorn.cool-app2.test')
-            ->assertRedirect('https://libryo.com/contact-us/');
+            ->assertRedirect('https://norma.com/contact-us/');
     }
 
     /**
@@ -37,8 +37,8 @@ class WhiteLabelManagerTest extends TestCase
         $current = $manager->current();
 
         $this->assertSame('default', $current->shortname());
-        $this->assertSame(asset('/img/libryo.png'), $current->loginLogo());
-        $this->assertSame(asset('/img/libryo-app.svg'), $current->appLogo());
+        $this->assertSame(asset('/img/norma.png'), $current->loginLogo());
+        $this->assertSame(asset('/img/norma-app.svg'), $current->appLogo());
         $this->assertSame(asset('/img/favicon.png'), $current->favicon());
 
         $user = Collaborator::factory()->create();

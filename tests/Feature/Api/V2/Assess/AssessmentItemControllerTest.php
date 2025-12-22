@@ -9,20 +9,20 @@ use Tests\Feature\Api\ApiTestCase;
 
 class AssessmentItemControllerTest extends ApiTestCase
 {
-    public function testIndexForLibryo(): void
+    public function testIndexForNorma(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
 
         $aItem = AssessmentItem::factory()->create(['legal_domain_id' => $domain->id]);
-        $aItemResponse = AssessmentItemResponse::factory()->for($aItem)->for($libryo)->create();
+        $aItemResponse = AssessmentItemResponse::factory()->for($aItem)->for($norma)->create();
         $reference = $work->references->load(['citation', 'htmlContent', 'refPlainText'])->first();
         $aItem->references()->attach($reference);
 
         $user = User::factory()->create();
-        $user->libryos()->attach($libryo);
+        $user->normas()->attach($norma);
 
-        $routeName = 'api.v2.assessment-items.for.libryo';
-        $route = route($routeName, ['libryo' => $libryo, 'include' => 'basicCitations|basicCitations.work|basicCitations.work.locations|guidanceNotes|legalDomain']); // these are the includes that Cleanchain still uses
+        $routeName = 'api.v2.assessment-items.for.norma';
+        $route = route($routeName, ['norma' => $norma, 'include' => 'basicCitations|basicCitations.work|basicCitations.work.locations|guidanceNotes|legalDomain']); // these are the includes that Cleanchain still uses
         $response = $this->assertApiUnauthorizedThenRun($user, 'get', $route);
         $items = [];
 
@@ -67,20 +67,20 @@ class AssessmentItemControllerTest extends ApiTestCase
         $this->deleteCompiledStream();
     }
 
-    public function testShowForLibryo(): void
+    public function testShowForNorma(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
 
         $aItem = AssessmentItem::factory()->create(['legal_domain_id' => $domain->id]);
-        $aItemResponse = AssessmentItemResponse::factory()->for($aItem)->for($libryo)->create();
+        $aItemResponse = AssessmentItemResponse::factory()->for($aItem)->for($norma)->create();
         $reference = $work->references->load(['citation', 'htmlContent', 'refPlainText'])->first();
         $aItem->references()->attach($reference);
 
         $user = User::factory()->create();
-        $user->libryos()->attach($libryo);
+        $user->normas()->attach($norma);
 
-        $routeName = 'api.v2.assessment-items.for.libryo.show';
-        $route = route($routeName, ['assessmentItem' => $aItem, 'libryo' => $libryo, 'include' => 'basicCitations|basicCitations.work|legalDomain']); // these are the includes that Cleanchain still uses
+        $routeName = 'api.v2.assessment-items.for.norma.show';
+        $route = route($routeName, ['assessmentItem' => $aItem, 'norma' => $norma, 'include' => 'basicCitations|basicCitations.work|legalDomain']); // these are the includes that Cleanchain still uses
         $response = $this->assertApiUnauthorizedThenRun($user, 'get', $route);
         $item = [
             'id' => $aItem->id,

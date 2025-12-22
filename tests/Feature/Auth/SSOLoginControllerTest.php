@@ -31,7 +31,7 @@ class SSOLoginControllerTest extends MyTestCase
 
     public function runTestFromProviderCode(string $providerName): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $role = Role::factory()->my()->create(['title' => 'My Users', 'app' => ApplicationType::my()->value]);
 
         $this->mockWhitelabel($providerName);
@@ -49,10 +49,10 @@ class SSOLoginControllerTest extends MyTestCase
         // a new user should be created
         $this->assertGreaterThan($userCount, User::count());
 
-        $newUser = User::with(['organisations', 'libryos'])->get()->last();
+        $newUser = User::with(['organisations', 'normas'])->get()->last();
         $this->assertSame($providerName, $newUser->auth_provider);
         $this->assertSame(config('services.sso.' . $providerName . '.partner_id'), $newUser->organisations->first()->partner_id);
-        $this->assertGreaterThan(0, $newUser->libryos->count());
+        $this->assertGreaterThan(0, $newUser->normas->count());
     }
 
     public function testFromProviderCodeRegwatch(): void
@@ -67,14 +67,14 @@ class SSOLoginControllerTest extends MyTestCase
 
     public function testRedirect(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.oauth.provider.redirect';
         $response = $this->get(route($routeName))->assertRedirect('login');
     }
 
     public function testRedirectWhitelabel(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.oauth.provider.redirect';
         $this->mockWhitelabel('regwatch');
         $response = $this->get(route($routeName))
@@ -86,7 +86,7 @@ class SSOLoginControllerTest extends MyTestCase
 
     public function testTokenFromProviderCode(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $role = Role::factory()->my()->create(['title' => 'My Users', 'app' => ApplicationType::my()->value]);
         $cli = Passport::client();
         $cli->name = 'Test Client';

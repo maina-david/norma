@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Actions\My;
 
-use App\Enums\System\LibryoModule;
+use App\Enums\System\NormaModule;
 use App\Enums\Tasks\Frequency;
 use App\Models\Auth\User;
 use App\Models\Tasks\Task;
@@ -16,15 +16,15 @@ class ActionsTaskControllerTest extends MyTestCase
 
     public function testListingAndViewing(): void
     {
-        /** @var \App\Models\Customer\Libryo $libryo */
+        /** @var \App\Models\Customer\Norma $norma */
         /** @var \App\Models\Customer\Organisation $org */
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
-        $libryo->enableModule(LibryoModule::actions());
+        $norma->enableModule(NormaModule::actions());
 
         $this->get(route('my.actions.tasks.index', ['view' => 'list']))
             ->assertSuccessful()
-            ->assertSee('my-libryo');
+            ->assertSee('my-norma');
         $this->get(route('my.actions.tasks.index', ['view' => 'calendar']))
             ->assertSuccessful()
             ->assertSee('Calendar View');
@@ -32,13 +32,13 @@ class ActionsTaskControllerTest extends MyTestCase
 
     public function testViewingDetails(): void
     {
-        /** @var \App\Models\Customer\Libryo $libryo */
+        /** @var \App\Models\Customer\Norma $norma */
         /** @var \App\Models\Customer\Organisation $org */
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
-        $libryo->enableModule(LibryoModule::actions());
+        $norma->enableModule(NormaModule::actions());
 
-        $task = Task::factory()->create(['place_id' => $libryo->id]);
+        $task = Task::factory()->create(['place_id' => $norma->id]);
 
         $this->get(route('my.actions.tasks.show', ['task' => $task->hash_id]))
             ->assertSuccessful()
@@ -47,7 +47,7 @@ class ActionsTaskControllerTest extends MyTestCase
 
     public function testDestroy(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $task = Task::factory()->create(['author_id' => $user]);
         $this->destroyAndTestData(Task::class, route('my.actions.tasks.destroy', ['task' => $task]));
 
@@ -71,10 +71,10 @@ class ActionsTaskControllerTest extends MyTestCase
      */
     public function testCreateRecurringTasksDailyFrequency(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        $libryo->enableModule(LibryoModule::actions());
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        $norma->enableModule(NormaModule::actions());
 
-        $task = Task::factory()->create(['place_id' => $libryo->id, 'assigned_to_id' => $user->id]);
+        $task = Task::factory()->create(['place_id' => $norma->id, 'assigned_to_id' => $user->id]);
 
         $payload = [
             'startDate' => '2025-01-01',
@@ -96,10 +96,10 @@ class ActionsTaskControllerTest extends MyTestCase
      */
     public function testCreateRecurringTasksWithWeeklyFrequency(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        $libryo->enableModule(LibryoModule::actions());
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        $norma->enableModule(NormaModule::actions());
 
-        $task = Task::factory()->create(['place_id' => $libryo->id, 'assigned_to_id' => $user->id]);
+        $task = Task::factory()->create(['place_id' => $norma->id, 'assigned_to_id' => $user->id]);
 
         $payload = [
             'startDate' => '2025-01-01',
@@ -121,10 +121,10 @@ class ActionsTaskControllerTest extends MyTestCase
      */
     public function testCreateRecurringTasksWithMonthlyFrequency(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        $libryo->enableModule(LibryoModule::actions());
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        $norma->enableModule(NormaModule::actions());
 
-        $task = Task::factory()->create(['place_id' => $libryo->id, 'assigned_to_id' => $user->id]);
+        $task = Task::factory()->create(['place_id' => $norma->id, 'assigned_to_id' => $user->id]);
 
         $payload = [
             'startDate' => '2025-01-01',
@@ -149,10 +149,10 @@ class ActionsTaskControllerTest extends MyTestCase
      */
     public function testCreateRecurringTasksWithMonthWeeklyFrequency(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        $libryo->enableModule(LibryoModule::actions());
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        $norma->enableModule(NormaModule::actions());
 
-        $task = Task::factory()->create(['place_id' => $libryo->id, 'assigned_to_id' => $user->id]);
+        $task = Task::factory()->create(['place_id' => $norma->id, 'assigned_to_id' => $user->id]);
 
         $payload = [
             'startDate' => '2025-01-01',
@@ -177,10 +177,10 @@ class ActionsTaskControllerTest extends MyTestCase
      */
     public function testCreateRecurringTasksWithEndDate(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        $libryo->enableModule(LibryoModule::actions());
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        $norma->enableModule(NormaModule::actions());
 
-        $task = Task::factory()->create(['place_id' => $libryo->id, 'assigned_to_id' => $user->id]);
+        $task = Task::factory()->create(['place_id' => $norma->id, 'assigned_to_id' => $user->id]);
 
         $payload = [
             'startDate' => '2025-01-01',
@@ -202,10 +202,10 @@ class ActionsTaskControllerTest extends MyTestCase
      */
     public function testCreateRecurringTasksWithOccurrences(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        $libryo->enableModule(LibryoModule::actions());
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        $norma->enableModule(NormaModule::actions());
 
-        $task = Task::factory()->create(['place_id' => $libryo->id, 'assigned_to_id' => $user->id]);
+        $task = Task::factory()->create(['place_id' => $norma->id, 'assigned_to_id' => $user->id]);
 
         $payload = [
             'startDate' => '2025-01-01',
@@ -227,10 +227,10 @@ class ActionsTaskControllerTest extends MyTestCase
      */
     public function testClearRecurrence(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        $libryo->enableModule(LibryoModule::actions());
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        $norma->enableModule(NormaModule::actions());
 
-        $task = Task::factory()->create(['place_id' => $libryo->id, 'assigned_to_id' => $user->id]);
+        $task = Task::factory()->create(['place_id' => $norma->id, 'assigned_to_id' => $user->id]);
 
         $payload = [
             'startDate' => '2025-01-01',

@@ -9,17 +9,17 @@ use App\Models\Corpus\ReferenceContent;
 use App\Models\Corpus\Work;
 use App\Models\Notify\LegalUpdate;
 use App\Models\Tasks\Task;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Tests\Feature\My\MyTestCase;
 use Tests\Feature\Tasks\Traits\RunsShowTests;
 use Tests\Feature\Traits\TestsVisibleFormLabels;
-use Tests\Traits\UsesLibryoAI;
+use Tests\Traits\UsesNormaAI;
 
 class TaskStreamControllerTest extends MyTestCase
 {
     use RunsShowTests;
     use TestsVisibleFormLabels;
-    use UsesLibryoAI;
+    use UsesNormaAI;
 
     public function testStreamShow(): void
     {
@@ -29,15 +29,15 @@ class TaskStreamControllerTest extends MyTestCase
 
     public function testIndexForRelatedAssessmentItemResponse(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $work = Work::factory()->hasReferences(2)->create();
         $reference = $work->references->first();
 
-        $reference->libryos()->attach($libryo);
+        $reference->normas()->attach($norma);
         $assessmentItem = AssessmentItem::factory()->create();
-        $assessmentItemResponse = AssessmentItemResponse::factory()->for($libryo)->for($assessmentItem)->create();
+        $assessmentItemResponse = AssessmentItemResponse::factory()->for($norma)->for($assessmentItem)->create();
         $reference->assessmentItems()->attach($assessmentItem);
-        $task = Task::factory()->for($libryo)->create([
+        $task = Task::factory()->for($norma)->create([
             'author_id' => $user->id,
             'taskable_type' => 'assessment_item_response',
             'taskable_id' => $assessmentItemResponse->id,
@@ -47,7 +47,7 @@ class TaskStreamControllerTest extends MyTestCase
         $response = $this->get(route($routeName, ['relation' => 'assessment-item-response', 'id' => $assessmentItemResponse->id]))->assertSuccessful();
         $response->assertSee($task->title);
 
-        app(ActiveLibryosManager::class)->activateAll($user);
+        app(ActiveNormasManager::class)->activateAll($user);
 
         $response = $this->get(route($routeName, ['relation' => 'assessment-item-response', 'id' => $assessmentItemResponse->id]))->assertSuccessful();
         $response->assertSee($task->title);
@@ -55,11 +55,11 @@ class TaskStreamControllerTest extends MyTestCase
 
     public function testIndexForRelatedReference(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $work = Work::factory()->hasReferences(2)->create();
         $reference = $work->references->first();
-        $reference->libryos()->attach($libryo);
-        $task = Task::factory()->for($libryo)->create([
+        $reference->normas()->attach($norma);
+        $task = Task::factory()->for($norma)->create([
             'author_id' => $user,
             'taskable_type' => 'register_item',
             'taskable_id' => $reference->id,
@@ -69,7 +69,7 @@ class TaskStreamControllerTest extends MyTestCase
         $response = $this->get(route($routeName, ['relation' => 'reference', 'id' => $reference->id]))->assertSuccessful();
         $response->assertSee($task->title);
 
-        app(ActiveLibryosManager::class)->activateAll($user);
+        app(ActiveNormasManager::class)->activateAll($user);
 
         $response = $this->get(route($routeName, ['relation' => 'reference', 'id' => $reference->id]))->assertSuccessful();
         $response->assertSee($task->title);
@@ -77,10 +77,10 @@ class TaskStreamControllerTest extends MyTestCase
 
     public function testIndexForRelatedUpdate(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $update = LegalUpdate::factory()->create();
-        $task = Task::factory()->for($libryo)->create([
+        $task = Task::factory()->for($norma)->create([
             'author_id' => $user,
             'taskable_type' => 'register_notification',
             'taskable_id' => $update->id,
@@ -90,7 +90,7 @@ class TaskStreamControllerTest extends MyTestCase
         $response = $this->get(route($routeName, ['relation' => 'update', 'id' => $update->id]))->assertSuccessful();
         $response->assertSee($task->title);
 
-        app(ActiveLibryosManager::class)->activateAll($user);
+        app(ActiveNormasManager::class)->activateAll($user);
 
         $response = $this->get(route($routeName, ['relation' => 'update', 'id' => $update->id]))->assertSuccessful();
         $response->assertSee($task->title);
@@ -98,29 +98,29 @@ class TaskStreamControllerTest extends MyTestCase
 
     public function testCreateForRelated(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $work = Work::factory()->hasReferences(2)->create();
         $reference = $work->references->first();
 
-        $reference->libryos()->attach($libryo);
+        $reference->normas()->attach($norma);
         $assessmentItem = AssessmentItem::factory()->create();
-        $assessmentItemResponse = AssessmentItemResponse::factory()->for($libryo)->for($assessmentItem)->create();
+        $assessmentItemResponse = AssessmentItemResponse::factory()->for($norma)->for($assessmentItem)->create();
         $reference->assessmentItems()->attach($assessmentItem);
 
         $routeName = 'my.tasks.tasks.for.related.create';
 
         $this->assertSeeVisibleFormLabels(
             [],
-            route($routeName, ['relation' => 'assessment-item-response', 'id' => $assessmentItemResponse->id, 'libryo' => $libryo->id]),
+            route($routeName, ['relation' => 'assessment-item-response', 'id' => $assessmentItemResponse->id, 'norma' => $norma->id]),
             ['Title', 'Description', 'Status', 'Due On', 'Priority', 'Followers']
         );
     }
 
     public function testFollowAndUnfollow(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $update = LegalUpdate::factory()->create();
-        $task = Task::factory()->for($libryo)->create([
+        $task = Task::factory()->for($norma)->create([
             'author_id' => $user,
             'taskable_type' => 'register_notification',
             'taskable_id' => $update->id,
@@ -148,9 +148,9 @@ class TaskStreamControllerTest extends MyTestCase
 
     public function testUpdateStatus(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $update = LegalUpdate::factory()->create();
-        $task = Task::factory()->for($libryo)->create([
+        $task = Task::factory()->for($norma)->create([
             'author_id' => $user,
             'taskable_type' => 'register_notification',
             'taskable_id' => $update->id,
@@ -165,19 +165,19 @@ class TaskStreamControllerTest extends MyTestCase
 
     public function testSuggestForRelated(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $work = Work::factory()->hasReferences(2)->create();
         $reference = $work->references->first();
 
-        $reference->libryos()->attach($libryo);
+        $reference->normas()->attach($norma);
         $assessmentItem = AssessmentItem::factory()->create();
-        $assessmentItemResponse = AssessmentItemResponse::factory()->for($libryo)->for($assessmentItem)->create();
+        $assessmentItemResponse = AssessmentItemResponse::factory()->for($norma)->for($assessmentItem)->create();
         $reference->assessmentItems()->attach($assessmentItem);
 
         ReferenceContent::factory()->create(['reference_id' => $reference->id]);
 
         $response = $this->get(route('my.tasks.tasks.for.related.suggest',
-            ['relation' => 'assessment-item-response', 'id' => $assessmentItemResponse->id, 'libryo' => $libryo->id])
+            ['relation' => 'assessment-item-response', 'id' => $assessmentItemResponse->id, 'norma' => $norma->id])
         )->assertSuccessful();
     }
 }

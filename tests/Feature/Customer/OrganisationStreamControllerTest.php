@@ -10,7 +10,7 @@ class OrganisationStreamControllerTest extends MyTestCase
 {
     public function testSwitcherSearch(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $org2 = Organisation::factory()->create();
 

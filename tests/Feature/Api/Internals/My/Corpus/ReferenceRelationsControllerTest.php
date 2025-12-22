@@ -10,9 +10,9 @@ class ReferenceRelationsControllerTest extends MyTestCase
 {
     public function testFetchingLinkedReferences(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $reference = Reference::factory()->create();
-        $reference->libryos()->attach($libryo->id);
+        $reference->normas()->attach($norma->id);
 
         $consequence = Reference::factory()->create();
 

@@ -3,48 +3,48 @@
 namespace Tests\Feature\Api\V2\Customer;
 
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Team;
 use App\Models\Geonames\Location;
 use App\Models\Ontology\LegalDomain;
 use Tests\Feature\Api\ApiTestCase;
 
-class LibryoControllerTest extends ApiTestCase
+class NormaControllerTest extends ApiTestCase
 {
     public function testIndex(): void
     {
-        $libryos = Libryo::factory(2)->create();
-        $libryoUnattached = Libryo::factory()->create();
+        $normas = Norma::factory(2)->create();
+        $normaUnattached = Norma::factory()->create();
         $user = User::factory()->create();
-        $user->libryos()->attach($libryos);
+        $user->normas()->attach($normas);
 
-        $routeName = 'api.v2.libryos.index';
+        $routeName = 'api.v2.normas.index';
         $route = route($routeName);
         $response = $this->assertApiUnauthorizedThenRun($user, 'get', $route);
         $items = [];
 
-        foreach ($libryos as $libryo) {
+        foreach ($normas as $norma) {
             $items[] = [
-                'id' => $libryo->id,
-                'title' => $libryo->title,
-                'place_type_id' => $libryo->place_type_id,
-                'address' => $libryo->address,
-                'geo_lat' => $libryo->geo_lat,
-                'geo_lng' => $libryo->geo_lng,
-                'location_id' => $libryo->location_id,
-                'organisation_id' => $libryo->organisation_id,
-                'deactivated' => $libryo->deactivated,
-                'description' => $libryo->description,
-                'compilation_in_progress' => $libryo->compilation_in_progress,
-                'created_at' => $libryo->created_at->format('Y-m-d H:i:s'),
-                'updated_at' => $libryo->updated_at->format('Y-m-d H:i:s'),
+                'id' => $norma->id,
+                'title' => $norma->title,
+                'place_type_id' => $norma->place_type_id,
+                'address' => $norma->address,
+                'geo_lat' => $norma->geo_lat,
+                'geo_lng' => $norma->geo_lng,
+                'location_id' => $norma->location_id,
+                'organisation_id' => $norma->organisation_id,
+                'deactivated' => $norma->deactivated,
+                'description' => $norma->description,
+                'compilation_in_progress' => $norma->compilation_in_progress,
+                'created_at' => $norma->created_at->format('Y-m-d H:i:s'),
+                'updated_at' => $norma->updated_at->format('Y-m-d H:i:s'),
             ];
         }
 
         $response->assertJson([
             'data' => $items,
         ], true);
-        $response->assertJsonMissing(['data' => ['id' => $libryoUnattached->id]]);
+        $response->assertJsonMissing(['data' => ['id' => $normaUnattached->id]]);
 
         $meta = [
             'current_page' => 1,
@@ -67,30 +67,30 @@ class LibryoControllerTest extends ApiTestCase
     }
 
     /**
-     * We'll use the LibryoController to test all the API filters.
+     * We'll use the NormaController to test all the API filters.
      *
      * @return void
      */
     public function testIndexFilters(): void
     {
-        $libryos = Libryo::factory(4)
+        $normas = Norma::factory(4)
             ->sequence(fn ($sequence) => ['title' => $sequence->index . ' ' . $this->faker->unique()->sentence(3, true)])
             ->create();
         $user = User::factory()->create();
-        $user->libryos()->attach($libryos);
+        $user->normas()->attach($normas);
 
         $items = [];
-        foreach ($libryos as $libryo) {
+        foreach ($normas as $norma) {
             $items[] = [
-                'id' => $libryo->id,
-                'title' => $libryo->title,
+                'id' => $norma->id,
+                'title' => $norma->title,
             ];
         }
 
-        $routeName = 'api.v2.libryos.index';
+        $routeName = 'api.v2.normas.index';
         $route = route($routeName, [
             'filters' => [
-                'title,like,%' . $libryos[0]->title . '%||title,like,%' . $libryos[2]->title . '%,or',
+                'title,like,%' . $normas[0]->title . '%||title,like,%' . $normas[2]->title . '%,or',
             ],
             'fields' => ['id', 'title'],
             'count' => ['legalDomains'],
@@ -100,13 +100,13 @@ class LibryoControllerTest extends ApiTestCase
 
         $response->assertJson(['data' => [$items[0], $items[2]]]);
         // as we only asked for id and title fields, address should not be included
-        $response->assertJsonMissing(['data' => ['address' => $libryos[0]->address]]);
+        $response->assertJsonMissing(['data' => ['address' => $normas[0]->address]]);
         $response->assertJsonMissing(['data' => [$items[1]]]);
 
         // test with only one filter
         $route = route($routeName, [
             'filters' => [
-                'title,eq,' . $libryos[1]->title,
+                'title,eq,' . $normas[1]->title,
             ],
         ]);
         $response = $this->json('get', $route)->assertSuccessful();
@@ -116,7 +116,7 @@ class LibryoControllerTest extends ApiTestCase
         // test multiple with subquery
         $route = route($routeName, [
             'filters' => [
-                'title,eq,' . $libryos[1]->title . '||geo_lat,eq,' . $libryos[2]->geo_lat . ',or||or',
+                'title,eq,' . $normas[1]->title . '||geo_lat,eq,' . $normas[2]->geo_lat . ',or||or',
             ],
         ]);
         $response = $this->json('get', $route)->assertSuccessful();
@@ -126,8 +126,8 @@ class LibryoControllerTest extends ApiTestCase
         // test multiple with subquery
         $route = route($routeName, [
             'filters' => [
-                'title,eq,' . $libryos[1]->title . '||geo_lat,eq,' . $libryos[2]->geo_lat . ',or',
-                'title,eq,' . $libryos[1]->title . '||geo_lat,eq,' . $libryos[2]->geo_lat . ',or||or',
+                'title,eq,' . $normas[1]->title . '||geo_lat,eq,' . $normas[2]->geo_lat . ',or',
+                'title,eq,' . $normas[1]->title . '||geo_lat,eq,' . $normas[2]->geo_lat . ',or||or',
             ],
         ]);
         $response = $this->json('get', $route)->assertSuccessful();
@@ -141,10 +141,10 @@ class LibryoControllerTest extends ApiTestCase
         $response = $this->json('get', $route)->assertSuccessful();
         $response->assertJson(['data' => [$items[3]]]);
         $data = json_decode($response->getContent(), true)['data'];
-        $this->assertTrue($data[0]['id'] === $libryos[3]->id);
+        $this->assertTrue($data[0]['id'] === $normas[3]->id);
 
         // filtering by whereHas relation
-        $location = $libryos[1]->location;
+        $location = $normas[1]->location;
         $route = route($routeName, [
             'has' => ['location|id,In,[' . $location->id . ']'],
         ]);
@@ -159,11 +159,11 @@ class LibryoControllerTest extends ApiTestCase
         $response->assertJson(['data' => $items]);
 
         // filtering by has relation
-        $location = $libryos[1]->location;
+        $location = $normas[1]->location;
         $domain = LegalDomain::factory()->create();
         $team = Team::factory()->create();
-        $libryos[1]->legalDomains()->attach($domain->id);
-        $libryos[2]->teams()->attach($team->id);
+        $normas[1]->legalDomains()->attach($domain->id);
+        $normas[2]->teams()->attach($team->id);
         $route = route($routeName, [
             'has' => ['legalDomains'],
         ]);
@@ -180,7 +180,7 @@ class LibryoControllerTest extends ApiTestCase
 
         // test ids
         $route = route($routeName, [
-            'ids' => $libryos[1]->id . ',' . $libryos[2]->id,
+            'ids' => $normas[1]->id . ',' . $normas[2]->id,
         ]);
         $response = $this->json('get', $route)->assertSuccessful();
         $response->assertJson(['data' => [$items[1], $items[2]]]);
@@ -196,12 +196,12 @@ class LibryoControllerTest extends ApiTestCase
 
     public function testFilterExceptions(): void
     {
-        $libryos = Libryo::factory(2)
+        $normas = Norma::factory(2)
             ->sequence(fn ($sequence) => ['title' => $sequence->index . ' ' . $this->faker->unique()->sentence(3, true)])
             ->create();
         $user = User::factory()->create();
-        $user->libryos()->attach($libryos);
-        $routeName = 'api.v2.libryos.index';
+        $user->normas()->attach($normas);
+        $routeName = 'api.v2.normas.index';
 
         // should just ignore, also tests count passed as string
         $route = route($routeName, [
@@ -213,7 +213,7 @@ class LibryoControllerTest extends ApiTestCase
 
         $route = route($routeName, [
             'filters' => [
-                'title,' . $libryos[1]->title,
+                'title,' . $normas[1]->title,
             ],
         ]);
         $response = $this->withExceptionHandling()->json('get', $route);
@@ -223,7 +223,7 @@ class LibryoControllerTest extends ApiTestCase
         // test with an illegal operand
         $route = route($routeName, [
             'filters' => [
-                'title,==,' . $libryos[1]->title,
+                'title,==,' . $normas[1]->title,
             ],
         ]);
         $response = $this->withExceptionHandling()->json('get', $route);
@@ -233,7 +233,7 @@ class LibryoControllerTest extends ApiTestCase
         // = can only be used for null
         $route = route($routeName, [
             'filters' => [
-                'title,=,' . $libryos[1]->title,
+                'title,=,' . $normas[1]->title,
             ],
         ]);
         $response = $this->withExceptionHandling()->json('get', $route);
@@ -252,35 +252,35 @@ class LibryoControllerTest extends ApiTestCase
 
     public function testShowRelations(): void
     {
-        $libryo = Libryo::factory()->create();
+        $norma = Norma::factory()->create();
         $country = Location::factory()->create();
         $legalDomain = LegalDomain::factory()->create();
-        $libryo->location->update(['location_country_id' => $country->id]);
-        $libryo->legalDomains()->attach($legalDomain);
+        $norma->location->update(['location_country_id' => $country->id]);
+        $norma->legalDomains()->attach($legalDomain);
         $user = User::factory()->create();
-        $user->libryos()->attach($libryo);
+        $user->normas()->attach($norma);
 
-        $routeName = 'api.v2.libryos.show';
+        $routeName = 'api.v2.normas.show';
         // adding users at the end to make sure it's not being included
-        $route = route($routeName, ['id' => $libryo->id, 'include' => 'legalDomains|location|location.locationType|location.country|users']);
+        $route = route($routeName, ['id' => $norma->id, 'include' => 'legalDomains|location|location.locationType|location.country|users']);
         $response = $this->assertApiUnauthorizedThenRun($user, 'get', $route);
 
         $item = [
-            'id' => $libryo->id,
-            'title' => $libryo->title,
+            'id' => $norma->id,
+            'title' => $norma->title,
             'location' => [
-                'id' => $libryo->location->id,
-                'title' => $libryo->location->title,
-                'parent_id' => $libryo->location->parent_id,
-                'location_country_id' => $libryo->location->location_country_id,
-                'flag' => $libryo->location->flag,
+                'id' => $norma->location->id,
+                'title' => $norma->location->title,
+                'parent_id' => $norma->location->parent_id,
+                'location_country_id' => $norma->location->location_country_id,
+                'flag' => $norma->location->flag,
                 'country' => [
                     'id' => $country->id,
                     'title' => $country->title,
                 ],
                 'locationType' => [
-                    'id' => $libryo->location->locationType->id,
-                    'title' => $libryo->location->locationType->title,
+                    'id' => $norma->location->locationType->id,
+                    'title' => $norma->location->locationType->title,
                 ],
             ],
             'legalDomains' => [

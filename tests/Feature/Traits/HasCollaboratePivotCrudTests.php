@@ -80,7 +80,7 @@ trait HasCollaboratePivotCrudTests
         $this->collaboratorSignIn();
         $this->validateCollaborateRole($route, 'delete');
 
-        // when viewing in all organisations mode, you should see all teams the libryo is part of
+        // when viewing in all organisations mode, you should see all teams the norma is part of
         $response = $this->followingRedirects()->delete($route)->assertSuccessful();
 
         $assertSeeFieldIndex = method_exists($this, 'titleField') ? static::titleField() : 'title';

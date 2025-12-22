@@ -9,14 +9,14 @@ use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Auth\Role;
 use App\Models\Auth\User;
 use App\Models\Comments\Comment;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Ontology\UserTag;
 use App\Models\Storage\My\File;
 use App\Models\Storage\My\Folder;
 use App\Models\Tasks\Task;
 use App\Models\Tasks\TaskActivity;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Services\Customer\ActiveOrganisationManager;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\UploadedFile;
@@ -47,10 +47,10 @@ class FileControllerTest extends MyTestCase
         $this->signIn($user);
 
         // when file is org file, but you activate single mode, it should redirect to root
-        $libryo = Libryo::factory()->for($org)->create();
-        $user->libryos()->attach($libryo);
+        $norma = Norma::factory()->for($org)->create();
+        $user->normas()->attach($norma);
         $response = $this->followingRedirects()
-            ->post(route('my.libryos.activate', ['libryo' => $libryo->id]))
+            ->post(route('my.normas.activate', ['norma' => $norma->id]))
             ->assertSuccessful();
         $response->assertDontSee($file->title);
     }
@@ -103,24 +103,24 @@ class FileControllerTest extends MyTestCase
         ]);
         $this->assertFalse($user->can('delete', $file));
 
-        $libryoFolder = Folder::factory()->create([
-            'folder_type' => FolderType::libryo()->value,
+        $normaFolder = Folder::factory()->create([
+            'folder_type' => FolderType::norma()->value,
         ]);
-        // shouldn't be able to delete files of type libryo that aren't part of a libryo
-        $file = File::factory()->for($libryoFolder)->create([
-            'folder_type' => FolderType::libryo()->value,
+        // shouldn't be able to delete files of type norma that aren't part of a norma
+        $file = File::factory()->for($normaFolder)->create([
+            'folder_type' => FolderType::norma()->value,
         ]);
         $this->assertFalse($user->can('delete', $file));
 
-        // should be able to delete files of type libryo that are part of a libryo that you're part of and
+        // should be able to delete files of type norma that are part of a norma that you're part of and
         // you either created the file or you're an org admin
-        $libryo = Libryo::factory()->create();
-        $file = File::factory()->for($libryoFolder)->create([
-            'folder_type' => FolderType::libryo()->value,
-            'place_id' => $libryo->id,
+        $norma = Norma::factory()->create();
+        $file = File::factory()->for($normaFolder)->create([
+            'folder_type' => FolderType::norma()->value,
+            'place_id' => $norma->id,
         ]);
-        $user->libryos()->attach($libryo);
-        $user->organisations()->attach($libryo->organisation, ['is_admin' => true]);
+        $user->normas()->attach($norma);
+        $user->organisations()->attach($norma->organisation, ['is_admin' => true]);
         $this->assertTrue($user->can('delete', $file));
 
         // should be able to delete files of type org that are part of the org
@@ -147,10 +147,10 @@ class FileControllerTest extends MyTestCase
         $this->assertTrue($createdFile->extension === 'pdf');
         $this->assertTrue($createdFile->size === 1024);
 
-        $libryo = Libryo::factory()->for($org)->create();
+        $norma = Norma::factory()->for($org)->create();
         $folder = Folder::factory()->for($org)->create();
-        $libryo->users()->attach($user);
-        app(ActiveLibryosManager::class)->activate($user, $libryo);
+        $norma->users()->attach($user);
+        app(ActiveNormasManager::class)->activate($user, $norma);
 
         // test uploading images
         $uploadedFile = UploadedFile::fake()->image(
@@ -211,7 +211,7 @@ class FileControllerTest extends MyTestCase
 
         // can't upload files when org has run out of storage
         $org->updateSetting('storage_allocation', 0);
-        app(ActiveLibryosManager::class)->flushCache();
+        app(ActiveNormasManager::class)->flushCache();
         $uploadedFile = UploadedFile::fake()->image(
             'image.jpg',
             200,
@@ -225,7 +225,7 @@ class FileControllerTest extends MyTestCase
 
     private function uploadFileTest(): array
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $this->activateAllStreams($user);
 
         Storage::fake('local');
@@ -357,7 +357,7 @@ class FileControllerTest extends MyTestCase
 
     public function testSearchForOrg(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $folder = Folder::factory()->create([
             'folder_type' => FolderType::organisation()->value,
@@ -371,16 +371,16 @@ class FileControllerTest extends MyTestCase
         $this->testSearch($files);
     }
 
-    public function testSearchForLibryo(): void
+    public function testSearchForNorma(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $folder = Folder::factory()->create([
-            'folder_type' => FolderType::libryo()->value,
+            'folder_type' => FolderType::norma()->value,
         ]);
         $files = File::factory(2)->for($folder)->create([
-            'folder_type' => FolderType::libryo()->value,
-            'place_id' => $libryo->id,
+            'folder_type' => FolderType::norma()->value,
+            'place_id' => $norma->id,
         ]);
 
         $this->testSearch($files);

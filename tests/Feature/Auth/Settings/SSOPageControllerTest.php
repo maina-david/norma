@@ -30,12 +30,12 @@ class SSOPageControllerTest extends SettingsTestCase
             ->assertSuccessful();
 
         $payload = [
-            'entity_id' => 'https://libryo.com',
-            'slo_url' => 'https://libryo.com',
-            'certificate' => 'https://libryo.com',
-            'enabled' => 'https://libryo.com',
+            'entity_id' => 'https://norma.com',
+            'slo_url' => 'https://norma.com',
+            'certificate' => 'https://norma.com',
+            'enabled' => 'https://norma.com',
             'team_id' => $team->id,
-            'sso_url' => 'https://libryo.com',
+            'sso_url' => 'https://norma.com',
         ];
 
         $this->assertDatabaseMissing(IdentityProvider::class, ['organisation_id' => $org->id]);

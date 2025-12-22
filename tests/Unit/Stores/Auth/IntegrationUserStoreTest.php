@@ -4,7 +4,7 @@ namespace Tests\Unit\Stores\Auth;
 
 use App\Models\Auth\Role;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Partners\Partner;
 use App\Stores\Auth\IntegrationUserStore;
@@ -20,7 +20,7 @@ class IntegrationUserStoreTest extends TestCase
         $partner = Partner::factory()->create();
         $org = Organisation::factory()->create(['partner_id' => $partner]);
         Config::set('services.sso.regwatch.partner_id', $partner->id);
-        $libryo = Libryo::factory()->for($org)->create();
+        $norma = Norma::factory()->for($org)->create();
         $service = app(IntegrationUserStore::class);
         $role = Role::factory()->my()->create(['title' => 'My Users']);
 
@@ -28,14 +28,14 @@ class IntegrationUserStoreTest extends TestCase
         $mappedData = $user->toArray();
 
         $mappedData['organisations'] = [$org->id];
-        $mappedData['libryos'] = [$libryo->id];
+        $mappedData['normas'] = [$norma->id];
 
         $service->createOrUpdateForIntegration($mappedData, 'regwatch');
 
         $user = User::where('email', $user->email)->first();
         $this->assertNotNull($user);
         $this->assertTrue($user->roles->contains($role));
-        $this->assertTrue($user->libryos->contains($libryo));
+        $this->assertTrue($user->normas->contains($norma));
         $this->assertTrue($user->organisations->contains($org));
         $this->assertSame($mappedData['fname'], $user->fname);
         $this->assertSame($mappedData['sname'], $user->sname);
@@ -50,15 +50,15 @@ class IntegrationUserStoreTest extends TestCase
         $service = app(IntegrationUserStore::class);
         $user = User::factory()->create(['integration_id' => Str::random()]);
         $org = Organisation::factory()->create(['partner_id' => $partner]);
-        $libryo = Libryo::factory()->for($org)->create();
-        $user->libryos()->attach($libryo);
+        $norma = Norma::factory()->for($org)->create();
+        $user->normas()->attach($norma);
         $user->organisations()->attach($org);
         $mappedData = $user->toArray();
         $mappedData['fname'] = 'New Name';
         $mappedData['sname'] = 'New Last Name';
-        $mappedData['libryos'] = [];
-        // we expect exception to be thrown for empty libryos list,
-        // but libryos should still be synced
+        $mappedData['normas'] = [];
+        // we expect exception to be thrown for empty normas list,
+        // but normas should still be synced
         $this->expectException(AuthorizationException::class);
         $service->createOrUpdateForIntegration($mappedData, 'regwatch');
 
@@ -66,9 +66,9 @@ class IntegrationUserStoreTest extends TestCase
         $this->assertSame($mappedData['fname'], $user->fname);
         $this->assertSame($mappedData['sname'], $user->sname);
 
-        // libryo was not passed in mapped data, so user access was removed on partner side,
+        // norma was not passed in mapped data, so user access was removed on partner side,
         // so needs to be removed
-        $this->assertFalse($user->libryos->contains($libryo));
+        $this->assertFalse($user->normas->contains($norma));
     }
 
     public function testCreateOrUpdateForIntegrationExistingUserDetachOrgs(): void
@@ -83,17 +83,17 @@ class IntegrationUserStoreTest extends TestCase
         $mappedData['organisations'] = [];
 
         $this->assertTrue($user->organisations->contains($org));
-        // we expect exception to be thrown for empty libryos list,
-        // but libryos should still be synced
+        // we expect exception to be thrown for empty normas list,
+        // but normas should still be synced
         $this->expectException(AuthorizationException::class);
         $service->createOrUpdateForIntegration($mappedData, 'regwatch');
 
-        // libryo was not passed in mapped data, so user access was removed on partner side,
+        // norma was not passed in mapped data, so user access was removed on partner side,
         // so needs to be removed
         $this->assertFalse($user->organisations->contains($org));
     }
 
-    public function testNoLibryos(): void
+    public function testNoNormas(): void
     {
         $partner = Partner::factory()->create();
         $org = Organisation::factory()->create(['partner_id' => $partner]);
@@ -103,7 +103,7 @@ class IntegrationUserStoreTest extends TestCase
         $user = User::factory()->make(['integration_id' => Str::random()]);
         $mappedData = $user->toArray();
         $mappedData['organisations'] = [$org->id];
-        $mappedData['libryos'] = [1];
+        $mappedData['normas'] = [1];
 
         $this->expectException(AuthorizationException::class);
         $service->createOrUpdateForIntegration($mappedData, 'regwatch');
@@ -118,7 +118,7 @@ class IntegrationUserStoreTest extends TestCase
         $user = User::factory()->make(['integration_id' => Str::random()]);
         $mappedData = $user->toArray();
         $mappedData['organisations'] = [0];
-        $mappedData['libryos'] = [1];
+        $mappedData['normas'] = [1];
 
         $this->expectException(AuthorizationException::class);
         $service->createOrUpdateForIntegration($mappedData, 'regwatch');

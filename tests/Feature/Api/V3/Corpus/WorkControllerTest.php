@@ -2,16 +2,16 @@
 
 namespace Tests\Feature\Api\V3\Corpus;
 
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Tests\Feature\Api\V3\ApiV3TestCase;
 
 class WorkControllerTest extends ApiV3TestCase
 {
     public function testWorksForOrganisation(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag, $childWork] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag, $childWork] = $this->initCompiledStream();
 
-        $noWorkLibryo = Libryo::factory()->create(['organisation_id' => $organisation->id]);
+        $noWorkNorma = Norma::factory()->create(['organisation_id' => $organisation->id]);
 
         $this->assertUnauthorizedThenRun($organisation, 'get', route('api.v3.works.index', ['organisation' => $organisation->id, 'updatedAfter' => '2023-01-01']))
             ->assertJsonCount(2, 'data')
@@ -55,7 +55,7 @@ class WorkControllerTest extends ApiV3TestCase
                 ],
             ]);
 
-        $streams = implode(',', [$libryo->id, $noWorkLibryo->id]);
+        $streams = implode(',', [$norma->id, $noWorkNorma->id]);
 
         $route = route('api.v3.works.index', [
             'organisation' => $organisation->id,
@@ -104,7 +104,7 @@ class WorkControllerTest extends ApiV3TestCase
                 ],
             ]);
 
-        $streams = implode(',', [$noWorkLibryo->id]);
+        $streams = implode(',', [$noWorkNorma->id]);
 
         $route = route('api.v3.works.index', [
             'organisation' => $organisation->id,

@@ -10,7 +10,7 @@ class FileRelationsControllerTest extends MyTestCase
 {
     public function testListingFilesForRelation(): void
     {
-        $this->initUserLibryoOrg();
+        $this->initUserNormaOrg();
 
         $task = Task::factory()->create();
         $files = File::factory()->count(3)->create();

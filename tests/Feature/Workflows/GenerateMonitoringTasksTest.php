@@ -105,7 +105,7 @@ class GenerateMonitoringTasksTest extends TestCase
                 // monitor sources - parent
                 37 => [
                     'manager_id' => 27057,
-                    'description' => 'Please carefully read the instructions before accepting this task [link to be inserted to task instructions that appear on learn.libryo]. Please check all updates uploaded on a daily basis for all the Californian Cities and Counties (waste).',
+                    'description' => 'Please carefully read the instructions before accepting this task [link to be inserted to task instructions that appear on learn.norma]. Please check all updates uploaded on a daily basis for all the Californian Cities and Counties (waste).',
                 ],
             ],
         ]);
@@ -139,7 +139,7 @@ class GenerateMonitoringTasksTest extends TestCase
                 // monitor sources - parent
                 37 => [
                     'manager_id' => 27057,
-                    'description' => 'Please carefully read the instructions before accepting this task [link to be inserted to task instructions that appear on learn.libryo]. Please check all updates uploaded on a daily basis for all the other USA cities and Counties (EHS) - Municode.',
+                    'description' => 'Please carefully read the instructions before accepting this task [link to be inserted to task instructions that appear on learn.norma]. Please check all updates uploaded on a daily basis for all the other USA cities and Counties (EHS) - Municode.',
                 ],
             ],
         ]);
@@ -173,7 +173,7 @@ class GenerateMonitoringTasksTest extends TestCase
                 // monitor sources - parent
                 37 => [
                     'manager_id' => 27057,
-                    'description' => 'Please carefully read the instructions before accepting this task [link to be inserted to task instructions that appear on learn.libryo]. Please check all updates uploaded on a daily basis for all the other USA cities and Counties (EHS) - Municode.',
+                    'description' => 'Please carefully read the instructions before accepting this task [link to be inserted to task instructions that appear on learn.norma]. Please check all updates uploaded on a daily basis for all the other USA cities and Counties (EHS) - Municode.',
                 ],
             ],
         ]);

@@ -10,7 +10,7 @@ class JobStatusControllerTest extends MyTestCase
 {
     public function testShowByJobId(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $progress = 37;
         $jobStatus = JobStatus::factory()->create(['job_id' => Str::uuid(), 'progress_now' => $progress]);
 

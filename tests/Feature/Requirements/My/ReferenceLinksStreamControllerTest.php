@@ -14,9 +14,9 @@ class ReferenceLinksStreamControllerTest extends MyTestCase
 {
     public function testForReference(): void
     {
-        [$user, $libryo] = $this->initUserLibryoOrg();
+        [$user, $norma] = $this->initUserNormaOrg();
         $reference = Reference::factory()->create();
-        $reference->locations()->attach($libryo->primary_location_id);
+        $reference->locations()->attach($norma->primary_location_id);
         $html = $this->faker->randomHtml(1, 2);
         $consequnceHtml = $this->faker->randomHtml(1, 2);
         $parentReference = Reference::factory()->create();
@@ -25,7 +25,7 @@ class ReferenceLinksStreamControllerTest extends MyTestCase
             'cached_content' => $html,
         ]));
         $consequenceGroupReference = Reference::factory()->create(['type' => ReferenceType::consequenceGroup()->value, 'parent_id' => $parentReference->id]);
-        $consequenceGroupReference->locations()->attach($libryo->primary_location_id);
+        $consequenceGroupReference->locations()->attach($norma->primary_location_id);
         $consequenceGroupReference->htmlContent()->save(new ReferenceContent([
             'reference_id' => $consequenceGroupReference->id,
             'cached_content' => $consequnceHtml,

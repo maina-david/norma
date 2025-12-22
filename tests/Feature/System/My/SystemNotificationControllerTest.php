@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\System\My;
 
-use App\Enums\System\LibryoModule;
+use App\Enums\System\NormaModule;
 use App\Models\System\SystemNotification;
 use Tests\Feature\My\MyTestCase;
 
@@ -15,7 +15,7 @@ class SystemNotificationControllerTest extends MyTestCase
      */
     public function testDismiss(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.system.system-notifications.dismiss';
         $notification = SystemNotification::factory()->create();
 
@@ -33,10 +33,10 @@ class SystemNotificationControllerTest extends MyTestCase
      */
     public function testNotificationsShowingOnModules(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $notification = SystemNotification::factory()->create([
             'expiry_date' => now()->addDays(1)->format('Y-m-d'),
-            'modules' => [LibryoModule::dashboard()->value],
+            'modules' => [NormaModule::dashboard()->value],
         ]);
 
         $this->get(route('my.dashboard'))
@@ -54,14 +54,14 @@ class SystemNotificationControllerTest extends MyTestCase
         ]);
         $this->get(route('my.dashboard'))
             ->assertSee($notification->title);
-        $libryo->enableModule(LibryoModule::comply());
+        $norma->enableModule(NormaModule::comply());
         $this->get(route('my.assess.assessment-item-responses.index'))
             ->assertSee($notification->title);
 
         // assess
         $notification = SystemNotification::factory()->create([
             'expiry_date' => now()->addDays(1)->format('Y-m-d'),
-            'modules' => [LibryoModule::comply()->value],
+            'modules' => [NormaModule::comply()->value],
         ]);
         $this->get(route('my.dashboard'))
             ->assertDontSee($notification->title);
@@ -71,7 +71,7 @@ class SystemNotificationControllerTest extends MyTestCase
         // tasks
         $notification = SystemNotification::factory()->create([
             'expiry_date' => now()->addDays(1)->format('Y-m-d'),
-            'modules' => [LibryoModule::tasks()->value],
+            'modules' => [NormaModule::tasks()->value],
         ]);
         $this->get(route('my.dashboard'))
             ->assertDontSee($notification->title);
@@ -81,7 +81,7 @@ class SystemNotificationControllerTest extends MyTestCase
         // tasks
         $notification = SystemNotification::factory()->create([
             'expiry_date' => now()->addDays(1)->format('Y-m-d'),
-            'modules' => [LibryoModule::corpus()->value, LibryoModule::drives()->value, LibryoModule::updates()->value],
+            'modules' => [NormaModule::corpus()->value, NormaModule::drives()->value, NormaModule::updates()->value],
         ]);
         $this->get(route('my.dashboard'))
             ->assertDontSee($notification->title);

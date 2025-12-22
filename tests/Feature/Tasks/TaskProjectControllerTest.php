@@ -14,7 +14,7 @@ class TaskProjectControllerTest extends MyTestCase
 
     public function testIndex(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.tasks.task-projects.index';
 
         $project = TaskProject::factory()->for($org)->create(['author_id' => $user->id]);
@@ -39,7 +39,7 @@ class TaskProjectControllerTest extends MyTestCase
 
     public function testDestroy(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.tasks.task-projects.destroy';
         $project = TaskProject::factory()->for($org)->create(['author_id' => $user->id]);
         $this->destroyAndTestData(TaskProject::class, route($routeName, ['project' => $project]));
@@ -48,7 +48,7 @@ class TaskProjectControllerTest extends MyTestCase
     public function testCreate(): void
     {
         $routeName = 'my.tasks.task-projects.create';
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $response = $this->assertSeeVisibleFormLabels(
             [],
@@ -60,7 +60,7 @@ class TaskProjectControllerTest extends MyTestCase
     public function testStore(): void
     {
         $routeName = 'my.tasks.task-projects.store';
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $project = TaskProject::factory()->make();
         $count = TaskProject::count();
         $response = $this->post(route($routeName), $project->toArray());
@@ -71,7 +71,7 @@ class TaskProjectControllerTest extends MyTestCase
     public function testEdit(): void
     {
         $routeName = 'my.tasks.task-projects.edit';
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $project = TaskProject::factory()->for($org)->create(['author_id' => $user->id]);
 
         $response = $this->assertSeeVisibleFormLabels(
@@ -85,7 +85,7 @@ class TaskProjectControllerTest extends MyTestCase
     public function testUpdate(): void
     {
         $routeName = 'my.tasks.task-projects.update';
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $project = TaskProject::factory()->for($org)->create(['author_id' => $user->id]);
 
         $project->title = 'New Title';
@@ -100,7 +100,7 @@ class TaskProjectControllerTest extends MyTestCase
     public function testArchive(): void
     {
         $routeName = 'my.tasks.task-projects.archive';
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $project = TaskProject::factory()->for($org)->create(['author_id' => $user->id]);
 
         $this->assertFalse($project->archived);
@@ -113,7 +113,7 @@ class TaskProjectControllerTest extends MyTestCase
     public function testUnarchive(): void
     {
         $routeName = 'my.tasks.task-projects.unarchive';
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $project = TaskProject::factory()->for($org)->create(['author_id' => $user->id, 'archived' => true]);
 
         $this->assertTrue($project->archived);

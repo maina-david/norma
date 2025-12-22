@@ -8,13 +8,13 @@ use App\Models\Auth\UserActivity;
 use App\Models\Comments\Comment;
 use App\Models\Compilation\ContextQuestion;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Notify\LegalUpdate;
 use App\Models\Storage\My\File;
 use App\Models\Tasks\Task;
 use App\Notifications\Comments\MentionedNotification;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Support\Facades\Notification;
 use Tests\Feature\My\MyTestCase;
 
@@ -39,24 +39,24 @@ class CommentControllerTest extends MyTestCase
         $response->assertSeeSelector('//div[text()[contains(.,"' . mb_substr($comment->comment, 0, 10) . '")]]');
     }
 
-    public function testForCommentableForLibryo(): void
+    public function testForCommentableForNorma(): void
     {
         $user = $this->mySuperUser();
         $org = Organisation::factory()->create();
-        $libryo = Libryo::factory()->create();
+        $norma = Norma::factory()->create();
         $user->organisations()->attach($org);
-        $user->libryos()->attach($libryo);
+        $user->normas()->attach($norma);
         $file = File::factory()->for($org)->create();
         $user2 = User::factory()->create();
         $comment = Comment::factory()->create([
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
             'commentable_type' => 'file',
             'commentable_id' => $file->id,
             'comment' => 'Hello **user_' . $user2->id . '**, how are you',
         ]);
 
         $this->signIn($user);
-        app(ActiveLibryosManager::class)->activate($user, $libryo);
+        app(ActiveNormasManager::class)->activate($user, $norma);
 
         $response = $this->get(route('my.comments.for.commentable', ['type' => 'file', 'id' => $file->id]))->assertSuccessful();
         $response->assertSeeSelector('//div[text()[contains(.,"' . $comment->author->full_name . '")]]');
@@ -66,7 +66,7 @@ class CommentControllerTest extends MyTestCase
     public function testStoreForCommentable(): void
     {
         Notification::fake();
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.comments.for.commentable.store';
         $file = File::factory()->for($org)->create();
         $task = Task::factory()->create();
@@ -81,7 +81,7 @@ class CommentControllerTest extends MyTestCase
             ['type' => 'task', 'id' => $task->id],
             ['type' => 'file', 'id' => $file->id],
             ['type' => 'update', 'id' => $update->id],
-            ['type' => 'libryo', 'id' => $libryo->id],
+            ['type' => 'norma', 'id' => $norma->id],
             ['type' => 'assessment-item-response', 'id' => $aiResponse->id],
             ['type' => 'comment', 'id' => $comment->id],
             ['type' => 'reference', 'id' => $reference->id],
@@ -100,17 +100,17 @@ class CommentControllerTest extends MyTestCase
             Notification::assertSentTo($user2, MentionedNotification::class);
         }
 
-        $target = Libryo::factory()->create();
+        $target = Norma::factory()->create();
         $target->load(['organisation']);
         $question = ContextQuestion::factory()->create();
 
-        $user->libryos()->attach($target);
+        $user->normas()->attach($target);
         $user->organisations()->attach($target->organisation);
 
         $payload = [
             'save_and_back' => route('my.corpus.requirements.index'),
             'comment' => $commentText,
-            'target_libryo_id' => $target->id,
+            'target_norma_id' => $target->id,
         ];
 
         $this->post(route($routeName, ['type' => 'context-question', 'id' => $question->id]), $payload)
@@ -123,13 +123,13 @@ class CommentControllerTest extends MyTestCase
 
     public function testDestroy(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.comments.comments.destroy';
         $file = File::factory()->for($org)->create();
 
         $file = File::factory()->for($org)->create();
         $comment = Comment::factory()->create([
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
             'commentable_type' => 'file',
             'commentable_id' => $file->id,
             'author_id' => $user->id,
@@ -142,7 +142,7 @@ class CommentControllerTest extends MyTestCase
         $response->assertDontSeeSelector('//div[text()[contains(.,"' . mb_substr($comment->comment, 0, 10) . '")]]');
 
         $comment = Comment::factory()->create([
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
             'commentable_type' => 'file',
             'commentable_id' => $file->id,
         ]);

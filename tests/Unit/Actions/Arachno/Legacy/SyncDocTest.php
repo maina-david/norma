@@ -39,7 +39,7 @@ class SyncDocTest extends TestCase
         $this->assertSame($work->id, $doc->work_id);
 
         $links = Link::all();
-        $this->assertSame('https://my.libryo.com/corpus/legacy/' . $doc->uid_hash . '/volume/1', $links->first()->url);
+        $this->assertSame('https://my.norma.com/corpus/legacy/' . $doc->uid_hash . '/volume/1', $links->first()->url);
 
         $contentResource = ContentResource::all()->first();
         $this->assertNotNull($contentResource);

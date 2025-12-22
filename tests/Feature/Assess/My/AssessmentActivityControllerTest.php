@@ -14,14 +14,14 @@ class AssessmentActivityControllerTest extends MyTestCase
 {
     public function testIndexForResponse(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.assess.assessment-activities.index.for.response';
 
         $assessmentItem = AssessmentItem::factory()->create();
-        $response = AssessmentItemResponse::factory()->for($libryo)->create(['last_answered_by' => $user->id]);
+        $response = AssessmentItemResponse::factory()->for($norma)->create(['last_answered_by' => $user->id]);
 
         $file = File::factory()->create();
-        $this->createActivities($user, $libryo, $response, $file, $assessmentItem);
+        $this->createActivities($user, $norma, $response, $file, $assessmentItem);
 
         $response = $this->get(route($routeName, ['response' => $response]))->assertSuccessful();
 
@@ -33,40 +33,40 @@ class AssessmentActivityControllerTest extends MyTestCase
         $response->assertSeeSelector('//p[text()[contains(.,"' . $user->fullName . ' uploaded Deleted File")]]');
     }
 
-    private function createActivities($user, $libryo, $response, $file, $assessmentItem): void
+    private function createActivities($user, $norma, $response, $file, $assessmentItem): void
     {
-        AssessmentActivity::factory()->for($libryo)->for($user)->for($response)->for($assessmentItem)->create([
+        AssessmentActivity::factory()->for($norma)->for($user)->for($response)->for($assessmentItem)->create([
             'activity_type' => AssessActivityType::responseAdded()->value,
             'to_status' => ResponseStatus::notAssessed()->value,
         ]);
-        AssessmentActivity::factory()->for($libryo)->for($user)->for($response)->for($assessmentItem)->create([
+        AssessmentActivity::factory()->for($norma)->for($user)->for($response)->for($assessmentItem)->create([
             'activity_type' => AssessActivityType::answerChange()->value,
             'from_status' => ResponseStatus::notAssessed()->value,
             'to_status' => ResponseStatus::yes()->value,
         ]);
-        AssessmentActivity::factory()->for($libryo)->for($user)->for($response)->for($assessmentItem)->create([
+        AssessmentActivity::factory()->for($norma)->for($user)->for($response)->for($assessmentItem)->create([
             'activity_type' => AssessActivityType::answerChange()->value,
             'from_status' => ResponseStatus::no()->value,
             'to_status' => ResponseStatus::yes()->value,
         ]);
-        AssessmentActivity::factory()->for($libryo)->for($user)->for($response)->for($assessmentItem)->create([
+        AssessmentActivity::factory()->for($norma)->for($user)->for($response)->for($assessmentItem)->create([
             'activity_type' => AssessActivityType::answerChange()->value,
             'from_status' => null,
             'to_status' => ResponseStatus::yes()->value,
         ]);
-        AssessmentActivity::factory()->for($libryo)->for($user)->for($response)->for($assessmentItem)->create([
+        AssessmentActivity::factory()->for($norma)->for($user)->for($response)->for($assessmentItem)->create([
             'activity_type' => AssessActivityType::answerChange()->value,
             'from_status' => ResponseStatus::notAssessed()->value,
             'to_status' => null,
         ]);
-        AssessmentActivity::factory()->for($libryo)->for($user)->for($response)->for($assessmentItem)->create([
+        AssessmentActivity::factory()->for($norma)->for($user)->for($response)->for($assessmentItem)->create([
             'activity_type' => AssessActivityType::comment()->value,
         ]);
-        AssessmentActivity::factory()->for($libryo)->for($user)->for($response)->for($assessmentItem)->create([
+        AssessmentActivity::factory()->for($norma)->for($user)->for($response)->for($assessmentItem)->create([
             'activity_type' => AssessActivityType::fileUpload()->value,
             'file_id' => $file->id,
         ]);
-        AssessmentActivity::factory()->for($libryo)->for($user)->for($response)->for($assessmentItem)->create([
+        AssessmentActivity::factory()->for($norma)->for($user)->for($response)->for($assessmentItem)->create([
             'activity_type' => AssessActivityType::fileUpload()->value,
             'file_id' => null,
         ]);

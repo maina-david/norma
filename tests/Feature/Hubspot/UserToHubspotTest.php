@@ -48,26 +48,26 @@ class UserToHubspotTest extends TestCase
         $this->assertSame($user->email, $properties->get('email'));
         $this->assertSame($user->fname, $properties->get('firstname'));
         $this->assertSame($user->sname, $properties->get('lastname'));
-        $this->assertSame('Yes', $properties->get('from_libryo_api'));
-        $this->assertSame('active', $properties->get('libryo_status'));
+        $this->assertSame('Yes', $properties->get('from_norma_api'));
+        $this->assertSame('active', $properties->get('norma_status'));
         $this->assertSame(1, $properties->get('legal_updates_unread'));
         $this->assertSame(1, $properties->get('total_number_of_legal_updates'));
         $this->assertSame(0, $properties->get('legal_updates_read'));
         $this->assertSame(0, $properties->get('legal_updates_read_and_understood'));
-        $this->assertSame(0, $properties->get('libryo_know_your_law_activities'));
+        $this->assertSame(0, $properties->get('norma_know_your_law_activities'));
         $this->assertSame(0, $properties->get('successful_searches'));
         $this->assertSame(0, $properties->get('number_of_activities_all_time_'));
         $this->assertSame(0, $properties->get('number_of_activities_yearly_'));
         $this->assertSame(0, $properties->get('number_of_activities'));
         $this->assertSame($userTypes[$user->user_type] ?? 'User', $properties->get('user_type'));
         $this->assertSame($lifecycles[$user->user_type] ?? 'customer', $properties->get('lifecyclestage'));
-        $this->assertSame('Active', $properties->get('libryo_user_status'));
+        $this->assertSame('Active', $properties->get('norma_user_status'));
         $this->assertSame('Disengaged', $properties->get('journey_to_core'));
         $this->assertSame('No', $properties->get('covid_19_campaign_rubicon'));
         $this->assertSame(UserType::free()->is($user->user_type) ? 'Yes' : 'No', $properties->get('free_user'));
-        $this->assertSame($user->created_at->startOfDay()->getTimestamp() * 1000, $properties->get('date_added_to_libryo'));
-        $this->assertSame($team->organisation->title, $properties->get('libryo_organisation'));
-        $this->assertSame($team->title, $properties->get('libryo_team'));
+        $this->assertSame($user->created_at->startOfDay()->getTimestamp() * 1000, $properties->get('date_added_to_norma'));
+        $this->assertSame($team->organisation->title, $properties->get('norma_organisation'));
+        $this->assertSame($team->title, $properties->get('norma_team'));
     }
 
     /**

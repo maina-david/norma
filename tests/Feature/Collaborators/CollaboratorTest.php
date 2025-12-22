@@ -139,7 +139,7 @@ class CollaboratorTest extends CrudTestCase
         $payload = [
             'fname' => 'Zebra',
             'sname' => 'Whoop',
-            'email' => 'zebracorn@libryo.awesome',
+            'email' => 'zebracorn@norma.awesome',
             'team_id' => '-1',
             'groups' => [$group->id],
         ];
@@ -154,7 +154,7 @@ class CollaboratorTest extends CrudTestCase
         $this->assertDatabaseHas(Team::class, ['title' => 'Zebra Whoop']);
         $this->assertDatabaseHas(GroupUser::class, ['group_id' => $group->id]);
 
-        $collaborator = Collaborator::where('email', 'zebracorn@libryo.awesome')->with(['profile'])->first();
+        $collaborator = Collaborator::where('email', 'zebracorn@norma.awesome')->with(['profile'])->first();
         $team = Team::where('title', 'Zebra Whoop')->first();
 
         $this->assertSame($team->id, $collaborator->profile->team_id);
@@ -164,7 +164,7 @@ class CollaboratorTest extends CrudTestCase
         $payload = [
             'fname' => 'Zebra2',
             'sname' => 'Whoop2',
-            'email' => 'zebracorn2@libryo.awesome',
+            'email' => 'zebracorn2@norma.awesome',
             'team_id' => $team,
             'groups' => [$group->id],
         ];
@@ -175,7 +175,7 @@ class CollaboratorTest extends CrudTestCase
         $this->assertDatabaseMissing(Team::class, ['title' => 'Zebra2 Whoop2']);
         $this->assertDatabaseHas(GroupUser::class, ['group_id' => $group->id]);
 
-        $collaborator = Collaborator::where('email', 'zebracorn2@libryo.awesome')->with(['profile'])->first();
+        $collaborator = Collaborator::where('email', 'zebracorn2@norma.awesome')->with(['profile'])->first();
 
         $this->assertSame($team->id, $collaborator->profile->team_id);
     }

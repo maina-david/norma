@@ -2,39 +2,39 @@
 
 namespace Tests\Feature\Api\V3\Customer;
 
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Tests\Feature\Api\V3\ApiV3TestCase;
 
-class LibryoControllerTest extends ApiV3TestCase
+class NormaControllerTest extends ApiV3TestCase
 {
-    public function testLibryosForOrganisation(): void
+    public function testNormasForOrganisation(): void
     {
-        /** @var Libryo $libryo */
-        [$libryo, $organisation] = $this->initCompiledStream();
+        /** @var Norma $norma */
+        [$norma, $organisation] = $this->initCompiledStream();
 
-        $otherLibryo = Libryo::factory()->create(['organisation_id' => $organisation->id]);
+        $otherNorma = Norma::factory()->create(['organisation_id' => $organisation->id]);
 
-        $responseLibryo = [
-            'id' => $libryo->id,
-            'title' => $libryo->title,
-            'geo_lat' => $libryo->geo_lat,
-            'geo_lng' => $libryo->geo_lng,
-            'address' => $libryo->address,
-            'description' => $libryo->description,
-            'link' => route('my.libryos.activate.redirect', [
-                'libryo' => $libryo->id,
+        $responseNorma = [
+            'id' => $norma->id,
+            'title' => $norma->title,
+            'geo_lat' => $norma->geo_lat,
+            'geo_lng' => $norma->geo_lng,
+            'address' => $norma->address,
+            'description' => $norma->description,
+            'link' => route('my.normas.activate.redirect', [
+                'norma' => $norma->id,
                 'redirect' => route('my.dashboard', [], false),
             ], false),
         ];
-        $responseOtherLibryo = [
-            'id' => $otherLibryo->id,
-            'title' => $otherLibryo->title,
-            'geo_lat' => $otherLibryo->geo_lat,
-            'geo_lng' => $otherLibryo->geo_lng,
-            'address' => $otherLibryo->address,
-            'description' => $otherLibryo->description,
-            'link' => route('my.libryos.activate.redirect', [
-                'libryo' => $otherLibryo->id,
+        $responseOtherNorma = [
+            'id' => $otherNorma->id,
+            'title' => $otherNorma->title,
+            'geo_lat' => $otherNorma->geo_lat,
+            'geo_lng' => $otherNorma->geo_lng,
+            'address' => $otherNorma->address,
+            'description' => $otherNorma->description,
+            'link' => route('my.normas.activate.redirect', [
+                'norma' => $otherNorma->id,
                 'redirect' => route('my.dashboard', [], false),
             ], false),
         ];
@@ -43,8 +43,8 @@ class LibryoControllerTest extends ApiV3TestCase
             ->assertJsonCount(2, 'data')
             ->assertExactJson([
                 'data' => [
-                    $responseLibryo,
-                    $responseOtherLibryo,
+                    $responseNorma,
+                    $responseOtherNorma,
                 ],
                 'links' => [
                     'first' => route('api.v3.streams.index', ['organisation' => $organisation->id, 'page' => 1]),
@@ -63,7 +63,7 @@ class LibryoControllerTest extends ApiV3TestCase
                 ],
             ]);
 
-        $streams = $libryo->id;
+        $streams = $norma->id;
 
         $route = route('api.v3.streams.index', ['organisation' => $organisation->id, 'streams' => $streams]);
 
@@ -71,7 +71,7 @@ class LibryoControllerTest extends ApiV3TestCase
             ->assertJsonCount(1, 'data')
             ->assertExactJson([
                 'data' => [
-                    $responseLibryo,
+                    $responseNorma,
                 ],
                 'links' => [
                     'first' => route('api.v3.streams.index', ['organisation' => $organisation->id, 'streams' => $streams, 'page' => 1]),
@@ -90,11 +90,11 @@ class LibryoControllerTest extends ApiV3TestCase
                 ],
             ]);
 
-        $route = route('api.v3.streams.show', ['organisation' => $organisation->id, 'stream' => $otherLibryo->id]);
+        $route = route('api.v3.streams.show', ['organisation' => $organisation->id, 'stream' => $otherNorma->id]);
 
         $this->getJson($route)
             ->assertExactJson([
-                'data' => $responseOtherLibryo,
+                'data' => $responseOtherNorma,
             ]);
     }
 }

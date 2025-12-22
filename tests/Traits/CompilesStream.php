@@ -7,7 +7,7 @@ use App\Models\Auth\User;
 use App\Models\Compilation\RequirementsCollection;
 use App\Models\Corpus\Reference;
 use App\Models\Corpus\Work;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Geonames\Location;
 use App\Models\Ontology\LegalDomain;
@@ -15,13 +15,13 @@ use App\Models\Ontology\Tag;
 
 trait CompilesStream
 {
-    protected function initCompiledStream(?Libryo $libryo = null): array
+    protected function initCompiledStream(?Norma $norma = null): array
     {
         $requirementsCollection = RequirementsCollection::factory()->create();
-        $libryo ??= Libryo::factory()->for($requirementsCollection)->create();
+        $norma ??= Norma::factory()->for($requirementsCollection)->create();
 
-        $libryo->requirementsCollections()->sync($requirementsCollection->id);
-        $organisation = $libryo->organisation ?? Organisation::factory()->create();
+        $norma->requirementsCollections()->sync($requirementsCollection->id);
+        $organisation = $norma->organisation ?? Organisation::factory()->create();
         $domain = LegalDomain::factory()->create();
         $domain->update(['top_parent_id' => $domain->id]);
         $tag = Tag::factory()->create();
@@ -30,31 +30,31 @@ trait CompilesStream
         $childWork->parents()->attach($work);
         $assessment = AssessmentItem::factory()->create();
 
-        $libryo->legalDomains()->attach($domain);
+        $norma->legalDomains()->attach($domain);
 
         foreach ($work->references as $reference) {
             $reference->locations()->attach($requirementsCollection);
             $reference->legalDomains()->attach($domain);
             $reference->tags()->attach($tag);
-            $reference->libryos()->attach($libryo);
-            $reference->compiledLibryos()->attach($libryo);
+            $reference->normas()->attach($norma);
+            $reference->compiledNormas()->attach($norma);
             $reference->assessmentItems()->attach($assessment);
         }
         foreach ($childWork->references as $reference) {
             $reference->locations()->attach($requirementsCollection);
             $reference->legalDomains()->attach($domain);
             $reference->tags()->attach($tag);
-            $reference->libryos()->attach($libryo);
-            $reference->compiledLibryos()->attach($libryo);
+            $reference->normas()->attach($norma);
+            $reference->compiledNormas()->attach($norma);
             $reference->assessmentItems()->attach($assessment);
         }
 
-        $libryo->compiledWorks()->attach([$work->id, $childWork->id]);
-        $libryo->works()->attach([$work->id, $childWork->id]);
+        $norma->compiledWorks()->attach([$work->id, $childWork->id]);
+        $norma->works()->attach([$work->id, $childWork->id]);
 
         $work->refresh();
 
-        return [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag, $childWork];
+        return [$norma, $organisation, $work, $requirementsCollection, $domain, $tag, $childWork];
     }
 
     /**
@@ -64,7 +64,7 @@ trait CompilesStream
     protected function deleteCompiledStream(): void
     {
         User::all()->each(fn ($i) => $i->delete());
-        Libryo::all()->each(fn ($i) => $i->delete());
+        Norma::all()->each(fn ($i) => $i->delete());
         Organisation::all()->each(fn ($i) => $i->delete());
         Location::all()->each(fn ($i) => $i->delete());
         LegalDomain::all()->each(fn ($i) => $i->delete());

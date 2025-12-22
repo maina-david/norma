@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\Unit\Actions\Customer\Libryo;
+namespace Tests\Unit\Actions\Customer\Norma;
 
 use App\Models\Customer\CompilationSetting;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Tests\TestCase;
 
 class HandleCreatedTest extends TestCase
@@ -15,9 +15,9 @@ class HandleCreatedTest extends TestCase
      */
     public function testCompilationSettingIsCreated(): void
     {
-        $libryo = Libryo::factory()->create();
+        $norma = Norma::factory()->create();
 
-        $setting = CompilationSetting::find($libryo->id);
+        $setting = CompilationSetting::find($norma->id);
         $this->assertNotNull($setting);
 
         // and test the defaults

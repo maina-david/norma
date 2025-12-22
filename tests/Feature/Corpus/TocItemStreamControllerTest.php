@@ -12,7 +12,7 @@ class TocItemStreamControllerTest extends MyTestCase
 {
     public function testToc(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $doc = Doc::factory()->create();
         $link = Link::factory()->create();
         $contentResource = ContentResource::factory()->create();

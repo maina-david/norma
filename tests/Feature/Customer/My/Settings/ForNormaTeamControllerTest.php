@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Customer\My\Settings;
 
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Customer\Team;
 use Tests\Feature\Settings\SettingsTestCase;
 
-class ForLibryoTeamControllerTest extends SettingsTestCase
+class ForNormaTeamControllerTest extends SettingsTestCase
 {
     /**
      * @return void
@@ -16,19 +16,19 @@ class ForLibryoTeamControllerTest extends SettingsTestCase
     {
         $user = $this->signIn();
         $org = Organisation::factory()->create();
-        $libryo = Libryo::factory()->for($org)->create();
-        $user = $this->assertForbiddenForNonAdmin(route('my.settings.teams.for.libryo.index', ['libryo' => $libryo->id]), 'get');
+        $norma = Norma::factory()->for($org)->create();
+        $user = $this->assertForbiddenForNonAdmin(route('my.settings.teams.for.norma.index', ['norma' => $norma->id]), 'get');
 
         $user->organisations()->attach($org, ['is_admin' => true]);
         $team = Team::factory()->create(['organisation_id' => $org->id]);
         $team2 = Team::factory()->create();
         // team that the user is not a part of, but is part of the org
         $team3 = Team::factory()->create(['organisation_id' => $org->id]);
-        $libryo->teams()->attach([$team->id, $team2->id]);
+        $norma->teams()->attach([$team->id, $team2->id]);
 
-        $response = $this->assertCanAccessAfterOrgActivate(route('my.settings.teams.for.libryo.index', ['libryo' => $libryo->id, 'activateOrgId' => $org->id]), 'get');
+        $response = $this->assertCanAccessAfterOrgActivate(route('my.settings.teams.for.norma.index', ['norma' => $norma->id, 'activateOrgId' => $org->id]), 'get');
 
-        // when viewing in single organisations mode, you should only see the teams the libryo is part of that are in this org
+        // when viewing in single organisations mode, you should only see the teams the norma is part of that are in this org
         $response->assertSee($team->title);
         $response->assertDontSee($team2->title);
         $response->assertDontSee($team3->title);
@@ -36,19 +36,19 @@ class ForLibryoTeamControllerTest extends SettingsTestCase
 
     public function testIndexAllOrgs(): void
     {
-        $libryo = Libryo::factory()->create();
-        $route = route('my.settings.teams.for.libryo.index', ['libryo' => $libryo->id]);
+        $norma = Norma::factory()->create();
+        $route = route('my.settings.teams.for.norma.index', ['norma' => $norma->id]);
         $org = Organisation::factory()->create();
         $team = Team::factory()->create(['organisation_id' => $org->id]);
         $team2 = Team::factory()->create();
         // team that the user is not a part of, but is part of the org
         $team3 = Team::factory()->create(['organisation_id' => $org->id]);
-        $libryo->teams()->attach([$team->id, $team2->id]);
+        $norma->teams()->attach([$team->id, $team2->id]);
 
         $this->signIn($this->mySuperUser());
         $this->withAllOrgMode();
 
-        // when viewing in all organisations mode, you should see all teams the libryo is part of
+        // when viewing in all organisations mode, you should see all teams the norma is part of
         $response = $this->get($route);
         $response->assertSee($team->title);
         $response->assertSee($team2->title);
@@ -58,49 +58,49 @@ class ForLibryoTeamControllerTest extends SettingsTestCase
     /**
      * @return void
      */
-    public function testRemoveTeamsFromLibryoAction(): void
+    public function testRemoveTeamsFromNormaAction(): void
     {
         $org = Organisation::factory()->create();
-        $testLibryo = Libryo::factory()->for($org)->create();
-        $route = route('my.settings.teams.for.libryo.actions.organisation', ['organisation' => $org->id, 'libryo' => $testLibryo->id]);
+        $testNorma = Norma::factory()->for($org)->create();
+        $route = route('my.settings.teams.for.norma.actions.organisation', ['organisation' => $org->id, 'norma' => $testNorma->id]);
         $user = $this->assertForbiddenForNonAdmin($route, 'post');
 
         $team1 = Team::factory()->for($org)->create();
         $team2 = Team::factory()->for($org)->create();
-        $testLibryo->teams()->attach($team2);
+        $testNorma->teams()->attach($team2);
         $team3 = Team::factory()->create();
-        $testLibryo->teams()->attach($team3);
+        $testNorma->teams()->attach($team3);
         $team2->users()->attach($user);
-        $testLibryo->users()->attach($user, ['via_teams' => true]);
+        $testNorma->users()->attach($user, ['via_teams' => true]);
 
         $user->organisations()->attach($org, ['is_admin' => true]);
 
         // test posting with 'action', and with one item
         $response = $this->withActivatedOrg($org)->post($route, [
-            'action' => 'remove_from_libryo',
+            'action' => 'remove_from_norma',
             'actions-checkbox-' . $team2->id => 'on',
         ]);
 
         $response->assertRedirect();
         $response->assertSessionHas('flash.message', 'Success!');
-        $testLibryo->load('teams');
-        $this->assertFalse($testLibryo->teams->contains($team2));
+        $testNorma->load('teams');
+        $this->assertFalse($testNorma->teams->contains($team2));
 
         $superUser = $this->mySuperUser();
         $this->signIn($superUser);
 
-        $this->assertTrue($testLibryo->teams->contains($team3));
-        $routeAll = route('my.settings.teams.for.libryo.actions.all', ['libryo' => $testLibryo->id]);
+        $this->assertTrue($testNorma->teams->contains($team3));
+        $routeAll = route('my.settings.teams.for.norma.actions.all', ['norma' => $testNorma->id]);
         $response = $this->post($routeAll, [
-            'action' => 'remove_from_libryo',
+            'action' => 'remove_from_norma',
             'actions-checkbox-' . $team3->id => 'on',
         ]);
         $response->assertRedirect();
         $response->assertSessionHas('flash.message', 'Success!');
-        $testLibryo->load('teams');
-        $this->assertFalse($testLibryo->teams->contains($team3));
+        $testNorma->load('teams');
+        $this->assertFalse($testNorma->teams->contains($team3));
         // test that the place_user cache was cleared
-        $this->assertFalse($testLibryo->refresh()->users->contains($user));
+        $this->assertFalse($testNorma->refresh()->users->contains($user));
     }
 
     /**
@@ -109,8 +109,8 @@ class ForLibryoTeamControllerTest extends SettingsTestCase
     public function testAddTeamsAction(): void
     {
         $org = Organisation::factory()->create();
-        $testLibryo = Libryo::factory()->for($org)->create();
-        $route = route('my.settings.teams.for.libryo.add', ['libryo' => $testLibryo->id]);
+        $testNorma = Norma::factory()->for($org)->create();
+        $route = route('my.settings.teams.for.norma.add', ['norma' => $testNorma->id]);
         $user = $this->assertForbiddenForNonAdmin($route, 'post');
         $user->organisations()->attach($org, ['is_admin' => true]);
 
@@ -126,11 +126,11 @@ class ForLibryoTeamControllerTest extends SettingsTestCase
                 ],
             ]);
         $response->assertRedirect();
-        $this->assertTrue($testLibryo->teams->contains($team));
+        $this->assertTrue($testNorma->teams->contains($team));
         // $team2 is not in the org, so should not get attached in single org mode
-        $this->assertFalse($testLibryo->teams->contains($team2));
-        // test that the place_user cache has the libryo added
-        $this->assertTrue($testLibryo->refresh()->users->contains($user));
+        $this->assertFalse($testNorma->teams->contains($team2));
+        // test that the place_user cache has the norma added
+        $this->assertTrue($testNorma->refresh()->users->contains($user));
     }
 
     /**
@@ -138,8 +138,8 @@ class ForLibryoTeamControllerTest extends SettingsTestCase
      */
     public function testAddTeamsActionAllOrg(): void
     {
-        $testLibryo = Libryo::factory()->create();
-        $route = route('my.settings.teams.for.libryo.add', ['libryo' => $testLibryo->id]);
+        $testNorma = Norma::factory()->create();
+        $route = route('my.settings.teams.for.norma.add', ['norma' => $testNorma->id]);
         $teamNotInOrg = Team::factory()->create();
 
         $superUser = $this->mySuperUser();
@@ -151,6 +151,6 @@ class ForLibryoTeamControllerTest extends SettingsTestCase
                 ],
             ]);
         $response->assertRedirect();
-        $this->assertTrue($testLibryo->teams->contains($teamNotInOrg));
+        $this->assertTrue($testNorma->teams->contains($teamNotInOrg));
     }
 }

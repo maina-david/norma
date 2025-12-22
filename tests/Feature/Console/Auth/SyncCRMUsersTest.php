@@ -107,7 +107,7 @@ class SyncCRMUsersTest extends TestCase
 
         $this->assertTrue($user->updateHubspot());
 
-        $this->artisan('libryo:sync-crm-users')
+        $this->artisan('norma:sync-crm-users')
             ->assertSuccessful()
             ->expectsOutput('Successfully processed batch of 5.');
 

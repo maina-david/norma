@@ -43,7 +43,7 @@ class AppManagerTest extends TestCase
 
         $manager->setApp(ApplicationType::collaborate()->value);
 
-        $this->assertSame('Libryo Collaborate', Config::get('app.name'));
+        $this->assertSame('Norma Collaborate', Config::get('app.name'));
 
         $this->assertSame(ApplicationType::collaborate()->value, AppManager::getApp());
 

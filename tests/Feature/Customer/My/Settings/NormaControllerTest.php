@@ -4,7 +4,7 @@ namespace Tests\Feature\Customer\My\Settings;
 
 use App\Models\Compilation\ContextQuestion;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Geonames\Location;
 use App\Models\Ontology\Category;
@@ -14,7 +14,7 @@ use Exception;
 use Illuminate\Support\Str;
 use Tests\Feature\Settings\SettingsTestCase;
 
-class LibryoControllerTest extends SettingsTestCase
+class NormaControllerTest extends SettingsTestCase
 {
     /**
      * Get the class to be used for the CRUD operations.
@@ -25,7 +25,7 @@ class LibryoControllerTest extends SettingsTestCase
      */
     protected static function resource(): string
     {
-        return Libryo::class;
+        return Norma::class;
     }
 
     /**
@@ -37,7 +37,7 @@ class LibryoControllerTest extends SettingsTestCase
      */
     protected static function resourceRoute(): string
     {
-        return 'my.settings.libryos';
+        return 'my.settings.normas';
     }
 
     /**
@@ -82,33 +82,33 @@ class LibryoControllerTest extends SettingsTestCase
      */
     public function testIndex(): void
     {
-        $routeName = 'my.settings.libryos.index';
+        $routeName = 'my.settings.normas.index';
         $route = route($routeName);
         $user = $this->assertForbiddenForNonAdmin($route, 'get');
 
         $partner = Partner::factory()->create();
         $org = Organisation::factory()->create(['partner_id' => $partner->id]);
         $user->organisations()->attach($org, ['is_admin' => true]);
-        $libryo = Libryo::factory()->for($org)->create(['organisation_id' => $org->id]);
+        $norma = Norma::factory()->for($org)->create(['organisation_id' => $org->id]);
 
-        $libryo2 = Libryo::factory()->for($org)->create(['organisation_id' => $org->id, 'integration_id' => '123']);
+        $norma2 = Norma::factory()->for($org)->create(['organisation_id' => $org->id, 'integration_id' => '123']);
 
         $response = $this->assertCanAccessAfterOrgActivate(route($routeName, ['activateOrgId' => $org->id]), 'get');
-        $response->assertSee($libryo->title);
-        $response->assertSee('Libryo Streams');
+        $response->assertSee($norma->title);
+        $response->assertSee('Norma Streams');
 
         $response = $this->get(route($routeName, ['search' => Str::random(10)]));
-        $response->assertDontSee($libryo->title);
-        $response = $this->get(route($routeName, ['search' => $libryo->title]));
-        $response->assertSee($libryo->title);
-        $response = $this->get(route($routeName, ['search' => substr($libryo->title, 0, 4)]));
-        $response->assertSee($libryo->title);
+        $response->assertDontSee($norma->title);
+        $response = $this->get(route($routeName, ['search' => $norma->title]));
+        $response->assertSee($norma->title);
+        $response = $this->get(route($routeName, ['search' => substr($norma->title, 0, 4)]));
+        $response->assertSee($norma->title);
 
         $reference = Reference::factory()->create();
-        $libryo->references()->attach($reference);
+        $norma->references()->attach($reference);
         $response = $this->get(route($routeName, ['citations' => [$reference->id]]));
-        $response->assertSee($libryo->title);
-        $response->assertDontSee($libryo2->title);
+        $response->assertSee($norma->title);
+        $response->assertDontSee($norma2->title);
     }
 
     public function testIndexAllOrgs(): void
@@ -117,19 +117,19 @@ class LibryoControllerTest extends SettingsTestCase
 
         $partner = Partner::factory()->create();
         $org = Organisation::factory()->create(['partner_id' => $partner->id]);
-        $libryo = Libryo::factory()->for($org)->create(['integration_id' => '123']);
-        $libryo2 = Libryo::factory()->create(['deactivated' => true]);
-        $user->libryos()->attach($libryo->id);
+        $norma = Norma::factory()->for($org)->create(['integration_id' => '123']);
+        $norma2 = Norma::factory()->create(['deactivated' => true]);
+        $user->normas()->attach($norma->id);
 
-        // when viewing in all organisations mode, you should see all libryos
-        $response = $this->get(route('my.settings.libryos.index'));
+        // when viewing in all organisations mode, you should see all normas
+        $response = $this->get(route('my.settings.normas.index'));
         $response->assertSuccessful();
-        $response->assertSee('Libryo Streams');
+        $response->assertSee('Norma Streams');
 
-        $response->assertSee($libryo->title);
-        $response->assertSee($libryo2->title);
-        $response->assertSeeSelector('//table//tr//*[contains(text(),"' . $libryo->title . '")]');
-        $response->assertSeeSelector('//table//tr//*[contains(text(),"' . $libryo2->title . '")]');
+        $response->assertSee($norma->title);
+        $response->assertSee($norma2->title);
+        $response->assertSeeSelector('//table//tr//*[contains(text(),"' . $norma->title . '")]');
+        $response->assertSeeSelector('//table//tr//*[contains(text(),"' . $norma2->title . '")]');
         $response->assertSeeSelector('//table//tr//*[contains(text(),"Yes")]');
         $response->assertSeeSelector('//table//tr//*[contains(text(),"No")]');
     }
@@ -138,11 +138,11 @@ class LibryoControllerTest extends SettingsTestCase
     {
         $user = $this->activateAllOrg();
 
-        $libryo = Libryo::factory()->create();
+        $norma = Norma::factory()->create();
         // when viewing in all organisations mode, you should see all teams the user is part of
-        $response = $this->get(route('my.settings.libryos.index'), ['Accept' => 'application/json']);
+        $response = $this->get(route('my.settings.normas.index'), ['Accept' => 'application/json']);
         $response->assertSuccessful();
-        $response->assertJsonFragment([['id' => $libryo->id, 'title' => $libryo->title]]);
+        $response->assertJsonFragment([['id' => $norma->id, 'title' => $norma->title]]);
     }
 
     /**
@@ -151,44 +151,44 @@ class LibryoControllerTest extends SettingsTestCase
     public function testDeactivateActivateAction(): void
     {
         $org = Organisation::factory()->create();
-        $route = route('my.settings.libryos.actions.organisation', ['organisation' => $org->id]);
+        $route = route('my.settings.normas.actions.organisation', ['organisation' => $org->id]);
         $user = $this->assertForbiddenForNonAdmin($route, 'post');
 
-        $libryo1 = Libryo::factory()->for($org)->create();
-        $libryo2 = Libryo::factory()->for($org)->create();
-        $libryo3 = Libryo::factory()->create();
+        $norma1 = Norma::factory()->for($org)->create();
+        $norma2 = Norma::factory()->for($org)->create();
+        $norma3 = Norma::factory()->create();
 
         $user->organisations()->attach($org, ['is_admin' => true]);
 
         // test posting with 'action', and with one item
         $response = $this->withActivatedOrg($org)->post($route, [
             'action' => 'deactivate',
-            'actions-checkbox-' . $libryo1->id => 'on',
+            'actions-checkbox-' . $norma1->id => 'on',
         ]);
 
         $response->assertRedirect();
         $response->assertSessionHas('flash.message', 'Success!');
-        $this->assertTrue(Libryo::find($libryo1->id)->deactivated);
+        $this->assertTrue(Norma::find($norma1->id)->deactivated);
 
         $superUser = $this->mySuperUser();
         $this->signIn($superUser);
 
-        $routeAll = route('my.settings.libryos.actions.all');
+        $routeAll = route('my.settings.normas.actions.all');
         $response = $this->post($routeAll, [
             'action' => 'deactivate',
-            'actions-checkbox-' . $libryo3->id => 'on',
+            'actions-checkbox-' . $norma3->id => 'on',
         ]);
         $response->assertRedirect();
         $response->assertSessionHas('flash.message', 'Success!');
-        $this->assertTrue(Libryo::find($libryo3->id)->deactivated);
+        $this->assertTrue(Norma::find($norma3->id)->deactivated);
 
         $response = $this->post($routeAll, [
             'action' => 'activate',
-            'actions-checkbox-' . $libryo3->id => 'on',
+            'actions-checkbox-' . $norma3->id => 'on',
         ]);
         $response->assertRedirect();
         $response->assertSessionHas('flash.message', 'Success!');
-        $this->assertFalse(Libryo::find($libryo3->id)->deactivated);
+        $this->assertFalse(Norma::find($norma3->id)->deactivated);
     }
 
     /**
@@ -198,17 +198,17 @@ class LibryoControllerTest extends SettingsTestCase
     {
         $user = $this->signIn();
         $org = Organisation::factory()->create();
-        $libryo = Libryo::factory()->for($org)->create();
-        $route = route('my.settings.libryos.show', ['libryo' => $libryo->id]);
+        $norma = Norma::factory()->for($org)->create();
+        $route = route('my.settings.normas.show', ['norma' => $norma->id]);
         $user = $this->assertForbiddenForNonAdmin($route, 'get', $user);
         $user->organisations()->attach($org, ['is_admin' => true]);
 
-        $routeActivate = route('my.settings.libryos.show', ['libryo' => $libryo->id, 'activateOrgId' => $org->id]);
+        $routeActivate = route('my.settings.normas.show', ['norma' => $norma->id, 'activateOrgId' => $org->id]);
         $response = $this->assertCanAccessAfterOrgActivate($routeActivate, 'get');
 
-        $response->assertSee($libryo->title);
-        $response->assertSee($libryo->address);
-        $response->assertSeeSelector('//header//div//span[contains(text(),"' . $libryo->title . '")]');
+        $response->assertSee($norma->title);
+        $response->assertSee($norma->address);
+        $response->assertSeeSelector('//header//div//span[contains(text(),"' . $norma->title . '")]');
     }
 
     /**
@@ -284,8 +284,8 @@ class LibryoControllerTest extends SettingsTestCase
         $response = $this->put($route, ['title' => $updatedTitle, 'organisation_id' => $org->id, 'location_id' => $jurisdiction->id]);
         $response->assertValid();
         // test updating with a title that already exists in org
-        $libryo = Libryo::factory()->for($org)->create();
-        $updatedTitle = $libryo->title;
+        $norma = Norma::factory()->for($org)->create();
+        $updatedTitle = $norma->title;
         $response = $this->put($route, ['title' => $updatedTitle, 'organisation_id' => $org->id]);
         $response->assertInValid();
         $updatedTitle = 'Updated title 4';
@@ -322,8 +322,8 @@ class LibryoControllerTest extends SettingsTestCase
      */
     public function testModules(): void
     {
-        $libryo = Libryo::factory()->create();
-        $route = route('my.settings.libryos.modules.index', ['libryo' => $libryo->id]);
+        $norma = Norma::factory()->create();
+        $route = route('my.settings.normas.modules.index', ['norma' => $norma->id]);
         $this->assertForbiddenForNonAdmin($route, 'get');
 
         $this->activateAllOrg();
@@ -341,18 +341,18 @@ class LibryoControllerTest extends SettingsTestCase
      */
     public function testUpdatesModules(): void
     {
-        $libryo = Libryo::factory()->create();
-        $route = route('my.settings.libryos.modules.update', ['libryo' => $libryo->id]);
+        $norma = Norma::factory()->create();
+        $route = route('my.settings.normas.modules.update', ['norma' => $norma->id]);
         $this->assertForbiddenForNonAdmin($route, 'post');
 
         $this->activateAllOrg();
 
-        $this->assertFalse($libryo->settings['modules']['keyword_search']);
-        $this->assertTrue($libryo->settings['modules']['drives']);
+        $this->assertFalse($norma->settings['modules']['keyword_search']);
+        $this->assertTrue($norma->settings['modules']['drives']);
         $this->followingRedirects()->post($route, ['keyword_search' => true, 'drives' => false])->assertSuccessful();
-        $libryo = $libryo->fresh();
-        $this->assertTrue($libryo->settings['modules']['keyword_search']);
-        $this->assertFalse($libryo->settings['modules']['drives']);
+        $norma = $norma->fresh();
+        $this->assertTrue($norma->settings['modules']['keyword_search']);
+        $this->assertFalse($norma->settings['modules']['drives']);
     }
 
     /**
@@ -360,8 +360,8 @@ class LibryoControllerTest extends SettingsTestCase
      */
     public function testCompilationSettings(): void
     {
-        $libryo = Libryo::factory()->create();
-        $route = route('my.settings.libryos.compilation-settings.index', ['libryo' => $libryo->id]);
+        $norma = Norma::factory()->create();
+        $route = route('my.settings.normas.compilation-settings.index', ['norma' => $norma->id]);
         $this->assertForbiddenForNonAdmin($route, 'get');
 
         $this->activateAllOrg();
@@ -381,13 +381,13 @@ class LibryoControllerTest extends SettingsTestCase
      */
     public function testCompilationSettingsUpdate(): void
     {
-        $libryo = Libryo::factory()->create();
-        $route = route('my.settings.libryos.compilation-settings.update', ['libryo' => $libryo->id]);
+        $norma = Norma::factory()->create();
+        $route = route('my.settings.normas.compilation-settings.update', ['norma' => $norma->id]);
         $this->assertForbiddenForNonAdmin($route, 'post');
 
         $this->activateAllOrg();
 
-        $this->assertTrue($libryo->compilationSetting->use_collections);
+        $this->assertTrue($norma->compilationSetting->use_collections);
 
         // update with opposite of defaults
         $this->followingRedirects()->post($route, [
@@ -399,14 +399,14 @@ class LibryoControllerTest extends SettingsTestCase
             'use_topics' => true,
             'include_no_topics' => true,
         ])->assertSuccessful();
-        $libryo->compilationSetting->refresh();
-        $this->assertFalse($libryo->compilationSetting->use_collections);
-        $this->assertFalse($libryo->compilationSetting->use_legal_domains);
-        $this->assertTrue($libryo->compilationSetting->include_no_legal_domains);
-        $this->assertFalse($libryo->compilationSetting->use_context_questions);
-        $this->assertFalse($libryo->compilationSetting->include_no_context_questions);
-        $this->assertTrue($libryo->compilationSetting->use_topics);
-        $this->assertTrue($libryo->compilationSetting->include_no_topics);
+        $norma->compilationSetting->refresh();
+        $this->assertFalse($norma->compilationSetting->use_collections);
+        $this->assertFalse($norma->compilationSetting->use_legal_domains);
+        $this->assertTrue($norma->compilationSetting->include_no_legal_domains);
+        $this->assertFalse($norma->compilationSetting->use_context_questions);
+        $this->assertFalse($norma->compilationSetting->include_no_context_questions);
+        $this->assertTrue($norma->compilationSetting->use_topics);
+        $this->assertTrue($norma->compilationSetting->include_no_topics);
     }
 
     /**
@@ -414,12 +414,12 @@ class LibryoControllerTest extends SettingsTestCase
      */
     public function testCloning(): void
     {
-        /** @var Libryo $libryo */
-        $libryo = Libryo::factory()->create();
+        /** @var Norma $norma */
+        $norma = Norma::factory()->create();
         $context = ContextQuestion::factory()->create();
-        $libryo->contextQuestions()->attach($context->id);
+        $norma->contextQuestions()->attach($context->id);
 
-        $route = route('my.settings.libryo.clone', ['libryo' => $libryo->id]);
+        $route = route('my.settings.norma.clone', ['norma' => $norma->id]);
 
         $this->assertForbiddenForNonAdmin($route, 'post');
         $this->activateAllOrg();
@@ -430,13 +430,13 @@ class LibryoControllerTest extends SettingsTestCase
             ->assertSee('- Copy');
     }
 
-    public function testLibryoStreamCreationValidation(): void
+    public function testNormaStreamCreationValidation(): void
     {
         $this->signIn($this->mySuperUser());
 
-        $libryoInput = Libryo::factory()->raw(['location_id' => null]);
+        $normaInput = Norma::factory()->raw(['location_id' => null]);
 
-        $response = $this->post(route('my.settings.libryos.store', $libryoInput));
+        $response = $this->post(route('my.settings.normas.store', $normaInput));
 
         $response->assertSessionHasErrors(['location_id']);
         $this->assertDatabaseCount('places', 0);

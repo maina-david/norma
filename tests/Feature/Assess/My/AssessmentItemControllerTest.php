@@ -4,25 +4,25 @@ namespace Tests\Feature\Assess\My;
 
 use App\Enums\Assess\ResponseStatus;
 use App\Enums\Assess\RiskRating;
-use App\Enums\System\LibryoModule;
+use App\Enums\System\NormaModule;
 use App\Models\Assess\AssessmentItem;
 use App\Models\Assess\AssessmentItemResponse;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Tests\Feature\My\MyTestCase;
 
 class AssessmentItemControllerTest extends MyTestCase
 {
     public function testDashboardNoActivity(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.assess.dashboard';
 
         // redirect for assess not enabled
         $response = $this->get(route($routeName))->assertRedirect();
-        $libryo->enableModule(LibryoModule::comply());
+        $norma->enableModule(NormaModule::comply());
 
         $response = $this->get(route($routeName))->assertSuccessful();
-        $response->assertSee('Assess has not been set up for ' . $libryo->title);
+        $response->assertSee('Assess has not been set up for ' . $norma->title);
 
         $this->activateAllStreams($user);
         $response = $this->get(route($routeName))->assertSuccessful();
@@ -31,17 +31,17 @@ class AssessmentItemControllerTest extends MyTestCase
 
     public function testDashboardWithActivity(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.assess.dashboard';
 
         // redirect for assess not enabled
         $response = $this->get(route($routeName))->assertRedirect();
-        $libryo->enableModule(LibryoModule::comply());
+        $norma->enableModule(NormaModule::comply());
 
         $response = $this->get(route($routeName))->assertSuccessful();
 
         $item = AssessmentItem::factory()->create(['risk_rating' => RiskRating::high()->value]);
-        $aiResponse = AssessmentItemResponse::factory()->for($libryo)->for($item)->create(['answer' => ResponseStatus::no()->value]);
+        $aiResponse = AssessmentItemResponse::factory()->for($norma)->for($item)->create(['answer' => ResponseStatus::no()->value]);
 
         $this->activateAllStreams($user);
         $response = $this->get(route($routeName))->assertSuccessful();
@@ -51,21 +51,21 @@ class AssessmentItemControllerTest extends MyTestCase
 
     public function testShow(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.assess.assessment-item.show';
-        $libryo2 = Libryo::factory()->for($org)->create();
-        $libryo3 = Libryo::factory()->for($org)->create();
-        $user->libryos()->attach($libryo2);
+        $norma2 = Norma::factory()->for($org)->create();
+        $norma3 = Norma::factory()->for($org)->create();
+        $user->normas()->attach($norma2);
 
         $item = AssessmentItem::factory()->create(['risk_rating' => RiskRating::high()->value]);
-        $aiResponse = AssessmentItemResponse::factory()->for($libryo)->for($item)->create(['answer' => ResponseStatus::no()->value]);
+        $aiResponse = AssessmentItemResponse::factory()->for($norma)->for($item)->create(['answer' => ResponseStatus::no()->value]);
 
-        $aiResponse2 = AssessmentItemResponse::factory()->for($libryo2)->for($item)->create(['answer' => ResponseStatus::yes()->value]);
-        $aiResponse3 = AssessmentItemResponse::factory()->for($libryo3)->for($item)->create(['answer' => ResponseStatus::yes()->value]);
+        $aiResponse2 = AssessmentItemResponse::factory()->for($norma2)->for($item)->create(['answer' => ResponseStatus::yes()->value]);
+        $aiResponse3 = AssessmentItemResponse::factory()->for($norma3)->for($item)->create(['answer' => ResponseStatus::yes()->value]);
 
         // redirect for assess not enabled
         $response = $this->get(route($routeName, ['assessmentItem' => $item]))->assertRedirect();
-        $libryo->enableModule(LibryoModule::comply());
+        $norma->enableModule(NormaModule::comply());
 
         $response = $this->get(route($routeName, ['assessmentItem' => $item]))->assertSuccessful();
         $response->assertSee($item->toDescription());
@@ -74,9 +74,9 @@ class AssessmentItemControllerTest extends MyTestCase
 
         $response = $this->get(route($routeName, ['assessmentItem' => $item]))->assertSuccessful();
         $response->assertSee($item->toDescription());
-        // should see SAI title with libryo title
-        $response->assertSee($libryo2->title);
-        // user doesn't have access to libryo3, so shouldn't see
-        $response->assertDontSee($libryo3->title);
+        // should see SAI title with norma title
+        $response->assertSee($norma2->title);
+        // user doesn't have access to norma3, so shouldn't see
+        $response->assertDontSee($norma3->title);
     }
 }

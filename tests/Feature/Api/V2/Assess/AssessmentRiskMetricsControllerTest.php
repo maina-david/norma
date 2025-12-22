@@ -11,38 +11,38 @@ use Tests\Feature\Api\ApiTestCase;
 
 class AssessmentRiskMetricsControllerTest extends ApiTestCase
 {
-    public function testMetricsForLibryos(): void
+    public function testMetricsForNormas(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
 
         $aItems = AssessmentItem::factory(4)->create(['legal_domain_id' => $domain->id]);
         $aItemsHi = AssessmentItem::factory(4)->create(['legal_domain_id' => $domain->id, 'risk_rating' => RiskRating::high()->value]);
-        AssessmentItemResponse::factory()->for($aItems[0])->for($libryo)->create(['answer' => ResponseStatus::no()->value]);
-        AssessmentItemResponse::factory()->for($aItems[1])->for($libryo)->create(['answer' => ResponseStatus::yes()->value]);
-        AssessmentItemResponse::factory()->for($aItems[2])->for($libryo)->create(['answer' => ResponseStatus::notApplicable()->value]);
-        AssessmentItemResponse::factory()->for($aItems[3])->for($libryo)->create(['answer' => ResponseStatus::notAssessed()->value]);
+        AssessmentItemResponse::factory()->for($aItems[0])->for($norma)->create(['answer' => ResponseStatus::no()->value]);
+        AssessmentItemResponse::factory()->for($aItems[1])->for($norma)->create(['answer' => ResponseStatus::yes()->value]);
+        AssessmentItemResponse::factory()->for($aItems[2])->for($norma)->create(['answer' => ResponseStatus::notApplicable()->value]);
+        AssessmentItemResponse::factory()->for($aItems[3])->for($norma)->create(['answer' => ResponseStatus::notAssessed()->value]);
 
-        AssessmentItemResponse::factory()->for($aItemsHi[0])->for($libryo)->create(['answer' => ResponseStatus::no()->value]);
-        AssessmentItemResponse::factory()->for($aItemsHi[1])->for($libryo)->create(['answer' => ResponseStatus::yes()->value]);
-        AssessmentItemResponse::factory()->for($aItemsHi[2])->for($libryo)->create(['answer' => ResponseStatus::notApplicable()->value]);
-        AssessmentItemResponse::factory()->for($aItemsHi[3])->for($libryo)->create(['answer' => ResponseStatus::notAssessed()->value]);
+        AssessmentItemResponse::factory()->for($aItemsHi[0])->for($norma)->create(['answer' => ResponseStatus::no()->value]);
+        AssessmentItemResponse::factory()->for($aItemsHi[1])->for($norma)->create(['answer' => ResponseStatus::yes()->value]);
+        AssessmentItemResponse::factory()->for($aItemsHi[2])->for($norma)->create(['answer' => ResponseStatus::notApplicable()->value]);
+        AssessmentItemResponse::factory()->for($aItemsHi[3])->for($norma)->create(['answer' => ResponseStatus::notAssessed()->value]);
 
         $aItemNotRated = AssessmentItem::factory()->create(['legal_domain_id' => $domain->id, 'risk_rating' => RiskRating::notRated()->value]);
-        AssessmentItemResponse::factory()->for($aItemNotRated)->for($libryo)->create(['answer' => ResponseStatus::no()->value]);
+        AssessmentItemResponse::factory()->for($aItemNotRated)->for($norma)->create(['answer' => ResponseStatus::no()->value]);
 
         $reference = $work->references->load('citation')->first();
         $aItems->each(fn ($sai) => $sai->references()->attach($reference));
 
         $user = User::factory()->create();
-        $user->libryos()->attach($libryo);
+        $user->normas()->attach($norma);
 
-        $routeName = 'api.v2.assessment-metrics.for.libryo';
+        $routeName = 'api.v2.assessment-metrics.for.norma';
         $route = route($routeName);
-        $response = $this->assertApiUnauthorizedThenRun($user, 'post', $route, ['libryos' => [$libryo->id]]);
+        $response = $this->assertApiUnauthorizedThenRun($user, 'post', $route, ['normas' => [$norma->id]]);
         $items = [];
 
         $items[] = [
-            'id' => $libryo->id,
+            'id' => $norma->id,
             'counts' => [
                 'yes' => [
                     'not_rated' => 0,

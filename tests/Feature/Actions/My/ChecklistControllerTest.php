@@ -14,10 +14,10 @@ class ChecklistControllerTest extends MyTestCase
      */
     public function testViewingAllChecklists(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $reference = Reference::factory()->create();
         $reference->load(['work']);
-        $libryo->references()->attach($reference->id);
+        $norma->references()->attach($reference->id);
         $control = Category::factory()->create(['parent_id' => Category::factory(), 'level' => 2]);
         $subject = Category::factory()->create(['level' => 1]);
         $action = ActionArea::factory()->create(['control_category_id' => $control->id, 'subject_category_id' => $subject->id]);

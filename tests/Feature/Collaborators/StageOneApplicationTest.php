@@ -75,7 +75,7 @@ class StageOneApplicationTest extends TestCase
         $this->followingRedirects()
             ->get(route('collaborate.collaborator-application.stage-one.create', 4))
             ->assertSee('Terms & Conditions')
-            ->assertSee('Libryo is committed to protecting and respecting your privacy.');
+            ->assertSee('Norma is committed to protecting and respecting your privacy.');
     }
 
     /**

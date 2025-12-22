@@ -2,42 +2,42 @@
 
 namespace Tests\Feature\Customer;
 
-use App\Enums\Customer\LibryoSwitcherMode;
+use App\Enums\Customer\NormaSwitcherMode;
 use App\Models\Compilation\Library;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Notify\LegalUpdate;
-use App\Models\Notify\Pivots\LegalUpdateLibryo;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Models\Notify\Pivots\LegalUpdateNorma;
+use App\Services\Customer\ActiveNormasManager;
 use Tests\Feature\My\MyTestCase;
 
-class LibryoControllerTest extends MyTestCase
+class NormaControllerTest extends MyTestCase
 {
     public function testIndex(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        $routeName = 'my.customer.libryos.index';
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        $routeName = 'my.customer.normas.index';
 
-        $libryos = Libryo::factory(3)->for($org)->create();
+        $normas = Norma::factory(3)->for($org)->create();
 
         $response = $this->get(route($routeName))->assertSuccessful();
-        $response->assertSee($libryo->title);
+        $response->assertSee($norma->title);
 
         $this->activateAllStreams($user);
         $response = $this->get(route($routeName))->assertSuccessful();
-        $response->assertSee($libryo->title);
+        $response->assertSee($norma->title);
     }
 
     public function testForMarkers(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        $routeName = 'my.customer.libryos.markers.index';
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        $routeName = 'my.customer.normas.markers.index';
 
         $response = $this->get(route($routeName, ['bounds' => '90,180,-90,-180', 'zoom' => 1]))->assertSuccessful();
         $response->assertJsonFragment([
-            'id' => $libryo->id,
-            'geo_lat' => (float) $libryo->geo_lat,
-            'geo_lng' => (float) $libryo->geo_lng,
+            'id' => $norma->id,
+            'geo_lat' => (float) $norma->geo_lat,
+            'geo_lng' => (float) $norma->geo_lng,
             'quantity' => 1,
         ]);
     }
@@ -47,33 +47,33 @@ class LibryoControllerTest extends MyTestCase
      *
      * @return void
      */
-    public function testActivateLibryo(): void
+    public function testActivateNorma(): void
     {
         $user = $this->mySuperUser();
-        $libryo = Libryo::factory()->create();
+        $norma = Norma::factory()->create();
 
-        $route = route('my.libryos.activate', ['libryo' => $libryo->id]);
+        $route = route('my.normas.activate', ['norma' => $norma->id]);
         $response = $this->actingAs($user)
             ->withExceptionHandling()
             ->post($route);
 
-        // the user has not been assigned to the libryo, so they shouldn't be able to activate
-        // finding the libryo should fail due to global scope
+        // the user has not been assigned to the norma, so they shouldn't be able to activate
+        // finding the norma should fail due to global scope
         $response->assertNotFound();
 
-        $libryo->users()->attach($user);
+        $norma->users()->attach($user);
         $response = $this->actingAs($user)
             ->post($route);
 
         $response->assertRedirect();
         $response->assertSessionHas(
-            config('session-keys.customer.active-libryo'),
-            $libryo->id,
+            config('session-keys.customer.active-norma'),
+            $norma->id,
         );
         $this->assertTrue($user->activities->isNotEmpty());
 
-        $activeLibryo = app(ActiveLibryosManager::class)->getActive($user);
-        $this->assertEquals($activeLibryo->id, $libryo->id);
+        $activeNorma = app(ActiveNormasManager::class)->getActive($user);
+        $this->assertEquals($activeNorma->id, $norma->id);
     }
 
     /**
@@ -81,28 +81,28 @@ class LibryoControllerTest extends MyTestCase
      *
      * @return void
      */
-    public function testActivateRedirectLibryo(): void
+    public function testActivateRedirectNorma(): void
     {
         $user = $this->mySuperUser();
-        $libryo = Libryo::factory()->create();
-        $libryo->users()->attach($user);
+        $norma = Norma::factory()->create();
+        $norma->users()->attach($user);
 
-        $route = route('my.libryos.activate.redirect', ['libryo' => $libryo->id, 'redirect' => '/tasks/123']);
+        $route = route('my.normas.activate.redirect', ['norma' => $norma->id, 'redirect' => '/tasks/123']);
         $response = $this->actingAs($user)
             ->get($route);
 
         $response->assertRedirect('/tasks/123');
         $response->assertSessionHas(
-            config('session-keys.customer.active-libryo'),
-            $libryo->id,
+            config('session-keys.customer.active-norma'),
+            $norma->id,
         );
     }
 
     public function testActivateRedirectOrganisation(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
-        $route = route('my.libryos.activate.all.redirect', ['organisation' => $org->id, 'redirect' => '/tasks/123']);
+        $route = route('my.normas.activate.all.redirect', ['organisation' => $org->id, 'redirect' => '/tasks/123']);
         $response = $this->actingAs($user)
             ->get($route);
 
@@ -121,13 +121,13 @@ class LibryoControllerTest extends MyTestCase
         $org = Organisation::factory()->create();
         $user->organisations()->attach($org);
 
-        $route = route('my.libryos.activate.all');
+        $route = route('my.normas.activate.all');
         $response = $this->post($route);
 
         $response->assertRedirect();
         $response->assertSessionHas(
-            config('session-keys.customer.active-libryo-mode'),
-            LibryoSwitcherMode::all()->value,
+            config('session-keys.customer.active-norma-mode'),
+            NormaSwitcherMode::all()->value,
         );
     }
 
@@ -142,16 +142,16 @@ class LibryoControllerTest extends MyTestCase
         $library->legalUpdates()->attach($update->id);
         $parent->legalUpdates()->attach($update2->id);
 
-        $libryo = Libryo::factory()->create(['library_id' => $library->id]);
+        $norma = Norma::factory()->create(['library_id' => $library->id]);
 
-        $this->assertDatabaseHas(LegalUpdateLibryo::class, [
+        $this->assertDatabaseHas(LegalUpdateNorma::class, [
             'register_notification_id' => $update->id,
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
         ]);
 
-        $this->assertDatabaseHas(LegalUpdateLibryo::class, [
+        $this->assertDatabaseHas(LegalUpdateNorma::class, [
             'register_notification_id' => $update2->id,
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
         ]);
     }
 }

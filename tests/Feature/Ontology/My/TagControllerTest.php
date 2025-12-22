@@ -11,10 +11,10 @@ class TagControllerTest extends MyTestCase
 {
     public function testIndexJson(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $work = Work::factory()->create();
         $reference = Reference::factory()->for($work)->create();
-        $reference->libryos()->attach($libryo);
+        $reference->normas()->attach($norma);
 
         $tag = Tag::factory()->create();
         $tag2 = Tag::factory()->create();

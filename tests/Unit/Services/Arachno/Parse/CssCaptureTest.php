@@ -93,7 +93,7 @@ class CssCaptureTest extends AbstractDomParseTests
         /** @var DOMElement */
         $n = $crawler->filter('head link')->getNode(0);
         $this->assertStringContainsString(
-            app(ContentResourceStore::class)->getPath(sha1('.' . CssProcessor::CSS_LIBRYO_FULL_TEXT_CLASS . ' ' . $importedCss)),
+            app(ContentResourceStore::class)->getPath(sha1('.' . CssProcessor::CSS_NORMA_FULL_TEXT_CLASS . ' ' . $importedCss)),
             $n->getAttribute('href')
         );
     }

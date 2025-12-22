@@ -22,15 +22,15 @@ class TaskNotificationsTest extends MyTestCase
     private function setupUpdateTask(): array
     {
         Notification::fake();
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        $task = Task::factory()->for($libryo)->create();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        $task = Task::factory()->for($norma)->create();
 
-        return [$user, $task, $libryo];
+        return [$user, $task, $norma];
     }
 
     public function testTitleChangedNotificationNotSentToChanger(): void
     {
-        [$user, $task, $libryo] = $this->setupUpdateTask();
+        [$user, $task, $norma] = $this->setupUpdateTask();
         $routeName = 'my.tasks.tasks.update';
         $newTitle = 'New Title';
         $response = $this->put(route($routeName, ['task' => $task->id]), ['title' => $newTitle])->assertSessionDoesntHaveErrors();
@@ -43,7 +43,7 @@ class TaskNotificationsTest extends MyTestCase
 
     public function testTitleChangedAssigneeWatcherNotification(): void
     {
-        [$user, $task, $libryo] = $this->setupUpdateTask();
+        [$user, $task, $norma] = $this->setupUpdateTask();
         $routeName = 'my.tasks.tasks.update';
 
         $user2 = User::factory()->create();
@@ -68,13 +68,13 @@ class TaskNotificationsTest extends MyTestCase
 
     public function testTitleChangedAuthorNotification(): void
     {
-        [$user, $task, $libryo] = $this->setupUpdateTask();
+        [$user, $task, $norma] = $this->setupUpdateTask();
         $routeName = 'my.tasks.tasks.update';
 
         $user2 = User::factory()->create();
         // test sending to author when someone else makes the change
         $newTitle = 'New Title 4';
-        $task = Task::factory()->for($libryo)->create();
+        $task = Task::factory()->for($norma)->create();
         Task::withoutEvents(function () use ($user2, $task, $user) {
             $task->update(['author_id' => $user2->id, 'assigned_to_id' => $user->id]);
         });
@@ -84,7 +84,7 @@ class TaskNotificationsTest extends MyTestCase
 
     public function testTitleChangedDisabledSettingNotification(): void
     {
-        [$user, $task, $libryo] = $this->setupUpdateTask();
+        [$user, $task, $norma] = $this->setupUpdateTask();
         $routeName = 'my.tasks.tasks.update';
 
         $user2 = User::factory()->create();
@@ -92,7 +92,7 @@ class TaskNotificationsTest extends MyTestCase
         // test setting is disabled
         $user2->updateSetting('email_task_title_changed_author', false);
         $newTitle = 'New Title 5';
-        $task = Task::factory()->for($libryo)->create();
+        $task = Task::factory()->for($norma)->create();
         Task::withoutEvents(function () use ($user2, $task, $user) {
             $task->update(['author_id' => $user2->id, 'assigned_to_id' => $user->id]);
         });
@@ -102,7 +102,7 @@ class TaskNotificationsTest extends MyTestCase
 
     public function testStatusChangeNotification(): void
     {
-        [$user, $task, $libryo] = $this->setupUpdateTask();
+        [$user, $task, $norma] = $this->setupUpdateTask();
         $routeName = 'my.tasks.tasks.update';
 
         $user2 = User::factory()->create();
@@ -129,7 +129,7 @@ class TaskNotificationsTest extends MyTestCase
 
     public function testStatusChangeCompletedNotification(): void
     {
-        [$user, $task, $libryo] = $this->setupUpdateTask();
+        [$user, $task, $norma] = $this->setupUpdateTask();
         $routeName = 'my.tasks.tasks.update';
 
         $user2 = User::factory()->create();
@@ -156,7 +156,7 @@ class TaskNotificationsTest extends MyTestCase
 
     public function testPriorityChangeNotification(): void
     {
-        [$user, $task, $libryo] = $this->setupUpdateTask();
+        [$user, $task, $norma] = $this->setupUpdateTask();
         $routeName = 'my.tasks.tasks.update';
 
         [$user2, $user3, $watcherUser] = $this->setupTaskAndWatchers($task, $user);
@@ -174,7 +174,7 @@ class TaskNotificationsTest extends MyTestCase
 
     public function testDueDateChangeNotification(): void
     {
-        [$user, $task, $libryo] = $this->setupUpdateTask();
+        [$user, $task, $norma] = $this->setupUpdateTask();
         $routeName = 'my.tasks.tasks.update';
 
         [$user2, $user3, $watcherUser] = $this->setupTaskAndWatchers($task, $user);
@@ -192,7 +192,7 @@ class TaskNotificationsTest extends MyTestCase
 
     public function testAssigneeChangeNotification(): void
     {
-        [$user, $task, $libryo] = $this->setupUpdateTask();
+        [$user, $task, $norma] = $this->setupUpdateTask();
         $routeName = 'my.tasks.tasks.update';
 
         [$user2, $user3, $watcherUser] = $this->setupTaskAndWatchers($task, $user);
@@ -229,12 +229,12 @@ class TaskNotificationsTest extends MyTestCase
     public function testTaskCreatedAssigneeNotification(): void
     {
         Notification::fake();
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $routeName = 'my.tasks.tasks.store';
         $user2 = User::factory()->create();
 
-        $task = Task::factory()->make(['assigned_to_id' => $user2->id, 'taskable_id' => $libryo->id]);
+        $task = Task::factory()->make(['assigned_to_id' => $user2->id, 'taskable_id' => $norma->id]);
         $count = UserActivity::count();
         // test assignee and watchers get notified
         $response = $this->post(route($routeName, ['task' => $task->id]), $task->toArray())->assertSessionDoesntHaveErrors();

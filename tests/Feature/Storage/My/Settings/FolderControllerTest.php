@@ -21,7 +21,7 @@ class FolderControllerTest extends SettingsTestCase
         $folder2 = Folder::factory()->create(['organisation_id' => null, 'folder_type' => FolderType::organisation()->value]);
         $response = $this->assertCanAccessAfterOrgActivate(route($routeName, ['activateOrgId' => $org->id]), 'get');
         $response->assertSee('Organisation Drive Setup');
-        $response->assertSee('Libryo Stream Drive Setup');
+        $response->assertSee('Norma Stream Drive Setup');
         $response->assertSee($folder->title);
         $response->assertSee($folder2->title);
     }

@@ -119,12 +119,12 @@ class CommentControllerTest extends TestCase
 
         $this->applyTaskTypesPermissions();
 
-        $this->assertDatabaseMissing(Comment::class, ['comment' => 'Awesome Libryo!']);
+        $this->assertDatabaseMissing(Comment::class, ['comment' => 'Awesome Norma!']);
 
-        $this->post(route('collaborate.comments.store', ['task' => $task]), ['comment' => 'Awesome Libryo!'])
+        $this->post(route('collaborate.comments.store', ['task' => $task]), ['comment' => 'Awesome Norma!'])
             ->assertRedirect(route('collaborate.comments.index', ['task' => $task]));
 
-        $this->assertDatabaseHas(Comment::class, ['comment' => 'Awesome Libryo!']);
+        $this->assertDatabaseHas(Comment::class, ['comment' => 'Awesome Norma!']);
 
         $this->get(route('collaborate.comments.index', ['task' => $task]))
             ->assertSuccessful()
@@ -135,26 +135,26 @@ class CommentControllerTest extends TestCase
                     ->hasTurboStream(function ($stream) use ($task) {
                         return $stream->where('target', "comments_workflows_task_{$task->id}")
                             ->where('action', 'update')
-                            ->see('Awesome Libryo!');
+                            ->see('Awesome Norma!');
                     });
             });
 
         /** @var Comment $comment */
-        $comment = Comment::where('author_id', $user->id)->where('comment', 'Awesome Libryo!')->firstOrFail();
+        $comment = Comment::where('author_id', $user->id)->where('comment', 'Awesome Norma!')->firstOrFail();
 
         $this->get(route('collaborate.comments.edit', ['comment' => $comment->id]), ['turbo-frame' => 'frame'])
             ->assertSuccessful()
             ->assertTurboStream(function (AssertableTurboStream $streams) {
                 return $streams->has(1)
                     ->hasTurboStream(function ($stream) {
-                        return $stream->where('action', 'update')->see('Awesome Libryo!');
+                        return $stream->where('action', 'update')->see('Awesome Norma!');
                     });
             });
 
         $this->put(route('collaborate.comments.update', ['comment' => $comment->id]), ['comment' => 'Awesome Zebra Corn'])
             ->assertRedirect(route('collaborate.comments.index', ['task' => $task]));
 
-        $this->assertDatabaseMissing(Comment::class, ['comment' => 'Awesome Libryo!']);
+        $this->assertDatabaseMissing(Comment::class, ['comment' => 'Awesome Norma!']);
 
         $this->assertDatabaseHas(Comment::class, ['comment' => 'Awesome Zebra Corn']);
     }

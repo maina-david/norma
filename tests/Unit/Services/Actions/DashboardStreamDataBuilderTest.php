@@ -6,7 +6,7 @@ use App\Enums\Tasks\TaskPriority;
 use App\Enums\Tasks\TaskStatus;
 use App\Models\Actions\ActionArea;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Ontology\Category;
 use App\Models\Tasks\Task;
@@ -27,12 +27,12 @@ class DashboardStreamDataBuilderTest extends TestCase
 
         /** @var Organisation */
         $organisation = Organisation::factory()->create();
-        /** @var Libryo */
-        $libryo = Libryo::factory()->create(['organisation_id' => $organisation->id]);
+        /** @var Norma */
+        $norma = Norma::factory()->create(['organisation_id' => $organisation->id]);
         /** @var User */
         $user = User::factory()->create();
         /** @var Collection<Task> */
-        $tasks = Task::factory(3)->create(['place_id' => $libryo->id, 'assigned_to_id' => $user->id, 'action_area_id' => $action->id]);
+        $tasks = Task::factory(3)->create(['place_id' => $norma->id, 'assigned_to_id' => $user->id, 'action_area_id' => $action->id]);
         $service = app(DashboardStreamDataBuilder::class);
         $builder = $service->buildQuery(
             $organisation->id,
@@ -53,7 +53,7 @@ class DashboardStreamDataBuilderTest extends TestCase
                 'task_priority' => TaskPriority::low()->value,
                 'task_start_date' => now()->subDays(3)->format('Y-m-d'),
                 'task_end_date' => now()->addMonths(12)->format('Y-m-d'),
-                'streams' => [$libryo->id],
+                'streams' => [$norma->id],
                 'task_control_types' => [$parentCat->id],
                 'task_topics' => [$parentCat->id],
             ]

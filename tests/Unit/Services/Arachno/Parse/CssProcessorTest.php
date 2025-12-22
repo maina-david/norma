@@ -19,7 +19,7 @@ class CssProcessorTest extends TestCase
 
         $this->sharedAssertions($css);
 
-        $this->assertStringContainsString('.' . CssProcessor::CSS_LIBRYO_FULL_TEXT_CLASS . ' ul', $css);
+        $this->assertStringContainsString('.' . CssProcessor::CSS_NORMA_FULL_TEXT_CLASS . ' ul', $css);
         $this->assertStringNotContainsString('/* some comment */', $css);
         $this->assertStringNotContainsString('a:visited', $css);
         $this->assertStringNotContainsString('.remove-this-whole-block', $css);
@@ -31,7 +31,7 @@ class CssProcessorTest extends TestCase
         $foundBlock = false;
         foreach ($cssDocument->getAllDeclarationBlocks() as $block) {
             foreach ($block->getSelectors('.something-with-border-color-change') as $selector) {
-                if ((string) $selector === '.' . CssProcessor::CSS_LIBRYO_FULL_TEXT_CLASS . ' .something-with-border-color-change') {
+                if ((string) $selector === '.' . CssProcessor::CSS_NORMA_FULL_TEXT_CLASS . ' .something-with-border-color-change') {
                     $foundBlock = true;
 
                     foreach ($block->getRules() as $rule) {

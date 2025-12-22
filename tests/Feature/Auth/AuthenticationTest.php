@@ -3,10 +3,10 @@
 namespace Tests\Feature\Auth;
 
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Providers\RouteServiceProvider;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
@@ -34,13 +34,13 @@ class AuthenticationTest extends TestCase
         $user = User::factory()->create();
         $this->mySuperUser($user);
         $organisation = Organisation::factory()->create();
-        $libryos = Libryo::factory(2)->create();
-        $user->libryos()->attach($libryos->modelKeys());
+        $normas = Norma::factory(2)->create();
+        $user->normas()->attach($normas->modelKeys());
         $user->organisations()->attach($organisation);
 
-        $manager = app(ActiveLibryosManager::class);
-        $manager->activate($user, $libryos[0]);
-        $manager->activate($user, $libryos[1]);
+        $manager = app(ActiveNormasManager::class);
+        $manager->activate($user, $normas[0]);
+        $manager->activate($user, $normas[1]);
 
         $this->flushSession();
 
@@ -63,9 +63,9 @@ class AuthenticationTest extends TestCase
         $this->assertAuthenticated();
         $response->assertRedirect(RouteServiceProvider::HOME);
 
-        // testing that SetActiveLibryoAfterLogin is called
+        // testing that SetActiveNormaAfterLogin is called
         $active = $manager->getActive($user);
-        $this->assertSame($libryos[1]->id, $active->id);
+        $this->assertSame($normas[1]->id, $active->id);
 
         $this->get(RouteServiceProvider::HOME)->assertSuccessful()->assertSee('Hello');
 
@@ -80,19 +80,19 @@ class AuthenticationTest extends TestCase
     /**
      * @return void
      */
-    public function testActiveLibryoAfterLogin(): void
+    public function testActiveNormaAfterLogin(): void
     {
         $user = User::factory()->create();
         $organisation = Organisation::factory()->create();
-        $libryo = Libryo::factory()->create();
-        $user->libryos()->attach($libryo->id);
+        $norma = Norma::factory()->create();
+        $user->normas()->attach($norma->id);
         $user->organisations()->attach($organisation);
 
-        $manager = app(ActiveLibryosManager::class);
-        $manager->activate($user, $libryo);
+        $manager = app(ActiveNormasManager::class);
+        $manager->activate($user, $norma);
 
         $this->flushSession();
-        $user->libryos()->detach($libryo);
+        $user->normas()->detach($norma);
 
         $response = $this->withExceptionHandling()->followingRedirects()->post('/login', [
             'email' => $user->email,
@@ -103,20 +103,20 @@ class AuthenticationTest extends TestCase
     /**
      * @return void
      */
-    public function testActiveLibryoAfterFirstLogin(): void
+    public function testActiveNormaAfterFirstLogin(): void
     {
         $user = User::factory()->create();
         $organisation = Organisation::factory()->create();
-        $libryo = Libryo::factory()->create();
+        $norma = Norma::factory()->create();
         $this->mySuperUser($user);
-        $user->libryos()->attach($libryo->id);
+        $user->normas()->attach($norma->id);
         $user->organisations()->attach($organisation);
 
         $response = $this->withExceptionHandling()->followingRedirects()->post('/login', [
             'email' => $user->email,
             'password' => 'password',
         ])->assertSuccessful()
-            ->assertSee($libryo->title);
+            ->assertSee($norma->title);
     }
 
     /**

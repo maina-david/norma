@@ -9,9 +9,9 @@ class WorkForOrganisationControllerTest extends ApiTestCase
 {
     public function testForOrganisation(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
         $user = User::factory()->create();
-        $user->libryos()->attach($libryo);
+        $user->normas()->attach($norma);
         $user->organisations()->attach($organisation);
 
         $routeName = 'api.v2.works.for.organisation';

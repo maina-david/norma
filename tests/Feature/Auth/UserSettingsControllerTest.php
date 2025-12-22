@@ -15,7 +15,7 @@ class UserSettingsControllerTest extends MyTestCase
 {
     public function testShowSettingsProfile(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.user.settings.profile.show';
         $response = $this->get(route($routeName))->assertSuccessful();
         $response->assertSeeSelector('//label[text()[contains(.,"First Name")]]');
@@ -28,7 +28,7 @@ class UserSettingsControllerTest extends MyTestCase
 
     public function testUpdateSettingsProfile(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.user.settings.profile.update';
         $response = $this->put(route($routeName), [
             'fname' => preg_replace('/[^a-z-_]/i', '', $this->faker()->firstName()),
@@ -61,7 +61,7 @@ class UserSettingsControllerTest extends MyTestCase
 
     public function testShowSettingsEmail(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.user.settings.email.show';
         $response = $this->get(route($routeName))->assertSuccessful();
 
@@ -71,7 +71,7 @@ class UserSettingsControllerTest extends MyTestCase
 
     public function testUpdateSettingsEmail(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.user.settings.email.update';
         $newEmail = $this->faker()->safeEmail();
         $response = $this->put(route($routeName), [
@@ -116,7 +116,7 @@ class UserSettingsControllerTest extends MyTestCase
 
     public function testShowSettingsPassword(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.user.settings.password.show';
         $response = $this->get(route($routeName))->assertSuccessful();
         $response->assertSeeSelector('//label[text()[contains(.,"Current Password")]]');
@@ -126,7 +126,7 @@ class UserSettingsControllerTest extends MyTestCase
 
     public function testUpdateSettingsPassword(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.user.settings.password.update';
         $password = 'Incorrect';
         $new = 'New';
@@ -176,7 +176,7 @@ class UserSettingsControllerTest extends MyTestCase
 
     public function testShowSettingsNotifications(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.user.settings.notifications.show';
         $response = $this->get(route($routeName))->assertSuccessful();
 
@@ -191,7 +191,7 @@ class UserSettingsControllerTest extends MyTestCase
 
     public function testUpdateSettingsNotifications(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.user.settings.notifications.update';
 
         $response = $this->put(route($routeName), [
@@ -250,7 +250,7 @@ class UserSettingsControllerTest extends MyTestCase
 
     public function testShowSettingsSecurity(): void
     {
-        $this->initUserLibryoOrg();
+        $this->initUserNormaOrg();
         $routeName = 'my.user.settings.security.show';
 
         $this->get(route($routeName))->assertRedirect(route('password.confirm'));

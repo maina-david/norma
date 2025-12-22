@@ -118,7 +118,7 @@ class SyncUsersLastActivityTest extends TestCase
 
         $this->assertTrue($user->updateHubspot());
 
-        $this->artisan('libryo:sync-activities')
+        $this->artisan('norma:sync-activities')
             ->assertSuccessful()
             ->expectsOutput('Successfully processed batch of 10.');
 

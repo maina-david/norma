@@ -16,14 +16,14 @@ class LegalReportExcelExportTest extends TestCase
 
     public function testBuild(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
 
         $childWork = Work::factory()->has(Reference::factory()->count(5))->create();
         $work->children()->attach($childWork);
 
-        $childWork->references->first()->libryos()->attach($libryo);
+        $childWork->references->first()->normas()->attach($norma);
 
-        $query = Work::primaryForLibryo($libryo)
+        $query = Work::primaryForNorma($norma)
             ->with(['children', 'children.references.citation', 'references.citation', 'references.htmlContent', 'children.references.htmlContent', 'references.refPlainText', 'children.references.refPlainText']);
 
         $works = $query->get();
@@ -34,7 +34,7 @@ class LegalReportExcelExportTest extends TestCase
         $reference2 = $works[0]->references[1];
         $reference2->htmlContent()->save(new ReferenceContent(['reference_id' => $reference->id, 'cached_content' => $this->faker->sentence(3500)]));
 
-        $excel = app(LegalReportExcelExport::class)->setDomain('https://my.libryo.com/')->build($query);
+        $excel = app(LegalReportExcelExport::class)->setDomain('https://my.norma.com/')->build($query);
         $writer = new Xlsx($excel);
         $localTmpPath = storage_path('app/tmp') . '/report.xlsx';
         $writer->save($localTmpPath);

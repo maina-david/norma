@@ -10,7 +10,7 @@ class UserActivityControllerTest extends MyTestCase
 {
     public function testTrackEvent(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.user.activities.track';
 
         $data = [
@@ -20,7 +20,7 @@ class UserActivityControllerTest extends MyTestCase
         $response = $this->post(route($routeName), $data)->assertSuccessful();
         $activity = UserActivity::all()->last();
         $this->assertSame($user->id, $activity->user_id);
-        $this->assertSame($libryo->id, $activity->place_id);
+        $this->assertSame($norma->id, $activity->place_id);
         $this->assertSame($org->id, $activity->organisation_id);
     }
 }

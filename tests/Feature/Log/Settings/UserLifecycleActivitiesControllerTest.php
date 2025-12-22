@@ -27,7 +27,7 @@ class UserLifecycleActivitiesControllerTest extends SettingsTestCase
 
         $response = $this->assertCanAccessAfterOrgActivate(route('my.settings.users.lifecycle.activities', ['user' => $testUser->id, 'activateOrgId' => $org->id]), 'get');
 
-        // when viewing in single organisations mode, you should only see the teams the libryo is part of that are in this org
+        // when viewing in single organisations mode, you should only see the teams the norma is part of that are in this org
         $response->assertSee(LifecycleStage::lang()[$activity->to_lifecycle]);
         $response->assertSee(LifecycleStage::lang()[$activity->from_lifecycle]);
     }

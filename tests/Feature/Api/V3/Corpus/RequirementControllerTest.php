@@ -3,7 +3,7 @@
 namespace Tests\Feature\Api\V3\Corpus;
 
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Services\Html\HtmlToText;
 use Tests\Feature\Api\V3\ApiV3TestCase;
 
@@ -11,15 +11,15 @@ class RequirementControllerTest extends ApiV3TestCase
 {
     public function testRequirementsForOrganisation(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag, $childWork] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag, $childWork] = $this->initCompiledStream();
 
-        $noWorkLibryo = Libryo::factory()->create(['organisation_id' => $organisation->id]);
+        $noWorkNorma = Norma::factory()->create(['organisation_id' => $organisation->id]);
 
-        $references = Reference::whereRelation('libryos.organisation', 'id', $organisation->id)
+        $references = Reference::whereRelation('normas.organisation', 'id', $organisation->id)
             ->with([
                 'htmlContent',
                 'refPlainText',
-                'libryos' => fn ($q) => $q->where('organisation_id', $organisation->id),
+                'normas' => fn ($q) => $q->where('organisation_id', $organisation->id),
             ])
             ->get()
             ->map(function ($ref) {
@@ -31,7 +31,7 @@ class RequirementControllerTest extends ApiV3TestCase
                     'consequences' => [],
                     'content' => trim(app(HtmlToText::class)->convert($ref->htmlContent->cached_content ?? '')),
                     'work_id' => $ref->work_id,
-                    'streams' => $ref->libryos->pluck('id')->all(),
+                    'streams' => $ref->normas->pluck('id')->all(),
                     'link' => route('my.corpus.references.show', ['reference' => $ref->id], false),
                 ];
             })
@@ -58,12 +58,12 @@ class RequirementControllerTest extends ApiV3TestCase
                 ],
             ]);
 
-        $workReferences = Reference::whereRelation('libryos.organisation', 'id', $organisation->id)
+        $workReferences = Reference::whereRelation('normas.organisation', 'id', $organisation->id)
             ->where('work_id', $work->id)
             ->with([
                 'htmlContent',
                 'refPlainText',
-                'libryos' => fn ($q) => $q->where('organisation_id', $organisation->id),
+                'normas' => fn ($q) => $q->where('organisation_id', $organisation->id),
             ])
             ->get()
             ->map(fn ($ref) => [
@@ -72,7 +72,7 @@ class RequirementControllerTest extends ApiV3TestCase
                 'content' => trim(app(HtmlToText::class)->convert($ref->htmlContent->cached_content ?? '')),
                 'consequences' => [],
                 'work_id' => $ref->work_id,
-                'streams' => $ref->libryos->pluck('id')->all(),
+                'streams' => $ref->normas->pluck('id')->all(),
                 'link' => route('my.corpus.references.show', ['reference' => $ref->id], false),
             ])
             ->all();
@@ -100,7 +100,7 @@ class RequirementControllerTest extends ApiV3TestCase
                 ],
             ]);
 
-        $streams = implode(',', [$libryo->id, $noWorkLibryo->id]);
+        $streams = implode(',', [$norma->id, $noWorkNorma->id]);
 
         $route = route('api.v3.requirements.index', ['organisation' => $organisation->id, 'streams' => $streams]);
 
@@ -125,7 +125,7 @@ class RequirementControllerTest extends ApiV3TestCase
                 ],
             ]);
 
-        $streams = implode(',', [$noWorkLibryo->id]);
+        $streams = implode(',', [$noWorkNorma->id]);
 
         $route = route('api.v3.requirements.index', ['organisation' => $organisation->id, 'streams' => $streams]);
 

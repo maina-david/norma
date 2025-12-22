@@ -8,9 +8,9 @@ class HelpControllerTest extends MyTestCase
 {
     public function testSearchPortal(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $response = $this->get(route('my.help.search.success.portal'))->assertRedirect();
 
-        $response->assertRedirectContains('https://success.libryo.com');
+        $response->assertRedirectContains('https://success.norma.com');
     }
 }

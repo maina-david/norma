@@ -5,13 +5,13 @@ namespace Tests\Feature\Api\V2\Compilation;
 use App\Enums\Compilation\ContextQuestionAnswer;
 use App\Models\Auth\User;
 use App\Models\Compilation\ContextQuestion;
-use App\Models\Customer\Libryo;
-use App\Models\Customer\Pivots\ContextQuestionLibryo;
+use App\Models\Customer\Norma;
+use App\Models\Customer\Pivots\ContextQuestionNorma;
 use App\Models\Geonames\Location;
 use Laravel\Passport\Passport;
 use Tests\Feature\Api\ApiTestCase;
 
-class ContextQuestionForLibryoControllerTest extends ApiTestCase
+class ContextQuestionForNormaControllerTest extends ApiTestCase
 {
     /**
      * @return void
@@ -22,12 +22,12 @@ class ContextQuestionForLibryoControllerTest extends ApiTestCase
         $location->location_country_id = $location->id;
         $location->save();
 
-        $libryo = Libryo::factory()->create(['location_id' => $location->id]);
+        $norma = Norma::factory()->create(['location_id' => $location->id]);
         $user = User::factory()->create();
-        $user->libryos()->attach($libryo);
+        $user->normas()->attach($norma);
 
         $questions = ContextQuestion::factory()->count(2)->create();
-        $unattachedQuestions = Libryo::factory()->count(4)->create();
+        $unattachedQuestions = Norma::factory()->count(4)->create();
 
         $described = $questions->first();
 
@@ -37,11 +37,11 @@ class ContextQuestionForLibryoControllerTest extends ApiTestCase
             'description' => 'With Location',
         ]);
 
-        $questions->each(fn ($question) => $question->libryos()->attach($libryo, [
+        $questions->each(fn ($question) => $question->normas()->attach($norma, [
             'answer' => ContextQuestionAnswer::no()->value,
         ]));
 
-        $payload = $libryo->contextQuestions()->get()->map(fn ($question) => [
+        $payload = $norma->contextQuestions()->get()->map(fn ($question) => [
             'id' => $question->id,
             'question' => $question->toQuestion(),
             'category_id' => $question->category_id,
@@ -49,8 +49,8 @@ class ContextQuestionForLibryoControllerTest extends ApiTestCase
             'answer' => $question->pivot->answer,
         ])->toArray();
 
-        $routeName = 'api.v2.context-questions.libryo.index';
-        $response = $this->assertApiUnauthorizedThenRun($user, 'get', route($routeName, ['libryo' => $libryo]))
+        $routeName = 'api.v2.context-questions.norma.index';
+        $response = $this->assertApiUnauthorizedThenRun($user, 'get', route($routeName, ['norma' => $norma]))
             ->assertSuccessful()
             ->assertJson(['data' => $payload], true);
 
@@ -67,13 +67,13 @@ class ContextQuestionForLibryoControllerTest extends ApiTestCase
             'total' => 2,
         ];
         $links = [
-            'first' => route($routeName, ['libryo' => $libryo, 'perPage' => 1, 'page' => 1]),
-            'last' => route($routeName, ['libryo' => $libryo, 'perPage' => 1, 'page' => 2]),
+            'first' => route($routeName, ['norma' => $norma, 'perPage' => 1, 'page' => 1]),
+            'last' => route($routeName, ['norma' => $norma, 'perPage' => 1, 'page' => 2]),
             'prev' => null,
-            'next' => route($routeName, ['libryo' => $libryo, 'perPage' => 1, 'page' => 2]),
+            'next' => route($routeName, ['norma' => $norma, 'perPage' => 1, 'page' => 2]),
         ];
 
-        $this->json('get', route($routeName, ['libryo' => $libryo, 'perPage' => 1, 'page' => 1]))
+        $this->json('get', route($routeName, ['norma' => $norma, 'perPage' => 1, 'page' => 1]))
             ->assertSuccessful()
             ->assertJson(['data' => [$payload[0]], 'meta' => $meta, 'links' => $links])
             ->assertJsonMissing(['data' => [$payload[1]]]);
@@ -84,37 +84,37 @@ class ContextQuestionForLibryoControllerTest extends ApiTestCase
      */
     public function testItAnswersCorrectQuestions(): void
     {
-        $libryo = Libryo::factory()->create();
+        $norma = Norma::factory()->create();
         $user = User::factory()->create();
-        $user->libryos()->attach($libryo);
+        $user->normas()->attach($norma);
         $questions = ContextQuestion::factory()->count(2)->create();
         $unattachedQuestions = ContextQuestion::factory()->count(4)->create();
 
-        $questions->each(fn ($question) => $question->libryos()->attach($libryo, [
+        $questions->each(fn ($question) => $question->normas()->attach($norma, [
             'answer' => ContextQuestionAnswer::maybe()->value,
         ]));
 
-        $table = (new ContextQuestionLibryo())->getTable();
+        $table = (new ContextQuestionNorma())->getTable();
 
         $unattachedQuestions->each(fn ($question) => $this->assertDatabaseMissing($table, [
             'context_question_id' => $question->id,
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
             'answer' => ContextQuestionAnswer::maybe()->value,
         ]));
 
-        $target = 'api.v2.context-questions.libryo.answer.store';
+        $target = 'api.v2.context-questions.norma.answer.store';
 
         Passport::actingAs($user);
 
-        $questions->each(function ($question) use ($table, $libryo, $target) {
+        $questions->each(function ($question) use ($table, $norma, $target) {
             $this->assertDatabaseHas($table, [
                 'context_question_id' => $question->id,
-                'place_id' => $libryo->id,
+                'place_id' => $norma->id,
                 'answer' => ContextQuestionAnswer::maybe()->value,
             ]);
 
             // Test invalid answer.
-            $route = route($target, ['question' => $question->id, 'libryo' => $libryo->id, 'answer' => 'zebracorn']);
+            $route = route($target, ['question' => $question->id, 'norma' => $norma->id, 'answer' => 'zebracorn']);
 
             $this->withExceptionHandling()
                 ->json('post', $route, [])
@@ -122,14 +122,14 @@ class ContextQuestionForLibryoControllerTest extends ApiTestCase
 
             $this->assertDatabaseHas($table, [
                 'context_question_id' => $question->id,
-                'place_id' => $libryo->id,
+                'place_id' => $norma->id,
                 'answer' => ContextQuestionAnswer::maybe()->value,
             ]);
 
             // Test changing to no.
             $route = route($target, [
                 'question' => $question->id,
-                'libryo' => $libryo->id,
+                'norma' => $norma->id,
                 'answer' => ContextQuestionAnswer::no()->value,
             ]);
 
@@ -139,14 +139,14 @@ class ContextQuestionForLibryoControllerTest extends ApiTestCase
 
             $this->assertDatabaseHas($table, [
                 'context_question_id' => $question->id,
-                'place_id' => $libryo->id,
+                'place_id' => $norma->id,
                 'answer' => ContextQuestionAnswer::no()->value,
             ]);
 
             // Test reseting
             $route = route($target, [
                 'question' => $question->id,
-                'libryo' => $libryo->id,
+                'norma' => $norma->id,
                 'answer' => 'reset',
             ]);
 
@@ -156,27 +156,27 @@ class ContextQuestionForLibryoControllerTest extends ApiTestCase
 
             $this->assertDatabaseHas($table, [
                 'context_question_id' => $question->id,
-                'place_id' => $libryo->id,
+                'place_id' => $norma->id,
                 'answer' => ContextQuestionAnswer::yes()->value,
             ]);
         });
 
-        $unattachedQuestions->each(function ($question) use ($table, $libryo, $target) {
-            $this->assertDatabaseMissing($table, ['context_question_id' => $question->id, 'place_id' => $libryo->id]);
+        $unattachedQuestions->each(function ($question) use ($table, $norma, $target) {
+            $this->assertDatabaseMissing($table, ['context_question_id' => $question->id, 'place_id' => $norma->id]);
 
             // Test invalid answer with unattached question.
-            $route = route($target, ['question' => $question->id, 'libryo' => $libryo->id, 'answer' => 'zebracorn']);
+            $route = route($target, ['question' => $question->id, 'norma' => $norma->id, 'answer' => 'zebracorn']);
 
             $this->withExceptionHandling()
                 ->json('post', $route, [])
                 ->assertNotFound();
 
-            $this->assertDatabaseMissing($table, ['context_question_id' => $question->id, 'place_id' => $libryo->id]);
+            $this->assertDatabaseMissing($table, ['context_question_id' => $question->id, 'place_id' => $norma->id]);
 
             // Test no with unattached question
             $route = route($target, [
                 'question' => $question->id,
-                'libryo' => $libryo->id,
+                'norma' => $norma->id,
                 'answer' => ContextQuestionAnswer::maybe()->value,
             ]);
 
@@ -184,12 +184,12 @@ class ContextQuestionForLibryoControllerTest extends ApiTestCase
                 ->json('post', $route, [])
                 ->assertNotFound();
 
-            $this->assertDatabaseMissing($table, ['context_question_id' => $question->id, 'place_id' => $libryo->id]);
+            $this->assertDatabaseMissing($table, ['context_question_id' => $question->id, 'place_id' => $norma->id]);
 
             // Test yes with unattached question
             $route = route($target, [
                 'question' => $question->id,
-                'libryo' => $libryo->id,
+                'norma' => $norma->id,
                 'answer' => 'reset',
             ]);
 
@@ -197,7 +197,7 @@ class ContextQuestionForLibryoControllerTest extends ApiTestCase
                 ->json('post', $route, [])
                 ->assertNotFound();
 
-            $this->assertDatabaseMissing($table, ['context_question_id' => $question->id, 'place_id' => $libryo->id]);
+            $this->assertDatabaseMissing($table, ['context_question_id' => $question->id, 'place_id' => $norma->id]);
         });
     }
 }

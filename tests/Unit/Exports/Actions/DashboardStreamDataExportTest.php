@@ -14,10 +14,10 @@ class DashboardStreamDataExportTest extends TestCase
 
     public function testBuild(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
 
         $taskCount = 5;
-        $tasks = Task::factory($taskCount)->for($libryo)->create();
+        $tasks = Task::factory($taskCount)->for($norma)->create();
 
         $progressCallback = function ($progress) {
         };
@@ -35,7 +35,7 @@ class DashboardStreamDataExportTest extends TestCase
         $excel = app(DashboardStreamDataExport::class)->forOrganisation($organisation, $columns, $filters, $progressCallback);
 
         $ws = $excel->getActiveSheet();
-        $this->assertSame($libryo->title, $ws->getCell('A2')->getValue());
+        $this->assertSame($norma->title, $ws->getCell('A2')->getValue());
         $this->assertSame($taskCount, (int) $ws->getCell('B2')->getValue());
 
         $filters = ['task_statuses' => [TaskStatus::done()->value]];

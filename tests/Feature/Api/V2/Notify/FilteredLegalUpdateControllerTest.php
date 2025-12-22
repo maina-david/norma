@@ -10,12 +10,12 @@ class FilteredLegalUpdateControllerTest extends ApiTestCase
 {
     public function testIndexFiltered(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
 
         $releaseAt = now()->subDay()->format('Y-m-d');
         $update = LegalUpdate::factory()->for($work)->create(['release_at' => $releaseAt, 'primary_location_id' => $requirementsCollection->id]);
         $user = User::factory()->create();
-        $update->libryos()->attach($libryo);
+        $update->normas()->attach($norma);
         $update->users()->attach($user);
         $highlights = '<p>Highlights</p>';
         $work->update(['highlights' => $highlights]);
@@ -23,10 +23,10 @@ class FilteredLegalUpdateControllerTest extends ApiTestCase
 
         $update->legalDomains()->attach($domain);
 
-        $user->libryos()->attach($libryo);
+        $user->normas()->attach($norma);
 
         $routeName = 'api.v2.notify.legal-updates.filtered.index';
-        $route = route($routeName, ['page' => 1, 'perPage' => 5, 'count' => 'places', 'places' => [$libryo->id]]);
+        $route = route($routeName, ['page' => 1, 'perPage' => 5, 'count' => 'places', 'places' => [$norma->id]]);
         $response = $this->assertApiUnauthorizedThenRun($user, 'get', $route);
         $items = [];
 

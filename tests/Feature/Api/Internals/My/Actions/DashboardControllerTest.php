@@ -13,20 +13,20 @@ class DashboardControllerTest extends MyTestCase
 {
     public function testListingAndExporting(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $action = ActionArea::factory()->create();
         $ref = Reference::factory()->create();
         $ref->actionAreas()->attach($action->id);
-        $task = Task::factory()->create(['place_id' => $libryo->id, 'taskable_type' => $ref->getMorphClass(), 'taskable_id' => $ref->id]);
+        $task = Task::factory()->create(['place_id' => $norma->id, 'taskable_type' => $ref->getMorphClass(), 'taskable_id' => $ref->id]);
 
         $this->getJson(route('api.my.actions.tasks.dashboard.index'))
             ->assertSuccessful()
             ->assertJson([
                 'data' => [
                     [
-                        'id' => $libryo->id,
-                        'title' => $libryo->title,
+                        'id' => $norma->id,
+                        'title' => $norma->title,
                         'total_tasks' => 1,
                         'total_in_progress_tasks' => 0,
                         'total_not_started_tasks' => 1,

@@ -125,9 +125,9 @@ class ValidateProfileDocumentsTest extends TestCase
         ]);
 
         $mail = new ProfileDocumentValidity($expired);
-        $mail->assertSeeInHtml('This is to notify you that your uploaded Identification Document on Libryo Collaborate has expired');
+        $mail->assertSeeInHtml('This is to notify you that your uploaded Identification Document on Norma Collaborate has expired');
 
         $mail = new ProfileDocumentValidity($expiring);
-        $mail->assertSeeInHtml('This is to notify you that your uploaded Identification Document on Libryo Collaborate will expire in 7 days! Please update your profile with a new one to avoid account deactivation.');
+        $mail->assertSeeInHtml('This is to notify you that your uploaded Identification Document on Norma Collaborate will expire in 7 days! Please update your profile with a new one to avoid account deactivation.');
     }
 }

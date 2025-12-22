@@ -9,7 +9,7 @@ class ProjectControllerTest extends MyTestCase
 {
     public function testListing(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $project = TaskProject::factory()->create(['organisation_id' => $org->id]);
         $others = TaskProject::factory()->count(3)->create();
 

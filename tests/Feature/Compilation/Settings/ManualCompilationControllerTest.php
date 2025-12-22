@@ -22,7 +22,7 @@ class ManualCompilationControllerTest extends SettingsTestCase
 
     public function testAddWorkAndClear(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.settings.compilation.works.for.manual.compilation.add';
         $this->signIn($this->mySuperUser($user));
 
@@ -53,7 +53,7 @@ class ManualCompilationControllerTest extends SettingsTestCase
 
     public function testCompileDecompileReference(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.settings.compilation.manual.reference.add';
         $this->signIn($this->mySuperUser($user));
 
@@ -73,7 +73,7 @@ class ManualCompilationControllerTest extends SettingsTestCase
 
     public function testCompileDecompileWork(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.settings.compilation.manual.work.add';
         $this->signIn($this->mySuperUser($user));
 
@@ -96,7 +96,7 @@ class ManualCompilationControllerTest extends SettingsTestCase
 
     public function testCompileDecompileAllWorks(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.settings.compilation.manual.all.works.add';
         $this->signIn($this->mySuperUser($user));
 

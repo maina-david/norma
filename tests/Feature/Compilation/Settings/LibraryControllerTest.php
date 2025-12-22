@@ -3,7 +3,7 @@
 namespace Tests\Feature\Compilation\Settings;
 
 use App\Models\Compilation\Library;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use Illuminate\Support\Str;
 use Tests\Feature\Settings\SettingsTestCase;
@@ -85,7 +85,7 @@ class LibraryControllerTest extends SettingsTestCase
         $user->organisations()->attach($org, ['is_admin' => true]);
 
         $library = Library::factory()->create();
-        $libryo = Libryo::factory()->for($library)->for($org)->create();
+        $norma = Norma::factory()->for($library)->for($org)->create();
 
         $response = $this->assertCanAccessAfterOrgActivate(route('my.settings.libraries.index', ['activateOrgId' => $org->id]), 'get');
         $response->assertSee($library->title);
@@ -136,7 +136,7 @@ class LibraryControllerTest extends SettingsTestCase
         $user = $this->signIn();
         $org = Organisation::factory()->create();
         $library = Library::factory()->create();
-        $libryo = Libryo::factory()->for($library)->for($org)->create();
+        $norma = Norma::factory()->for($library)->for($org)->create();
 
         $route = route('my.settings.libraries.show', ['library' => $library->id]);
         $user = $this->assertForbiddenForNonAdmin($route, 'get', $user);

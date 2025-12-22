@@ -11,26 +11,26 @@ class LegalUpdateControllerTest extends ApiTestCase
 {
     public function testIndexFiltered(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
 
         $releaseAt = now()->subDay()->format('Y-m-d');
         $releaseAtFuture = now()->addMonths(2)->format('Y-m-d');
         $update = LegalUpdate::factory()->for($work)->create(['release_at' => $releaseAt, 'status' => LegalUpdatePublishedStatus::PUBLISHED->value]);
         $update2 = LegalUpdate::factory()->for($work)->create(['release_at' => $releaseAtFuture, 'status' => LegalUpdatePublishedStatus::PUBLISHED->value]);
         $user = User::factory()->create();
-        $update->libryos()->attach($libryo);
+        $update->normas()->attach($norma);
         $update->users()->attach($user);
 
         $highlights = '<p>Highlights</p>';
         $work->update(['highlights' => $highlights]);
         $work->refresh();
 
-        $user->libryos()->attach($libryo);
+        $user->normas()->attach($norma);
 
         $routeName = 'api.v2.notify.legal-updates.index';
         $lastWeek = now()->subDays(7)->format('Y-m-d');
         $nextWeek = now()->addDays(7)->format('Y-m-d');
-        $route = route($routeName, ['page' => 1, 'perPage' => 5, 'include' => 'libryos', 'filters' => ['release_at,gt,' . $lastWeek . '|release_at,lt,' . $nextWeek]]);
+        $route = route($routeName, ['page' => 1, 'perPage' => 5, 'include' => 'normas', 'filters' => ['release_at,gt,' . $lastWeek . '|release_at,lt,' . $nextWeek]]);
         $response = $this->assertApiUnauthorizedThenRun($user, 'get', $route);
         $items = [];
 

@@ -8,11 +8,11 @@ use App\Jobs\Compilation\AutoCompilationExcelImport;
 use App\Livewire\Compilation\ContextQuestion\ContextQuestionAnswerToggle;
 use App\Models\Auth\Role;
 use App\Models\Compilation\ContextQuestion;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
-use App\Models\Customer\Pivots\ContextQuestionLibryo;
+use App\Models\Customer\Pivots\ContextQuestionNorma;
 use App\Models\Ontology\Category;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Queue;
@@ -29,18 +29,18 @@ class ContextQuestionControllerTest extends SettingsTestCase
         $user->roles()->attach(Role::factory()->my()->create());
 
         $org = Organisation::factory()->create();
-        $libryos = Libryo::factory(3)->for($org)->create();
+        $normas = Norma::factory(3)->for($org)->create();
         $contextQuestions = ContextQuestion::factory(3)->create();
         $parent = Category::factory()->create(['level' => 1]);
         $category = Category::factory()->create(['parent_id' => $parent->id, 'level' => 2]);
         $contextQuestions[0]->categories()->attach($category->id);
-        $libryos[0]->contextQuestions()->attach($contextQuestions->modelKeys(), ['answer' => ContextQuestionAnswer::yes()->value]);
-        $libryos[1]->contextQuestions()->attach($contextQuestions->modelKeys(), ['answer' => ContextQuestionAnswer::yes()->value]);
-        $libryos[2]->contextQuestions()->attach($contextQuestions->modelKeys(), ['answer' => ContextQuestionAnswer::yes()->value]);
+        $normas[0]->contextQuestions()->attach($contextQuestions->modelKeys(), ['answer' => ContextQuestionAnswer::yes()->value]);
+        $normas[1]->contextQuestions()->attach($contextQuestions->modelKeys(), ['answer' => ContextQuestionAnswer::yes()->value]);
+        $normas[2]->contextQuestions()->attach($contextQuestions->modelKeys(), ['answer' => ContextQuestionAnswer::yes()->value]);
 
-        $libryos[0]->contextQuestions()->updateExistingPivot($contextQuestions[0], ['answer' => ContextQuestionAnswer::no()->value]);
-        $libryos[1]->contextQuestions()->updateExistingPivot($contextQuestions[0], ['answer' => ContextQuestionAnswer::no()->value]);
-        $libryos[2]->contextQuestions()->updateExistingPivot($contextQuestions[0], ['answer' => ContextQuestionAnswer::no()->value]);
+        $normas[0]->contextQuestions()->updateExistingPivot($contextQuestions[0], ['answer' => ContextQuestionAnswer::no()->value]);
+        $normas[1]->contextQuestions()->updateExistingPivot($contextQuestions[0], ['answer' => ContextQuestionAnswer::no()->value]);
+        $normas[2]->contextQuestions()->updateExistingPivot($contextQuestions[0], ['answer' => ContextQuestionAnswer::no()->value]);
         $user->organisations()->attach($org, ['is_admin' => true]);
 
         $this->activateAllStreams($user, $org);
@@ -63,7 +63,7 @@ class ContextQuestionControllerTest extends SettingsTestCase
             ->assertDontSee($contextQuestions[0]->toQuestion())
             ->assertSee($contextQuestions[1]->toQuestion());
 
-        app(ActiveLibryosManager::class)->activate($user, $libryos[0]);
+        app(ActiveNormasManager::class)->activate($user, $normas[0]);
 
         $this->get(route($routeName, ['answer' => [ContextQuestionAnswer::yes()->value]]))
             ->assertSuccessful()
@@ -71,8 +71,8 @@ class ContextQuestionControllerTest extends SettingsTestCase
             ->assertSee($contextQuestions[1]->toQuestion())
             ->assertSeeLivewire(ContextQuestionAnswerToggle::class);
 
-        $answer = ContextQuestionLibryo::where('context_question_id', $contextQuestions[1]->id)
-            ->where('place_id', $libryos[0]->id)
+        $answer = ContextQuestionNorma::where('context_question_id', $contextQuestions[1]->id)
+            ->where('place_id', $normas[0]->id)
             ->first();
 
         $this->assertSame(ContextQuestionAnswer::yes()->value, $answer->answer);
@@ -80,11 +80,11 @@ class ContextQuestionControllerTest extends SettingsTestCase
         Livewire::test(ContextQuestionAnswerToggle::class)
             ->set('answer', $answer->answer)
             ->set('questionId', $contextQuestions[1]->id)
-            ->set('libryoId', $libryos[0]->id)
+            ->set('normaId', $normas[0]->id)
             ->call('changeAnswer', ContextQuestionAnswer::no()->value);
 
-        $answer = ContextQuestionLibryo::where('context_question_id', $contextQuestions[1]->id)
-            ->where('place_id', $libryos[0]->id)
+        $answer = ContextQuestionNorma::where('context_question_id', $contextQuestions[1]->id)
+            ->where('place_id', $normas[0]->id)
             ->first();
 
         $this->assertSame(ContextQuestionAnswer::no()->value, $answer->answer);
@@ -99,26 +99,26 @@ class ContextQuestionControllerTest extends SettingsTestCase
         $user->roles()->attach(Role::factory()->my()->create());
 
         $org = Organisation::factory()->create();
-        $nonOrgLibryo = Libryo::factory()->create();
-        $libryos = Libryo::factory(3)->for($org)->create();
-        $user->libryos()->attach($libryos->modelKeys());
-        $question->libryos()->attach($libryos->modelKeys(), ['answer' => ContextQuestionAnswer::yes()->value]);
+        $nonOrgNorma = Norma::factory()->create();
+        $normas = Norma::factory(3)->for($org)->create();
+        $user->normas()->attach($normas->modelKeys());
+        $question->normas()->attach($normas->modelKeys(), ['answer' => ContextQuestionAnswer::yes()->value]);
         $user->organisations()->attach($org);
 
         $this->activateAllStreams($user);
 
         $response = $this->get(route($routeName, ['question' => $question->hash_id, 'activateOrgId' => $org->id]));
 
-        $response->assertSee($libryos[0]->title);
-        $response->assertDontSee($nonOrgLibryo->title);
+        $response->assertSee($normas[0]->title);
+        $response->assertDontSee($nonOrgNorma->title);
 
-        $this->get(route('my.context-questions.libryo.show', ['question' => $question->hash_id, 'libryo' => $libryos[0]->hash_id]))
+        $this->get(route('my.context-questions.norma.show', ['question' => $question->hash_id, 'norma' => $normas[0]->hash_id]))
             ->assertSuccessful()
-            ->assertSee($libryos[0]->title);
+            ->assertSee($normas[0]->title);
 
-        app(ActiveLibryosManager::class)->activate($user, $libryos[0]);
+        app(ActiveNormasManager::class)->activate($user, $normas[0]);
         $this->get(route($routeName, ['question' => $question->hash_id]))
-            ->assertRedirect(route('my.context-questions.libryo.show', ['question' => $question->hash_id, 'libryo' => $libryos[0]->hash_id]));
+            ->assertRedirect(route('my.context-questions.norma.show', ['question' => $question->hash_id, 'norma' => $normas[0]->hash_id]));
     }
 
     public function testShowQuestionActions(): void
@@ -130,24 +130,24 @@ class ContextQuestionControllerTest extends SettingsTestCase
         $user->roles()->attach(Role::factory()->my()->create());
 
         $org = Organisation::factory()->create();
-        $libryos = Libryo::factory(3)->for($org)->create();
-        $question->libryos()->attach($libryos->modelKeys(), ['answer' => ContextQuestionAnswer::yes()->value]);
+        $normas = Norma::factory(3)->for($org)->create();
+        $question->normas()->attach($normas->modelKeys(), ['answer' => ContextQuestionAnswer::yes()->value]);
         $user->organisations()->attach($org);
 
         $this->activateAllStreams($user);
 
         $response = $this->withActivatedOrg($org)->followingRedirects()->post(route($routeName, ['question' => $question->id]), [
             'action' => 'applicability_answer_no',
-            'actions-checkbox-' . $libryos[0]->id => 'on',
+            'actions-checkbox-' . $normas[0]->id => 'on',
         ])->assertSuccessful();
 
-        $this->assertTrue($libryos[0]->contextQuestions->first()->pivot->answer === ContextQuestionAnswer::no()->value);
+        $this->assertTrue($normas[0]->contextQuestions->first()->pivot->answer === ContextQuestionAnswer::no()->value);
         $response = $this->withActivatedOrg($org)->followingRedirects()->post(route($routeName, ['question' => $question->id]), [
             'action' => 'applicability_answer_yes',
-            'actions-checkbox-' . $libryos[0]->id => 'on',
+            'actions-checkbox-' . $normas[0]->id => 'on',
         ])->assertSuccessful();
-        $this->assertTrue($libryos[0]->contextQuestions()->first()->pivot->answer === ContextQuestionAnswer::yes()->value);
-        $this->assertTrue($libryos[0]->contextQuestions()->first()->pivot->last_answered_by === $user->id);
+        $this->assertTrue($normas[0]->contextQuestions()->first()->pivot->answer === ContextQuestionAnswer::yes()->value);
+        $this->assertTrue($normas[0]->contextQuestions()->first()->pivot->last_answered_by === $user->id);
     }
 
     public function testIndexActions(): void
@@ -159,10 +159,10 @@ class ContextQuestionControllerTest extends SettingsTestCase
         $user->roles()->attach(Role::factory()->my()->create());
 
         $org = Organisation::factory()->create();
-        $libryos = Libryo::factory(3)->for($org)->create();
-        $libryoOther = Libryo::factory()->create();
-        $question->libryos()->attach($libryos->modelKeys(), ['answer' => ContextQuestionAnswer::yes()->value]);
-        $question->libryos()->attach($libryoOther->id, ['answer' => ContextQuestionAnswer::yes()->value]);
+        $normas = Norma::factory(3)->for($org)->create();
+        $normaOther = Norma::factory()->create();
+        $question->normas()->attach($normas->modelKeys(), ['answer' => ContextQuestionAnswer::yes()->value]);
+        $question->normas()->attach($normaOther->id, ['answer' => ContextQuestionAnswer::yes()->value]);
         $user->organisations()->attach($org, ['is_admin' => true]);
 
         $this->activateAllStreams($user);
@@ -184,14 +184,14 @@ class ContextQuestionControllerTest extends SettingsTestCase
             'actions-checkbox-' . $question->id => 'on',
         ])->assertSuccessful();
 
-        $this->assertTrue($libryos[0]->contextQuestions->first()->pivot->answer === ContextQuestionAnswer::no()->value);
-        // make sure other libryo from other org doesn't get answered by mistake
-        $this->assertFalse($libryoOther->contextQuestions->first()->pivot->answer === ContextQuestionAnswer::no()->value);
+        $this->assertTrue($normas[0]->contextQuestions->first()->pivot->answer === ContextQuestionAnswer::no()->value);
+        // make sure other norma from other org doesn't get answered by mistake
+        $this->assertFalse($normaOther->contextQuestions->first()->pivot->answer === ContextQuestionAnswer::no()->value);
         $response = $this->withActivatedOrg($org)->followingRedirects()->post(route($routeName, ['question' => $question->hash_id]), [
             'action' => 'applicability_answer_yes',
             'actions-checkbox-' . $question->id => 'on',
         ])->assertSuccessful();
-        $this->assertTrue($libryos[0]->contextQuestions()->first()->pivot->answer === ContextQuestionAnswer::yes()->value);
+        $this->assertTrue($normas[0]->contextQuestions()->first()->pivot->answer === ContextQuestionAnswer::yes()->value);
     }
 
     public function testImport(): void
@@ -240,35 +240,35 @@ class ContextQuestionControllerTest extends SettingsTestCase
 
         $org = Organisation::factory()->create();
         $user->organisations()->attach($org, ['is_admin' => true]);
-        Libryo::factory()->for($org)->create();
+        Norma::factory()->for($org)->create();
         $this->activateAllStreams($user, $org);
 
         $response = $this->withActivatedOrg($org)->followingRedirects()->get(route($routeName))->assertSuccessful();
         HandleAutoCompilationExcelReportExport::assertPushed();
     }
 
-    public function testLibryoActions(): void
+    public function testNormaActions(): void
     {
         $question = ContextQuestion::factory()->create();
         $org = Organisation::factory()->create();
-        $libryo = Libryo::factory()->for($org)->create();
-        $libryo->contextQuestions()->attach($question->id, ['answer' => ContextQuestionAnswer::yes()->value]);
+        $norma = Norma::factory()->for($org)->create();
+        $norma->contextQuestions()->attach($question->id, ['answer' => ContextQuestionAnswer::yes()->value]);
 
-        $routeParams = ['question' => $question->hash_id, 'libryo' => $libryo->id];
-        $from = route('my.context-questions.libryo.show', $routeParams);
-        $target = route('my.context-questions.libryo.answer', $routeParams);
+        $routeParams = ['question' => $question->hash_id, 'norma' => $norma->id];
+        $from = route('my.context-questions.norma.show', $routeParams);
+        $target = route('my.context-questions.norma.answer', $routeParams);
 
         $user = $this->signIn();
         $user->roles()->attach(Role::factory()->my()->create());
 
-        $user->libryos()->attach($libryo->id);
+        $user->normas()->attach($norma->id);
         $user->organisations()->attach($org, ['is_admin' => true]);
 
         $this->activateAllStreams($user);
 
-        $this->assertDatabaseMissing(ContextQuestionLibryo::class, [
+        $this->assertDatabaseMissing(ContextQuestionNorma::class, [
             'context_question_id' => $question->id,
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
             'answer' => ContextQuestionAnswer::no()->value,
         ]);
 
@@ -277,9 +277,9 @@ class ContextQuestionControllerTest extends SettingsTestCase
             ->assertSessionDoesntHaveErrors()
             ->assertRedirect($from);
 
-        $this->assertDatabaseHas(ContextQuestionLibryo::class, [
+        $this->assertDatabaseHas(ContextQuestionNorma::class, [
             'context_question_id' => $question->id,
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
             'answer' => ContextQuestionAnswer::no()->value,
         ]);
     }

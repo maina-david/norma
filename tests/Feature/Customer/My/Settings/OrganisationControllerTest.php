@@ -10,7 +10,7 @@ use App\Enums\Customer\OrganisationType;
 use App\Jobs\Auth\CRMSyncOrganisationUsers;
 use App\Models\Auth\Role;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Partners\Partner;
 use App\Models\Partners\WhiteLabel;
@@ -195,12 +195,12 @@ class OrganisationControllerTest extends SettingsTestCase
 
         $orgUser = User::factory()->create();
         $orgUser->organisations()->attach($resource->id);
-        $libryo = Libryo::factory()->create(['organisation_id' => $resource->id]);
+        $norma = Norma::factory()->create(['organisation_id' => $resource->id]);
 
         $this->delete(route('my.settings.organisations.destroy', $resource->id))->assertRedirect();
 
         $this->assertDatabaseMissing(Organisation::class, ['id' => $resource->id, 'deleted_at' => null]);
-        $this->assertDatabaseMissing(Libryo::class, ['id' => $libryo->id, 'deleted_at' => null]);
+        $this->assertDatabaseMissing(Norma::class, ['id' => $norma->id, 'deleted_at' => null]);
     }
 
     public function testCRMSyncOnUpdate(): void
@@ -300,8 +300,8 @@ class OrganisationControllerTest extends SettingsTestCase
     public function testUpdatesModules(): void
     {
         $org = Organisation::factory()->create();
-        $libryo = Libryo::factory()->for($org)->create();
-        $libry2 = Libryo::factory()->for($org)->create();
+        $norma = Norma::factory()->for($org)->create();
+        $libry2 = Norma::factory()->for($org)->create();
         $route = route('my.settings.organisations.modules.update', ['organisation' => $org->id]);
         $this->assertForbiddenForNonAdmin($route, 'post');
 
@@ -309,15 +309,15 @@ class OrganisationControllerTest extends SettingsTestCase
 
         $this->assertTrue($org->settings['modules']['tasks']);
         $this->assertFalse($org->settings['modules']['keyword_search']);
-        $this->assertFalse($libryo->settings['modules']['keyword_search']);
+        $this->assertFalse($norma->settings['modules']['keyword_search']);
         $this->assertFalse($libry2->settings['modules']['keyword_search']);
         $this->followingRedirects()->post($route, ['tasks' => false, 'keyword_search' => true])->assertSuccessful();
         $org = $org->fresh();
-        $libryo = $libryo->fresh();
+        $norma = $norma->fresh();
         $libry2 = $libry2->fresh();
         $this->assertFalse($org->settings['modules']['tasks']);
         $this->assertTrue($org->settings['modules']['keyword_search']);
-        $this->assertTrue($libryo->settings['modules']['keyword_search']);
+        $this->assertTrue($norma->settings['modules']['keyword_search']);
         $this->assertTrue($libry2->settings['modules']['keyword_search']);
     }
 

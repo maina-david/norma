@@ -12,7 +12,7 @@ use App\Models\Geonames\Location;
 use App\Models\Geonames\LocationType;
 use App\Models\Notify\LegalUpdate;
 use App\Models\Ontology\LegalDomain;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Tests\Feature\My\MyTestCase;
@@ -21,7 +21,7 @@ class LegalUpdateControllerTest extends MyTestCase
 {
     public function testIndex(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $updates = LegalUpdate::factory(3)->create([
             'status' => LegalUpdatePublishedStatus::PUBLISHED->value,
@@ -30,8 +30,8 @@ class LegalUpdateControllerTest extends MyTestCase
         $update = $updates[0];
         /** @var LegalUpdate $update3 */
         $update3 = $updates[2];
-        $libryo->legalUpdates()->attach($update);
-        $libryo->legalUpdates()->attach($update3);
+        $norma->legalUpdates()->attach($update);
+        $norma->legalUpdates()->attach($update3);
 
         $routeName = 'my.notify.legal-updates.index';
 
@@ -41,7 +41,7 @@ class LegalUpdateControllerTest extends MyTestCase
         $response->assertSee($update->title);
         $response->assertDontSee($updates[1]->title);
 
-        app(ActiveLibryosManager::class)->activateAll($user);
+        app(ActiveNormasManager::class)->activateAll($user);
         $route = route($routeName);
         $response = $this->get($route)->assertSuccessful();
         $response->assertSee($update->title);
@@ -106,7 +106,7 @@ class LegalUpdateControllerTest extends MyTestCase
 
     public function testShow(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $update = LegalUpdate::factory()->create();
         $routeName = 'my.notify.legal-updates.show';
@@ -138,7 +138,7 @@ class LegalUpdateControllerTest extends MyTestCase
 
     public function testShowOrgAdminCanSeeReadUnderstoodStatus(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $user->organisations()->updateExistingPivot($org, ['is_admin' => true]);
         $this->assertTrue($user->isOrganisationAdmin($org));
 
@@ -151,7 +151,7 @@ class LegalUpdateControllerTest extends MyTestCase
 
     public function testMarkAsUnderstood(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $update = LegalUpdate::factory()->create();
         $routeName = 'my.notify.legal-updates.understood';
@@ -177,12 +177,12 @@ class LegalUpdateControllerTest extends MyTestCase
 
     public function testExportAsExcel(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.legal-updates.export.excel';
         Storage::fake();
 
         $updates = LegalUpdate::factory(5)->create();
-        $libryo->legalUpdates()->attach($updates->modelKeys());
+        $norma->legalUpdates()->attach($updates->modelKeys());
 
         $response = $this->get(route($routeName))->assertSuccessful();
         $response->assertSee('redirect=');
@@ -200,12 +200,12 @@ class LegalUpdateControllerTest extends MyTestCase
 
     public function testExportAsPDF(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.legal-updates.export.pdf';
         Storage::fake();
 
         $updates = LegalUpdate::factory(5)->create();
-        $libryo->legalUpdates()->attach($updates->modelKeys());
+        $norma->legalUpdates()->attach($updates->modelKeys());
 
         $response = $this->get(route($routeName))->assertSuccessful();
         $response->assertSee('redirect=');
@@ -223,7 +223,7 @@ class LegalUpdateControllerTest extends MyTestCase
 
     public function testPreview(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.notify.legal-updates.preview';
         $resource = ContentResource::factory()->create();
         $update = LegalUpdate::factory()->create(['content_resource_id' => $resource->id]);

@@ -8,7 +8,7 @@ class DashboardControllerTest extends SettingsTestCase
 {
     public function testDashboard(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.settings.dashboard';
 
         $response = $this->followingRedirects()->get(route($routeName, ['activateOrgId' => $org->id]));

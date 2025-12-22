@@ -9,8 +9,8 @@ class LocationTypeStreamControllerTest extends MyTestCase
 {
     public function testSearchSuggest(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream($libryo);
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream($norma);
 
         $routeName = 'my.geonames.location-types.search-suggest';
         $title = __('corpus.location_type.' . $requirementsCollection->locationType->adjective_key);

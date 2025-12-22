@@ -10,8 +10,8 @@ class CommentControllerTest extends MyTestCase
 {
     public function testCreationAndListing(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        $task = Task::factory()->create(['place_id' => $libryo->id]);
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        $task = Task::factory()->create(['place_id' => $norma->id]);
 
         $this->assertDatabaseMissing(Comment::class, ['commentable_type' => 'task', 'commentable_id' => $task->id, 'comment' => 'test comment']);
 

@@ -11,13 +11,13 @@ class NotificationControllerTest extends MyTestCase
 {
     public function testIndex(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.notify.notifications.index';
 
         $task = Task::factory()->create();
 
         $notification = Notification::factory()->create([
-            'notifiable_type' => 'Libryo\Models\User',
+            'notifiable_type' => 'Norma\Models\User',
             'notifiable_id' => $user->id,
             'data' => [
                 'title' => ['translation_key' => 'notifications.notifications.task_overdue_incomplete_assignee_subject', 'variables' => []],

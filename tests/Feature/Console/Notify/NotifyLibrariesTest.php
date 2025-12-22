@@ -4,17 +4,17 @@ namespace Tests\Feature\Console\Notify;
 
 use App\Enums\Notify\LegalUpdatePublishedStatus;
 use App\Events\Notify\LibraryAttachedToLegalUpdate;
-use App\Events\Notify\LibryoAttachedToLegalUpdate;
+use App\Events\Notify\NormaAttachedToLegalUpdate;
 use App\Jobs\Notify\NotifyLibraries;
 use App\Models\Auth\User;
 use App\Models\Compilation\Library;
 use App\Models\Corpus\Reference;
 use App\Models\Corpus\Work;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Notify\LegalUpdate;
 use App\Models\Notify\LegalUpdateNotified;
 use App\Models\Notify\Pivots\LegalUpdateLibrary;
-use App\Models\Notify\Pivots\LegalUpdateLibryo;
+use App\Models\Notify\Pivots\LegalUpdateNorma;
 use App\Models\Notify\Pivots\LegalUpdateUser;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Event;
@@ -34,10 +34,10 @@ class NotifyLibrariesTest extends TestCase
         $reference = Reference::factory()->create(['work_id' => $work->id]);
         $user = User::factory()->create();
         $library = Library::factory()->create();
-        $libryo = Libryo::factory()->create(['library_id' => $library->id]);
+        $norma = Norma::factory()->create(['library_id' => $library->id]);
 
-        $libryo->users()->attach($user->id);
-        $libryo->references()->attach($reference->id);
+        $norma->users()->attach($user->id);
+        $norma->references()->attach($reference->id);
         $library->references()->attach($reference->id);
 
         $update = LegalUpdate::factory()->create([
@@ -47,7 +47,7 @@ class NotifyLibrariesTest extends TestCase
             'status' => LegalUpdatePublishedStatus::PUBLISHED->value,
         ]);
 
-        return (object) compact('work', 'library', 'libryo', 'update', 'user');
+        return (object) compact('work', 'library', 'norma', 'update', 'user');
     }
 
     /**
@@ -59,7 +59,7 @@ class NotifyLibrariesTest extends TestCase
 
         Bus::assertNothingDispatched();
 
-        $this->artisan('libryo:notify-libraries')->assertSuccessful();
+        $this->artisan('norma:notify-libraries')->assertSuccessful();
 
         Bus::assertDispatched(NotifyLibraries::class);
     }
@@ -73,7 +73,7 @@ class NotifyLibrariesTest extends TestCase
 
         $this->assertCount(1, LegalUpdate::unnotifiedReadyForRelease()->get());
 
-        $this->artisan('libryo:notify-libraries')->assertSuccessful();
+        $this->artisan('norma:notify-libraries')->assertSuccessful();
 
         $this->assertCount(0, LegalUpdate::unnotifiedReadyForRelease()->get());
 
@@ -100,7 +100,7 @@ class NotifyLibrariesTest extends TestCase
 
         Event::assertNotDispatched(LibraryAttachedToLegalUpdate::class);
 
-        $this->artisan('libryo:notify-libraries')->assertSuccessful();
+        $this->artisan('norma:notify-libraries')->assertSuccessful();
 
         Event::assertDispatched(function (LibraryAttachedToLegalUpdate $event) use ($entities) {
             return $event->update->id === $entities->update->id && $event->library->id === $entities->library->id;
@@ -115,30 +115,30 @@ class NotifyLibrariesTest extends TestCase
     /**
      * @return void
      */
-    public function testItNotifiesLibryos(): void
+    public function testItNotifiesNormas(): void
     {
         $entities = $this->getRequiredEntities();
 
         Event::fake([
-            LibryoAttachedToLegalUpdate::class,
+            NormaAttachedToLegalUpdate::class,
         ]);
 
-        Event::assertNotDispatched(LibryoAttachedToLegalUpdate::class);
+        Event::assertNotDispatched(NormaAttachedToLegalUpdate::class);
 
-        $this->assertDatabaseMissing((new LegalUpdateLibryo())->getTable(), [
+        $this->assertDatabaseMissing((new LegalUpdateNorma())->getTable(), [
             'register_notification_id' => $entities->update->id,
-            'place_id' => $entities->libryo->id,
+            'place_id' => $entities->norma->id,
         ]);
 
-        $this->artisan('libryo:notify-libraries')->assertSuccessful();
+        $this->artisan('norma:notify-libraries')->assertSuccessful();
 
-        Event::assertDispatched(function (LibryoAttachedToLegalUpdate $event) use ($entities) {
-            return $event->update->id === $entities->update->id && $event->libryo->id === $entities->libryo->id;
+        Event::assertDispatched(function (NormaAttachedToLegalUpdate $event) use ($entities) {
+            return $event->update->id === $entities->update->id && $event->norma->id === $entities->norma->id;
         });
 
-        $this->assertDatabaseHas((new LegalUpdateLibryo())->getTable(), [
+        $this->assertDatabaseHas((new LegalUpdateNorma())->getTable(), [
             'register_notification_id' => $entities->update->id,
-            'place_id' => $entities->libryo->id,
+            'place_id' => $entities->norma->id,
         ]);
     }
 
@@ -154,7 +154,7 @@ class NotifyLibrariesTest extends TestCase
             'user_id' => $entities->user->id,
         ]);
 
-        $this->artisan('libryo:notify-libraries')->assertSuccessful();
+        $this->artisan('norma:notify-libraries')->assertSuccessful();
 
         $this->assertDatabaseHas((new LegalUpdateUser())->getTable(), [
             'register_notification_id' => $entities->update->id,

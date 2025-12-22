@@ -4,7 +4,7 @@ namespace Tests\Unit\Services\NLP;
 
 use App\Models\Ontology\Category;
 use App\Services\NLP\CategoryGuesser;
-use App\Services\NLP\LibryoAiClient;
+use App\Services\NLP\NormaAiClient;
 use Mockery\MockInterface;
 use Tests\TestCase;
 
@@ -14,7 +14,7 @@ class CategoryGuesserTest extends TestCase
     {
         $category1 = Category::factory()->create();
         $category2 = Category::factory()->create();
-        $this->partialMock(LibryoAiClient::class, function (MockInterface $mock) use ($category1, $category2) {
+        $this->partialMock(NormaAiClient::class, function (MockInterface $mock) use ($category1, $category2) {
             $mock->shouldReceive('analyse')->andReturn([
                 'chunks' => [
                     ['topics' => []],

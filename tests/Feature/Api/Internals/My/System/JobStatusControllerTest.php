@@ -10,7 +10,7 @@ class JobStatusControllerTest extends MyTestCase
 {
     public function testViewingJobDetails(): void
     {
-        $this->initUserLibryoOrg();
+        $this->initUserNormaOrg();
         $progress = 55;
         $jobStatus = JobStatus::factory()->create(['job_id' => Str::uuid(), 'progress_now' => $progress]);
 

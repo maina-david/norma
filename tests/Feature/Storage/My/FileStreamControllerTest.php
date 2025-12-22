@@ -14,17 +14,17 @@ class FileStreamControllerTest extends MyTestCase
 {
     public function testForAssessmentItemResponse(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $folder = Folder::factory()->create([
-            'folder_type' => FolderType::libryo()->value,
+            'folder_type' => FolderType::norma()->value,
         ]);
         $files = File::factory(2)->for($folder)->create([
-            'folder_type' => FolderType::libryo()->value,
-            'place_id' => $libryo->id,
+            'folder_type' => FolderType::norma()->value,
+            'place_id' => $norma->id,
         ]);
 
-        $aiResponse = AssessmentItemResponse::factory()->for($libryo)->create(['last_answered_by' => $user->id]);
+        $aiResponse = AssessmentItemResponse::factory()->for($norma)->create(['last_answered_by' => $user->id]);
 
         $aiResponse->files()->attach($files);
         $routeName = 'my.drives.files.for.assessment-item-response.index';
@@ -35,17 +35,17 @@ class FileStreamControllerTest extends MyTestCase
 
     public function testForTask(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $folder = Folder::factory()->create([
-            'folder_type' => FolderType::libryo()->value,
+            'folder_type' => FolderType::norma()->value,
         ]);
         $files = File::factory(2)->for($folder)->create([
-            'folder_type' => FolderType::libryo()->value,
-            'place_id' => $libryo->id,
+            'folder_type' => FolderType::norma()->value,
+            'place_id' => $norma->id,
         ]);
 
-        $task = Task::factory()->for($libryo)->create();
+        $task = Task::factory()->for($norma)->create();
 
         $task->files()->attach($files);
         $routeName = 'my.drives.files.for.task.index';
@@ -56,23 +56,23 @@ class FileStreamControllerTest extends MyTestCase
 
     public function testForComment(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $folder = Folder::factory()->create([
-            'folder_type' => FolderType::libryo()->value,
+            'folder_type' => FolderType::norma()->value,
         ]);
         $files = File::factory(2)->for($folder)->create([
-            'folder_type' => FolderType::libryo()->value,
-            'place_id' => $libryo->id,
+            'folder_type' => FolderType::norma()->value,
+            'place_id' => $norma->id,
         ]);
 
         $file = File::factory()->for($folder)->create([
-            'folder_type' => FolderType::libryo()->value,
-            'place_id' => $libryo->id,
+            'folder_type' => FolderType::norma()->value,
+            'place_id' => $norma->id,
         ]);
 
         $comment = Comment::factory()->create([
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
             'commentable_type' => 'file',
             'commentable_id' => $file->id,
             'author_id' => $user->id,

@@ -4,7 +4,7 @@ namespace Tests\Feature\Console\Notify;
 
 use App\Mail\Notify\DailyNotification;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Notify\LegalUpdate;
 use Illuminate\Support\Facades\Artisan;
@@ -21,18 +21,18 @@ class SendDailyNotificationEmailsTest extends TestCase
         $update = LegalUpdate::factory()->create();
         $user = User::factory()->create();
         $organisation = Organisation::factory()->create();
-        $libryo = Libryo::factory()->create(['organisation_id' => $organisation->id]);
+        $norma = Norma::factory()->create(['organisation_id' => $organisation->id]);
 
         $user->organisations()->attach($organisation->id);
-        $user->libryos()->attach($libryo->id);
-        $update->libryos()->attach($libryo->id);
+        $user->normas()->attach($norma->id);
+        $update->normas()->attach($norma->id);
         $update->users()->attach($user->id);
 
         Mail::fake();
 
         Mail::assertNothingOutgoing();
 
-        Artisan::call('libryo:daily-notification-emails');
+        Artisan::call('norma:daily-notification-emails');
 
         Mail::assertQueued(function (DailyNotification $mail) use ($user) {
             return $mail->user->id === $user->id;

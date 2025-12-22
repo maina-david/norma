@@ -8,7 +8,7 @@ use App\Mail\Notify\ReminderEmail;
 use App\Models\Auth\User;
 use App\Models\Compilation\Library;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Notify\Reminder;
 use App\Models\Tasks\Task;
 use App\Notifications\Notify\ReminderNotification;
@@ -34,7 +34,7 @@ class SendReminderNotificationsTest extends TestCase
 
         Bus::assertNothingDispatched();
 
-        $this->artisan('libryo:send-reminders')->assertSuccessful();
+        $this->artisan('norma:send-reminders')->assertSuccessful();
 
         Bus::assertDispatched(SendReminderNotifications::class);
     }
@@ -63,14 +63,14 @@ class SendReminderNotificationsTest extends TestCase
         $reminder->remindable_id = 1234;
         $reminder->save();
 
-        $this->artisan('libryo:send-reminders')->assertSuccessful();
+        $this->artisan('norma:send-reminders')->assertSuccessful();
 
         Notification::assertNotSentTo([$author, $watcher, $assignee], ReminderNotification::class);
 
         $reminder->remindable_id = $task->id;
         $reminder->save();
 
-        $this->artisan('libryo:send-reminders')->assertSuccessful();
+        $this->artisan('norma:send-reminders')->assertSuccessful();
 
         Notification::assertSentTo([
             $author, $watcher, $assignee,
@@ -96,7 +96,7 @@ class SendReminderNotificationsTest extends TestCase
 
         Notification::assertNothingSent();
 
-        $this->artisan('libryo:send-reminders')->assertSuccessful();
+        $this->artisan('norma:send-reminders')->assertSuccessful();
 
         Notification::assertSentTo(
             [$author],
@@ -109,28 +109,28 @@ class SendReminderNotificationsTest extends TestCase
      *
      * @return void
      */
-    public function testItRemindsUsersInLibryo(): void
+    public function testItRemindsUsersInNorma(): void
     {
         $author = User::factory()->create();
         $reference = Reference::factory()->create();
         $user = User::factory()->create();
         $library = Library::factory()->create();
-        $libryo = Libryo::factory()->create(['library_id' => $library->id]);
+        $norma = Norma::factory()->create(['library_id' => $library->id]);
 
-        $libryo->users()->attach([$author->id, $user->id]);
-        $libryo->organisation->users()->attach([$author->id, $user->id]);
+        $norma->users()->attach([$author->id, $user->id]);
+        $norma->organisation->users()->attach([$author->id, $user->id]);
 
         $reminder = $reference->reminders()->create(array_merge(Reminder::factory()->raw(), [
             'remind_on' => now()->subDay(),
             'author_id' => $author->id,
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
         ]));
 
         Notification::fake();
 
         Notification::assertNothingSent();
 
-        $this->artisan('libryo:send-reminders')->assertSuccessful();
+        $this->artisan('norma:send-reminders')->assertSuccessful();
 
         Notification::assertSentTo(
             [$author, $user],
@@ -149,15 +149,15 @@ class SendReminderNotificationsTest extends TestCase
         $reference = Reference::factory()->create();
         $user = User::factory()->create();
         $library = Library::factory()->create();
-        $libryo = Libryo::factory()->create(['library_id' => $library->id]);
+        $norma = Norma::factory()->create(['library_id' => $library->id]);
 
-        $libryo->users()->attach([$author->id, $user->id]);
-        $libryo->organisation->users()->attach([$author->id, $user->id]);
+        $norma->users()->attach([$author->id, $user->id]);
+        $norma->organisation->users()->attach([$author->id, $user->id]);
 
         $reminder = $reference->reminders()->create(array_merge(Reminder::factory()->raw(), [
             'remind_on' => now()->subDay(),
             'author_id' => $author->id,
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
         ]));
 
         $mail = new ReminderEmail($author, $reminder);

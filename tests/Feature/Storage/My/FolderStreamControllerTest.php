@@ -5,7 +5,7 @@ namespace Tests\Feature\Storage\My;
 use App\Enums\Storage\My\FolderType;
 use App\Models\Customer\Organisation;
 use App\Models\Storage\My\Folder;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Services\Customer\ActiveOrganisationManager;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Str;
@@ -38,11 +38,11 @@ class FolderStreamControllerTest extends MyTestCase
 
     public function testTreeForSingleStream(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        app(ActiveLibryosManager::class)->activate($user, $libryo);
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        app(ActiveNormasManager::class)->activate($user, $norma);
 
         $folders = Folder::factory(3)->for($org)->create([
-            'folder_type' => FolderType::libryo()->value,
+            'folder_type' => FolderType::norma()->value,
         ]);
 
         $this->testTreeView($folders);

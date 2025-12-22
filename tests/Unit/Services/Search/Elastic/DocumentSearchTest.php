@@ -34,7 +34,7 @@ class DocumentSearchTest extends TestCase
 
     public function testSearchReferences(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
         $ref = $work->references[0];
         $ref->htmlContent()->save(new ReferenceContent([
             'reference_id' => $ref->id,
@@ -53,7 +53,7 @@ class DocumentSearchTest extends TestCase
 
     public function testGetReferenceHighlights(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
         $ref = $work->references[0];
         $ref->htmlContent()->save(new ReferenceContent([
             'reference_id' => $ref->id,
@@ -91,7 +91,7 @@ class DocumentSearchTest extends TestCase
 
     public function testGetUnindexedWorks(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
         $ref = $work->references[0];
         $ref->htmlContent()->save(new ReferenceContent([
             'reference_id' => $ref->id,
@@ -104,7 +104,7 @@ class DocumentSearchTest extends TestCase
 
     public function testAddHighlightsToResults(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
         $reference = $work->references->first();
         $this->mockEsClient($reference);
         $works = new LengthAwarePaginator((new Work())->newCollection([$work]), 1, 50);

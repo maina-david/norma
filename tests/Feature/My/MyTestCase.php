@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\My;
 
-use App\Enums\System\LibryoModule;
+use App\Enums\System\NormaModule;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Tests\TestCase;
 use Tests\Traits\CompilesStream;
 use Throwable;
@@ -32,36 +32,36 @@ class MyTestCase extends TestCase
         }
 
         $this->signIn($user);
-        app(ActiveLibryosManager::class)->activateAll($user);
+        app(ActiveNormasManager::class)->activateAll($user);
 
         return $user;
     }
 
-    public function initUserLibryoOrg(): array
+    public function initUserNormaOrg(): array
     {
         $user = $this->signIn($this->mySuperUser());
         $org = Organisation::factory()->create();
-        $org->enableModule(LibryoModule::actions());
-        $org->enableModule(LibryoModule::comply());
-        $libryo = Libryo::factory()->for($org)->create();
-        $user->libryos()->attach($libryo);
+        $org->enableModule(NormaModule::actions());
+        $org->enableModule(NormaModule::comply());
+        $norma = Norma::factory()->for($org)->create();
+        $user->normas()->attach($norma);
         $user->organisations()->attach($org);
 
-        app(ActiveLibryosManager::class)->activate($user, $libryo);
+        app(ActiveNormasManager::class)->activate($user, $norma);
 
-        return [$user, $libryo, $org];
+        return [$user, $norma, $org];
     }
 
-    public function validateActionsIsDisabled(string $route, Libryo $libryo, Organisation $organisation, string $method = 'get', array $params = [])
+    public function validateActionsIsDisabled(string $route, Norma $norma, Organisation $organisation, string $method = 'get', array $params = [])
     {
         $this->followingRedirects()
             ->{$method}($route, $params)
             ->assertSuccessful()
             ->assertSee('Actions has not been enabled.');
 
-        $libryo->enableModule(LibryoModule::actions());
+        $norma->enableModule(NormaModule::actions());
 
         $organisation->refresh();
-        $libryo->refresh();
+        $norma->refresh();
     }
 }

@@ -3,11 +3,11 @@
 namespace Tests\Unit\Actions\Assess\AssessmentItemResponse;
 
 use App\Actions\Assess\AssessmentItemResponse\CreateResponsesForOrganisation;
-use App\Enums\System\LibryoModule;
+use App\Enums\System\NormaModule;
 use App\Models\Assess\AssessmentItem;
 use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use Tests\TestCase;
 
@@ -16,10 +16,10 @@ class CreateResponsesForOrganisationTest extends TestCase
     public function testHandle(): void
     {
         $org = Organisation::factory()->create();
-        $libryos = Libryo::factory(3)->for($org)->create();
-        $libryos->each(fn ($l) => $l->enableModule(LibryoModule::comply()));
+        $normas = Norma::factory(3)->for($org)->create();
+        $normas->each(fn ($l) => $l->enableModule(NormaModule::comply()));
         $ref = Reference::factory()->create();
-        $ref->libryos()->attach($libryos->modelKeys());
+        $ref->normas()->attach($normas->modelKeys());
         $ai = AssessmentItem::factory()->create();
 
         $count = AssessmentItemResponse::count();

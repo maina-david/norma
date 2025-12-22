@@ -4,7 +4,7 @@ namespace Tests;
 
 use App\Models\Auth\Role;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
@@ -65,7 +65,7 @@ abstract class DuskTestCase extends BaseTestCase
             || isset($_ENV['DUSK_HEADLESS_DISABLED']);
     }
 
-    protected function initLibryoOrg(): array
+    protected function initNormaOrg(): array
     {
         $user = User::factory()->create();
         $role = Role::create([
@@ -75,10 +75,10 @@ abstract class DuskTestCase extends BaseTestCase
         ]);
         $user->roles()->attach($role);
         $org = Organisation::factory()->create();
-        $libryo = Libryo::factory()->for($org)->create();
-        $user->libryos()->attach($libryo);
+        $norma = Norma::factory()->for($org)->create();
+        $user->normas()->attach($norma);
         $user->organisations()->attach($org);
 
-        return [$user, $libryo, $org];
+        return [$user, $norma, $org];
     }
 }

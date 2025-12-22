@@ -11,12 +11,12 @@ class ActionAreaReferenceControllerTest extends MyTestCase
 {
     public function testIndexListing(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $action = ActionArea::factory()->create();
         $work = Work::factory()->create();
         $references = Reference::factory()->count(3)->create(['work_id' => $work->id]);
         $action->references()->attach($references->pluck('id'));
-        $libryo->references()->sync($references->pluck('id'));
+        $norma->references()->sync($references->pluck('id'));
 
         $this->getJson(route('api.my.actions.references.index', ['action' => $action->id]))
             ->assertSuccessful()

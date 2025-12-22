@@ -9,14 +9,14 @@ use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Auth\User;
 use App\Models\Compilation\ContextQuestion;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Notify\LegalUpdate;
 use App\Models\Notify\Reminder;
 use App\Models\Storage\My\File;
 use App\Models\Tasks\Task;
 use App\Models\Tasks\TaskActivity;
 use App\Models\Tasks\TaskProject;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Stores\Notify\ReminderStore;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
@@ -32,25 +32,25 @@ class TaskControllerTest extends MyTestCase
     use TestsVisibleFormLabels;
     use RunsShowTests;
 
-    private function createTasksOfTypes(Libryo $libryo): array
+    private function createTasksOfTypes(Norma $norma): array
     {
-        $task2 = Task::factory()->for($libryo)->create(['task_status' => TaskStatus::inProgress()->value, 'taskable_type' => 'file', 'taskable_id' => File::factory()->create()->id]);
-        $task3 = Task::factory()->for($libryo)->create(['task_status' => TaskStatus::inProgress()->value, 'taskable_type' => 'assessment_item_response', 'taskable_id' => AssessmentItemResponse::factory()->create()->id]);
-        $task4 = Task::factory()->for($libryo)->create(['task_status' => TaskStatus::paused()->value, 'taskable_type' => 'register_notification', 'taskable_id' => LegalUpdate::factory()->create()->id]);
-        $task5 = Task::factory()->for($libryo)->create(['task_status' => TaskStatus::notStarted()->value, 'taskable_type' => 'register_item', 'taskable_id' => Reference::factory()->create()->id]);
-        $task5 = Task::factory()->for($libryo)->create(['task_status' => TaskStatus::notStarted()->value, 'taskable_type' => 'context_question', 'taskable_id' => ContextQuestion::factory()->create()->id]);
+        $task2 = Task::factory()->for($norma)->create(['task_status' => TaskStatus::inProgress()->value, 'taskable_type' => 'file', 'taskable_id' => File::factory()->create()->id]);
+        $task3 = Task::factory()->for($norma)->create(['task_status' => TaskStatus::inProgress()->value, 'taskable_type' => 'assessment_item_response', 'taskable_id' => AssessmentItemResponse::factory()->create()->id]);
+        $task4 = Task::factory()->for($norma)->create(['task_status' => TaskStatus::paused()->value, 'taskable_type' => 'register_notification', 'taskable_id' => LegalUpdate::factory()->create()->id]);
+        $task5 = Task::factory()->for($norma)->create(['task_status' => TaskStatus::notStarted()->value, 'taskable_type' => 'register_item', 'taskable_id' => Reference::factory()->create()->id]);
+        $task5 = Task::factory()->for($norma)->create(['task_status' => TaskStatus::notStarted()->value, 'taskable_type' => 'context_question', 'taskable_id' => ContextQuestion::factory()->create()->id]);
 
         return [$task2, $task3, $task4, $task5];
     }
 
     public function testIndex(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.tasks.tasks.index';
 
-        $task = Task::factory()->for($libryo)->create(['author_id' => $user->id, 'assigned_to_id' => $user->id, 'due_on' => now()->addDays(2)]);
+        $task = Task::factory()->for($norma)->create(['author_id' => $user->id, 'assigned_to_id' => $user->id, 'due_on' => now()->addDays(2)]);
         // for testing the TaskType Component
-        [$task2, $task3, $task4, $task5] = $this->createTasksOfTypes($libryo);
+        [$task2, $task3, $task4, $task5] = $this->createTasksOfTypes($norma);
 
         $this->signIn($user);
 
@@ -63,7 +63,7 @@ class TaskControllerTest extends MyTestCase
         $response = $this->get(route($routeName, ['statuses' => [TaskStatus::notStarted()->value]]))->assertSuccessful();
         $response->assertSeeSelector('//a/span[text()[contains(.,"' . $task->title . '")]]');
 
-        app(ActiveLibryosManager::class)->activate($user, $libryo);
+        app(ActiveNormasManager::class)->activate($user, $norma);
         $response = $this->get(route($routeName, ['priority' => TaskPriority::low()->value]))->assertSuccessful();
         $response->assertSeeSelector('//a/span[text()[contains(.,"' . $task->title . '")]]');
         $response = $this->get(route($routeName, ['priority' => TaskPriority::high()->value]))->assertSuccessful();
@@ -93,15 +93,15 @@ class TaskControllerTest extends MyTestCase
         $response->assertDontSeeSelector('//td//img[@data-tippy-content[contains(.,"' . $task->assignee->fullName . '")]]');
 
         $project = TaskProject::factory()->create();
-        $task = Task::factory()->for($libryo)->create(['task_project_id' => $project->id, 'assigned_to_id' => $user->id]);
+        $task = Task::factory()->for($norma)->create(['task_project_id' => $project->id, 'assigned_to_id' => $user->id]);
         $response = $this->get(route($routeName, ['project' => $project->id]))->assertSuccessful();
         $response->assertSeeSelector('//a/span[text()[contains(.,"' . $task->title . '")]]');
 
-        $task = Task::factory()->for($libryo)->create(['impact' => 1, 'assigned_to_id' => $user->id]);
+        $task = Task::factory()->for($norma)->create(['impact' => 1, 'assigned_to_id' => $user->id]);
         $response = $this->get(route($routeName, ['min_impact' => 1, 'max_impact' => 1]))->assertSuccessful();
         $response->assertSeeSelector('//a/span[text()[contains(.,"' . $task->title . '")]]');
 
-        $task = Task::factory()->for($libryo)->create(['due_on' => now()->addMonth(), 'assigned_to_id' => $user->id]);
+        $task = Task::factory()->for($norma)->create(['due_on' => now()->addMonth(), 'assigned_to_id' => $user->id]);
         $this->get(route($routeName, ['start_date' => now()->addMonths(2)->toDateString(), 'end_date' => now()->addMonths(3)->toDateString()]))
             ->assertSuccessful()
             ->assertDontSeeSelector('//a/span[text()[contains(.,"' . $task->title . '")]]');
@@ -110,7 +110,7 @@ class TaskControllerTest extends MyTestCase
             ->assertSuccessful()
             ->assertSeeSelector('//a/span[text()[contains(.,"' . $task->title . '")]]');
 
-        $this->get(route($routeName, ['streams' => [$libryo->id], 'start_date' => now()->subMonths(2)->toDateString(), 'end_date' => now()->addMonths(3)->toDateString()]))
+        $this->get(route($routeName, ['streams' => [$norma->id], 'start_date' => now()->subMonths(2)->toDateString(), 'end_date' => now()->addMonths(3)->toDateString()]))
             ->assertSuccessful()
             ->assertSeeSelector('//a/span[text()[contains(.,"' . $task->title . '")]]');
 
@@ -126,16 +126,16 @@ class TaskControllerTest extends MyTestCase
             ->assertSeeSelector('//div[text()[contains(.,"' . $nextMonth->format('F Y') . '")]]')
             ->assertSeeSelector('//a[text()[contains(.,"' . $task->title . '")]]');
 
-        app(ActiveLibryosManager::class)->activateAll($user);
+        app(ActiveNormasManager::class)->activateAll($user);
         $response = $this->followingRedirects()->get(route($routeName))->assertSuccessful();
     }
 
     public function testIndexSavedFilters(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.tasks.tasks.index';
 
-        $task = Task::factory()->for($libryo)->create(['author_id' => $user->id, 'assigned_to_id' => $user->id]);
+        $task = Task::factory()->for($norma)->create(['author_id' => $user->id, 'assigned_to_id' => $user->id]);
 
         $this->signIn($user);
         $user->updateSetting('app_filters', ['tasks' => ['type' => 'updates']]);
@@ -150,7 +150,7 @@ class TaskControllerTest extends MyTestCase
 
     public function testDestroy(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.tasks.tasks.destroy';
         $task = Task::factory()->create(['author_id' => $user]);
         $this->destroyAndTestData(Task::class, route($routeName, ['task' => $task]));
@@ -173,12 +173,12 @@ class TaskControllerTest extends MyTestCase
     public function testShow(): void
     {
         $routeName = 'my.tasks.tasks.show';
-        [$user, $libryo, $org] = $this->runShowTest($routeName);
-        $task = Task::factory()->for($libryo)->create(['author_id' => $user->id]);
+        [$user, $norma, $org] = $this->runShowTest($routeName);
+        $task = Task::factory()->for($norma)->create(['author_id' => $user->id]);
 
         $response = $this->get(route($routeName, ['task' => $task->hash_id]))->assertSuccessful();
 
-        [$task2, $task3, $task4, $task5] = $this->createTasksOfTypes($libryo);
+        [$task2, $task3, $task4, $task5] = $this->createTasksOfTypes($norma);
         $this->get(route($routeName, ['task' => $task2->hash_id]))->assertSuccessful();
         $this->get(route($routeName, ['task' => $task3->hash_id]))->assertSuccessful();
         $this->get(route($routeName, ['task' => $task4->hash_id]))->assertSuccessful();
@@ -188,7 +188,7 @@ class TaskControllerTest extends MyTestCase
     public function testCreate(): void
     {
         $routeName = 'my.tasks.tasks.create';
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $project = TaskProject::factory()->for($org)->create();
 
@@ -198,20 +198,20 @@ class TaskControllerTest extends MyTestCase
             ['Title', 'Description', 'Status', 'Due On', 'Priority', 'Assigned To', 'Followers', 'Project', 'Who should receive this reminder']
         );
 
-        app(ActiveLibryosManager::class)->activateAll($user);
+        app(ActiveNormasManager::class)->activateAll($user);
         $response = $this->get(route($routeName))->assertRedirect();
     }
 
     public function testStore(): void
     {
         $routeName = 'my.tasks.tasks.store';
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        $otherLibryo = Libryo::factory()->for($org)->create();
-        $otherLibryo->users()->attach($user->id);
-        $nonRelatedLibryo = Libryo::factory()->create();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        $otherNorma = Norma::factory()->for($org)->create();
+        $otherNorma->users()->attach($user->id);
+        $nonRelatedNorma = Norma::factory()->create();
         $reference = Reference::factory()->create();
-        $reference->libryos()->attach([$libryo->id, $otherLibryo->id, $nonRelatedLibryo->id]);
-        $task = Task::factory()->for($libryo)->make([
+        $reference->normas()->attach([$norma->id, $otherNorma->id, $nonRelatedNorma->id]);
+        $task = Task::factory()->for($norma)->make([
             'taskable_id' => $reference->id,
             'taskable_type' => $reference->getMorphClass(),
         ]);
@@ -228,28 +228,28 @@ class TaskControllerTest extends MyTestCase
         $this->assertGreaterThan($count, Task::count());
 
         $this->assertTrue(Task::whereNotNull('source_task_id')->exists());
-        $this->assertTrue(Task::where('place_id', $libryo->id)->exists());
-        $this->assertTrue(Task::where('place_id', $otherLibryo->id)->exists());
-        $this->assertFalse(Task::where('place_id', $nonRelatedLibryo->id)->exists());
+        $this->assertTrue(Task::where('place_id', $norma->id)->exists());
+        $this->assertTrue(Task::where('place_id', $otherNorma->id)->exists());
+        $this->assertFalse(Task::where('place_id', $nonRelatedNorma->id)->exists());
 
-        $newTask = Task::with(['watchers'])->where('place_id', $libryo->id)->get()->last();
+        $newTask = Task::with(['watchers'])->where('place_id', $norma->id)->get()->last();
         $this->assertTrue($newTask->watchers->contains($user2));
         $this->assertFalse($newTask->watchers->contains($user));
 
-        app(ActiveLibryosManager::class)->activateAll($user);
+        app(ActiveNormasManager::class)->activateAll($user);
         $response = $this->post(route($routeName), $data)->assertRedirect();
 
-        $data['libryo_id'] = $libryo->id;
+        $data['norma_id'] = $norma->id;
         $data['save_and_back'] = route('my.corpus.requirements.index');
 
         $this->post(route($routeName), $data)
             ->assertRedirect(route('my.corpus.requirements.index'));
 
-        $data['libryo_id'] = $libryo->id;
+        $data['norma_id'] = $norma->id;
         $data['save_and_back'] = route('my.corpus.requirements.index');
 
         $data['title'] = 'Saving using target';
-        $data['target_libryo_id'] = $otherLibryo->id;
+        $data['target_norma_id'] = $otherNorma->id;
 
         $this->assertDatabaseMissing(Task::class, ['title' => $data['title']]);
 
@@ -262,8 +262,8 @@ class TaskControllerTest extends MyTestCase
     public function testStoreWithReminder(): void
     {
         $routeName = 'my.tasks.tasks.store';
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        $task = Task::factory()->for($libryo)->make(['taskable_id' => $libryo->id]);
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        $task = Task::factory()->for($norma)->make(['taskable_id' => $norma->id]);
 
         $count = Task::count();
         $remindersCount = Reminder::count();
@@ -304,8 +304,8 @@ class TaskControllerTest extends MyTestCase
     public function testEdit(): void
     {
         $routeName = 'my.tasks.tasks.edit';
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        $task = Task::factory()->for($libryo)->create(['author_id' => $user->id]);
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        $task = Task::factory()->for($norma)->create(['author_id' => $user->id]);
 
         $response = $this->assertSeeVisibleFormLabels(
             $task,
@@ -320,8 +320,8 @@ class TaskControllerTest extends MyTestCase
     public function testUpdate(): void
     {
         $routeName = 'my.tasks.tasks.update';
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        $task = Task::factory()->for($libryo)->create();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        $task = Task::factory()->for($norma)->create();
 
         $task->title = 'New Title';
         $task->due_on = now()->addDays(2);
@@ -356,11 +356,11 @@ class TaskControllerTest extends MyTestCase
 
     public function testExportAsExcel(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.tasks.export.excel';
         Storage::fake();
 
-        Task::factory(5)->for($libryo)->create();
+        Task::factory(5)->for($norma)->create();
 
         $response = $this->get(route($routeName))->assertSuccessful();
         $response->assertSee('redirect=');

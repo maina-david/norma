@@ -13,7 +13,7 @@ class ReferenceContentControllerTest extends MyTestCase
      */
     public function testGettingContent(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $reference = Reference::factory()->create();
         ReferenceContent::create(['reference_id' => $reference->id, 'cached_content' => 'testing content']);
 

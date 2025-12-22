@@ -10,12 +10,12 @@ class OrganisationUserSelectorTest extends MyTestCase
 {
     public function testItRendersCorrectly(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
-        Livewire::test(OrganisationUserSelector::class, ['forLibryo' => true])
+        Livewire::test(OrganisationUserSelector::class, ['forNorma' => true])
             ->assertSee('animate-pulse');
 
-        Livewire::test(OrganisationUserSelector::class, ['forLibryo' => true, 'lazy' => false])
+        Livewire::test(OrganisationUserSelector::class, ['forNorma' => true, 'lazy' => false])
             ->assertSee($user->full_name);
     }
 }

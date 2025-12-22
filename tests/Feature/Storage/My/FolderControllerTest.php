@@ -6,7 +6,7 @@ use App\Enums\Storage\My\FolderType;
 use App\Models\Customer\Organisation;
 use App\Models\Storage\My\File;
 use App\Models\Storage\My\Folder;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Services\Customer\ActiveOrganisationManager;
 use Tests\Feature\My\MyTestCase;
 
@@ -18,7 +18,7 @@ class FolderControllerTest extends MyTestCase
         $org = Organisation::factory()->create();
         $user->organisations()->attach($org);
         $this->signIn($user);
-        app(ActiveLibryosManager::class)->activateAll($user);
+        app(ActiveNormasManager::class)->activateAll($user);
         $route = route('my.drives.root');
         $response = $this->get($route);
         $response->assertSee('Shared Files');
@@ -39,16 +39,16 @@ class FolderControllerTest extends MyTestCase
 
     public function testShowRootFolderThisStream(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        $route = route('my.drives.folders.show.root', ['type' => 'libryo']);
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        $route = route('my.drives.folders.show.root', ['type' => 'norma']);
         $response = $this->get($route);
-        $response->assertSee('This Libryo Stream\'s Drive');
-        $response->assertSee($libryo->title);
+        $response->assertSee('This Norma Stream\'s Drive');
+        $response->assertSee($norma->title);
     }
 
     public function testShowRootFolderGlobal(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $route = route('my.drives.folders.show.root', ['type' => 'global']);
         $response = $this->get($route);
         $response->assertSee('Shared Files');
@@ -56,7 +56,7 @@ class FolderControllerTest extends MyTestCase
 
     public function testShowGlobalFolder(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $folder = Folder::factory()->create([
             'folder_type' => FolderType::global()->value,
         ]);
@@ -89,14 +89,14 @@ class FolderControllerTest extends MyTestCase
         $response->assertSee($file->title);
     }
 
-    public function testShowLibryoFolder(): void
+    public function testShowNormaFolder(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $folder = Folder::factory()->create([
-            'folder_type' => FolderType::libryo()->value,
+            'folder_type' => FolderType::norma()->value,
         ]);
         $file = File::factory()->for($folder)->for($org)->create([
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
         ]);
         $route = route('my.drives.folders.show', ['folder' => $folder->id]);
         $response = $this->get($route);
@@ -104,7 +104,7 @@ class FolderControllerTest extends MyTestCase
         $response->assertSee($file->title);
 
         $childFolder = Folder::factory()->create([
-            'folder_type' => FolderType::libryo()->value,
+            'folder_type' => FolderType::norma()->value,
             'folder_parent_id' => $folder->id,
         ]);
         $route = route('my.drives.folders.show', ['folder' => $childFolder->id]);

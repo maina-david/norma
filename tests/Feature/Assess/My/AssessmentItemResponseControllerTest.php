@@ -4,11 +4,11 @@ namespace Tests\Feature\Assess\My;
 
 use App\Enums\Assess\ResponseStatus;
 use App\Enums\Assess\RiskRating;
-use App\Enums\System\LibryoModule;
+use App\Enums\System\NormaModule;
 use App\Models\Assess\AssessmentActivity;
 use App\Models\Assess\AssessmentItem;
 use App\Models\Assess\AssessmentItemResponse;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Ontology\Category;
 use App\Models\Ontology\CategoryType;
 use App\Models\Ontology\LegalDomain;
@@ -21,18 +21,18 @@ class AssessmentItemResponseControllerTest extends MyTestCase
 {
     public function testShow(): void
     {
-        [$user, $libryo] = $this->initUserLibryoOrg();
+        [$user, $norma] = $this->initUserNormaOrg();
         $routeName = 'my.assess.assessment-item-responses.show';
 
         $item = AssessmentItem::factory()->create();
         $aiResponse = AssessmentItemResponse::factory()
-            ->for($libryo)
+            ->for($norma)
             ->for($item)
             ->create(['answer' => ResponseStatus::no()->value]);
 
         // redirect for assess not enabled
         $response = $this->get(route($routeName, ['aiResponse' => $aiResponse->hash_id]))->assertRedirect();
-        $libryo->enableModule(LibryoModule::comply());
+        $norma->enableModule(NormaModule::comply());
 
         $response = $this->get(route($routeName, ['aiResponse' => $aiResponse->hash_id]))->assertSuccessful();
         $response->assertSee($item->toDescription());
@@ -45,19 +45,19 @@ class AssessmentItemResponseControllerTest extends MyTestCase
 
     public function testMetrics(): void
     {
-        [$user, $libryo] = $this->initUserLibryoOrg();
+        [$user, $norma] = $this->initUserNormaOrg();
         $routeName = 'my.assess.assessment-item-responses.metrics';
         $response = $this->get(route($routeName))->assertSuccessful();
 
         $item = AssessmentItem::factory()->create(['risk_rating' => RiskRating::high()->value]);
-        $aiResponse = AssessmentItemResponse::factory()->for($libryo)->for($item)->create(['answer' => ResponseStatus::no()->value]);
-        AssessmentActivity::factory()->for($aiResponse)->for($item)->for($libryo)->create(['to_status' => ResponseStatus::no()->value]);
+        $aiResponse = AssessmentItemResponse::factory()->for($norma)->for($item)->create(['answer' => ResponseStatus::no()->value]);
+        AssessmentActivity::factory()->for($aiResponse)->for($item)->for($norma)->create(['to_status' => ResponseStatus::no()->value]);
 
         $this->activateAllStreams($user);
         $response = $this->get(route($routeName))->assertSuccessful();
-        $response->assertSee($libryo->title);
+        $response->assertSee($norma->title);
         $response->assertSee('Risk Rating');
-        $response->assertSee('Libryo Stream');
+        $response->assertSee('Norma Stream');
         $response->assertSee('Total Items');
         $response->assertSee('Total Yes');
         $response->assertSee('Total No');
@@ -68,7 +68,7 @@ class AssessmentItemResponseControllerTest extends MyTestCase
 
     public function testIndex(): void
     {
-        [$user, $libryo] = $this->initUserLibryoOrg();
+        [$user, $norma] = $this->initUserNormaOrg();
         $routeName = 'my.assess.assessment-item-responses.index';
 
         $type = CategoryType::factory()->create(['id' => \App\Enums\Ontology\CategoryType::CONTROL->value]);
@@ -79,11 +79,11 @@ class AssessmentItemResponseControllerTest extends MyTestCase
         $domain = LegalDomain::factory()->create();
         $item->update(['legal_domain_id' => $domain->id]);
 
-        $aiResponse = AssessmentItemResponse::factory()->for($libryo)->for($item)->create(['answer' => ResponseStatus::no()->value, 'last_answered_by' => $user->id, 'answered_at' => now()]);
+        $aiResponse = AssessmentItemResponse::factory()->for($norma)->for($item)->create(['answer' => ResponseStatus::no()->value, 'last_answered_by' => $user->id, 'answered_at' => now()]);
 
         // redirect for assess not enabled
         $response = $this->get(route($routeName))->assertRedirect();
-        $libryo->enableModule(LibryoModule::comply());
+        $norma->enableModule(NormaModule::comply());
 
         $response = $this->get(route($routeName))->assertSuccessful();
         $response->assertSeeSelector('//table');
@@ -127,7 +127,7 @@ class AssessmentItemResponseControllerTest extends MyTestCase
         // ----- Multi streams mode
         $this->activateAllStreams($user);
         $response = $this->get(route($routeName))->assertSuccessful();
-        $response->assertSee($libryo->organisation->title);
+        $response->assertSee($norma->organisation->title);
 
         $response = $this->get(route($routeName, ['search' => substr($item->toDescription(), 0, 5)]))->assertSuccessful();
         $response->assertSee($item->toDescription());
@@ -153,20 +153,20 @@ class AssessmentItemResponseControllerTest extends MyTestCase
 
     public function testAnswer(): void
     {
-        [$user, $libryo] = $this->initUserLibryoOrg();
+        [$user, $norma] = $this->initUserNormaOrg();
         $routeName = 'my.assess.assessment-item-responses.answer';
 
         $item = AssessmentItem::factory()->create(['risk_rating' => RiskRating::high()->value]);
         $item2 = AssessmentItem::factory()->create(['risk_rating' => RiskRating::high()->value]);
-        $aiResponse = AssessmentItemResponse::factory()->for($libryo)->for($item)->create(['answer' => ResponseStatus::no()->value, 'frequency' => $item->frequency]);
-        $libryo2 = Libryo::factory()->create();
-        $aiResponse2 = AssessmentItemResponse::factory()->for($libryo2)->for($item2)->create(['answer' => ResponseStatus::yes()->value, 'frequency' => $item2->frequency]);
+        $aiResponse = AssessmentItemResponse::factory()->for($norma)->for($item)->create(['answer' => ResponseStatus::no()->value, 'frequency' => $item->frequency]);
+        $norma2 = Norma::factory()->create();
+        $aiResponse2 = AssessmentItemResponse::factory()->for($norma2)->for($item2)->create(['answer' => ResponseStatus::yes()->value, 'frequency' => $item2->frequency]);
 
         $route = route($routeName, ['response' => $aiResponse->id]);
         $route2 = route($routeName, ['response' => $aiResponse2->id]);
         $response = $this->put($route)->assertSessionHasErrors();
         $response = $this->put($route, ['notes' => 'some notes'])->assertSessionHasErrors();
-        // user doesn't have access to libryo
+        // user doesn't have access to norma
         $response = $this->withExceptionHandling()->put($route2, ['answer' => 99, 'notes' => 'some notes'])->assertForbidden();
         // shouldn't be allowed to send wrong answer number (only happens if someone trying to manipulate)
         $response = $this->withExceptionHandling()->put($route, ['answer' => 99, 'notes' => 'some notes'])->assertStatus(422);
@@ -194,10 +194,10 @@ class AssessmentItemResponseControllerTest extends MyTestCase
 
     public function testShowAnswerForm(): void
     {
-        [$user, $libryo] = $this->initUserLibryoOrg();
+        [$user, $norma] = $this->initUserNormaOrg();
         $routeName = 'my.assess.assessment-item-responses.answer.form';
         $item = AssessmentItem::factory()->create(['risk_rating' => RiskRating::high()->value]);
-        $aiResponse = AssessmentItemResponse::factory()->for($libryo)->for($item)->create(['answer' => ResponseStatus::no()->value]);
+        $aiResponse = AssessmentItemResponse::factory()->for($norma)->for($item)->create(['answer' => ResponseStatus::no()->value]);
 
         $response = $this->get(route($routeName, ['response' => $aiResponse, 'forAnswer' => '1']))->assertSuccessful();
         $response->assertSee('Response Justification');
@@ -214,10 +214,10 @@ class AssessmentItemResponseControllerTest extends MyTestCase
 
     public function testActions(): void
     {
-        [$user, $libryo] = $this->initUserLibryoOrg();
+        [$user, $norma] = $this->initUserNormaOrg();
         $routeName = 'my.assess.assessment-item-responses.actions';
         $item = AssessmentItem::factory()->create(['risk_rating' => RiskRating::high()->value]);
-        $aiResponses = AssessmentItemResponse::factory(2)->for($libryo)->for($item)->create(['answer' => ResponseStatus::no()->value]);
+        $aiResponses = AssessmentItemResponse::factory(2)->for($norma)->for($item)->create(['answer' => ResponseStatus::no()->value]);
 
         $activityCount = AssessmentActivity::count();
         $response = $this->followingRedirects()->post(route($routeName), [
@@ -266,10 +266,10 @@ class AssessmentItemResponseControllerTest extends MyTestCase
 
     public function testActionsUnchanged(): void
     {
-        [$user, $libryo] = $this->initUserLibryoOrg();
+        [$user, $norma] = $this->initUserNormaOrg();
         $routeName = 'my.assess.assessment-item-responses.actions';
         $item = AssessmentItem::factory()->create(['risk_rating' => RiskRating::high()->value]);
-        $aiResponses = AssessmentItemResponse::factory(2)->for($libryo)->for($item)->create(['answer' => ResponseStatus::no()->value]);
+        $aiResponses = AssessmentItemResponse::factory(2)->for($norma)->for($item)->create(['answer' => ResponseStatus::no()->value]);
 
         $response = $this->followingRedirects()->post(route($routeName), [
             'action' => 'respond-unchanged',
@@ -290,7 +290,7 @@ class AssessmentItemResponseControllerTest extends MyTestCase
 
     public function testExportAsExcel(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.assessment-item-responses.metrics.export.excel';
         Storage::fake();
 
@@ -312,7 +312,7 @@ class AssessmentItemResponseControllerTest extends MyTestCase
 
     public function testExportResponsesAsExcel(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.assessment-item-responses.responses.export.excel';
         Storage::fake();
 
@@ -334,12 +334,12 @@ class AssessmentItemResponseControllerTest extends MyTestCase
 
     public function testUpdatingFrequencyAndNextDue(): void
     {
-        [$user, $libryo] = $this->initUserLibryoOrg();
+        [$user, $norma] = $this->initUserNormaOrg();
         $routeName = 'my.assess.assessment-item-responses.actions';
         $item = AssessmentItem::factory()->create(['risk_rating' => RiskRating::high()->value, 'frequency' => 12]);
 
-        app(AssessmentItemResponseStore::class)->createDraftResponsesForOrganisation($item, $libryo->organisation);
-        $response = AssessmentItemResponse::where(['assessment_item_id' => $item->id, 'place_id' => $libryo->id])->first();
+        app(AssessmentItemResponseStore::class)->createDraftResponsesForOrganisation($item, $norma->organisation);
+        $response = AssessmentItemResponse::where(['assessment_item_id' => $item->id, 'place_id' => $norma->id])->first();
 
         $this->assertSame(12, $response->frequency);
         $this->assertNull($response->next_due_at);

@@ -21,7 +21,7 @@ trait HasSettingsPivotCrudTests
         $this->signIn($this->mySuperUser());
         $this->withAllOrgMode();
 
-        // when viewing in all organisations mode, you should see all teams the libryo is part of
+        // when viewing in all organisations mode, you should see all teams the norma is part of
         $response = $this->get($route)->assertSuccessful();
         $response->assertSee($parent->title);
         $response->assertSee($child->title);
@@ -38,7 +38,7 @@ trait HasSettingsPivotCrudTests
         $user = $this->assertForbiddenForNonAdmin($route, 'get');
         $this->signIn($this->mySuperUser());
         $this->withAllOrgMode();
-        // when viewing in all organisations mode, you should see all teams the libryo is part of
+        // when viewing in all organisations mode, you should see all teams the norma is part of
         $response = $this->get($route)->assertSuccessful();
         $response->assertSee($parent->title);
     }
@@ -57,7 +57,7 @@ trait HasSettingsPivotCrudTests
         $this->signIn($this->mySuperUser());
         $this->withAllOrgMode();
 
-        // when viewing in all organisations mode, you should see all teams the libryo is part of
+        // when viewing in all organisations mode, you should see all teams the norma is part of
         $response = $this->followingRedirects()->post($route, ['ids' => [$child->id]])->assertSuccessful();
         $response->assertSee($parent->title);
         $response->assertSee($child->title);
@@ -81,7 +81,7 @@ trait HasSettingsPivotCrudTests
         $this->signIn($this->mySuperUser());
         $this->withAllOrgMode();
 
-        // when viewing in all organisations mode, you should see all teams the libryo is part of
+        // when viewing in all organisations mode, you should see all teams the norma is part of
         $response = $this->followingRedirects()->delete($route)->assertSuccessful();
         $response->assertSee($parent->title);
         $response->assertDontSee($child->title);

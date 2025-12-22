@@ -9,7 +9,7 @@ use App\Models\Corpus\ReferenceContent;
 use App\Models\Corpus\Work;
 use App\Models\Corpus\WorkExpression;
 use App\Models\Tasks\Task;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Illuminate\Testing\TestResponse;
@@ -19,19 +19,19 @@ class EnablonExportsTest extends MyTestCase
 {
     public function testListingAndGenerating(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $index = $this->get(route('my.enablon.exports.index'))->assertSuccessful();
 
         $reference = Reference::factory()->create();
         ReferenceContent::factory()->for($reference)->create();
-        $libryo->references()->attach($reference->id);
-        $libryo->works()->attach($reference->work_id);
+        $norma->references()->attach($reference->id);
+        $norma->works()->attach($reference->work_id);
         $expression = WorkExpression::factory()->create(['work_id' => $reference->work_id]);
         Work::where('id', $reference->work_id)->update(['active_work_expression_id' => $expression->id]);
 
         Task::factory()->create([
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
             'taskable_type' => $reference->getMorphClass(),
             'taskable_id' => $reference->id,
         ]);
@@ -39,7 +39,7 @@ class EnablonExportsTest extends MyTestCase
         $mappers = ['cargill'];
 
         foreach (ExportType::cases() as $type) {
-            app(ActiveLibryosManager::class)->activate($user, $libryo);
+            app(ActiveNormasManager::class)->activate($user, $norma);
             $this->checkSuccessfulExport($user, $index, $type);
 
             foreach ($mappers as $map) {

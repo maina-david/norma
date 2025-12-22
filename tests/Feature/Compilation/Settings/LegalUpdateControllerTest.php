@@ -5,10 +5,10 @@ namespace Tests\Feature\Compilation\Settings;
 use App\Enums\Notify\LegalUpdatePublishedStatus;
 use App\Models\Compilation\Library;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Notify\LegalUpdate;
 use App\Models\Notify\Pivots\LegalUpdateLibrary;
-use App\Models\Notify\Pivots\LegalUpdateLibryo;
+use App\Models\Notify\Pivots\LegalUpdateNorma;
 use Tests\Feature\Settings\SettingsTestCase;
 
 class LegalUpdateControllerTest extends SettingsTestCase
@@ -100,21 +100,21 @@ class LegalUpdateControllerTest extends SettingsTestCase
         ]);
 
         $update = LegalUpdate::factory()->create();
-        $libryo = Libryo::factory()->create();
+        $norma = Norma::factory()->create();
 
-        $this->assertDatabaseMissing(LegalUpdateLibryo::class, [
+        $this->assertDatabaseMissing(LegalUpdateNorma::class, [
             'register_notification_id' => $update->id,
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
         ]);
 
         $this->followingRedirects()
-            ->post(route('my.settings.legal-updates.libryos.store', $update), ['libryos' => [$libryo->id]])
+            ->post(route('my.settings.legal-updates.normas.store', $update), ['normas' => [$norma->id]])
             ->assertSuccessful()
             ->assertSessionHasNoErrors();
 
-        $this->assertDatabaseHas(LegalUpdateLibryo::class, [
+        $this->assertDatabaseHas(LegalUpdateNorma::class, [
             'register_notification_id' => $update->id,
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
         ]);
     }
 

@@ -13,11 +13,11 @@ class ActionAreaListingControllerTest extends MyTestCase
 {
     public function testListingActions(): void
     {
-        /** @var \App\Models\Customer\Libryo $libryo */
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        /** @var \App\Models\Customer\Norma $norma */
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $reference = Reference::factory()->create();
         $reference->load(['work']);
-        $libryo->references()->attach($reference->id);
+        $norma->references()->attach($reference->id);
         $control = Category::factory()->create(['parent_id' => Category::factory(), 'level' => 2]);
         $subject = Category::factory()->create(['level' => 1]);
         $action = ActionArea::factory()->create(['control_category_id' => $control->id, 'subject_category_id' => $subject->id]);
@@ -69,11 +69,11 @@ class ActionAreaListingControllerTest extends MyTestCase
 
     public function testListingReferences(): void
     {
-        /** @var \App\Models\Customer\Libryo $libryo */
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        /** @var \App\Models\Customer\Norma $norma */
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $reference = Reference::factory()->create();
         $reference->load(['work']);
-        $libryo->references()->attach($reference->id);
+        $norma->references()->attach($reference->id);
         $action = ActionArea::factory()->create();
         $action->references()->attach($reference->id);
 

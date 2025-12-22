@@ -17,11 +17,11 @@ class LegalUpdateExcelExportTest extends TestCase
 
     public function testBuild(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
 
         $location = Location::factory()->create();
         $updates = LegalUpdate::factory(2)->create(['primary_location_id' => $location->id]);
-        $libryo->legalUpdates()->attach($updates->modelKeys());
+        $norma->legalUpdates()->attach($updates->modelKeys());
 
         $testHighlights = 'Testing highlights text';
         $updates[0]->update(['highlights' => $testHighlights]);
@@ -32,14 +32,14 @@ class LegalUpdateExcelExportTest extends TestCase
         $filters = ['status' => LegalUpdateStatus::unread()->value, 'bookmarked' => 'yes'];
         $user = User::factory()->create();
         $updates->each(fn ($up) => $up->bookmarks()->create(['user_id' => $user->id]));
-        $updates->each(function ($up) use ($libryo, $user) {
-            $comment = $up->comments()->create(['author_id' => $user->id, 'comment' => 'Hello There!', 'place_id' => $libryo->id]);
-            $comment->replies()->create(['author_id' => $user->id, 'comment' => 'Replying your hello!', 'place_id' => $libryo->id]);
+        $updates->each(function ($up) use ($norma, $user) {
+            $comment = $up->comments()->create(['author_id' => $user->id, 'comment' => 'Hello There!', 'place_id' => $norma->id]);
+            $comment->replies()->create(['author_id' => $user->id, 'comment' => 'Replying your hello!', 'place_id' => $norma->id]);
         });
 
-        $excel = app(LegalUpdateExcelExport::class)->setDomain('https://my.libryo.com/')->forLibryo($libryo, $organisation, $user, $filters, $progressCallback);
+        $excel = app(LegalUpdateExcelExport::class)->setDomain('https://my.norma.com/')->forNorma($norma, $organisation, $user, $filters, $progressCallback);
 
-        $user->libryos()->attach($libryo);
+        $user->normas()->attach($norma);
 
         $ws = $excel->getActiveSheet();
         $cell = $ws->getCell('A2');

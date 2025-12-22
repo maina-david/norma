@@ -141,7 +141,7 @@ class TeamControllerTest extends SettingsTestCase
 
         $response->assertSee($team->title);
         $response->assertSee('Users');
-        $response->assertSee('Libryo Streams');
+        $response->assertSee('Norma Streams');
         $response->assertSeeSelector('//header//div//span[contains(text(),"' . $team->title . '")]');
     }
 

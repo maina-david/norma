@@ -14,12 +14,12 @@ class ActionsProjectControllerTest extends MyTestCase
 
     public function testIndex(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.projects.index';
 
         $project = TaskProject::factory()->for($org)->create(['author_id' => $user->id]);
 
-        $this->validateActionsIsDisabled(route($routeName), $libryo, $org);
+        $this->validateActionsIsDisabled(route($routeName), $norma, $org);
 
         $response = $this->get(route($routeName))->assertSuccessful();
         $response->assertSeeSelector('//td[text()[contains(.,"' . $project->title . '")]]');
@@ -39,12 +39,12 @@ class ActionsProjectControllerTest extends MyTestCase
 
     public function testDestroy(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.projects.destroy';
 
         $project = TaskProject::factory()->for($org)->create(['author_id' => $user->id]);
 
-        $this->validateActionsIsDisabled(route($routeName, ['project' => $project->id]), $libryo, $org, 'delete');
+        $this->validateActionsIsDisabled(route($routeName, ['project' => $project->id]), $norma, $org, 'delete');
 
         $this->destroyAndTestData(TaskProject::class, route($routeName, ['project' => $project]));
     }
@@ -52,9 +52,9 @@ class ActionsProjectControllerTest extends MyTestCase
     public function testCreate(): void
     {
         $routeName = 'my.projects.create';
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
-        $this->validateActionsIsDisabled(route($routeName), $libryo, $org);
+        $this->validateActionsIsDisabled(route($routeName), $norma, $org);
 
         $response = $this->assertSeeVisibleFormLabels(
             [],
@@ -66,11 +66,11 @@ class ActionsProjectControllerTest extends MyTestCase
     public function testStore(): void
     {
         $routeName = 'my.projects.store';
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $project = TaskProject::factory()->make();
 
-        $this->validateActionsIsDisabled(route($routeName), $libryo, $org, 'post', $project->toArray());
+        $this->validateActionsIsDisabled(route($routeName), $norma, $org, 'post', $project->toArray());
 
         $count = TaskProject::count();
         $response = $this->post(route($routeName), $project->toArray());
@@ -81,11 +81,11 @@ class ActionsProjectControllerTest extends MyTestCase
     public function testEdit(): void
     {
         $routeName = 'my.projects.edit';
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $project = TaskProject::factory()->for($org)->create(['author_id' => $user->id]);
 
-        $this->validateActionsIsDisabled(route($routeName, ['project' => $project->id]), $libryo, $org);
+        $this->validateActionsIsDisabled(route($routeName, ['project' => $project->id]), $norma, $org);
 
         $response = $this->assertSeeVisibleFormLabels(
             $project,
@@ -98,11 +98,11 @@ class ActionsProjectControllerTest extends MyTestCase
     public function testUpdate(): void
     {
         $routeName = 'my.projects.update';
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $project = TaskProject::factory()->for($org)->create(['author_id' => $user->id]);
 
-        $this->validateActionsIsDisabled(route($routeName, ['project' => $project->id]), $libryo, $org, 'put', $project->toArray());
+        $this->validateActionsIsDisabled(route($routeName, ['project' => $project->id]), $norma, $org, 'put', $project->toArray());
 
         $project->title = 'New Title';
         $project->description = 'New Description';
@@ -116,11 +116,11 @@ class ActionsProjectControllerTest extends MyTestCase
     public function testArchive(): void
     {
         $routeName = 'my.projects.archive';
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $project = TaskProject::factory()->for($org)->create(['author_id' => $user->id]);
 
-        $this->validateActionsIsDisabled(route($routeName, ['project' => $project->id]), $libryo, $org, 'post');
+        $this->validateActionsIsDisabled(route($routeName, ['project' => $project->id]), $norma, $org, 'post');
 
         $this->assertFalse($project->archived);
         $response = $this->followingRedirects()->post(route($routeName, ['project' => $project->id]))->assertSuccessful();
@@ -132,11 +132,11 @@ class ActionsProjectControllerTest extends MyTestCase
     public function testUnarchive(): void
     {
         $routeName = 'my.projects.unarchive';
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $project = TaskProject::factory()->for($org)->create(['author_id' => $user->id, 'archived' => true]);
 
-        $this->validateActionsIsDisabled(route($routeName, ['project' => $project->id]), $libryo, $org, 'post');
+        $this->validateActionsIsDisabled(route($routeName, ['project' => $project->id]), $norma, $org, 'post');
 
         $this->assertTrue($project->archived);
         $response = $this->followingRedirects()->post(route($routeName, ['project' => $project->id]))->assertSuccessful();

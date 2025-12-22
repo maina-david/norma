@@ -2,18 +2,18 @@
 
 namespace Tests\Unit\Actions\Assess;
 
-use App\Actions\Assess\CreateMetricsSnapshotForLibryo;
+use App\Actions\Assess\CreateMetricsSnapshotForNorma;
 use App\Enums\Assess\ResponseStatus;
 use App\Enums\Assess\RiskRating;
 use App\Models\Assess\AssessmentItem;
 use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Assess\AssessSnapshot;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Services\Assess\AssessStatsService;
 use Mockery\MockInterface;
 use Tests\TestCase;
 
-class CreateMetricsSnapshotForLibryoTest extends TestCase
+class CreateMetricsSnapshotForNormaTest extends TestCase
 {
     public function testHandle(): void
     {
@@ -35,14 +35,14 @@ class CreateMetricsSnapshotForLibryoTest extends TestCase
                 ->andReturn($testData);
         });
 
-        $action = app(CreateMetricsSnapshotForLibryo::class);
-        $libryo = Libryo::factory()->create();
+        $action = app(CreateMetricsSnapshotForNorma::class);
+        $norma = Norma::factory()->create();
         $aiItem = AssessmentItem::factory()->create(['risk_rating' => RiskRating::high()->value]);
-        $aiResponse = AssessmentItemResponse::factory()->for($libryo)->for($aiItem)->create(['answer' => ResponseStatus::no()->value]);
+        $aiResponse = AssessmentItemResponse::factory()->for($norma)->for($aiItem)->create(['answer' => ResponseStatus::no()->value]);
 
         $count = AssessSnapshot::count();
 
-        $action->asJob($libryo->id, now()->subMonth()->endOfMonth()->format('Y-m-d H:i:s'));
+        $action->asJob($norma->id, now()->subMonth()->endOfMonth()->format('Y-m-d H:i:s'));
         $this->assertGreaterThan($count, AssessSnapshot::count());
 
         $snapshot = AssessSnapshot::with('assessmentItemResponses')->get()->last();

@@ -9,7 +9,7 @@ class FolderControllerTest extends MyTestCase
 {
     public function testListingRootAndChildren(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $roots = Folder::factory()
             ->count(3)

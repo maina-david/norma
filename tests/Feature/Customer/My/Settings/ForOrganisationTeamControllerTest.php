@@ -32,7 +32,7 @@ class ForOrganisationTeamControllerTest extends SettingsTestCase
         $this->signIn($this->mySuperUser());
         $this->withAllOrgMode();
 
-        // when viewing in all organisations mode, you should see all teams the libryo is part of
+        // when viewing in all organisations mode, you should see all teams the norma is part of
         $response = $this->get($route);
         $response->assertSee($team->title);
         $response->assertDontSee($team2->title);

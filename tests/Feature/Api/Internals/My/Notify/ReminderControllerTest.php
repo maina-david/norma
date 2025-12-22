@@ -10,7 +10,7 @@ class ReminderControllerTest extends MyTestCase
 {
     public function testListing(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $task = Task::factory()->create();
         $reminder = Reminder::factory()->create([
             'author_id' => $user->id,
@@ -29,7 +29,7 @@ class ReminderControllerTest extends MyTestCase
 
     public function testStoreAndDestroy(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $user->update(['timezone' => 'UTC']);
         $task = Task::factory()->create();
 

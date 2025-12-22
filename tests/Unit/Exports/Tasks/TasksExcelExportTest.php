@@ -16,9 +16,9 @@ class TasksExcelExportTest extends TestCase
 
     public function testBuild(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
 
-        $tasks = Task::factory(5)->for($libryo)->create();
+        $tasks = Task::factory(5)->for($norma)->create();
         $tasks->each(fn ($task) => $task->reminders()->create(Reminder::factory()->raw()));
 
         $progressCallback = function ($progress) {
@@ -26,12 +26,12 @@ class TasksExcelExportTest extends TestCase
 
         $filters = [];
         $user = User::factory()->create();
-        $excel = app(TasksExcelExport::class)->forLibryo($libryo, $organisation, $user, $filters, $progressCallback);
+        $excel = app(TasksExcelExport::class)->forNorma($norma, $organisation, $user, $filters, $progressCallback);
 
         $ws = $excel->getActiveSheet();
         $this->assertSame($tasks[0]->title, $ws->getCell('A2')->getValue());
 
-        $user->libryos()->attach($libryo);
+        $user->normas()->attach($norma);
 
         $filters = ['statuses' => [TaskStatus::done()->value]];
         $tasks[1]->update(['task_status' => TaskStatus::done()->value]);

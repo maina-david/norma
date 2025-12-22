@@ -17,19 +17,19 @@ class AssessResponsesExcelExportTest extends TestCase
 
     public function testBuild(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
 
         $user = User::factory()->create();
-        $user->libryos()->attach($libryo);
+        $user->normas()->attach($norma);
 
         $items = AssessmentItem::factory(5)->create(['risk_rating' => RiskRating::high()->value]);
-        $item = AssessmentItemResponse::factory()->for($libryo)->for($items[0])->create(['answer' => ResponseStatus::no()->value]);
+        $item = AssessmentItemResponse::factory()->for($norma)->for($items[0])->create(['answer' => ResponseStatus::no()->value]);
         $item->assessmentItem->update(['legal_domain_id' => $domain->id]);
 
-        AssessmentItemResponse::factory()->for($libryo)->for($items[1])->create(['answer' => ResponseStatus::notApplicable()->value]);
-        AssessmentItemResponse::factory()->for($libryo)->for($items[2])->create(['answer' => ResponseStatus::notAssessed()->value]);
-        AssessmentItemResponse::factory()->for($libryo)->for($items[3])->create(['answer' => ResponseStatus::no()->value]);
-        AssessmentItemResponse::factory()->for($libryo)->for($items[3])->create(['answer' => ResponseStatus::yes()->value]);
+        AssessmentItemResponse::factory()->for($norma)->for($items[1])->create(['answer' => ResponseStatus::notApplicable()->value]);
+        AssessmentItemResponse::factory()->for($norma)->for($items[2])->create(['answer' => ResponseStatus::notAssessed()->value]);
+        AssessmentItemResponse::factory()->for($norma)->for($items[3])->create(['answer' => ResponseStatus::no()->value]);
+        AssessmentItemResponse::factory()->for($norma)->for($items[3])->create(['answer' => ResponseStatus::yes()->value]);
 
         $progressCallback = function ($progress) {
         };
@@ -38,9 +38,9 @@ class AssessResponsesExcelExportTest extends TestCase
             'domains' => [$item->assessmentItem->legalDomain->id],
         ];
 
-        $libryo->update(['title' => 'With - Hyphens - ' . $libryo->title]);
+        $norma->update(['title' => 'With - Hyphens - ' . $norma->title]);
 
-        app(AssessResponsesExcelExport::class)->export($user, $organisation, $libryo, $filters, $progressCallback);
+        app(AssessResponsesExcelExport::class)->export($user, $organisation, $norma, $filters, $progressCallback);
 
         $excel = app(AssessResponsesExcelExport::class)->export($user, $organisation, null, $filters, $progressCallback);
 

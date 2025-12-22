@@ -12,13 +12,13 @@ class MetricsControllerTest extends MyTestCase
 {
     public function testAllMetrics(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $action = ActionArea::factory()->create();
         $ref = Reference::factory()->create();
         $ref->actionAreas()->attach($action->id);
         $task = Task::factory()->create([
-            'place_id' => $libryo->id,
+            'place_id' => $norma->id,
             'taskable_type' => $ref->getMorphClass(),
             'taskable_id' => $ref->id,
             'task_status' => TaskStatus::notStarted()->value,

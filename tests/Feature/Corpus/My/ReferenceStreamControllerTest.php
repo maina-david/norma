@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Corpus\My;
 
-use App\Enums\System\LibryoModule;
+use App\Enums\System\NormaModule;
 use App\Models\Assess\AssessmentItem;
 use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Corpus\ReferenceContent;
 use App\Models\Corpus\Work;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Support\Str;
 use Tests\Feature\My\MyTestCase;
 
@@ -15,17 +15,17 @@ class ReferenceStreamControllerTest extends MyTestCase
 {
     private function start(): array
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $works = Work::factory(2)->hasReferences(2)->create();
-        $works[0]->references->first()->libryos()->attach($libryo);
+        $works[0]->references->first()->normas()->attach($norma);
         $works->load(['references.citation', 'references.refPlainText']);
 
-        return [$user, $libryo, $org, $works];
+        return [$user, $norma, $org, $works];
     }
 
     public function testShowYourRequirements(): void
     {
-        [$user, $libryo, $org, $works] = $this->start();
+        [$user, $norma, $org, $works] = $this->start();
 
         $route = route('my.references.for.requirements', ['work' => $works[0]->id]);
 
@@ -33,7 +33,7 @@ class ReferenceStreamControllerTest extends MyTestCase
         $response = $this->get($route)->assertSuccessful();
         $response->assertSee($works[0]->references->first()->refPlainText?->plain_text);
 
-        app(ActiveLibryosManager::class)->activateAll($user);
+        app(ActiveNormasManager::class)->activateAll($user);
 
         $response = $this->get($route)->assertSuccessful();
         $response->assertSee($works[0]->references->first()->refPlainText?->plain_text);
@@ -41,11 +41,11 @@ class ReferenceStreamControllerTest extends MyTestCase
 
     public function testShow(): void
     {
-        [$user, $libryo, $org, $works] = $this->start();
+        [$user, $norma, $org, $works] = $this->start();
         $route = route('my.references.partial.show', ['reference' => $works[0]->references->first()]);
 
-        /** @var \App\Models\Customer\Libryo $libryo */
-        $libryo->enableModule(LibryoModule::actions());
+        /** @var \App\Models\Customer\Norma $norma */
+        $norma->enableModule(NormaModule::actions());
 
         $text = 'Some html content';
         $html = '<p>' . $text . '</p>';
@@ -55,7 +55,7 @@ class ReferenceStreamControllerTest extends MyTestCase
         $response = $this->get($route)->assertSuccessful();
         $response->assertSee($text);
 
-        app(ActiveLibryosManager::class)->activateAll($user);
+        app(ActiveNormasManager::class)->activateAll($user);
 
         $response = $this->get($route)->assertSuccessful();
         $response->assertSee($text);
@@ -63,7 +63,7 @@ class ReferenceStreamControllerTest extends MyTestCase
 
     public function testIndexForAssessmentItemREsponse(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $works = Work::factory(2)->hasReferences(2)->create();
 
         $reference = $works[0]->references->first();
@@ -71,10 +71,10 @@ class ReferenceStreamControllerTest extends MyTestCase
         $reference->load(['citation', 'refPlainText']);
         $reference2->load(['citation', 'refPlainText']);
 
-        $reference->libryos()->attach($libryo);
-        $reference2->libryos()->attach($libryo);
+        $reference->normas()->attach($norma);
+        $reference2->normas()->attach($norma);
         $assessmentItem = AssessmentItem::factory()->create();
-        $aiResponse = AssessmentItemResponse::factory()->for($assessmentItem)->for($libryo)->create();
+        $aiResponse = AssessmentItemResponse::factory()->for($assessmentItem)->for($norma)->create();
         $reference->assessmentItems()->attach($assessmentItem);
 
         $routeName = 'my.references.for.assessment-item-response.index';
@@ -82,7 +82,7 @@ class ReferenceStreamControllerTest extends MyTestCase
         $response->assertSee($reference->refPlainText?->plain_text);
         $response->assertDontSee($reference2->refPlainText?->plain_text);
 
-        app(ActiveLibryosManager::class)->activateAll($user);
+        app(ActiveNormasManager::class)->activateAll($user);
 
         $response = $this->get(route($routeName, ['aiResponse' => $aiResponse]))->assertSuccessful();
         $response->assertSee($reference->refPlainText?->plain_text);
@@ -91,7 +91,7 @@ class ReferenceStreamControllerTest extends MyTestCase
 
     public function testSuggest(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $route = route('my.corpus.references.search-suggest', ['key' => 'requirements-page']);
 
@@ -101,7 +101,7 @@ class ReferenceStreamControllerTest extends MyTestCase
             ->assertSuccessful()
             ->assertSee($searchTerm);
 
-        app(ActiveLibryosManager::class)->activateAll($user);
+        app(ActiveNormasManager::class)->activateAll($user);
 
         $route = route('my.corpus.references.search-suggest', ['key' => 'detailed-requirements-page', 'search' => $searchTerm]);
         $response = $this->get($route)->assertSuccessful()
@@ -110,7 +110,7 @@ class ReferenceStreamControllerTest extends MyTestCase
 
     public function testShowFullText(): void
     {
-        [$user, $libryo, $org, $works] = $this->start();
+        [$user, $norma, $org, $works] = $this->start();
         $route = route('my.references.partial.show.full-text', ['reference' => $works[0]->references->first()]);
 
         $text = 'Some html content';

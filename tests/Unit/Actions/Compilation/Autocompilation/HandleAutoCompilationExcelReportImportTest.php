@@ -8,7 +8,7 @@ use App\Jobs\Compilation\AutoCompilationExcelImport;
 use App\Mail\Compilation\Autocompilation\FailedImportMail;
 use App\Models\Auth\User;
 use App\Models\Compilation\ContextQuestion;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Services\Compilation\AutoCompilationExcelParser;
 use App\Services\TempFileManager;
@@ -25,7 +25,7 @@ class HandleAutoCompilationExcelReportImportTest extends TestCase
         Storage::fake();
 
         $org = Organisation::factory()->create();
-        $libryo = Libryo::factory()->for($org)->create();
+        $norma = Norma::factory()->for($org)->create();
         $filePath = app(TempFileManager::class)->getDirectory() . Str::random(15);
         Storage::put($filePath, '');
 
@@ -45,15 +45,15 @@ class HandleAutoCompilationExcelReportImportTest extends TestCase
 
         Mail::assertQueued(FailedImportMail::class);
 
-        $this->mock(AutoCompilationExcelParser::class, function (MockInterface $mock) use ($libryo, $question, $question2, $question3) {
+        $this->mock(AutoCompilationExcelParser::class, function (MockInterface $mock) use ($norma, $question, $question2, $question3) {
             $answers = [
-                $libryo->id => [
+                $norma->id => [
                     $question->id => ContextQuestionAnswer::yes()->value,
                     $question2->id => ContextQuestionAnswer::no()->value,
                     $question3->id => ContextQuestionAnswer::maybe()->value,
                     0 => ContextQuestionAnswer::no()->value, // invalid context question ID should be ignored
                 ],
-                0 => [], // invalid libryo id should be ignored
+                0 => [], // invalid norma id should be ignored
             ];
             $mock->shouldReceive('parse')->andReturn($answers);
         });

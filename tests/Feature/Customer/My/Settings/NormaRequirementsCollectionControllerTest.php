@@ -3,17 +3,17 @@
 namespace Tests\Feature\Customer\My\Settings;
 
 use App\Models\Compilation\RequirementsCollection;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Tests\Feature\Settings\SettingsTestCase;
 use Tests\Feature\Traits\HasSettingsPivotCrudTests;
 
-class LibryoRequirementsCollectionControllerTest extends SettingsTestCase
+class NormaRequirementsCollectionControllerTest extends SettingsTestCase
 {
     use HasSettingsPivotCrudTests;
 
     protected static function resourceRoute(): string
     {
-        return 'my.settings.libryos.compilation.requirements-collections';
+        return 'my.settings.normas.compilation.requirements-collections';
     }
 
     protected static function resource(): string
@@ -23,7 +23,7 @@ class LibryoRequirementsCollectionControllerTest extends SettingsTestCase
 
     protected static function forResource(): ?string
     {
-        return Libryo::class;
+        return Norma::class;
     }
 
     protected static function pivotRelationName(): string
@@ -45,7 +45,7 @@ class LibryoRequirementsCollectionControllerTest extends SettingsTestCase
         $this->signIn($this->mySuperUser());
         $this->withAllOrgMode();
 
-        // when viewing in all organisations mode, you should see all teams the libryo is part of
+        // when viewing in all organisations mode, you should see all teams the norma is part of
         $response = $this->followingRedirects()->post($route, [
             'ids' => [$child->id],
             'include_ancestors' => true,

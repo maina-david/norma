@@ -3,23 +3,23 @@
 namespace Tests\Feature\Api\Internals\My\Auth;
 
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Tests\Feature\My\MyTestCase;
 
 class OrganisationUsersControllerTest extends MyTestCase
 {
     public function testFetchingOrganisationUsers(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        $otherLibryo = Libryo::factory()->create(['organisation_id' => $org->id]);
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        $otherNorma = Norma::factory()->create(['organisation_id' => $org->id]);
 
-        $nonLibryo = User::factory()->create();
-        $nonLibryo->libryos()->attach($otherLibryo->id);
-        $nonLibryo->organisations()->attach($org->id);
+        $nonNorma = User::factory()->create();
+        $nonNorma->normas()->attach($otherNorma->id);
+        $nonNorma->organisations()->attach($org->id);
 
         $loggedIn = $this->signIn($this->mySuperUser());
 
-        $this->getJson(route('api.my.organisation.users.index', ['libryo' => true]))
+        $this->getJson(route('api.my.organisation.users.index', ['norma' => true]))
             ->assertSuccessful()
             ->assertJsonCount(2, 'data')
             ->assertJson([
@@ -30,13 +30,13 @@ class OrganisationUsersControllerTest extends MyTestCase
             ])
             ->assertJsonMissing([
                 'data' => [
-                    ['id' => $nonLibryo->id, 'name' => $nonLibryo->full_name],
+                    ['id' => $nonNorma->id, 'name' => $nonNorma->full_name],
                 ],
             ]);
 
         $this->signIn($user);
 
-        $users = User::whereKey([$user->id, $nonLibryo->id])
+        $users = User::whereKey([$user->id, $nonNorma->id])
             ->orderBy('fname')
             ->get()
             ->map(fn ($item) => ['id' => $item->id, 'name' => $item->full_name])

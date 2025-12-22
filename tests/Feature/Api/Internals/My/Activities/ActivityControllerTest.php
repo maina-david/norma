@@ -11,8 +11,8 @@ class ActivityControllerTest extends MyTestCase
 {
     public function testListingActivities(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        $task = Task::factory()->create(['place_id' => $libryo->id, 'task_status' => TaskStatus::notStarted()->value]);
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        $task = Task::factory()->create(['place_id' => $norma->id, 'task_status' => TaskStatus::notStarted()->value]);
 
         $task->update(['task_status' => TaskStatus::inProgress()->value]);
 

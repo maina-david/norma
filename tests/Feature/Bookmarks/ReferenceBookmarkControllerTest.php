@@ -13,10 +13,10 @@ class ReferenceBookmarkControllerTest extends MyTestCase
 {
     public function testCreationRemovalAndFiltering(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.corpus.requirements.index';
 
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream($libryo);
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream($norma);
 
         $this->partialMock(DocumentSearch::class, function (MockInterface $mock) use ($work) {
             $work->load(['references.legalDomains', 'references.locations.type', 'references.locations.country', 'references.citation', 'children.references.citation', 'references.refPlainText', 'children.references.refPlainText']);

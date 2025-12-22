@@ -9,8 +9,8 @@ trait RunsShowTests
 {
     private function runShowTest(string $routeName): array
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
-        $task = Task::factory()->for($libryo)->create(['author_id' => $user->id]);
+        [$user, $norma, $org] = $this->initUserNormaOrg();
+        $task = Task::factory()->for($norma)->create(['author_id' => $user->id]);
 
         $this->signIn($user);
         $response = $this->get(route($routeName, ['task' => $task]))->assertSuccessful();
@@ -19,7 +19,7 @@ trait RunsShowTests
         $response->assertSeeSelector('//button[text()[contains(.,"Edit")]]');
 
         $user2 = User::factory()->create();
-        $task = Task::factory()->for($libryo)->create();
+        $task = Task::factory()->for($norma)->create();
         $task->update(['author_id' => $user2->id]);
 
         $response = $this->get(route($routeName, ['task' => $task]))->assertSuccessful();
@@ -31,6 +31,6 @@ trait RunsShowTests
             ->get(route($routeName, ['task' => $task]))
             ->assertForbidden();
 
-        return [$user, $libryo, $org];
+        return [$user, $norma, $org];
     }
 }

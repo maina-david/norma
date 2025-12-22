@@ -9,9 +9,9 @@ class ForOrganisationReferenceControllerTest extends ApiTestCase
 {
     public function testForOrganisation(): void
     {
-        [$libryo, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsCollection, $domain, $tag] = $this->initCompiledStream();
         $user = User::factory()->create();
-        $user->libryos()->attach($libryo);
+        $user->normas()->attach($norma);
         $user->organisations()->attach($organisation);
 
         $routeName = 'api.v2.corpus.references.for.organisation';
@@ -36,7 +36,7 @@ class ForOrganisationReferenceControllerTest extends ApiTestCase
             'volume' => $reference->volume,
             'type' => $reference->type,
             'content' => $reference->htmlContent?->cached_content,
-            'libryos' => [['id' => $libryo->id]],
+            'normas' => [['id' => $norma->id]],
             'created_at' => $reference->created_at->format('Y-m-d H:i:s'),
             'updated_at' => $reference->updated_at->format('Y-m-d H:i:s'),
         ];
@@ -46,8 +46,8 @@ class ForOrganisationReferenceControllerTest extends ApiTestCase
         $content = $response->json();
         $this->assertSame($item['id'], $content['data'][0]['id']);
         foreach ($item as $key => $val) {
-            if ($key === 'libryos') {
-                $this->assertTrue($val[0]['id'] === $libryo->id);
+            if ($key === 'normas') {
+                $this->assertTrue($val[0]['id'] === $norma->id);
                 continue;
             }
             $this->assertSame($val, $content['data'][0][$key]);

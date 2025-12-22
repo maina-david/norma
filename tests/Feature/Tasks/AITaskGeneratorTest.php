@@ -8,15 +8,15 @@ use App\Models\Tasks\Task;
 use App\Services\Tasks\AITaskGenerator;
 use Illuminate\Support\Facades\Config;
 use Tests\Feature\My\MyTestCase;
-use Tests\Traits\UsesLibryoAI;
+use Tests\Traits\UsesNormaAI;
 
 class AITaskGeneratorTest extends MyTestCase
 {
-    use UsesLibryoAI;
+    use UsesNormaAI;
 
     public function testGeneratingTasks(): void
     {
-        [$user, $libryo] = $this->initUserLibryoOrg();
+        [$user, $norma] = $this->initUserNormaOrg();
 
         /** @var Reference $reference */
         $reference = Reference::factory()->create();
@@ -26,11 +26,11 @@ class AITaskGeneratorTest extends MyTestCase
             'reference_id' => $reference->id,
         ], 'reference_id');
 
-        Config::set('services.libryo_ai.enabled', true);
+        Config::set('services.norma_ai.enabled', true);
         $expected = $this->getExpectations();
-        $this->mockLibryoAIGenerateTaskRequest();
+        $this->mockNormaAIGenerateTaskRequest();
 
-        $this->turboGet(route('my.tasks.tasks.for.related.suggest', ['relation' => 'reference', 'id' => $reference->id, 'libryo' => $libryo->id]))
+        $this->turboGet(route('my.tasks.tasks.for.related.suggest', ['relation' => 'reference', 'id' => $reference->id, 'norma' => $norma->id]))
             ->assertSuccessful()
             ->assertSee('taskable_type')
             ->assertSee('register_item')
@@ -44,7 +44,7 @@ class AITaskGeneratorTest extends MyTestCase
         collect($expected)->each(fn ($item) => $this->assertDatabaseMissing(Task::class, ['title' => $item]));
 
         $this->turboPost(route('my.tasks.tasks.bulk.store'), [
-            'libryo_id' => $libryo->id,
+            'norma_id' => $norma->id,
             'taskable_type' => 'register_item',
             'taskable_id' => $reference->id,
             'tasks' => $expected,

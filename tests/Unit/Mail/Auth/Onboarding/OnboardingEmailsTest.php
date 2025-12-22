@@ -21,8 +21,8 @@ class OnboardingEmailsTest extends TestCase
         $mailable->assertSeeInHtml('received a system-generated email');
         $mailable->assertSeeInText('received a system-generated email');
 
-        $mailable->assertSeeInHtml('What is the ERM Libryo Platform?');
-        $mailable->assertSeeInText('What is the ERM Libryo Platform?');
+        $mailable->assertSeeInHtml('What is the ERM Norma Platform?');
+        $mailable->assertSeeInText('What is the ERM Norma Platform?');
     }
 
     public function testUserGuideContents(): void
@@ -31,8 +31,8 @@ class OnboardingEmailsTest extends TestCase
 
         $mailable = new UserGuideEmail($user);
 
-        $mailable->assertSeeInHtml('We hope that you are starting to familiarise yourself with the ERM Libryo platform');
-        $mailable->assertSeeInText('We hope that you are starting to familiarise yourself with the ERM Libryo platform');
+        $mailable->assertSeeInHtml('We hope that you are starting to familiarise yourself with the ERM Norma platform');
+        $mailable->assertSeeInText('We hope that you are starting to familiarise yourself with the ERM Norma platform');
     }
 
     public function testGettingStartedContents(): void
@@ -41,8 +41,8 @@ class OnboardingEmailsTest extends TestCase
 
         $mailable = new GettingStartedEmail($user);
 
-        $mailable->assertSeeInHtml('We hope that you have managed to log in to ERM Libryo and explore a bit');
-        $mailable->assertSeeInText('We hope that you have managed to log in to ERM Libryo and explore a bit');
+        $mailable->assertSeeInHtml('We hope that you have managed to log in to ERM Norma and explore a bit');
+        $mailable->assertSeeInText('We hope that you have managed to log in to ERM Norma and explore a bit');
     }
 
     public function testPendingDeactivationEmailContents(): void
@@ -54,7 +54,7 @@ class OnboardingEmailsTest extends TestCase
         $mailable->assertSeeInHtml('so due to inactivity your account will be de-activated shortly');
         $mailable->assertSeeInText('so due to inactivity your account will be de-activated shortly');
 
-        $mailable->assertSeeInHtml('We noticed you haven\'t accessed ERM Libryo in over 5 months, so due to inactivity your account will be de-activated shortly.', false);
-        $mailable->assertSeeInText('We noticed you haven\'t accessed ERM Libryo in over 5 months, so due to inactivity your account will be de-activated shortly.');
+        $mailable->assertSeeInHtml('We noticed you haven\'t accessed ERM Norma in over 5 months, so due to inactivity your account will be de-activated shortly.', false);
+        $mailable->assertSeeInText('We noticed you haven\'t accessed ERM Norma in over 5 months, so due to inactivity your account will be de-activated shortly.');
     }
 }

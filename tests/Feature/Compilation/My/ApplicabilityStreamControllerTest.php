@@ -10,7 +10,7 @@ use App\Models\Auth\User;
 use App\Models\Compilation\ApplicabilityActivity;
 use App\Models\Compilation\ContextQuestion;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Geonames\Location;
 use App\Models\Ontology\LegalDomain;
@@ -22,75 +22,75 @@ class ApplicabilityStreamControllerTest extends SettingsTestCase
     {
         $user = $this->signIn();
         $org = Organisation::factory()->create();
-        $libryo = Libryo::factory()->for($org)->create();
+        $norma = Norma::factory()->for($org)->create();
         $question = ContextQuestion::factory()->create();
 
-        $user->libryos()->attach($libryo->id);
+        $user->normas()->attach($norma->id);
         $user->organisations()->attach($org, ['is_admin' => true]);
-        $question->libryos()->attach($libryo->id);
+        $question->normas()->attach($norma->id);
 
         $this->activateAllStreams($user);
 
-        return [$org, $libryo, $question, $user];
+        return [$org, $norma, $question, $user];
     }
 
     public function testFetchingReferencesAssessmentsAndActions(): void
     {
-        /** @var Libryo $libryo */
-        [$org, $libryo, $question] = $this->createBase();
+        /** @var Norma $norma */
+        [$org, $norma, $question] = $this->createBase();
         $location = Location::factory()->create();
-        $libryo->update(['location_id' => $location->id]);
-        $libryo->updateSetting('use_legal_domains', true);
-        $libryo->updateSetting('use_collections', true);
+        $norma->update(['location_id' => $location->id]);
+        $norma->updateSetting('use_legal_domains', true);
+        $norma->updateSetting('use_collections', true);
 
         $domain = LegalDomain::factory()->create();
         $domain->update(['top_parent_id' => $domain->id]);
-        $libryo->legalDomains()->attach($domain->id);
+        $norma->legalDomains()->attach($domain->id);
 
         /** @var Reference $reference */
-        $nonLibryoReference = Reference::factory()->create(['type' => ReferenceType::citation()->value]);
+        $nonNormaReference = Reference::factory()->create(['type' => ReferenceType::citation()->value]);
         $reference = Reference::factory()->create(['type' => ReferenceType::citation()->value]);
         $reference->locations()->attach($location->id);
         $reference->legalDomains()->attach($domain->id);
 
-        $question->references()->attach([$nonLibryoReference->id, $reference->id]);
+        $question->references()->attach([$nonNormaReference->id, $reference->id]);
 
-        $this->get(route('my.references.for.context-questions.index', ['question' => $question->id, 'libryo' => $libryo->id]))
+        $this->get(route('my.references.for.context-questions.index', ['question' => $question->id, 'norma' => $norma->id]))
             ->assertSuccessful()
             ->assertSee($reference->refPlainText->plain_text)
-            ->assertDontSee($nonLibryoReference->refPlainText->plain_text);
+            ->assertDontSee($nonNormaReference->refPlainText->plain_text);
 
         $assessment = AssessmentItem::factory()->create();
-        $nonLibryoAssessment = AssessmentItem::factory()->create();
+        $nonNormaAssessment = AssessmentItem::factory()->create();
 
         $reference->assessmentItems()->attach($assessment->id);
 
-        $this->get(route('my.assessment-items.for.context-questions.index', ['question' => $question->id, 'libryo' => $libryo->id]))
+        $this->get(route('my.assessment-items.for.context-questions.index', ['question' => $question->id, 'norma' => $norma->id]))
             ->assertSuccessful()
             ->assertSee($assessment->description)
-            ->assertDontSee($nonLibryoAssessment->description);
+            ->assertDontSee($nonNormaAssessment->description);
 
         $action = ActionArea::factory()->create();
-        $nonLibryoAction = ActionArea::factory()->create();
+        $nonNormaAction = ActionArea::factory()->create();
 
         $reference->actionAreas()->attach($action->id);
 
-        $this->get(route('my.action-areas.for.context-questions.index', ['question' => $question->id, 'libryo' => $libryo->id]))
+        $this->get(route('my.action-areas.for.context-questions.index', ['question' => $question->id, 'norma' => $norma->id]))
             ->assertSuccessful()
             ->assertSee($action->description)
-            ->assertDontSee($nonLibryoAction->description);
+            ->assertDontSee($nonNormaAction->description);
     }
 
     public function testFetchingActivities(): void
     {
-        [$org, $libryo, $question, $user] = $this->createBase();
+        [$org, $norma, $question, $user] = $this->createBase();
 
-        $inLibryo = ApplicabilityActivity::factory()->create(['activity_type' => ApplicabilityActivityType::ANSWER_CHANGED->value, 'place_id' => $libryo->id, 'context_question_id' => $question->id, 'user_id' => $user->id]);
-        $notInLibryo = ApplicabilityActivity::factory()->create(['activity_type' => ApplicabilityActivityType::ANSWER_CHANGED->value, 'context_question_id' => $question->id]);
+        $inNorma = ApplicabilityActivity::factory()->create(['activity_type' => ApplicabilityActivityType::ANSWER_CHANGED->value, 'place_id' => $norma->id, 'context_question_id' => $question->id, 'user_id' => $user->id]);
+        $notInNorma = ApplicabilityActivity::factory()->create(['activity_type' => ApplicabilityActivityType::ANSWER_CHANGED->value, 'context_question_id' => $question->id]);
 
-        $nonOrgUser = User::whereKey($notInLibryo->user_id)->first();
+        $nonOrgUser = User::whereKey($notInNorma->user_id)->first();
 
-        $this->get(route('my.activities.for.context-questions.index', ['question' => $question->id, 'libryo' => $libryo->id]))
+        $this->get(route('my.activities.for.context-questions.index', ['question' => $question->id, 'norma' => $norma->id]))
             ->assertSuccessful()
             ->assertSee('changed the answer from')
             ->assertSee($user->full_name)
@@ -99,12 +99,12 @@ class ApplicabilityStreamControllerTest extends SettingsTestCase
 
     public function testFetchingTasks(): void
     {
-        [$org, $libryo, $question] = $this->createBase();
-        $NonOrglibryo = Libryo::factory()->create();
-        $task = $question->tasks()->create(['title' => 'In Libryo Task', 'place_id' => $libryo->id]);
-        $nonTask = $question->tasks()->create(['title' => 'Not Libryo Task', 'place_id' => $NonOrglibryo->id]);
+        [$org, $norma, $question] = $this->createBase();
+        $NonOrgnorma = Norma::factory()->create();
+        $task = $question->tasks()->create(['title' => 'In Norma Task', 'place_id' => $norma->id]);
+        $nonTask = $question->tasks()->create(['title' => 'Not Norma Task', 'place_id' => $NonOrgnorma->id]);
 
-        $this->get(route('my.tasks.for.context-questions.index', ['question' => $question->id, 'libryo' => $libryo->id]))
+        $this->get(route('my.tasks.for.context-questions.index', ['question' => $question->id, 'norma' => $norma->id]))
             ->assertSuccessful()
             ->assertSee($task->title)
             ->assertDontSee($nonTask->title);
@@ -112,8 +112,8 @@ class ApplicabilityStreamControllerTest extends SettingsTestCase
 
     public function testFetchingComments(): void
     {
-        [$org, $libryo, $question] = $this->createBase();
-        $this->get(route('my.comments.for.context-questions.index', ['question' => $question->id, 'libryo' => $libryo->id]))
+        [$org, $norma, $question] = $this->createBase();
+        $this->get(route('my.comments.for.context-questions.index', ['question' => $question->id, 'norma' => $norma->id]))
             ->assertSuccessful();
     }
 }

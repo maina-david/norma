@@ -10,7 +10,7 @@ class ForReferenceLibraryControllerTest extends SettingsTestCase
 {
     public function testIndex(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
         $routeName = 'my.settings.compilation.library.for.reference.index';
         $this->signIn($this->mySuperUser($user));
 

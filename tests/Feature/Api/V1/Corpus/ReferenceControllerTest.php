@@ -51,14 +51,14 @@ class ReferenceControllerTest extends ApiTestCase
         ];
     }
 
-    public function testForLibryoForWork(): void
+    public function testForNormaForWork(): void
     {
-        [$libryo, $organisation, $work, $requirementsLocation, $domain, $tag] = $this->initCompiledStream();
+        [$norma, $organisation, $work, $requirementsLocation, $domain, $tag] = $this->initCompiledStream();
         $user = User::factory()->create();
-        $user->libryos()->attach($libryo);
+        $user->normas()->attach($norma);
 
         $routeName = 'api.v1.legislation.sections.for.work';
-        $route = route($routeName, ['work' => $work, 'libryo' => $libryo]);
+        $route = route($routeName, ['work' => $work, 'norma' => $norma]);
         $response = $this->assertApiUnauthorizedThenRun($user, 'get', $route);
         $items = [];
         $reference = $work->references->load(['citation', 'htmlContent', 'refPlainText'])->first();

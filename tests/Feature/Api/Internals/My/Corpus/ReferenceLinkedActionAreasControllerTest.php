@@ -10,7 +10,7 @@ class ReferenceLinkedActionAreasControllerTest extends MyTestCase
 {
     public function testingLinkedActionAreas(): void
     {
-        $this->initUserLibryoOrg();
+        $this->initUserNormaOrg();
         $reference = Reference::factory()->create();
         $actionArea = ActionArea::factory()->create();
         $reference->actionAreas()->attach($actionArea->id);

@@ -59,7 +59,7 @@ class SendOnboardingEmailsTest extends TestCase
             return $mail->user->id === $user->id;
         });
 
-        Artisan::call('libryo:review-lifecycles');
+        Artisan::call('norma:review-lifecycles');
 
         if ($cacheKey) {
             $this->assertTrue(Cache::has($cacheKey));
@@ -77,7 +77,7 @@ class SendOnboardingEmailsTest extends TestCase
      */
     public function testItSendsAdditionalInvitations(): void
     {
-        collect(config('libryo.user.lifecycle.resend_invitation_after_days', []))
+        collect(config('norma.user.lifecycle.resend_invitation_after_days', []))
             ->each(function ($days) {
                 $user = $this->createOldUser($days);
 
@@ -124,7 +124,7 @@ class SendOnboardingEmailsTest extends TestCase
     {
         $user = $this->createOldUser(3, ['lifecycle_stage' => LifecycleStage::active()->value]);
 
-        $this->travelTo(now()->subMonths(config('libryo.user.lifecycle.deactivate_when.inactivity_months_reach')));
+        $this->travelTo(now()->subMonths(config('norma.user.lifecycle.deactivate_when.inactivity_months_reach')));
 
         UserActivity::factory()->create(['user_id' => $user->id]);
 

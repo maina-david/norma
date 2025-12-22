@@ -9,7 +9,7 @@ class LegalUpdateUserStreamControllerTest extends MyTestCase
 {
     public function testUserStatuses(): void
     {
-        [$user, $libryo, $org] = $this->initUserLibryoOrg();
+        [$user, $norma, $org] = $this->initUserNormaOrg();
 
         $update = LegalUpdate::factory()->create();
         $routeName = 'my.notify.legal-updates.users.index';

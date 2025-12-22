@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Api\V3\Notify;
 
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Notify\LegalUpdate;
 use App\Services\Html\HtmlToText;
 use Tests\Feature\Api\V3\ApiV3TestCase;
@@ -11,45 +11,45 @@ class LegalUpdateControllerTest extends ApiV3TestCase
 {
     public function testUpdatesForOrganisation(): void
     {
-        /** @var Libryo $libryo */
-        [$libryo, $organisation] = $this->initCompiledStream();
+        /** @var Norma $norma */
+        [$norma, $organisation] = $this->initCompiledStream();
 
-        $otherLibryo = Libryo::factory()->create(['organisation_id' => $organisation->id]);
-        $forLibryo = LegalUpdate::factory()->create();
-        $forOtherLibryo = LegalUpdate::factory()->create();
-        $libryo->legalUpdates()->attach($forLibryo);
-        $otherLibryo->legalUpdates()->attach($forLibryo);
-        $otherLibryo->legalUpdates()->attach($forOtherLibryo);
+        $otherNorma = Norma::factory()->create(['organisation_id' => $organisation->id]);
+        $forNorma = LegalUpdate::factory()->create();
+        $forOtherNorma = LegalUpdate::factory()->create();
+        $norma->legalUpdates()->attach($forNorma);
+        $otherNorma->legalUpdates()->attach($forNorma);
+        $otherNorma->legalUpdates()->attach($forOtherNorma);
 
-        $responseLibryo = [
-            'id' => $forLibryo->id,
-            'title' => $forLibryo->title,
-            'publication_number' => $forLibryo->publication_number,
-            'publication_document_number' => $forLibryo->publication_document_number,
-            'publication_date' => $forLibryo->publication_date?->toDateString(),
-            'effective_date' => $forLibryo->effective_date?->toDateString(),
-            'highlights' => trim(app(HtmlToText::class)->convert($forLibryo->highlights ?? '')),
-            'streams' => [$libryo->id, $otherLibryo->id],
-            'link' => route('my.notify.legal-updates.show', ['update' => $forLibryo->id], false),
+        $responseNorma = [
+            'id' => $forNorma->id,
+            'title' => $forNorma->title,
+            'publication_number' => $forNorma->publication_number,
+            'publication_document_number' => $forNorma->publication_document_number,
+            'publication_date' => $forNorma->publication_date?->toDateString(),
+            'effective_date' => $forNorma->effective_date?->toDateString(),
+            'highlights' => trim(app(HtmlToText::class)->convert($forNorma->highlights ?? '')),
+            'streams' => [$norma->id, $otherNorma->id],
+            'link' => route('my.notify.legal-updates.show', ['update' => $forNorma->id], false),
         ];
-        $responseOtherLibryo = [
-            'id' => $forOtherLibryo->id,
-            'title' => $forOtherLibryo->title,
-            'publication_number' => $forOtherLibryo->publication_number,
-            'publication_document_number' => $forOtherLibryo->publication_document_number,
-            'publication_date' => $forOtherLibryo->publication_date?->toDateString(),
-            'effective_date' => $forOtherLibryo->effective_date?->toDateString(),
-            'highlights' => trim(app(HtmlToText::class)->convert($forOtherLibryo->highlights ?? '')),
-            'streams' => [$otherLibryo->id],
-            'link' => route('my.notify.legal-updates.show', ['update' => $forOtherLibryo->id], false),
+        $responseOtherNorma = [
+            'id' => $forOtherNorma->id,
+            'title' => $forOtherNorma->title,
+            'publication_number' => $forOtherNorma->publication_number,
+            'publication_document_number' => $forOtherNorma->publication_document_number,
+            'publication_date' => $forOtherNorma->publication_date?->toDateString(),
+            'effective_date' => $forOtherNorma->effective_date?->toDateString(),
+            'highlights' => trim(app(HtmlToText::class)->convert($forOtherNorma->highlights ?? '')),
+            'streams' => [$otherNorma->id],
+            'link' => route('my.notify.legal-updates.show', ['update' => $forOtherNorma->id], false),
         ];
 
         $this->assertUnauthorizedThenRun($organisation, 'get', route('api.v3.updates.index', ['organisation' => $organisation->id]))
             ->assertJsonCount(2, 'data')
             ->assertExactJson([
                 'data' => [
-                    $responseLibryo,
-                    $responseOtherLibryo,
+                    $responseNorma,
+                    $responseOtherNorma,
                 ],
                 'links' => [
                     'first' => route('api.v3.updates.index', ['organisation' => $organisation->id, 'page' => 1]),
@@ -68,7 +68,7 @@ class LegalUpdateControllerTest extends ApiV3TestCase
                 ],
             ]);
 
-        $streams = $libryo->id;
+        $streams = $norma->id;
 
         $route = route('api.v3.updates.index', ['organisation' => $organisation->id, 'streams' => $streams]);
 
@@ -77,8 +77,8 @@ class LegalUpdateControllerTest extends ApiV3TestCase
             ->assertExactJson([
                 'data' => [
                     [
-                        ...$responseLibryo,
-                        'streams' => [$libryo->id],
+                        ...$responseNorma,
+                        'streams' => [$norma->id],
                     ],
                 ],
                 'links' => [
@@ -100,12 +100,12 @@ class LegalUpdateControllerTest extends ApiV3TestCase
 
         $route = route('api.v3.updates.show', [
             'organisation' => $organisation->id,
-            'update' => $forOtherLibryo->id,
+            'update' => $forOtherNorma->id,
         ]);
 
         $this->getJson($route)
             ->assertExactJson([
-                'data' => $responseOtherLibryo,
+                'data' => $responseOtherNorma,
             ]);
     }
 }
