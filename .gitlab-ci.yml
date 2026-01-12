@@ -21,14 +21,14 @@ var_dump_checker:
   interruptible: true
   rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-  image: libryodev/phpbase:8.2-slim
+  image: normadev/phpbase:8.2-slim
   before_script:
     - php -v
   script:
     - mkdir -p ~/.ssh
     - which ssh-agent
     - eval $(ssh-agent -s)
-    - ssh-add <(echo "$LIBRYO_REPOS_KEY")
+    - ssh-add <(echo "$NORMA_REPOS_KEY")
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - openssl genrsa -out storage/oauth-private.key 4096
     - openssl rsa -in storage/oauth-private.key -pubout > storage/oauth-public.key
@@ -44,14 +44,14 @@ php_cs_fixer:
   interruptible: true
   rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-  image: libryodev/phpbase:8.2-slim
+  image: normadev/phpbase:8.2-slim
   before_script:
     - php -v
   script:
     - mkdir -p ~/.ssh
     - which ssh-agent
     - eval $(ssh-agent -s)
-    - ssh-add <(echo "$LIBRYO_REPOS_KEY")
+    - ssh-add <(echo "$NORMA_REPOS_KEY")
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - openssl genrsa -out storage/oauth-private.key 4096
     - openssl rsa -in storage/oauth-private.key -pubout > storage/oauth-public.key
@@ -67,7 +67,7 @@ php_stan:
   interruptible: true
   rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-  image: libryodev/phpbase:8.2-slim
+  image: normadev/phpbase:8.2-slim
   services:
     - name: mysql:8
       alias: mysql
@@ -77,7 +77,7 @@ php_stan:
     - mkdir -p ~/.ssh
     - which ssh-agent
     - eval $(ssh-agent -s)
-    - ssh-add <(echo "$LIBRYO_REPOS_KEY")
+    - ssh-add <(echo "$NORMA_REPOS_KEY")
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - openssl genrsa -out storage/oauth-private.key 4096
     - openssl rsa -in storage/oauth-private.key -pubout > storage/oauth-public.key
@@ -97,7 +97,7 @@ unit_test:
   interruptible: true
   rules:
     - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
-  image: libryodev/phpbase:8.2-slim
+  image: normadev/phpbase:8.2-slim
   services:
     - name: mysql:8
       alias: mysql
@@ -107,7 +107,7 @@ unit_test:
     - mkdir -p ~/.ssh
     - which ssh-agent
     - eval $(ssh-agent -s)
-    - ssh-add <(echo "$LIBRYO_REPOS_KEY")
+    - ssh-add <(echo "$NORMA_REPOS_KEY")
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
     - openssl genrsa -out storage/oauth-private.key 4096
     - openssl rsa -in storage/oauth-private.key -pubout > storage/oauth-public.key
@@ -133,7 +133,7 @@ build_staging:
   interruptible: true
   script:
     - echo "$STAGING_ENV" > .env
-    - echo "$LIBRYO_REPOS_KEY" > .ssh-key
+    - echo "$NORMA_REPOS_KEY" > .ssh-key
     - aws ecr get-login-password --region "$AWS_REGION" | docker login --username AWS --password-stdin "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
     - docker build -t $ECR_STAGING_URI -f build/Dockerfile .
     - docker push $ECR_STAGING_URI
@@ -141,8 +141,8 @@ build_staging:
     - rm .ssh-key .env /root/.docker/config.json
   environment:
     name: staging
-    url: https://my.libryo.net
+    url: https://my.norma.net
   only:
-    - master@libryo/monolith
+    - master@norma/monolith
 
 
