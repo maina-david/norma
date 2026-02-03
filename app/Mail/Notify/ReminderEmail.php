@@ -78,7 +78,7 @@ class ReminderEmail extends AbstractUserMailable implements ShouldQueue
         };
 
         return $reminder->place_id
-            ? route('my.libryos.activate.redirect', ['libryo' => $reminder->place_id, 'redirect' => $redirect], false)
+            ? route('my.normas.activate.redirect', ['norma' => $reminder->place_id, 'redirect' => $redirect], false)
             : $redirect;
     }
 

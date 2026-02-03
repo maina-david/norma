@@ -35,7 +35,7 @@ trait HasSettings
      */
     public static function defaultSettings(): array
     {
-        return config(sprintf('libryo.model_settings.%s.defaults', static::class)) ?? [];
+        return config(sprintf('norma.model_settings.%s.defaults', static::class)) ?? [];
     }
 
     /**

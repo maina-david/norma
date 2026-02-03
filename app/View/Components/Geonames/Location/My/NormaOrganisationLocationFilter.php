@@ -2,14 +2,14 @@
 
 namespace App\View\Components\Geonames\Location\My;
 
-use App\Traits\Geonames\UsesLibryoOrOrganisationLocationsAndDomains;
+use App\Traits\Geonames\UsesNormaOrOrganisationLocationsAndDomains;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\View\Component;
 
-class LibryoOrganisationLocationFilter extends Component
+class NormaOrganisationLocationFilter extends Component
 {
-    use UsesLibryoOrOrganisationLocationsAndDomains;
+    use UsesNormaOrOrganisationLocationsAndDomains;
 
     /**
      * @param array<string, mixed>                                                    $applied
@@ -29,6 +29,6 @@ class LibryoOrganisationLocationFilter extends Component
         $this->locations ??= $this->getAllUsableLocations(true);
 
         /** @var View */
-        return view('components.geonames.location.my.libryo-organisation-location-filter');
+        return view('components.geonames.location.my.norma-organisation-location-filter');
     }
 }

@@ -21,7 +21,7 @@ class UploadForm extends Component
      * @param int|null        $relatedId
      * @param bool            $filepond
      * @param bool            $noTagging
-     * @param int|null        $libryoId
+     * @param int|null        $normaId
      */
     public function __construct(
         protected MimeTypeManager $mimeTypeManager,
@@ -32,7 +32,7 @@ class UploadForm extends Component
         public ?int $relatedId = null,
         public bool $filepond = false,
         public bool $noTagging = false,
-        public ?int $libryoId = null
+        public ?int $normaId = null
     ) {
     }
 

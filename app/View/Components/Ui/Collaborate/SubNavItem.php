@@ -36,8 +36,8 @@ class SubNavItem extends Component
         $this->classes = 'cursor-pointer group flex items-center px-2 py-2 text-sm font-medium rounded-md hover:text-primary';
 
         $this->classes .= $this->route && $request->routeIs($this->route)
-            ? ' bg-libryo-gray-100 text-primary '
-            : ' text-libryo-gray-900';
+            ? ' bg-norma-gray-100 text-primary '
+            : ' text-norma-gray-900';
     }
 
     /**

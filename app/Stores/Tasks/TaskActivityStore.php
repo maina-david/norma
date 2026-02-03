@@ -11,7 +11,7 @@ class TaskActivityStore
      * @param TaskActivityType $type
      * @param int              $taskId
      * @param int              $userId
-     * @param int              $libryoId
+     * @param int              $normaId
      * @param array<mixed>     $details
      *
      * @return TaskActivity
@@ -20,12 +20,12 @@ class TaskActivityStore
         TaskActivityType $type,
         int $taskId,
         int $userId,
-        int $libryoId,
+        int $normaId,
         array $details,
     ): TaskActivity {
         $data = [
             'task_id' => $taskId,
-            'place_id' => $libryoId,
+            'place_id' => $normaId,
             'user_id' => $userId,
             'activity_type' => $type->value,
             'details' => $details,

@@ -21,7 +21,7 @@ class TeamDataTable extends DataTable
         $query = $query ?? (new Team())->newQuery();
 
         // @phpstan-ignore-next-line
-        return $query->withCount(['users', 'libryos'])->filter($request->all());
+        return $query->withCount(['users', 'normas'])->filter($request->all());
     }
 
     /**
@@ -42,9 +42,9 @@ class TeamDataTable extends DataTable
                 'render' => fn ($row) => $row['users_count'],
                 'align' => 'center',
             ],
-            'libryos' => [
-                'heading' => __('customer.team.libryos_in_team'),
-                'render' => fn ($row) => $row['libryos_count'],
+            'normas' => [
+                'heading' => __('customer.team.normas_in_team'),
+                'render' => fn ($row) => $row['normas_count'],
                 'align' => 'center',
             ],
         ];
@@ -58,13 +58,13 @@ class TeamDataTable extends DataTable
         /** @var string $removeLabel */
         $removeLabel = __('customer.team.remove_teams_from_user');
         /** @var string $removeLabel */
-        $removeLabel = __('customer.team.remove_from_libryo');
+        $removeLabel = __('customer.team.remove_from_norma');
 
         return [
             'remove' => [
                 'label' => $removeLabel,
             ],
-            'remove_from_libryo' => [
+            'remove_from_norma' => [
                 'label' => $removeLabel,
             ],
         ];

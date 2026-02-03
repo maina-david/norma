@@ -13,7 +13,7 @@ class DailyNotification extends BaseLegalNotification
     {
         $fields = [
             'app-name' => $this->getAppName(),
-            'anchor' => '<a href="mailto:info@libryo.com">',
+            'anchor' => '<a href="mailto:info@norma.com">',
             'anchor-close' => '</a>',
             'bold' => '<span style="font-weight: bold">',
             'bold-close' => '</span>',

@@ -50,8 +50,8 @@ class LegalDomainDataTable extends DataTable
      */
     public function actions(): array
     {
-        /** @var string $removeFromLibryo */
-        $removeFromLibryo = __('ontology.legal_domain.remove_from_libryo');
+        /** @var string $removeFromNorma */
+        $removeFromNorma = __('ontology.legal_domain.remove_from_norma');
         /** @var string $removeFromFile */
         $removeFromFile = __('ontology.legal_domain.remove_from_file');
 
@@ -59,8 +59,8 @@ class LegalDomainDataTable extends DataTable
             'remove_from_file' => [
                 'label' => $removeFromFile,
             ],
-            'remove_from_libryo' => [
-                'label' => $removeFromLibryo,
+            'remove_from_norma' => [
+                'label' => $removeFromNorma,
             ],
         ];
     }

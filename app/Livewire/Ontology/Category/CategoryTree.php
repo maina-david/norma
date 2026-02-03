@@ -3,7 +3,7 @@
 namespace App\Livewire\Ontology\Category;
 
 use App\Cache\Ontology\Collaborate\CategorySelectorCache;
-use App\Traits\Geonames\UsesLibryoOrOrganisationLocationsAndDomains;
+use App\Traits\Geonames\UsesNormaOrOrganisationLocationsAndDomains;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -11,7 +11,7 @@ use Livewire\WithPagination;
 
 class CategoryTree extends Component
 {
-    use UsesLibryoOrOrganisationLocationsAndDomains;
+    use UsesNormaOrOrganisationLocationsAndDomains;
     use WithPagination;
 
     /** @var array<string, mixed> */

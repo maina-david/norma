@@ -50,7 +50,7 @@ class TaskType extends Component
                 $trans = __('tasks.task.types.' . TaskTypeEnum::context()->value);
                 $this->tooltip = $trans;
                 if ($this->task && $this->task->taskable_id) {
-                    $this->href = route('my.context-questions.libryo.show', ['question' => $this->task->taskable_id, 'libryo' => $this->task->place_id]);
+                    $this->href = route('my.context-questions.norma.show', ['question' => $this->task->taskable_id, 'norma' => $this->task->place_id]);
                 }
                 break;
             case TaskTypeEnum::file()->value:
@@ -92,7 +92,7 @@ class TaskType extends Component
                 break;
         }
 
-        $this->color = $this->linkable && !empty($this->href) ? 'primary' : 'libryo-gray-800';
+        $this->color = $this->linkable && !empty($this->href) ? 'primary' : 'norma-gray-800';
     }
 
     /**

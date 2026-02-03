@@ -25,7 +25,7 @@ class WhiteLabel extends Theme implements WhiteLabelContract
      */
     public function authProvider(): string
     {
-        return 'libryo';
+        return 'norma';
     }
 
     /**

@@ -12,7 +12,7 @@ class FileLegalDomainStore
     use AttachesDetaches;
 
     /**
-     * Attach the legal domains to the libryo.
+     * Attach the legal domains to the norma.
      *
      * @param File                         $file
      * @param Collection<int, LegalDomain> $domains
@@ -27,7 +27,7 @@ class FileLegalDomainStore
     }
 
     /**
-     * Attach the legal domains to the libryo.
+     * Attach the legal domains to the norma.
      *
      * @param File                         $file
      * @param Collection<int, LegalDomain> $domains

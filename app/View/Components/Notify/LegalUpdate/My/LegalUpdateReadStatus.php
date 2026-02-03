@@ -45,8 +45,8 @@ class LegalUpdateReadStatus extends Component
         if (is_null($this->update)) {
             // @codeCoverageIgnoreStart
             // for the tailwind JIT compiler to detect - so not used in here
-            $tailwindColors = ['bg-libryo-gray-400', 'bg-positive', 'bg-warning', 'bg-negative'];
-            $this->color = 'libryo-gray-400';
+            $tailwindColors = ['bg-norma-gray-400', 'bg-positive', 'bg-warning', 'bg-negative'];
+            $this->color = 'norma-gray-400';
 
             return;
             // @codeCoverageIgnoreEnd
@@ -68,7 +68,7 @@ class LegalUpdateReadStatus extends Component
         }
         // if set to null, there is no user relation
         // @codeCoverageIgnoreStart
-        $this->color = 'libryo-gray-400';
+        $this->color = 'norma-gray-400';
 
         // @codeCoverageIgnoreEnd
     }
@@ -77,7 +77,7 @@ class LegalUpdateReadStatus extends Component
     {
         if (is_null($this->user?->pivot)) {
             // @codeCoverageIgnoreStart
-            $this->color = 'libryo-gray-400';
+            $this->color = 'norma-gray-400';
 
             return;
             // @codeCoverageIgnoreEnd
@@ -99,7 +99,7 @@ class LegalUpdateReadStatus extends Component
         }
         // if set to null, there is no user relation
         // @codeCoverageIgnoreStart
-        $this->color = 'libryo-gray-400';
+        $this->color = 'norma-gray-400';
     }
     // @codeCoverageIgnoreEnd
 }

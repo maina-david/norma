@@ -23,7 +23,7 @@ class LegalUpdateDataTable extends DataTable
      */
     public function query(Request $request, Builder|Relation|null $query = null): Builder|Relation
     {
-        $query = $query ?? (new LegalUpdate())->newQuery()->withCount(['libraries', 'libryos']);
+        $query = $query ?? (new LegalUpdate())->newQuery()->withCount(['libraries', 'normas']);
 
         // @phpstan-ignore-next-line
         return $query->filter($request->all());
@@ -64,7 +64,7 @@ class LegalUpdateDataTable extends DataTable
             ],
             'streams' => [
                 'render' => fn ($row) => view('partials.notify.legal-update.columns.count', [
-                    'count' => $row['libryos_count'],
+                    'count' => $row['normas_count'],
                     'row' => $row,
                 ]),
                 'heading' => __('notify.legal_update.streams_notified'),

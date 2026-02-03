@@ -6,7 +6,7 @@ use App\Enums\Auth\UserType;
 use App\Models\Auth\IdentityProvider;
 use App\Models\Auth\Role;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Customer\Team;
 use App\Stores\Customer\TeamUserStore;
@@ -121,9 +121,9 @@ trait UsesSAMLAuthentication
         try {
             /** @var Team $team */
             $team = Team::whereKey($provider->team_id)->first();
-            /** @var Libryo $libryo */
-            $libryo = $team->libryos()->active()->first();
-            $user->libryos()->attach($libryo->id);
+            /** @var Norma $norma */
+            $norma = $team->normas()->active()->first();
+            $user->normas()->attach($norma->id);
         } catch (Throwable) {
         }
     }
@@ -212,7 +212,7 @@ trait UsesSAMLAuthentication
         // User exists via password authentication since there is no identity_provider_id
         // and doesn't exist via provider.
         if ($byEmail && !$byProvider && !$byEmail->identity_provider_id) {
-            $fields['libryo_user_id'] = $byEmail->id;
+            $fields['norma_user_id'] = $byEmail->id;
             session()->put('saml_response', $fields);
 
             return redirect()->route('my.saml.conflict.create', ['slug' => $slug]);

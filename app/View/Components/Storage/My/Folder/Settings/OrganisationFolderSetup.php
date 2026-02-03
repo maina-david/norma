@@ -32,9 +32,9 @@ class OrganisationFolderSetup extends Component
         /** @var Organisation */
         $organisation = $manager->getActive();
 
-        if (FolderType::libryo()->is($this->folderType)) {
-            $routeFolderType = 'libryo';
-            $query = Folder::typeLibryo()
+        if (FolderType::norma()->is($this->folderType)) {
+            $routeFolderType = 'norma';
+            $query = Folder::typeNorma()
                 ->whereRelation('organisation', 'id', $organisation->id);
         } else {
             $routeFolderType = 'organisation';

@@ -18,7 +18,7 @@ class AssessmentActivityStore
     {
         $data = [
             'assessment_item_response_id' => $event->getResponse()->id,
-            'place_id' => $event->getLibryo()?->id ?? null,
+            'place_id' => $event->getNorma()?->id ?? null,
             'organisation_id' => $event->getOrganisation()?->id ?? null,
             'user_id' => $event->getUser()->id,
             'activity_type' => $event->getActivityType(),

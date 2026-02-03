@@ -3,7 +3,7 @@
 namespace App\Traits;
 
 use App\Enums\Lookups\ContentMetaSuggestions;
-use App\Http\Services\LibryoAI\Client;
+use App\Http\Services\NormaAI\Client;
 use App\Models\Actions\ActionArea;
 use App\Models\Assess\AssessmentItem;
 use App\Models\Compilation\ContextQuestion;
@@ -12,7 +12,7 @@ use App\Models\Ontology\Category;
 use App\Models\Ontology\LegalDomain;
 use Illuminate\Support\Collection;
 
-trait UsesLibryoAISuggestions
+trait UsesNormaAISuggestions
 {
     /**
      * Use the reference content to get suggestions.
@@ -31,7 +31,7 @@ trait UsesLibryoAISuggestions
     }
 
     /**
-     * Suggest from LibryoAI the given suggestion type.
+     * Suggest from NormaAI the given suggestion type.
      *
      * @param \App\Enums\Lookups\ContentMetaSuggestions $suggestion
      * @param string                                    $text

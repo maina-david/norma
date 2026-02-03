@@ -4,11 +4,11 @@ namespace App\Traits\Corpus;
 
 use App\Enums\Compilation\ContextQuestionAnswer;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
-use App\Models\Customer\Pivots\ContextQuestionLibryo;
+use App\Models\Customer\Norma;
+use App\Models\Customer\Pivots\ContextQuestionNorma;
 use App\Models\Geonames\Location;
 use App\Models\Geonames\Pivots\LocationLocation;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 
 trait UsesReferenceApplicability
 {
@@ -16,19 +16,19 @@ trait UsesReferenceApplicability
      * Get the common applicability fields.
      *
      * @param int                  $referenceId
-     * @param ActiveLibryosManager $manager
+     * @param ActiveNormasManager $manager
      *
      * @return array<string, mixed>
      */
-    public function getAppliedApplicability(int $referenceId, ActiveLibryosManager $manager): array
+    public function getAppliedApplicability(int $referenceId, ActiveNormasManager $manager): array
     {
         /** @var Reference $reference */
         $reference = Reference::findOrFail($referenceId);
 
-        /** @var Libryo $libryo */
-        $libryo = $manager->getActive();
+        /** @var Norma $norma */
+        $norma = $manager->getActive();
 
-        $locations = LocationLocation::where('descendant', $libryo->location_id)
+        $locations = LocationLocation::where('descendant', $norma->location_id)
             ->orderBy('depth', 'desc')
             ->pluck('ancestor');
 
@@ -36,19 +36,19 @@ trait UsesReferenceApplicability
         $locations = $locations->map(fn ($ancestor) => $fetched->get($ancestor));
 
         $questions = $reference->contextQuestions()
-            ->whereHas('libryos', function ($builder) use ($libryo) {
-                $builder->where('id', $libryo->id)
-                    ->where((new ContextQuestionLibryo())->qualifyColumn('answer'), ContextQuestionAnswer::yes()->value);
+            ->whereHas('normas', function ($builder) use ($norma) {
+                $builder->where('id', $norma->id)
+                    ->where((new ContextQuestionNorma())->qualifyColumn('answer'), ContextQuestionAnswer::yes()->value);
             })
             ->get();
 
         $categories = $reference->legalDomains()
-            ->whereRelation('libryos', 'id', $libryo->id)
+            ->whereRelation('normas', 'id', $norma->id)
             ->get();
 
         return [
             'reference' => $reference,
-            'libryo' => $libryo,
+            'norma' => $norma,
             'locations' => $locations,
             'questions' => $questions,
             'categories' => $categories,

@@ -2,13 +2,13 @@
 
 namespace App\Mail\Notify;
 
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class LibryoStreamDeactivated extends Mailable implements ShouldQueue
+class NormaStreamDeactivated extends Mailable implements ShouldQueue
 {
     use Queueable;
     use SerializesModels;
@@ -18,7 +18,7 @@ class LibryoStreamDeactivated extends Mailable implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(public Libryo $libryo)
+    public function __construct(public Norma $norma)
     {
         $this->onQueue('notifications');
     }
@@ -31,11 +31,11 @@ class LibryoStreamDeactivated extends Mailable implements ShouldQueue
     public function build(): static
     {
         /** @var string $subject */
-        $subject = __('notify.libryo_stream_deactivated.subject', ['stream' => $this->libryo->title]);
-        $this->libryo->load(['legalDomains', 'location']);
+        $subject = __('notify.norma_stream_deactivated.subject', ['stream' => $this->norma->title]);
+        $this->norma->load(['legalDomains', 'location']);
 
-        return $this->markdown('emails.notify.libryo-stream-inactive')
-            ->with(['libryo' => $this->libryo])
+        return $this->markdown('emails.notify.norma-stream-inactive')
+            ->with(['norma' => $this->norma])
             ->subject($subject);
     }
 }

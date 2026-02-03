@@ -37,9 +37,9 @@ class MetricsDataTable extends DataTable
                 'render' => fn ($row) => RiskRating::lang()[$row['risk_rating']] ?? '',
                 'heading' => __('assess.risk_rating'),
             ],
-            'libryo_title' => [
+            'norma_title' => [
                 'render' => fn ($row) => $row['title'],
-                'heading' => __('customer.libryo.libryo_stream'),
+                'heading' => __('customer.norma.norma_stream'),
             ],
             'last_answered' => [
                 'render' => fn ($row) => $row['last_activity_date'] ? view('components.ui.timestamp', [

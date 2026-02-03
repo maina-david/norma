@@ -3,9 +3,9 @@
 namespace App\View\Components\Auth\User\My;
 
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
@@ -41,17 +41,17 @@ class UserSelector extends Component
      */
     public function render()
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         /** @var Organisation */
         $organisation = $manager->getActiveOrganisation();
 
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         if (!$this->organisation && $manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
-            $usersQuery = User::libryoAccess($libryo)->inOrganisation($organisation->id);
+            /** @var Norma */
+            $norma = $manager->getActive();
+            $usersQuery = User::normaAccess($norma)->inOrganisation($organisation->id);
         } else {
             $usersQuery = $organisation->users();
         }

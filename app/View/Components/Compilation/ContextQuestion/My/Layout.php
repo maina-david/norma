@@ -3,7 +3,7 @@
 namespace App\View\Components\Compilation\ContextQuestion\My;
 
 use App\Models\Auth\User;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
@@ -37,7 +37,7 @@ class Layout extends Component
         /** @var User $user */
         $user = $this->request->user();
 
-        $org = app(ActiveLibryosManager::class)->getActiveOrganisation();
+        $org = app(ActiveNormasManager::class)->getActiveOrganisation();
 
         if ($user->can('access.org.settings', $org)) {
             $this->navItems[] = [

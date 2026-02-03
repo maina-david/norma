@@ -3,10 +3,10 @@
 namespace App\View\Components\Geonames\LocationType\My;
 
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Geonames\LocationType;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
@@ -42,16 +42,16 @@ class Selector extends Component
      */
     public function render()
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         /** @var User */
         $user = Auth::user();
-        $organisation = $libryo = null;
+        $organisation = $norma = null;
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
-            $libryo->load('location');
-            $locationTypeQuery = $this->updates ? LocationType::forLibryoViaUpdates($libryo) : LocationType::forLibryo($libryo);
+            /** @var Norma */
+            $norma = $manager->getActive();
+            $norma->load('location');
+            $locationTypeQuery = $this->updates ? LocationType::forNormaViaUpdates($norma) : LocationType::forNorma($norma);
         } else {
             /** @var Organisation */
             $organisation = $manager->getActiveOrganisation();

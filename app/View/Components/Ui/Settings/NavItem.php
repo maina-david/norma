@@ -28,10 +28,10 @@ class NavItem extends Component
 
         $this->icon = $icon;
 
-        $this->classes = 'cursor-pointer text-libryo-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md hover:text-primary';
+        $this->classes = 'cursor-pointer text-norma-gray-900 group flex items-center px-2 py-2 text-sm font-medium rounded-md hover:text-primary';
 
         $this->classes .= $route && $request->routeIs($route)
-            ? ' bg-libryo-gray-100'
+            ? ' bg-norma-gray-100'
             : '';
     }
 

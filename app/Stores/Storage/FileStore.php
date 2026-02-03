@@ -44,7 +44,7 @@ class FileStore
             case FolderType::organisation()->value:
                 $data['organisation_id'] = $entityId;
                 break;
-            case FolderType::libryo()->value:
+            case FolderType::norma()->value:
                 $data['place_id'] = $entityId;
                 break;
                 // @codeCoverageIgnoreStart

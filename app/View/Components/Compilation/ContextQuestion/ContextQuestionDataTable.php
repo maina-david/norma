@@ -5,7 +5,7 @@ namespace App\View\Components\Compilation\ContextQuestion;
 use App\Cache\Ontology\Collaborate\CategorySelectorCache;
 use App\Enums\Compilation\ContextQuestionAnswer;
 use App\Models\Compilation\ContextQuestion;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\View\Components\Ui\DataTable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -39,23 +39,23 @@ class ContextQuestionDataTable extends DataTable
                 ]),
                 'heading' => __('interface.title'),
             ],
-            'libryos_count' => [
-                'render' => fn ($row) => $row->libryos_count,
+            'normas_count' => [
+                'render' => fn ($row) => $row->normas_count,
                 'heading' => __('compilation.context_question.applicable_streams'),
                 'align' => 'center',
             ],
             'yes_count' => [
-                'render' => fn ($row) => $row->libryos->filter(fn ($l) => $l->pivot->answer === ContextQuestionAnswer::yes()->value)->count(),
+                'render' => fn ($row) => $row->normas->filter(fn ($l) => $l->pivot->answer === ContextQuestionAnswer::yes()->value)->count(),
                 'heading' => __('interface.yes'),
                 'align' => 'center',
             ],
             'no_count' => [
-                'render' => fn ($row) => $row->libryos->filter(fn ($l) => $l->pivot->answer === ContextQuestionAnswer::no()->value)->count(),
+                'render' => fn ($row) => $row->normas->filter(fn ($l) => $l->pivot->answer === ContextQuestionAnswer::no()->value)->count(),
                 'heading' => __('interface.no'),
                 'align' => 'center',
             ],
             'maybe_count' => [
-                'render' => fn ($row) => $row->libryos->filter(fn ($l) => $l->pivot->answer === ContextQuestionAnswer::maybe()->value)->count(),
+                'render' => fn ($row) => $row->normas->filter(fn ($l) => $l->pivot->answer === ContextQuestionAnswer::maybe()->value)->count(),
                 'heading' => __('compilation.context_question.number_unanswered'),
                 'align' => 'center',
             ],
@@ -63,8 +63,8 @@ class ContextQuestionDataTable extends DataTable
             'yes_radio' => [
                 'render' => fn ($row) => view('partials.compilation.my.context-question.status-toggle', [
                     'question' => $row->id,
-                    'answer' => $row->libryos->first()->pivot->answer,
-                    'libryo' => $row->libryos->first()->id,
+                    'answer' => $row->normas->first()->pivot->answer,
+                    'norma' => $row->normas->first()->id,
                 ]),
                 'heading' => __('interface.yes'),
                 'colspan' => 3,
@@ -109,8 +109,8 @@ class ContextQuestionDataTable extends DataTable
      */
     public function filters(): array
     {
-        $manager = app(ActiveLibryosManager::class);
-        $libryo = $manager->getActive();
+        $manager = app(ActiveNormasManager::class);
+        $norma = $manager->getActive();
         $organisation = $manager->getActiveOrganisation();
 
         return [
@@ -126,7 +126,7 @@ class ContextQuestionDataTable extends DataTable
                 'label' => '',
                 'render' => fn () => view('partials.ontology.my.category.category-filter-tree', [
                     'value' => $this->getFilterValue('categories'),
-                    'options' => CategorySelectorCache::treeViaContextQuestion($organisation, $libryo),
+                    'options' => CategorySelectorCache::treeViaContextQuestion($organisation, $norma),
                 ]),
                 'value' => fn ($value) => '',
                 'multiple' => true,

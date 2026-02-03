@@ -6,9 +6,9 @@ use App\Cache\Ontology\Collaborate\CategorySelectorCache;
 use App\Enums\Ontology\CategoryType;
 use App\Models\Auth\User;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Ontology\Category;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\View\ComponentAttributeBag;
@@ -29,18 +29,18 @@ trait UsesControlTopicsFilter
                 'multiple' => true,
                 'label' => __('assess.assessment_item_response.control_topics'),
                 'render' => function () use ($assess) {
-                    $manager = app(ActiveLibryosManager::class);
+                    $manager = app(ActiveNormasManager::class);
                     /** @var array<int, int> $topics */
                     $topics = request('topics', []);
 
                     if ($manager->isSingleMode()) {
-                        /** @var Libryo */
-                        $libryo = $manager->getActive();
+                        /** @var Norma */
+                        $norma = $manager->getActive();
 
-                        $query = Category::when($assess, fn ($q) => $q->whereHas('assessmentItems.assessmentResponses', fn ($query) => $query->forLibryo($libryo)))
-                            ->when(!$assess, function ($builder) use ($libryo, $topics) {
-                                $builder->whereHas('references', function ($query) use ($topics, $libryo) {
-                                    $sub = Reference::forLibryo($libryo)
+                        $query = Category::when($assess, fn ($q) => $q->whereHas('assessmentItems.assessmentResponses', fn ($query) => $query->forNorma($norma)))
+                            ->when(!$assess, function ($builder) use ($norma, $topics) {
+                                $builder->whereHas('references', function ($query) use ($topics, $norma) {
+                                    $sub = Reference::forNorma($norma)
                                         ->when(!empty($topics), fn ($q) => $q->whereRelation('categories', 'id', $topics))
                                         ->active()
                                         ->select(['id']);

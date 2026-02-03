@@ -7,9 +7,9 @@ use App\Events\Auth\UserActivity\Folders\UploadedDocument;
 use App\Http\Requests\System\FileUploadRequest;
 use App\Http\Services\Storage\My\FileUploader;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Storage\My\Folder;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
@@ -36,35 +36,35 @@ trait HandlesOrganisationFiles
         $folderId = $request->input('folder_id');
         /** @var Folder $folder */
         $folder = Folder::findOrFail($folderId);
-        /** @var ActiveLibryosManager $manager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager $manager */
+        $manager = app(ActiveNormasManager::class);
 
         /** @var User $user */
         $user = Auth::user();
 
-        $targetLibryo = $request->get('target_libryo_id') ? Libryo::whereKey($request->get('target_libryo_id'))->with('organisation')->userHasAccess($user)->firstOrFail() : null;
+        $targetNorma = $request->get('target_norma_id') ? Norma::whereKey($request->get('target_norma_id'))->with('organisation')->userHasAccess($user)->firstOrFail() : null;
 
         if ($manager->isSingleMode()) {
-            /** @var Libryo $libryoOrOrg */
-            $libryoOrOrg = $manager->getActive();
+            /** @var Norma $normaOrOrg */
+            $normaOrOrg = $manager->getActive();
             $organisation = $manager->getActiveOrganisation();
         } else {
-            $libryoOrOrg = $manager->getActiveOrganisation();
-            $organisation = $libryoOrOrg;
+            $normaOrOrg = $manager->getActiveOrganisation();
+            $organisation = $normaOrOrg;
         }
 
-        $organisation = $targetLibryo->organisation ?? $organisation;
-        $libryoOrOrg = $targetLibryo ?? $libryoOrOrg;
+        $organisation = $targetNorma->organisation ?? $organisation;
+        $normaOrOrg = $targetNorma ?? $normaOrOrg;
 
-        if ($folder->isLibryo()) {
-            Gate::authorize('uploadFileForLibryo', [$folder, $libryoOrOrg]);
+        if ($folder->isNorma()) {
+            Gate::authorize('uploadFileForNorma', [$folder, $normaOrOrg]);
         }
 
         if ($folder->isOrganisation()) {
-            Gate::authorize('uploadFileForOrganisation', [$folder, $targetLibryo->organisation ?? $organisation]);
+            Gate::authorize('uploadFileForOrganisation', [$folder, $targetNorma->organisation ?? $organisation]);
             $files = $uploader->handleUpload($request, $folder, $organisation);
         } else {
-            $files = $uploader->handleUpload($request, $folder, $libryoOrOrg);
+            $files = $uploader->handleUpload($request, $folder, $normaOrOrg);
         }
 
         foreach ($files as $file) {
@@ -76,7 +76,7 @@ trait HandlesOrganisationFiles
             'files' => $files,
             'folder' => $folder,
             'organisation' => $organisation,
-            'libryoOrOrg' => $libryoOrOrg,
+            'normaOrOrg' => $normaOrOrg,
         ];
     }
 }

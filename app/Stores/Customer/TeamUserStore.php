@@ -2,7 +2,7 @@
 
 namespace App\Stores\Customer;
 
-use App\Actions\Auth\User\SyncLibryoUserCache;
+use App\Actions\Auth\User\SyncNormaUserCache;
 use App\Models\Auth\User;
 use App\Models\Customer\Team;
 use App\Stores\Traits\AttachesDetaches;
@@ -21,7 +21,7 @@ class TeamUserStore
     public function attachTeams(User $user, Collection $teams): void
     {
         $this->attachRelations($user, 'teams', $teams);
-        SyncLibryoUserCache::dispatch($user->id);
+        SyncNormaUserCache::dispatch($user->id);
     }
 
     /**
@@ -33,7 +33,7 @@ class TeamUserStore
     public function detachTeams(User $user, Collection $teams): void
     {
         $this->detachRelations($user, 'teams', $teams);
-        SyncLibryoUserCache::dispatch($user->id);
+        SyncNormaUserCache::dispatch($user->id);
     }
 
     /**
@@ -44,7 +44,7 @@ class TeamUserStore
      */
     public function attachUsers(Team $team, Collection $users): void
     {
-        $this->attachRelations($team, 'users', $users, [], fn ($u) => SyncLibryoUserCache::dispatch($u->id ?? $u));
+        $this->attachRelations($team, 'users', $users, [], fn ($u) => SyncNormaUserCache::dispatch($u->id ?? $u));
     }
 
     /**
@@ -55,6 +55,6 @@ class TeamUserStore
      */
     public function detachUsers(Team $team, Collection $users): void
     {
-        $this->detachRelations($team, 'users', $users, fn ($u) => SyncLibryoUserCache::dispatch($u->id ?? $u));
+        $this->detachRelations($team, 'users', $users, fn ($u) => SyncNormaUserCache::dispatch($u->id ?? $u));
     }
 }

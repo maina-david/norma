@@ -17,7 +17,7 @@ class BillingLayout extends Component
     public Team $team;
 
     /**
-     * Can't typehint libryo as laravel will attempt to use DI.
+     * Can't typehint norma as laravel will attempt to use DI.
      *
      * @param Request $request
      * @param Team    $team

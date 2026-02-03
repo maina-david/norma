@@ -6,7 +6,7 @@ use App\Managers\ThemeManager;
 use Closure;
 use Illuminate\View\Component;
 
-class LibryoLogo extends Component
+class NormaLogo extends Component
 {
     /** @var string */
     public string $height;
@@ -35,6 +35,6 @@ class LibryoLogo extends Component
      */
     public function render()
     {
-        return view('components.ui.libryo-logo');
+        return view('components.ui.norma-logo');
     }
 }

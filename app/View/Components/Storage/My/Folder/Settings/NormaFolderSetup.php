@@ -9,7 +9,7 @@ use App\Services\Customer\ActiveOrganisationManager;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class LibryoFolderSetup extends Component
+class NormaFolderSetup extends Component
 {
     /**
      * Create a new component instance.
@@ -33,14 +33,14 @@ class LibryoFolderSetup extends Component
         $organisation = $manager->getActive();
         $folderSettings = $organisation->settings['folders'];
 
-        if (FolderType::libryo()->is($this->folderType)) {
-            $query = Folder::forLibryo();
+        if (FolderType::norma()->is($this->folderType)) {
+            $query = Folder::forNorma();
         } else {
             $query = Folder::forOrganisation();
         }
 
         /** @var View */
-        return view('components.storage.my.folder.settings.libryo-folder-setup', [
+        return view('components.storage.my.folder.settings.norma-folder-setup', [
             'folders' => $query->orderBy('title')->get(),
             'folderSettings' => $folderSettings,
         ]);

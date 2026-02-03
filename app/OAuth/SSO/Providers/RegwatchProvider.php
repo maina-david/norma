@@ -3,7 +3,7 @@
 namespace App\OAuth\SSO\Providers;
 
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Partners\Partner;
 use App\OAuth\SSO\AbstractJsonOAuth2Provider;
@@ -52,13 +52,13 @@ class RegwatchProvider extends AbstractJsonOAuth2Provider
         );
 
         $mappedData['organisations'] = [];
-        $mappedData['libryos'] = [];
+        $mappedData['normas'] = [];
         if (isset($userData['customers'])) {
             foreach ($userData['customers'] as $customer) {
-                $mappedData['organisations'][] = $customer['libryoOrganizationId'];
+                $mappedData['organisations'][] = $customer['normaOrganizationId'];
                 if (isset($customer['sites'])) {
                     foreach ($customer['sites'] as $site) {
-                        $mappedData['libryos'][] = $site['libryoStreamId'];
+                        $mappedData['normas'][] = $site['normaStreamId'];
                     }
                 }
             }
@@ -86,8 +86,8 @@ class RegwatchProvider extends AbstractJsonOAuth2Provider
 
         /** @var Organisation $org */
         $org = Organisation::factory()->create(['partner_id' => $partner->id ?? null]);
-        /** @var Libryo */
-        $libryo = Libryo::factory()->for($org)->create();
+        /** @var Norma */
+        $norma = Norma::factory()->for($org)->create();
         /** @var User */
         $user = User::factory()->make();
 
@@ -99,9 +99,9 @@ class RegwatchProvider extends AbstractJsonOAuth2Provider
             'userId' => Str::random(),
             'customers' => [
                 [
-                    'libryoOrganizationId' => $org->id,
+                    'normaOrganizationId' => $org->id,
                     'sites' => [
-                        ['libryoStreamId' => $libryo->id],
+                        ['normaStreamId' => $norma->id],
                     ],
                 ],
             ],

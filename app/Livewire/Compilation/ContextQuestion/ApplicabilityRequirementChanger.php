@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Compilation\ContextQuestion;
 
-use App\Actions\Compilation\IncludeExcludeFromLibryo;
+use App\Actions\Compilation\IncludeExcludeFromNorma;
 use App\Enums\Compilation\ApplicabilityNoteType;
 use Exception;
 use Illuminate\View\View;
@@ -12,13 +12,13 @@ use Livewire\Component;
 class ApplicabilityRequirementChanger extends Component
 {
     /** @var bool */
-    public bool $inLibryo;
+    public bool $inNorma;
 
     /** @var array<int, int> */
     public array $referenceIds;
 
     /** @var array<int, int> */
-    public array $libryoIds;
+    public array $normaIds;
 
     /** @var string */
     #[Rule('required')]
@@ -42,7 +42,7 @@ class ApplicabilityRequirementChanger extends Component
      */
     public function render(): View
     {
-        $options = $this->inLibryo ? ApplicabilityNoteType::forExclusion() : ApplicabilityNoteType::forInclusion();
+        $options = $this->inNorma ? ApplicabilityNoteType::forExclusion() : ApplicabilityNoteType::forInclusion();
 
         $this->type = (string) $options[0]->value;
 
@@ -66,15 +66,15 @@ class ApplicabilityRequirementChanger extends Component
         /** @var ApplicabilityNoteType $type */
         $type = ApplicabilityNoteType::tryFrom($this->type);
 
-        app(IncludeExcludeFromLibryo::class)->handle(
-            $this->libryoIds,
+        app(IncludeExcludeFromNorma::class)->handle(
+            $this->normaIds,
             $this->referenceIds,
-            !$this->inLibryo,
+            !$this->inNorma,
             $type,
             $this->comment
         );
 
-        $this->inLibryo = !$this->inLibryo;
+        $this->inNorma = !$this->inNorma;
 
         $this->reset('comment');
     }

@@ -8,13 +8,13 @@ use Illuminate\View\Component;
 abstract class LayoutComponent extends Component
 {
     /** @var string */
-    public string $libryoApp;
+    public string $normaApp;
 
     /**
      * Create a new instance.
      */
     public function __construct()
     {
-        $this->libryoApp = AppManager::getApp();
+        $this->normaApp = AppManager::getApp();
     }
 }

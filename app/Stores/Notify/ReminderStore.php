@@ -3,7 +3,7 @@
 namespace App\Stores\Notify;
 
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Notify\Reminder;
 use Illuminate\Support\Arr;
@@ -18,7 +18,7 @@ class ReminderStore
      *
      * @return Reminder
      */
-    public function createFromInput(array $input, User $user, Organisation $organisation, ?Libryo $libryo): Reminder
+    public function createFromInput(array $input, User $user, Organisation $organisation, ?Norma $norma): Reminder
     {
         $date = ($input['remind_on_date'] ?? Carbon::now()->addDays(3)->format('Y-m-d')) . ' ' . ($input['remind_on_time'] ?? static::DEFAULT_TIME) . ':00';
 
@@ -29,8 +29,8 @@ class ReminderStore
 
         if (isset($data['remind_whom'])) {
             if ($data['remind_whom'] === 'self') {
-            } elseif ($data['remind_whom'] === 'libryo' && $libryo) {
-                $data['place_id'] = $libryo->id;
+            } elseif ($data['remind_whom'] === 'norma' && $norma) {
+                $data['place_id'] = $norma->id;
             } else {
                 $data['organisation_id'] = $organisation->id;
             }

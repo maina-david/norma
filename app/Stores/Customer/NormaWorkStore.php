@@ -3,42 +3,42 @@
 namespace App\Stores\Customer;
 
 use App\Models\Corpus\Work;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Stores\Traits\AttachesDetaches;
 use Illuminate\Support\Collection;
 
-class LibryoWorkStore
+class NormaWorkStore
 {
     use AttachesDetaches;
 
     /**
-     * Find all the works associated with the given references (including parent works) and sync to libryo.
+     * Find all the works associated with the given references (including parent works) and sync to norma.
      *
-     * @param Libryo          $libryo
+     * @param Norma          $norma
      * @param array<int, int> $referenceIds
      *
      * @return void
      */
-    public function syncWorksForReferences(Libryo $libryo, array $referenceIds): void
+    public function syncWorksForReferences(Norma $norma, array $referenceIds): void
     {
         $allWorkIds = $this->getWorkIds($referenceIds);
 
-        $libryo->compiledWorks()->sync($allWorkIds->values()->all());
+        $norma->compiledWorks()->sync($allWorkIds->values()->all());
     }
 
     /**
-     * Find all the works associated with the given references (including parent works) and sync to libryo.
+     * Find all the works associated with the given references (including parent works) and sync to norma.
      *
-     * @param Libryo          $libryo
+     * @param Norma          $norma
      * @param array<int, int> $referenceIds
      *
      * @return void
      */
-    public function syncLiveWorksForReferences(Libryo $libryo, array $referenceIds): void
+    public function syncLiveWorksForReferences(Norma $norma, array $referenceIds): void
     {
         $allWorkIds = $this->getWorkIds($referenceIds);
 
-        $libryo->works()->sync($allWorkIds->values()->all());
+        $norma->works()->sync($allWorkIds->values()->all());
     }
 
     /**

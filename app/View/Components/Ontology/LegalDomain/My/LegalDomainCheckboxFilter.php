@@ -2,14 +2,14 @@
 
 namespace App\View\Components\Ontology\LegalDomain\My;
 
-use App\Traits\Geonames\UsesLibryoOrOrganisationLocationsAndDomains;
+use App\Traits\Geonames\UsesNormaOrOrganisationLocationsAndDomains;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\View\Component;
 
 class LegalDomainCheckboxFilter extends Component
 {
-    use UsesLibryoOrOrganisationLocationsAndDomains;
+    use UsesNormaOrOrganisationLocationsAndDomains;
 
     /**
      * @param array<string, mixed>                                                       $applied

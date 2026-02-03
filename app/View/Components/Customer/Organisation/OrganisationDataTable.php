@@ -26,7 +26,7 @@ class OrganisationDataTable extends DataTable
         $query = $query ?? (new Organisation())->newQuery();
 
         // @phpstan-ignore-next-line
-        return $query->withCount(['users', 'libryos', 'teams'])->filter($request->all());
+        return $query->withCount(['users', 'normas', 'teams'])->filter($request->all());
     }
 
     /**
@@ -42,15 +42,15 @@ class OrganisationDataTable extends DataTable
                 ]),
                 'heading' => __('interface.title'),
             ],
-            'users_libryos_teams' => [
-                'heading' => __('customer.organisation.users_libryos_teams_in_organisation'),
+            'users_normas_teams' => [
+                'heading' => __('customer.organisation.users_normas_teams_in_organisation'),
                 'align' => 'center',
-                'render' => fn ($row) => view('partials.customer.my.organisation.users-libryos-teams', ['organisation' => $row]),
+                'render' => fn ($row) => view('partials.customer.my.organisation.users-normas-teams', ['organisation' => $row]),
             ],
             'created_by' => [
                 'render' => fn ($row) => $row['integration_id'] && $row['partner']
                     ? $row['partner']['title']
-                    : 'Libryo',
+                    : 'Norma',
                 'heading' => __('customer.organisation.created_by'),
             ],
             'created_at' => [

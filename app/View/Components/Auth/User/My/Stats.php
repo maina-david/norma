@@ -4,7 +4,7 @@ namespace App\View\Components\Auth\User\My;
 
 use App\Models\Auth\User;
 use App\Models\Auth\UserActivity;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -13,7 +13,7 @@ class Stats extends Component
 {
     public int $daysActive = 0;
     public int $updatesCount = 0;
-    public int $libryoStreamsCount = 0;
+    public int $normaStreamsCount = 0;
 
     /**
      * Create a new component instance.
@@ -34,7 +34,7 @@ class Stats extends Component
     {
         $this->daysActive = UserActivity::accessedPlatformThisMonth($this->user)->count();
         $this->updatesCount = $this->user->legalUpdates()->releasedThisMonth()->count();
-        $this->libryoStreamsCount = Libryo::userHasAccess($this->user)
+        $this->normaStreamsCount = Norma::userHasAccess($this->user)
             ->active()
             ->count();
 

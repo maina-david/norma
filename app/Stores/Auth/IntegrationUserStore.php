@@ -6,7 +6,7 @@ use App\Enums\Auth\LifecycleStage;
 use App\Enums\Auth\UserType;
 use App\Models\Auth\Role;
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\Collection;
@@ -17,7 +17,7 @@ class IntegrationUserStore
 {
     /**
      * Create a new user for the given integration.
-     * Also attempts to connect the user to the given libryo streams.
+     * Also attempts to connect the user to the given norma streams.
      *
      * @param array<string, mixed> $mappedUserData ['email' => '', 'fname' => '', 'sname' => '', 'phone_mobile' => '', 'integration_id' => '']
      * @param string               $provider
@@ -57,8 +57,8 @@ class IntegrationUserStore
             $this->syncOrganisations($user, $mappedUserData['organisations'], $provider);
         }
 
-        if (isset($mappedUserData['libryos'])) {
-            $this->syncLibryos($user, $mappedUserData['libryos'], $provider);
+        if (isset($mappedUserData['normas'])) {
+            $this->syncNormas($user, $mappedUserData['normas'], $provider);
         }
 
         return $user;
@@ -92,13 +92,13 @@ class IntegrationUserStore
 
     /**
      * @param User       $user
-     * @param array<int> $libryoIds array of libryo ids
+     * @param array<int> $normaIds array of norma ids
      *
      * @throws AuthorizationException
      *
      * @return void
      */
-    private function syncLibryos(User $user, array $libryoIds, string $provider): void
+    private function syncNormas(User $user, array $normaIds, string $provider): void
     {
         $partnerId = config('services.sso.' . $provider . '.partner_id');
         if (!$partnerId) {
@@ -107,19 +107,19 @@ class IntegrationUserStore
             // @codeCoverageIgnoreEnd
         }
 
-        /** @var Collection<Libryo> */
-        $libryoIds = Libryo::whereKey($libryoIds)
+        /** @var Collection<Norma> */
+        $normaIds = Norma::whereKey($normaIds)
             ->whereHas('organisation', function ($q) use ($partnerId) {
                 $q->where('partner_id', $partnerId);
             })->get('id');
 
-        // first attempt to sync, as libryo access might have been removed,
+        // first attempt to sync, as norma access might have been removed,
         // in that case we also need to remove access first
-        $this->syncLibryosByPartner($user, $libryoIds, (int) $partnerId);
+        $this->syncNormasByPartner($user, $normaIds, (int) $partnerId);
 
-        if (count($libryoIds) === 0) {
+        if (count($normaIds) === 0) {
             /** @var string */
-            $error = __('auth.error_no_libryo_access');
+            $error = __('auth.error_no_norma_access');
             throw new AuthorizationException($error);
         }
     }
@@ -159,31 +159,31 @@ class IntegrationUserStore
     }
 
     /**
-     * Syncs the given libryos to the user... non existing libryos will be detached.
+     * Syncs the given normas to the user... non existing normas will be detached.
      *
      * @param User               $user,
-     * @param Collection<Libryo> $libryos,
+     * @param Collection<Norma> $normas,
      * @param int                $partnerId
      *
      * @return void
      **/
-    public function syncLibryosByPartner(
+    public function syncNormasByPartner(
         User $user,
-        Collection $libryos,
+        Collection $normas,
         int $partnerId
     ): void {
-        $partnerLibryos = $user->libryos()->whereHas('organisation', function ($q) use ($partnerId) {
+        $partnerNormas = $user->normas()->whereHas('organisation', function ($q) use ($partnerId) {
             $q->where('partner_id', $partnerId);
         })->get();
 
-        foreach ($partnerLibryos as $pl) {
-            if (!$libryos->contains($pl)) {
-                $user->libryos()->detach($pl);
+        foreach ($partnerNormas as $pl) {
+            if (!$normas->contains($pl)) {
+                $user->normas()->detach($pl);
             }
         }
-        foreach ($libryos as $libryo) {
+        foreach ($normas as $norma) {
             try {
-                $user->libryos()->attach($libryo);
+                $user->normas()->attach($norma);
                 // @codeCoverageIgnoreStart
             } catch (Throwable $th) {
                 // throw $th;

@@ -13,10 +13,10 @@ class PostComment extends Component
     /**
      * @param string      $commentableType
      * @param int         $commentableId
-     * @param int|null    $libryoId
+     * @param int|null    $normaId
      * @param string|null $redirect
      */
-    public function __construct(public string $commentableType, public int $commentableId, public ?int $libryoId = null, public ?string $redirect = null)
+    public function __construct(public string $commentableType, public int $commentableId, public ?int $normaId = null, public ?string $redirect = null)
     {
     }
 
@@ -30,12 +30,12 @@ class PostComment extends Component
         /** @var User */
         $user = Auth::user();
 
-        // /** @var ActiveLibryosManager */
-        // $manager = app(ActiveLibryosManager::class);
+        // /** @var ActiveNormasManager */
+        // $manager = app(ActiveNormasManager::class);
         // if ($manager->isSingleMode()) {
-        //     /** @var Libryo */
-        //     $libryo = $manager->getActive();
-        //     $mentionableUsers = User::libryoAccess($libryo)->active()->get();
+        //     /** @var Norma */
+        //     $norma = $manager->getActive();
+        //     $mentionableUsers = User::normaAccess($norma)->active()->get();
         // } else {
         //     /** @var Organisation */
         //     $organisation = $manager->getActiveOrganisation();

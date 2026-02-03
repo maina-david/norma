@@ -3,11 +3,11 @@
 namespace App\Stores\Notify;
 
 use App\Events\Notify\LibraryAttachedToLegalUpdate;
-use App\Events\Notify\LibryoAttachedToLegalUpdate;
+use App\Events\Notify\NormaAttachedToLegalUpdate;
 use App\Events\Notify\UserAttachedToLegalUpdate;
 use App\Models\Auth\User;
 use App\Models\Compilation\Library;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Notify\LegalUpdate;
 use App\Stores\Traits\AttachesDetaches;
 use Illuminate\Support\Collection;
@@ -45,17 +45,17 @@ class LegalUpdateStore
     }
 
     /**
-     * Attach libraries to the libryos.
+     * Attach libraries to the normas.
      *
      * @param LegalUpdate            $update
-     * @param Collection<Libryo|int> $libryos
+     * @param Collection<Norma|int> $normas
      *
      * @return void
      */
-    public function attachLibryos(LegalUpdate $update, Collection $libryos): void
+    public function attachNormas(LegalUpdate $update, Collection $normas): void
     {
-        $this->attachRelations($update, 'libryos', $libryos, [], function ($libryo) use ($update) {
-            LibryoAttachedToLegalUpdate::dispatch($libryo, $update);
+        $this->attachRelations($update, 'normas', $normas, [], function ($norma) use ($update) {
+            NormaAttachedToLegalUpdate::dispatch($norma, $update);
         });
     }
 

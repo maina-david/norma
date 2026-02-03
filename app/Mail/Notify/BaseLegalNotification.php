@@ -72,7 +72,7 @@ abstract class BaseLegalNotification extends AbstractUserMailable implements Sho
     public function build(): static
     {
         $updates = LegalUpdate::whereKey($this->notificationIds)
-            ->whereHas('libryos', function ($builder) {
+            ->whereHas('normas', function ($builder) {
                 $builder->userHasAccess($this->user)->active();
             })
             ->with([
@@ -83,7 +83,7 @@ abstract class BaseLegalNotification extends AbstractUserMailable implements Sho
             ])
             ->get()
             ->map(function (LegalUpdate $update) {
-                $update->first_applicable_place_id = $update->libryos()
+                $update->first_applicable_place_id = $update->normas()
                     ->userHasAccess($this->user)
                     ->active()
                     ->value('id');

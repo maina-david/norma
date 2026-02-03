@@ -2,15 +2,15 @@
 
 namespace App\View\Components\Ontology\My;
 
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Ontology\LegalDomain;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class LibryoLegalDomainSelector extends Component
+class NormaLegalDomainSelector extends Component
 {
     /** @var array<mixed, string> */
     public array $legalDomains = [];
@@ -36,12 +36,12 @@ class LibryoLegalDomainSelector extends Component
      */
     public function render()
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
-            $query = LegalDomain::forLibryo($libryo)->forLocation($libryo->location_id);
+            /** @var Norma */
+            $norma = $manager->getActive();
+            $query = LegalDomain::forNorma($norma)->forLocation($norma->location_id);
         } else {
             /** @var Organisation */
             $organisation = $manager->getActiveOrganisation();

@@ -2,18 +2,18 @@
 
 namespace App\Livewire\Compilation\ContextQuestion;
 
-use App\Actions\Compilation\IncludeExcludeFromLibryo;
+use App\Actions\Compilation\IncludeExcludeFromNorma;
 use App\Enums\Compilation\ApplicabilityNoteType;
 use App\Enums\Corpus\WorkStatus;
 use App\Models\Corpus\Reference;
 use App\Models\Corpus\Work;
-use App\Models\Customer\Libryo;
-use App\Models\Customer\Pivots\CompiledLibryoReference;
-use App\Models\Customer\Pivots\LibryoReference;
-use App\Models\Customer\Pivots\LibryoSpecificWork;
+use App\Models\Customer\Norma;
+use App\Models\Customer\Pivots\CompiledNormaReference;
+use App\Models\Customer\Pivots\NormaReference;
+use App\Models\Customer\Pivots\NormaSpecificWork;
 use App\Models\Ontology\Pivots\CategoryClosure;
-use App\Services\Customer\ActiveLibryosManager;
-use App\Traits\Geonames\UsesLibryoOrOrganisationLocationsAndDomains;
+use App\Services\Customer\ActiveNormasManager;
+use App\Traits\Geonames\UsesNormaOrOrganisationLocationsAndDomains;
 use App\Traits\Livewire\UsesPlaceholder;
 use Exception;
 use Illuminate\Database\Eloquent\Builder;
@@ -28,7 +28,7 @@ use Livewire\WithPagination;
 
 class ApplicabilityRequirementsListing extends Component
 {
-    use UsesLibryoOrOrganisationLocationsAndDomains;
+    use UsesNormaOrOrganisationLocationsAndDomains;
     use WithPagination;
     use UsesPlaceholder;
 
@@ -37,7 +37,7 @@ class ApplicabilityRequirementsListing extends Component
     public array $filters;
 
     /** @var int */
-    public int $libryoId;
+    public int $normaId;
 
     #[Url]
     public string $search = '';
@@ -51,8 +51,8 @@ class ApplicabilityRequirementsListing extends Component
     /** @var \Illuminate\Support\Collection<int, \App\Models\Ontology\LegalDomain>|null */
     public ?Collection $domains = null;
 
-    /** @var \Illuminate\Support\Collection<int, Libryo>|null */
-    public ?Collection $libryos = null;
+    /** @var \Illuminate\Support\Collection<int, Norma>|null */
+    public ?Collection $normas = null;
 
     /**
      * {@inheritDoc}
@@ -114,13 +114,13 @@ class ApplicabilityRequirementsListing extends Component
      */
     public function handleActions(array $payload): void
     {
-        $libryoIds = $this->libryos?->pluck('id')?->all() ?? $this->getLibryoFieldSubQuery('id');
-        $libryoIds = is_array($libryoIds) ? $libryoIds : $libryoIds->pluck('id')->all();
+        $normaIds = $this->normas?->pluck('id')?->all() ?? $this->getNormaFieldSubQuery('id');
+        $normaIds = is_array($normaIds) ? $normaIds : $normaIds->pluck('id')->all();
         /** @var ApplicabilityNoteType $type */
         $type = ApplicabilityNoteType::tryFrom($payload['type']);
 
-        app(IncludeExcludeFromLibryo::class)->handle(
-            $libryoIds,
+        app(IncludeExcludeFromNorma::class)->handle(
+            $normaIds,
             $payload['references'],
             $payload['action'] === 'add',
             $type,
@@ -148,13 +148,13 @@ class ApplicabilityRequirementsListing extends Component
      */
     protected function getReferencesAndWorks(): array
     {
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
         $organisation = $manager->getActiveOrganisation();
-        $libryoIds = $this->libryos?->pluck('id')?->all() ?? $this->getLibryoFieldSubQuery('id');
+        $normaIds = $this->normas?->pluck('id')?->all() ?? $this->getNormaFieldSubQuery('id');
         /** @var Builder $siteWorks */
-        $siteWorks = LibryoSpecificWork::whereIn('place_id', $libryoIds)->select(['work_id']);
+        $siteWorks = NormaSpecificWork::whereIn('place_id', $normaIds)->select(['work_id']);
 
-        $referencesQuery = $this->getApplicableReferencesQuery($libryoIds, $siteWorks);
+        $referencesQuery = $this->getApplicableReferencesQuery($normaIds, $siteWorks);
 
         $newWork = new Work();
 
@@ -171,20 +171,20 @@ class ApplicabilityRequirementsListing extends Component
             ->orderBy('title')
             ->get(['id', 'title', 'title_translation']);
 
-        $libryosFilter = fn ($query) => $query->whereIn((new Libryo())->qualifyColumn('id'), $libryoIds);
+        $normasFilter = fn ($query) => $query->whereIn((new Norma())->qualifyColumn('id'), $normaIds);
 
         $references = $referencesQuery
             ->whereIn('work_id', $workIDs)
             ->with(['refPlainText:reference_id,plain_text'])
-            ->when($manager->isSingleMode(), function ($builder) use ($libryosFilter) {
+            ->when($manager->isSingleMode(), function ($builder) use ($normasFilter) {
                 $builder->withExists([
-                    'compiledLibryos as libryo_recommended' => $libryosFilter,
-                    'libryos as included_in_stream' => $libryosFilter,
+                    'compiledNormas as norma_recommended' => $normasFilter,
+                    'normas as included_in_stream' => $normasFilter,
                 ]);
             })
-            ->when(!$manager->isSingleMode(), function ($builder) use ($libryosFilter) {
+            ->when(!$manager->isSingleMode(), function ($builder) use ($normasFilter) {
                 $builder->withCount([
-                    'libryos as included_in_stream' => $libryosFilter,
+                    'normas as included_in_stream' => $normasFilter,
                 ]);
             })
             ->get(['id', 'work_id'])
@@ -194,7 +194,7 @@ class ApplicabilityRequirementsListing extends Component
             'worksPaginator' => $paginatedWorkIDs,
             'works' => $works,
             'references' => $references,
-            'libryo' => $manager->getActive(),
+            'norma' => $manager->getActive(),
             'organisation' => $organisation,
             'siteWorks' => $siteWorks->pluck('work_id')->all(),
         ];
@@ -203,12 +203,12 @@ class ApplicabilityRequirementsListing extends Component
     /**
      * Get the references that apply to the current state of filters.
      *
-     * @param \Illuminate\Database\Eloquent\Builder|array<int, int> $libryoIds
+     * @param \Illuminate\Database\Eloquent\Builder|array<int, int> $normaIds
      * @param Builder                                               $siteWorks
      *
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    protected function getApplicableReferencesQuery(Builder|array $libryoIds, Builder $siteWorks): Builder
+    protected function getApplicableReferencesQuery(Builder|array $normaIds, Builder $siteWorks): Builder
     {
         $locations = $this->filters['locations'] ?? ($this->locations ?? $this->getAllUsableLocations(true))->pluck('id')->all();
         $domains = $this->filters['domains'] ?? ($this->domains ?? $this->getAllUsableLegalDomains())->pluck('id')->all();
@@ -238,9 +238,9 @@ class ApplicabilityRequirementsListing extends Component
                     ->orWhereIn((new Reference())->qualifyColumn('work_id'), $siteWorks);
             });
 
-        $this->applyRecommendations($builder, $libryoIds, $siteWorks);
+        $this->applyRecommendations($builder, $normaIds, $siteWorks);
 
-        $this->applyInclusions($builder, $libryoIds);
+        $this->applyInclusions($builder, $normaIds);
 
         return $builder;
     }
@@ -249,13 +249,13 @@ class ApplicabilityRequirementsListing extends Component
      * Apply the included-excluded filter.
      *
      * @param \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation $builder
-     * @param \Illuminate\Database\Eloquent\Builder|array<int, int>                                  $libryoIds
+     * @param \Illuminate\Database\Eloquent\Builder|array<int, int>                                  $normaIds
      *
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation
      */
-    protected function applyInclusions(Builder|Relation $builder, Builder|array $libryoIds): Builder|Relation
+    protected function applyInclusions(Builder|Relation $builder, Builder|array $normaIds): Builder|Relation
     {
-        $refIds = LibryoReference::whereIn('place_id', $libryoIds)->select(['reference_id']);
+        $refIds = NormaReference::whereIn('place_id', $normaIds)->select(['reference_id']);
         $column = (new Reference())->qualifyColumn('id');
 
         $included = isset($this->filters['included']);
@@ -269,15 +269,15 @@ class ApplicabilityRequirementsListing extends Component
      * Apply the recommendation filter.
      *
      * @param \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation $builder
-     * @param \Illuminate\Database\Eloquent\Builder|array<int, int>                                  $libryoIds
+     * @param \Illuminate\Database\Eloquent\Builder|array<int, int>                                  $normaIds
      * @param Builder                                                                                $siteWorks
      *
      * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation
      */
-    protected function applyRecommendations(Builder|Relation $builder, Builder|array $libryoIds, Builder $siteWorks): Builder|Relation
+    protected function applyRecommendations(Builder|Relation $builder, Builder|array $normaIds, Builder $siteWorks): Builder|Relation
     {
         /** @var Builder $refIds */
-        $refIds = CompiledLibryoReference::whereIn('place_id', $libryoIds)->select(['reference_id']);
+        $refIds = CompiledNormaReference::whereIn('place_id', $normaIds)->select(['reference_id']);
 
         $refIds = Reference::whereIn('work_id', $siteWorks)->select(['id'])->union($refIds);
 

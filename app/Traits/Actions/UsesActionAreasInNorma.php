@@ -2,21 +2,21 @@
 
 namespace App\Traits\Actions;
 
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use Illuminate\Support\Facades\Session;
 
-trait UsesActionAreasInLibryo
+trait UsesActionAreasInNorma
 {
     /**
      * Redirect if the module is not enabled.
      *
-     * @param \App\Models\Customer\Libryo|null $libryo
+     * @param \App\Models\Customer\Norma|null $norma
      *
      * @return void
      */
-    public function redirectIfNoActionAreas(?Libryo $libryo): void
+    public function redirectIfNoActionAreas(?Norma $norma): void
     {
-        if ($libryo && !$libryo->hasActionsModule()) {
+        if ($norma && !$norma->hasActionsModule()) {
             Session::flash('flash.type', 'error');
             Session::flash('flash.message', __('actions.action_area.not_enabled'));
 

@@ -2,8 +2,8 @@
 
 namespace App\View\Components\Ui\My;
 
-use App\Models\Customer\Libryo;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Models\Customer\Norma;
+use App\Services\Customer\ActiveNormasManager;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +19,7 @@ class Sidebar extends Component
      *
      * @return void
      */
-    public function __construct(protected ActiveLibryosManager $activeLibryosManager)
+    public function __construct(protected ActiveNormasManager $activeNormasManager)
     {
     }
 
@@ -42,9 +42,9 @@ class Sidebar extends Component
             ],
         ];
 
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
         $organisation = $manager->getActiveOrganisation();
-        $libryo = $manager->getActive();
+        $norma = $manager->getActive();
 
         if ($organisation->hasAssessModule()) {
             $assessItem = [
@@ -65,8 +65,8 @@ class Sidebar extends Component
                 ],
             ];
             if ($manager->isSingleMode()) {
-                /** @var Libryo $libryo */
-                if (!$libryo->hasAssessModule()) {
+                /** @var Norma $norma */
+                if (!$norma->hasAssessModule()) {
                     $assessItem = null;
                 }
             }
@@ -89,7 +89,7 @@ class Sidebar extends Component
             'current_module' => $request->routeIs('my.requirements.*') || $request->routeIs('my.corpus.*'),
         ];
 
-        if ($organisation->hasActionsModule() && $organisation->libryos()->where('settings->modules->actions', true)->exists()) {
+        if ($organisation->hasActionsModule() && $organisation->normas()->where('settings->modules->actions', true)->exists()) {
             $actions = [
                 'icon' => 'clipboard-list-check',
                 'label' => __('settings.nav.actions'),
@@ -116,8 +116,8 @@ class Sidebar extends Component
             ];
 
             // @codeCoverageIgnoreStart
-            if ($manager->isSingleMode() && $libryo) {
-                if (!$libryo->hasActionsModule()) {
+            if ($manager->isSingleMode() && $norma) {
+                if (!$norma->hasActionsModule()) {
                     $actions = null;
                 }
             }
@@ -149,8 +149,8 @@ class Sidebar extends Component
 
             // @codeCoverageIgnoreStart
             if ($manager->isSingleMode()) {
-                /** @var Libryo $libryo */
-                if (!$libryo->hasTasksModule()) {
+                /** @var Norma $norma */
+                if (!$norma->hasTasksModule()) {
                     $tasks = null;
                 }
             }
@@ -183,7 +183,7 @@ class Sidebar extends Component
         $user = Auth::user();
 
         $applicabilityHidden = !$manager->isSingleMode()
-            && $organisation->libryos()->where('settings->modules->hide_applicability', true)->exists();
+            && $organisation->normas()->where('settings->modules->hide_applicability', true)->exists();
 
         if (($applicabilityHidden && $user->isMySuperUser()) || (!$applicabilityHidden && $user->canManageApplicability())) {
             $this->items[] = [

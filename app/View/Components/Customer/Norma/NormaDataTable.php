@@ -1,17 +1,17 @@
 <?php
 
-namespace App\View\Components\Customer\Libryo;
+namespace App\View\Components\Customer\Norma;
 
 use App\Enums\Compilation\ContextQuestionAnswer;
 use App\Models\Corpus\Reference;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Services\Customer\ActiveOrganisationManager;
 use App\View\Components\Ui\DataTable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 
-class LibryoDataTable extends DataTable
+class NormaDataTable extends DataTable
 {
     /**
      * @param Request                    $request
@@ -21,7 +21,7 @@ class LibryoDataTable extends DataTable
      */
     public function query(Request $request, Builder|Relation|null $query = null): Builder|Relation
     {
-        $query = $query ?? (new Libryo())->newQuery();
+        $query = $query ?? (new Norma())->newQuery();
 
         // @phpstan-ignore-next-line
         return $query->filter($request->all());
@@ -35,14 +35,14 @@ class LibryoDataTable extends DataTable
         $fields = [
             'title' => [
                 'render' => fn ($row) => view('partials.ui.link', [
-                    'href' => route('my.settings.libryos.show', ['libryo' => $row['id']]),
+                    'href' => route('my.settings.normas.show', ['norma' => $row['id']]),
                     'linkText' => $row['title'],
                 ]),
                 'heading' => __('interface.title'),
             ],
             'title_for_applicability' => [
                 'render' => fn ($row) => view('partials.ui.link', [
-                    'href' => route('my.context-questions.libryo.show', ['question' => request('question'), 'libryo' => $row->hash_id]),
+                    'href' => route('my.context-questions.norma.show', ['question' => request('question'), 'norma' => $row->hash_id]),
                     'linkText' => $row['title'],
                 ]),
                 'heading' => __('interface.title'),
@@ -66,13 +66,13 @@ class LibryoDataTable extends DataTable
             ],
             'activate' => [
                 'render' => fn ($row) => view('partials.ui.link', [
-                    'href' => route('my.libryos.activate.redirect', ['libryo' => $row->id, 'redirect' => route('my.customer.libryos.index', [], false)]),
-                    'linkText' => __('customer.libryo.activate'),
+                    'href' => route('my.normas.activate.redirect', ['norma' => $row->id, 'redirect' => route('my.customer.normas.index', [], false)]),
+                    'linkText' => __('customer.norma.activate'),
                     'turbo' => false,
                 ]),
                 'align' => 'right',
 
-                'heading' => __('customer.libryo.activate'),
+                'heading' => __('customer.norma.activate'),
             ],
             'applicability' => [
                 'render' => fn ($row) => ContextQuestionAnswer::lang()[$row->pivot->answer],
@@ -123,7 +123,7 @@ class LibryoDataTable extends DataTable
             $fields['created_by'] = [
                 'render' => fn ($row) => $row['integration_id'] && $row['organisation']['partner']
                     ? $row['organisation']['partner']['title']
-                    : 'Libryo',
+                    : 'Norma',
                 'heading' => __('customer.organisation.created_by'),
                 'align' => 'center',
             ];
@@ -140,7 +140,7 @@ class LibryoDataTable extends DataTable
         return [
             'deactivated' => [
                 'label' => __('interface.active'),
-                'render' => fn () => view('components.customer.libryo.status-select', ['value' => $this->getFilterValue('deactivated')]),
+                'render' => fn () => view('components.customer.norma.status-select', ['value' => $this->getFilterValue('deactivated')]),
                 'value' => fn ($value) => $value ? __('interface.no') : __('interface.yes'),
             ],
             'citations' => [
@@ -158,11 +158,11 @@ class LibryoDataTable extends DataTable
     public function actions(): array
     {
         /** @var string $activateLabel */
-        $activateLabel = __('customer.libryo.activate_libryos');
+        $activateLabel = __('customer.norma.activate_normas');
         /** @var string $deactivateLabel */
-        $deactivateLabel = __('customer.libryo.deactivate_libryos');
+        $deactivateLabel = __('customer.norma.deactivate_normas');
         /** @var string $removeLabel */
-        $removeLabel = __('customer.libryo.remove_from_team');
+        $removeLabel = __('customer.norma.remove_from_team');
         /** @var string $answerYesLabel */
         $answerYesLabel = __('compilation.context_question.answer_as_yes');
         /** @var string $answerNoLabel */

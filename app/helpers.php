@@ -1,9 +1,9 @@
 <?php
 
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use HotwiredLaravel\TurboLaravel\Http\MultiplePendingTurboStreamResponse;
 use HotwiredLaravel\TurboLaravel\Http\PendingTurboStreamResponse;
 use Illuminate\Http\RedirectResponse;
@@ -80,7 +80,7 @@ if (!function_exists('userIsOrgAdmin')) {
         $user = $user ?? Auth::user();
 
         /** @var Organisation $organisation */
-        $organisation = app(ActiveLibryosManager::class)->getActiveOrganisation();
+        $organisation = app(ActiveNormasManager::class)->getActiveOrganisation();
 
         return $user->isOrganisationAdmin($organisation);
     }
@@ -228,18 +228,18 @@ if (!function_exists('multi_stream')) {
      */
     function multi_stream(): bool
     {
-        return !app(ActiveLibryosManager::class)->isSingleMode();
+        return !app(ActiveNormasManager::class)->isSingleMode();
     }
 }
 
-if (!function_exists('active_libryo')) {
+if (!function_exists('active_norma')) {
     /**
-     * Get the currently active libryo.
+     * Get the currently active norma.
      *
-     * @return ?Libryo
+     * @return ?Norma
      */
-    function active_libryo(): ?Libryo
+    function active_norma(): ?Norma
     {
-        return app(ActiveLibryosManager::class)->getActive();
+        return app(ActiveNormasManager::class)->getActive();
     }
 }

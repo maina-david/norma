@@ -31,7 +31,7 @@ class UnreadUpdates extends Component
     public function render()
     {
         $this->query = $this->user->unreadLegalUpdates()
-//            ->whereHas('libryos', fn ($query) => $query->active()->userHasAccess($this->user))
+//            ->whereHas('normas', fn ($query) => $query->active()->userHasAccess($this->user))
             ->getQuery()
             ->orderByRaw('COALESCE(release_at,' . (new LegalUpdate())->getTable() . '.created_at) DESC')
             ->with([

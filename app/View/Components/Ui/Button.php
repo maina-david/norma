@@ -40,7 +40,7 @@ class Button extends Component
     public function render()
     {
         // for the tailwind JIT compiler to detect - so not used in here
-        $possibleClasses = ['hover:bg-libryo-gray-500', 'text-libryo-gray-500', 'border-libryo-gray-500', 'active:border-libryo-gray-500', 'border-libryo-gray-500', 'active:border-libryo-gray-500', 'bg-libryo-gray-500', 'active:bg-libryo-gray-500', 'focus:border-libryo-gray', 'ring-libryo-gray'];
+        $possibleClasses = ['hover:bg-norma-gray-500', 'text-norma-gray-500', 'border-norma-gray-500', 'active:border-norma-gray-500', 'border-norma-gray-500', 'active:border-norma-gray-500', 'bg-norma-gray-500', 'active:bg-norma-gray-500', 'focus:border-norma-gray', 'ring-norma-gray'];
         $possibleClasses = ['hover:bg-primary', 'text-primary', 'border-primary', 'active:border-primary', 'border-primary', 'active:border-primary', 'bg-primary', 'active:bg-primary', 'focus:border-primary', 'ring-primary'];
         $possibleClasses = ['hover:bg-secondary', 'text-secondary', 'border-secondary', 'active:border-secondary', 'border-secondary', 'active:border-secondary', 'bg-secondary', 'active:bg-secondary', 'focus:border-secondary', 'ring-secondary'];
         $possibleClasses = ['hover:bg-tertiary', 'text-tertiary', 'border-tertiary', 'active:border-tertiary', 'border-tertiary', 'active:border-tertiary', 'bg-tertiary', 'active:bg-tertiary', 'focus:border-tertiary', 'ring-tertiary'];
@@ -84,7 +84,7 @@ class Button extends Component
         $classes[] = $size;
         $classes[] = $this->upper ? 'upper' : '';
 
-        $color = $this->theme === 'gray' ? ($this->styling === 'flat' || $this->styling === 'outline' ? 'libryo-gray-500' : 'libryo-gray-300') : $this->theme;
+        $color = $this->theme === 'gray' ? ($this->styling === 'flat' || $this->styling === 'outline' ? 'norma-gray-500' : 'norma-gray-300') : $this->theme;
         $colors = match ($this->styling) {
             'flat' => "bg-transparent text-{$color} border border-transparent hover:bg-{$color} hover:text-white active:border-{$color} focus:outline-none",
             'outline' => "bg-transparent border border-{$color} text-{$color} hover:bg-{$color} hover:text-white active:border-{$color} focus:outline-none",

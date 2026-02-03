@@ -38,7 +38,7 @@ class NavItem extends Component
 
         $this->classes .= $route && $request->routeIs($route)
             ? 'border-navbar-active text-navbar-active font-bold'
-            : 'border-libryo-gray-200 sm:border-transparent hover:text-navbar-active hover:border-navbar-active';
+            : 'border-norma-gray-200 sm:border-transparent hover:text-navbar-active hover:border-navbar-active';
     }
 
     /**

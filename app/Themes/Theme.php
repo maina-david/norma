@@ -38,17 +38,17 @@ class Theme implements ThemeContract
             'sidebar-text' => '#D3DFD4',
             'sidebar-active' => '#00FFBC',
 
-            'libryo-gray-50' => '#fafaf9',
-            'libryo-gray-100' => '#f5f5f4',
-            'libryo-gray-200' => '#e7e5e4',
-            'libryo-gray-300' => '#d6d3d1',
-            'libryo-gray-400' => '#a8a29e',
-            'libryo-gray-500' => '#78716c',
-            'libryo-gray-600' => '#57534e',
-            'libryo-gray-700' => '#44403c',
-            'libryo-gray-800' => '#292524',
-            'libryo-gray-900' => '#1c1917',
-            'libryo-gray-950' => '#0c0a09',
+            'norma-gray-50' => '#fafaf9',
+            'norma-gray-100' => '#f5f5f4',
+            'norma-gray-200' => '#e7e5e4',
+            'norma-gray-300' => '#d6d3d1',
+            'norma-gray-400' => '#a8a29e',
+            'norma-gray-500' => '#78716c',
+            'norma-gray-600' => '#57534e',
+            'norma-gray-700' => '#44403c',
+            'norma-gray-800' => '#292524',
+            'norma-gray-900' => '#1c1917',
+            'norma-gray-950' => '#0c0a09',
         ];
     }
 
@@ -59,7 +59,7 @@ class Theme implements ThemeContract
      */
     public function loginLogo(): string
     {
-        return static::libryoLogo();
+        return static::normaLogo();
     }
 
     /**
@@ -69,17 +69,17 @@ class Theme implements ThemeContract
      */
     public function appLogo(): string
     {
-        return asset('/img/libryo-app.svg');
+        return asset('/img/norma-app.svg');
     }
 
     /**
-     * The location of the libryo logo.
+     * The location of the norma logo.
      *
      * @return string
      */
-    public static function libryoLogo(): string
+    public static function normaLogo(): string
     {
-        return asset('/img/libryo.png');
+        return asset('/img/norma.png');
     }
 
     /**
@@ -89,7 +89,7 @@ class Theme implements ThemeContract
      */
     public function favicon(): string
     {
-        return self::libryoFavicon();
+        return self::normaFavicon();
     }
 
     /**
@@ -97,7 +97,7 @@ class Theme implements ThemeContract
      *
      * @return string
      */
-    public static function libryoFavicon(): string
+    public static function normaFavicon(): string
     {
         return asset('/img/favicon.png');
     }

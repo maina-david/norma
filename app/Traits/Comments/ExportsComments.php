@@ -4,7 +4,7 @@ namespace App\Traits\Comments;
 
 use App\Models\Auth\User;
 use App\Models\Comments\Comment;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Services\Comments\CommentReplacements;
 use Illuminate\Database\Eloquent\Collection;
@@ -46,19 +46,19 @@ trait ExportsComments
     }
 
     /**
-     * Eager load comments for the given Libryo.
+     * Eager load comments for the given Norma.
      *
-     * @param Libryo $libryo
+     * @param Norma $norma
      *
      * @return array<string|int, mixed>
      */
-    protected function eagerCommentsForLibryo(Libryo $libryo): array
+    protected function eagerCommentsForNorma(Norma $norma): array
     {
-        $libryo->load(['organisation']);
+        $norma->load(['organisation']);
 
         return [
             'comments' => fn ($builder) => $builder
-                ->where(fn ($q) => $q->forLibryo($libryo)->orWhere(fn ($query) => $query->forOrganisation($libryo->organisation)))
+                ->where(fn ($q) => $q->forNorma($norma)->orWhere(fn ($query) => $query->forOrganisation($norma->organisation)))
                 ->reorder('id'),
             'comments.author',
             'comments.replies' => fn ($builder) => $builder->reorder('id', 'asc'),

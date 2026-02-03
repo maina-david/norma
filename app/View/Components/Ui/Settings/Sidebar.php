@@ -38,8 +38,8 @@ class Sidebar extends Component
             ],
             [
                 'icon' => 'map-marker',
-                'label' => __('settings.nav.libryo_streams'),
-                'route' => 'my.settings.libryos.index',
+                'label' => __('settings.nav.norma_streams'),
+                'route' => 'my.settings.normas.index',
             ],
             [
                 'icon' => 'users',

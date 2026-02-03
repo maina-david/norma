@@ -4,8 +4,8 @@ namespace App\Livewire\Compilation\ContextQuestion;
 
 use App\Enums\Compilation\ContextQuestionAnswer;
 use App\Models\Compilation\ContextQuestion;
-use App\Models\Customer\Libryo;
-use App\Stores\Compilation\ContextQuestionLibryoStore;
+use App\Models\Customer\Norma;
+use App\Stores\Compilation\ContextQuestionNormaStore;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 use Livewire\Component;
@@ -14,7 +14,7 @@ class ContextQuestionAnswerToggle extends Component
 {
     public int $answer;
     public int $questionId;
-    public int $libryoId;
+    public int $normaId;
 
     /**
      * @return \Illuminate\View\View
@@ -33,14 +33,14 @@ class ContextQuestionAnswerToggle extends Component
     {
         $changeTo = ContextQuestionAnswer::fromValue($changeTo);
 
-        /** @var Libryo $libryo */
-        $libryo = Libryo::findOrFail($this->libryoId);
+        /** @var Norma $norma */
+        $norma = Norma::findOrFail($this->normaId);
         /** @var ContextQuestion $question */
         $question = ContextQuestion::find($this->questionId);
         /** @var \App\Models\Auth\User $user */
         $user = Auth::user();
 
-        app(ContextQuestionLibryoStore::class)->answerQuestionForLibryo($libryo, $question, $changeTo, $user);
+        app(ContextQuestionNormaStore::class)->answerQuestionForNorma($norma, $question, $changeTo, $user);
 
         $this->answer = $changeTo->value;
     }

@@ -3,10 +3,10 @@
 namespace App\View\Components\Ontology\LegalDomain\My;
 
 use App\Models\Auth\User;
-use App\Models\Customer\Libryo;
+use App\Models\Customer\Norma;
 use App\Models\Customer\Organisation;
 use App\Models\Ontology\LegalDomain;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
@@ -25,26 +25,26 @@ class AssessCategorySelector extends Component
      */
     public function render()
     {
-        /** @var ActiveLibryosManager */
-        $manager = app(ActiveLibryosManager::class);
-        $forLibryoOrgFunc = null;
+        /** @var ActiveNormasManager */
+        $manager = app(ActiveNormasManager::class);
+        $forNormaOrgFunc = null;
         if ($manager->isSingleMode()) {
-            /** @var Libryo */
-            $libryo = $manager->getActive();
-            $forLibryoOrgFunc = function ($q) use ($libryo) {
-                $q->forLibryo($libryo);
+            /** @var Norma */
+            $norma = $manager->getActive();
+            $forNormaOrgFunc = function ($q) use ($norma) {
+                $q->forNorma($norma);
             };
         } else {
             /** @var User $user */
             $user = Auth::user();
             /** @var Organisation */
             $organisation = $manager->getActiveOrganisation();
-            $forLibryoOrgFunc = function ($q) use ($organisation, $user) {
+            $forNormaOrgFunc = function ($q) use ($organisation, $user) {
                 $q->forOrganisationUserAccess($organisation, $user);
             };
         }
-        $domainIds = LegalDomain::whereHas('assessmentItems', function ($q) use ($forLibryoOrgFunc) {
-            $q->whereHas('assessmentResponses', $forLibryoOrgFunc);
+        $domainIds = LegalDomain::whereHas('assessmentItems', function ($q) use ($forNormaOrgFunc) {
+            $q->whereHas('assessmentResponses', $forNormaOrgFunc);
         })->pluck('id')->all();
 
         // This is pretty horrible, but hopefully we'll move these assess categories to the categories table, which has a closure table

@@ -2,8 +2,8 @@
 
 namespace App\Livewire\Compilation\ContextQuestion;
 
-use App\Services\Customer\ActiveLibryosManager;
-use App\Traits\Geonames\UsesLibryoOrOrganisationLocationsAndDomains;
+use App\Services\Customer\ActiveNormasManager;
+use App\Traits\Geonames\UsesNormaOrOrganisationLocationsAndDomains;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
 use Livewire\Attributes\On;
@@ -14,7 +14,7 @@ use Livewire\WithPagination;
 class RequirementsSetup extends Component
 {
     use WithPagination;
-    use UsesLibryoOrOrganisationLocationsAndDomains;
+    use UsesNormaOrOrganisationLocationsAndDomains;
 
     /** @var array<string, mixed> */
     #[Url]
@@ -26,17 +26,17 @@ class RequirementsSetup extends Component
     /** @var \Illuminate\Support\Collection<int, \App\Models\Ontology\LegalDomain> */
     public Collection $domains;
 
-    /** @var \Illuminate\Support\Collection<int, \App\Models\Customer\Libryo> */
-    public Collection $libryos;
+    /** @var \Illuminate\Support\Collection<int, \App\Models\Customer\Norma> */
+    public Collection $normas;
 
     /**
      * Create a new instance.
      */
     public function __construct()
     {
-        $this->libryos = $this->getUsableLibryos();
-        $this->domains = $this->getAllUsableLegalDomains($this->libryos);
-        $this->locations = $this->getAllUsableLocations(true, $this->libryos);
+        $this->normas = $this->getUsableNormas();
+        $this->domains = $this->getAllUsableLegalDomains($this->normas);
+        $this->locations = $this->getAllUsableLocations(true, $this->normas);
     }
 
     /**
@@ -46,7 +46,7 @@ class RequirementsSetup extends Component
      */
     public function render(): View
     {
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
 
         /** @var View */
         return view('livewire.compilation.context-question.requirements-setup', [

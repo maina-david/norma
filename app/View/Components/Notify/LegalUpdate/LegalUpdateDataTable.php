@@ -73,7 +73,7 @@ class LegalUpdateDataTable extends DataTable
             ],
             'domains' => [
                 'label' => __('ontology.legal_domain.categories'),
-                'render' => fn () => view('partials.ontology.my.render-libryo-legal-domain-selector', [
+                'render' => fn () => view('partials.ontology.my.render-norma-legal-domain-selector', [
                     'value' => $this->getFilterValue('domains'),
                     'name' => 'domain',
                 ]),

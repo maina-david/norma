@@ -8,7 +8,7 @@ use App\Models\Assess\AssessmentItemResponse;
 use App\Models\Auth\User;
 use App\Models\Customer\Organisation;
 use App\Models\Ontology\LegalDomain;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Traits\Bookmarks\UsesBookmarksTableFilter;
 use App\Traits\UsesControlTopicsFilter;
 use App\View\Components\Ui\DataTable;
@@ -46,7 +46,7 @@ class ResponseDataTable extends DataTable
                 'render' => fn ($row) => view('partials.assess.my.assessment-item-response.assessment-item-field', [
                     'assessmentItem' => $row->assessmentItem,
                     'assessmentItemResponse' => $row,
-                    'withLibryo' => false,
+                    'withNorma' => false,
                     'linkRoute' => route('my.assess.assessment-item-responses.show', ['aiResponse' => $row->hash_id]),
                 ]),
                 'heading' => '',
@@ -57,11 +57,11 @@ class ResponseDataTable extends DataTable
                 'heading' => '',
                 'classes' => 'py-3 px-4',
             ],
-            'title_with_libryo' => [
+            'title_with_norma' => [
                 'render' => fn ($row) => view('partials.assess.my.assessment-item-response.assessment-item-field', [
                     'assessmentItem' => $row->assessmentItem,
                     'assessmentItemResponse' => $row,
-                    'withLibryo' => true,
+                    'withNorma' => true,
                     'linkRoute' => route('my.assess.assessment-item-responses.show', ['aiResponse' => $row->hash_id]),
                 ]),
                 'heading' => '',
@@ -178,7 +178,7 @@ class ResponseDataTable extends DataTable
                 ]),
                 'value' => function ($value) {
                     /** @var Organisation */
-                    $organisation = app(ActiveLibryosManager::class)->getActiveOrganisation();
+                    $organisation = app(ActiveNormasManager::class)->getActiveOrganisation();
                     /** @var User */
                     $user = User::inOrganisation($organisation->id)->find($value);
 

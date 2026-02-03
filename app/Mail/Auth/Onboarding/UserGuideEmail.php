@@ -28,7 +28,7 @@ class UserGuideEmail extends AbstractUserMailable
      */
     public function build()
     {
-        $genericUrl = 'https://cdn2.hubspot.net/hubfs/2566833/LIBRYO%20USER%20GUIDE_%202019.pdf';
+        $genericUrl = 'https://cdn2.hubspot.net/hubfs/2566833/NORMA%20USER%20GUIDE_%202019.pdf';
 
         $hasWhitelabelGuide = [
             // 'dentons' => 'https://cdn2.hubspot.net/hubfs/2566833/User%20Guide%20-%20COVID-19-Dentons.pdf',

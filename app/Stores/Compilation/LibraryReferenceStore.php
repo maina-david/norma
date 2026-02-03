@@ -56,6 +56,6 @@ class LibraryReferenceStore
 
     private function markForRecompilation(Library $library): void
     {
-        $library->applicableLibryos()->each(fn ($libryo) => $libryo->markAsNeedingRecompilation());
+        $library->applicableNormas()->each(fn ($norma) => $norma->markAsNeedingRecompilation());
     }
 }

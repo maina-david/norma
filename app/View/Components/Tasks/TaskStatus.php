@@ -10,7 +10,7 @@ use Illuminate\View\Component;
 
 class TaskStatus extends Component
 {
-    public string $color = 'libryo-gray-500';
+    public string $color = 'norma-gray-500';
 
     public string $title = '';
 
@@ -25,9 +25,9 @@ class TaskStatus extends Component
             TaskStatusEnum::notStarted()->value => 'negative',
             TaskStatusEnum::inProgress()->value => 'warning',
             TaskStatusEnum::done()->value => 'positive',
-            TaskStatusEnum::paused()->value => 'libryo-gray-500',
+            TaskStatusEnum::paused()->value => 'norma-gray-500',
             // @codeCoverageIgnoreStart
-            default => 'libryo-gray-500',
+            default => 'norma-gray-500',
             // @codeCoverageIgnoreEnd
         };
 

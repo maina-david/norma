@@ -18,7 +18,7 @@ class AppManager
     public const COLOURS = ['primary', 'secondary', 'tertiary', 'accent', 'positive', 'negative', 'info', 'warning', 'dark', 'gray'];
 
     /** The key used to store the current app name in the session. */
-    protected const SESSION_KEY = 'libryo.app';
+    protected const SESSION_KEY = 'norma.app';
 
     public function __construct(protected Request $request)
     {
@@ -123,7 +123,7 @@ class AppManager
         Session::put(self::SESSION_KEY, $name);
 
         if (ApplicationType::collaborate()->is($name)) {
-            Config::set('app.name', 'Libryo Collaborate');
+            Config::set('app.name', 'Norma Collaborate');
         }
 
         if (ApplicationType::my()->is($name)) {

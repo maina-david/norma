@@ -9,7 +9,7 @@ use App\Models\Corpus\Work;
 use App\Models\Notify\LegalUpdate;
 use App\Models\Requirements\Summary;
 use App\Repositories\Auth\UserActivityRepository;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\Services\Translation\ModelTranslator;
 use App\Support\Languages;
 use Illuminate\Support\Facades\Auth;
@@ -53,7 +53,7 @@ trait TranslatesReferenceContent
         $repo = app(UserActivityRepository::class);
         /** @var User $user */
         $user = Auth::user();
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
         $event = new UserTranslatedContent($user, $translated, $manager->getActive(), $manager->getActiveOrganisation());
         $repo->addUserActivityEvent($event);
     }

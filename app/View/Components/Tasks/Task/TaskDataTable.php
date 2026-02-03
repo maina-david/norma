@@ -10,7 +10,7 @@ use App\Models\Auth\User;
 use App\Models\Customer\Organisation;
 use App\Models\Tasks\Task;
 use App\Models\Tasks\TaskProject;
-use App\Services\Customer\ActiveLibryosManager;
+use App\Services\Customer\ActiveNormasManager;
 use App\View\Components\Ui\DataTable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -45,7 +45,7 @@ class TaskDataTable extends DataTable
             }
         }
 
-        $query->with(['libryo:id,title']);
+        $query->with(['norma:id,title']);
 
         // @phpstan-ignore-next-line
         return $query->filter($filters)->orderBy('due_on');
@@ -56,7 +56,7 @@ class TaskDataTable extends DataTable
      */
     public function fields(): array
     {
-        $manager = app(ActiveLibryosManager::class);
+        $manager = app(ActiveNormasManager::class);
 
         return [
             'assignee_avatar' => [
@@ -167,7 +167,7 @@ class TaskDataTable extends DataTable
                 // @codeCoverageIgnoreStart
                 'value' => function ($value) {
                     /** @var Organisation */
-                    $organisation = app(ActiveLibryosManager::class)->getActiveOrganisation();
+                    $organisation = app(ActiveNormasManager::class)->getActiveOrganisation();
 
                     $value = $this->decodeHashId($value, User::class);
 
