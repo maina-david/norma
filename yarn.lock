@@ -2182,9 +2182,9 @@ laravel-vite-plugin@^0.7.4:
     picocolors "^1.0.0"
     vite-plugin-full-reload "^1.0.5"
 
-"legal-doc-html@git+ssh://git@gitlab.com:libryo/legal-doc-html.git":
+"legal-doc-html@git+ssh://git@gitlab.com:norma/legal-doc-html.git":
   version "0.2.93"
-  resolved "git+ssh://git@gitlab.com/libryo/legal-doc-html.git#2057c4f1ef42f3e13a2cda5de0a2722df3bdd253"
+  resolved "git+ssh://git@gitlab.com/norma/legal-doc-html.git#2057c4f1ef42f3e13a2cda5de0a2722df3bdd253"
   dependencies:
     cuid "^2.1.8"
     lodash "^4.17.11"

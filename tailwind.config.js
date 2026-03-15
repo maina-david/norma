@@ -2,18 +2,18 @@ const defaultTheme = require('tailwindcss/defaultTheme');
 const colors = require('tailwindcss/colors');
 
 const extendedColours = {
-  'libryo-gray': {
-    '50': 'var(--libryo-gray-50)',
-    '100': 'var(--libryo-gray-100)',
-    '200': 'var(--libryo-gray-200)',
-    '300': 'var(--libryo-gray-300)',
-    '400': 'var(--libryo-gray-400)',
-    '500': 'var(--libryo-gray-500)',
-    '600': 'var(--libryo-gray-600)',
-    '700': 'var(--libryo-gray-700)',
-    '800': 'var(--libryo-gray-800)',
-    '900': 'var(--libryo-gray-900)',
-    '950': 'var(--libryo-gray-950)',
+  'norma-gray': {
+    '50': 'var(--norma-gray-50)',
+    '100': 'var(--norma-gray-100)',
+    '200': 'var(--norma-gray-200)',
+    '300': 'var(--norma-gray-300)',
+    '400': 'var(--norma-gray-400)',
+    '500': 'var(--norma-gray-500)',
+    '600': 'var(--norma-gray-600)',
+    '700': 'var(--norma-gray-700)',
+    '800': 'var(--norma-gray-800)',
+    '900': 'var(--norma-gray-900)',
+    '950': 'var(--norma-gray-950)',
   },
 };
 const safeList = [];

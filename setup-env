@@ -54,7 +54,7 @@ function setup_minio() {
     sed -i~ '/^AWS_ACCESS_KEY_ID=/s/=.*/=sail/' .env
     sed -i~ '/^AWS_SECRET_ACCESS_KEY=/s/=.*/=password/' .env
     sed -i~ '/^AWS_DEFAULT_REGION=/s/=.*/=us-east-1/' .env
-    sed -i~ '/^AWS_BUCKET=/s/=.*/=libryo/' .env
+    sed -i~ '/^AWS_BUCKET=/s/=.*/=norma/' .env
     sed -i~ '/^AWS_USE_PATH_STYLE_ENDPOINT=/s/=.*/=true\nAWS_ENDPOINT=http:\/\/localhost:9000/' .env
 
     rm '.env~'
@@ -80,7 +80,7 @@ fi
 if [ "$1" == '--minio' ]; then
     echo "Updating .env for minio usage."
     setup_minio
-    echo "Done! Please login to the minio console and create the libryo bucket."
+    echo "Done! Please login to the minio console and create the norma bucket."
 fi
 
 if [ "$1" == '--mailpit' ]; then

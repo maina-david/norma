@@ -48,7 +48,7 @@
     <env name="SCOUT_QUEUE" value="false"/>
     <env name="PASSPORT_PERSONAL_ACCESS_CLIENT_SECRET" value="secret"/>
     <env name="ANTIVIRUS_ENABLED" value="false"/>
-    <env name="LIBRYO_AI_ENABLED" value="false"/>
+    <env name="NORMA_AI_ENABLED" value="false"/>
     <env name="HUBSPOT_ENABLED" value="false"/>
     <env name="LOG_CHANNEL" value="daily"/>
   </php>
@@ -60,7 +60,7 @@
       <directory suffix=".php">./app/Models</directory>
       <directory suffix=".php">./app/Console/Commands/Once</directory>
       <directory suffix=".php">./app/Contracts</directory>
-      <directory suffix=".php">./app/Listeners/Customer/FlushActiveLibryosCache.php</directory>
+      <directory suffix=".php">./app/Listeners/Customer/FlushActiveNormasCache.php</directory>
       <directory suffix=".php">./app/Providers/TurboServiceProvider.php</directory>
       <directory suffix=".php">./app/Providers/HorizonServiceProvider.php</directory>
       <directory suffix=".php">./app/Services/Search/Elastic/Client.php</directory>
